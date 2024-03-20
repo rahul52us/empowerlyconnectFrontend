@@ -41,6 +41,7 @@ export const main = {
   contact: "/contact",
   courses: "/courses",
   testimonial: "/testimonial",
+  product: "/product",
   video: "/videos",
   profile: "/profile",
   profileTab: "/profile/:profileTab",

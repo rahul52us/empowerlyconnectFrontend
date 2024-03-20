@@ -60,12 +60,7 @@ export const studentCreateValidation = Yup.object().shape({
   nickName: Yup.string().trim().min(2, "Nick Name atleast of 2 characters"),
   bio: Yup.string().trim().min(20, "Bio atleast of 20 characters"),
   fatherName: Yup.string().trim().min(2, "Father Name atleast of 2 characters").required('Father Name is required'),
-  class: Yup.mixed().required("Select the Class").typeError("Select the Class"),
   language: Yup.mixed().required("Select the language").typeError("Select the language"),
-  medium: Yup.mixed().required("Select the medium").typeError("Select the medium"),
-  section: Yup.mixed()
-    .required("Select the Section")
-    .typeError("Select the Section"),
   addressInfo: Yup.array().min(1,'atleast 1 address is required').of(addressValidation),
   password: Yup.string()
     .required("New Password is required")
@@ -101,12 +96,7 @@ export const studentEditValidation = Yup.object().shape({
   nickName: Yup.string().trim().min(2, "Nick Name atleast of 2 characters"),
   bio: Yup.string().trim().min(20, "Bio atleast of 20 characters"),
   fatherName: Yup.string().trim().min(2, "Father Name atleast of 2 characters").required('Father Name is required'),
-  class: Yup.mixed().required("Select the Class").typeError("Select the Class"),
   language: Yup.mixed().required("Select the language").typeError("Select the language"),
-  medium: Yup.mixed().required("Select the medium").typeError("Select the medium"),
-  section: Yup.mixed()
-    .required("Select the Section")
-    .typeError("Select the Section"),
   addressInfo: Yup.array().min(1,'atleast 1 address is required').of(addressValidation)
 });
 

@@ -9,7 +9,6 @@ import ProfileView from "./component/element/component/ProfileFormContainer/elem
 
 const ProfileContainer = observer(
   ({
-    classes,
     profileData,
     editTabLink,
     type,
@@ -25,7 +24,6 @@ const ProfileContainer = observer(
     const tab: any = new URLSearchParams(location.search).get("profileTab");
 
     const getEditActiveComponent = ({
-      classes,
       profileData,
       type,
       changePassword,
@@ -37,7 +35,6 @@ const ProfileContainer = observer(
             <ProfileEdit
               type={type}
               profileData={profileData}
-              classes={classes}
               handleSubmitProfile={handleSubmitProfile}
               initialValues={initialValues}
               validations={validations}
@@ -57,7 +54,6 @@ const ProfileContainer = observer(
             <ProfileEdit
               type={type}
               profileData={profileData}
-              classes={classes}
               handleSubmitProfile={handleSubmitProfile}
               initialValues={initialValues}
               validations={validations}
@@ -68,7 +64,6 @@ const ProfileContainer = observer(
             <ProfileEdit
               type={type}
               profileData={profileData}
-              classes={classes}
               handleSubmitProfile={handleSubmitProfile}
               initialValues={initialValues}
               validations={validations}
@@ -101,7 +96,6 @@ const ProfileContainer = observer(
           <Box border="1px solid #e9ecef" borderRadius={5}>
             {type === "edit"
               ? getEditActiveComponent({
-                  classes,
                   profileData,
                   type,
                   changePassword,

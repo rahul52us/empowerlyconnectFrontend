@@ -1,6 +1,7 @@
 import { lazy } from "react";
 import { main } from "../constant/routes";
 import AddingparaForm from "../../pages/main/Contact/AddingparaForm";
+import SingleProduct from "../../pages/main/Product/component/SingleProduct";
 const Home = lazy(() => import("../../pages/main/Home/Home"));
 const About = lazy(() => import("../../pages/main/About/About"));
 const ProfileIndex = lazy(
@@ -37,6 +38,11 @@ export const MainPublicRoutes = [
   {
     element: <About />,
     path: main.about,
+    publicRoute: true,
+  },
+  {
+    element: <SingleProduct />,
+    path: main.product,
     publicRoute: true,
   },
   {

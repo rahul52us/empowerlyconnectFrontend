@@ -20,9 +20,6 @@ const categoryValidation = Yup.object().shape({
   endYear: Yup.date()
     .required("End Year is required")
     .min(Yup.ref("startYear"), "End Year must be later than Start Year"),
-  details: Yup.mixed()
-    .required("Details is required")
-    .typeError("Details is required"),
 });
 
 export const mainCourseValidation = Yup.object().shape({

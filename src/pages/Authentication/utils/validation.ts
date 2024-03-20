@@ -25,9 +25,6 @@ export const OrganisationCreateValidation = Yup.object().shape({
     .min(2,'Organisation Name atleast of 2 characters')
     .max(60,'Organisation Name cannot greater than 250 characters')
     .required('Organisation is required'),
-  username: Yup.string()
-    .email('Invalid username format')
-    .required('Username is required'),
   password: Yup.string()
     .required("Password is required")
     .matches(

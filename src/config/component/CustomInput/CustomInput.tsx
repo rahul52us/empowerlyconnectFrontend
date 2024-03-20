@@ -63,6 +63,7 @@ interface CustomInputProps {
   accept?:any;
   // Callback for file drop
   onFileDrop?: (files: FileList) => void;
+  readOnly?:boolean;
   rest?: any;
 }
 
@@ -91,6 +92,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
   phone,
   onFileDrop,
   accept,
+  readOnly,
   // Added onFileDrop prop
   ...rest
 }) => {
@@ -185,6 +187,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
             name={name}
             disabled={disabled}
             _placeholder={{ fontSize: "12px" }}
+            readOnly={readOnly}
             {...rest}
           />
         );
@@ -199,6 +202,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
             name={name}
             disabled={disabled}
             _placeholder={{ fontSize: "12px" }}
+            readOnly={readOnly}
             {...rest}
           />
         );
@@ -231,6 +235,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
             name={name}
             onChange={onChange}
             isChecked={value}
+            readOnly={readOnly}
             {...rest}
           />
         );
@@ -330,6 +335,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
       case "file":
         return (
           <Input
+            readOnly={readOnly}
             style={style}
             type="file"
             placeholder={placeholder}
@@ -382,6 +388,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
       default:
         return (
           <Input
+            readOnly={readOnly}
             style={style}
             type="text"
             placeholder={placeholder}

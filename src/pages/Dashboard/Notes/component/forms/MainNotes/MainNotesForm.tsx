@@ -44,6 +44,7 @@ const MainNotesForm = observer(({ formData }: any) => {
   //   return plainText;
   // };
 
+  console.log("this is current file")
   return (
     <Formik
       initialValues={setCategoryInitialValue(formData.data)}
@@ -86,7 +87,10 @@ const MainNotesForm = observer(({ formData }: any) => {
           });
       }}
     >
-      {({ values, handleChange, setFieldValue, errors, isSubmitting }) => (
+      {({ values, handleChange, setFieldValue, errors, isSubmitting }) => {
+        console.log(values)
+        console.log(errors)
+        return(
         <Form>
           <Flex flexDirection="column" justifyContent="space-between" m={-6}>
             <Box
@@ -360,7 +364,7 @@ const MainNotesForm = observer(({ formData }: any) => {
             />
           </Flex>
         </Form>
-      )}
+      )}}
     </Formik>
   );
 });

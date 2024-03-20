@@ -4,14 +4,12 @@ import CustomInput from "../../../../../../../CustomInput/CustomInput";
 import { FieldArray, Form, Formik } from "formik";
 
 const ProfileEdit = ({
-  classes,
   type,
   handleSubmitProfile,
   initialValues,
   validations,
 }: any) => {
   const [showError, setShowError] = useState(false);
-  const [sections, setSections] = useState([]);
 
   const getAddressError = (errors: any, type: string, index: number) => {
     const errorTypes = ["address", "country", "state", "city", "pinCode"];
@@ -22,17 +20,6 @@ const ProfileEdit = ({
       }
     }
     return undefined;
-  };
-  const handleSections = (_id: any, setFieldValue: any) => {
-    setFieldValue("section", null);
-    const sec: any = classes.filter((item: any) => item._id === _id);
-    if (sec.length) {
-      setSections(sec[0].sections);
-      if (sec.length === 1) {
-      }
-    } else {
-      setSections([]);
-    }
   };
 
   return (
@@ -57,7 +44,6 @@ const ProfileEdit = ({
         handleSubmit,
         isSubmitting,
       }) => {
-        console.log(errors)
         return (
           <Form onSubmit={handleSubmit}>
             <Box p={4} bg="white" borderRadius="lg" boxShadow="md">
@@ -104,6 +90,7 @@ const ProfileEdit = ({
                     onChange={handleChange}
                     showError={showError}
                     required
+                    readOnly={type === "edit" ? true : false}
                   />
                   <CustomInput
                     type="phone"
@@ -167,51 +154,6 @@ const ProfileEdit = ({
                     placeholder="Sibling"
                     value={values.sibling}
                     error={errors.sibling}
-                    showError={showError}
-                    onChange={handleChange}
-                  />
-                  <CustomInput
-                    type="select"
-                    label="Class"
-                    required
-                    placeholder="Select Class"
-                    name="class"
-                    isSearchable
-                    value={values.class}
-                    getOptionLabel={(option: any) => option.name}
-                    getOptionValue={(option: any) => option._id}
-                    options={classes}
-                    onChange={(e: any) => {
-                      handleSections(e?._id, setFieldValue);
-                      setFieldValue("class", e);
-                    }}
-                    error={errors.class}
-                    showError={showError}
-                  />
-                  <CustomInput
-                    type="select"
-                    label="Section"
-                    required
-                    placeholder="Search Section"
-                    name="section"
-                    isSearchable
-                    error={errors.section}
-                    value={values.section}
-                    getOptionLabel={(option: any) => option.name}
-                    getOptionValue={(option: any) => option._id}
-                    options={sections}
-                    onChange={(e: any) => {
-                      setFieldValue("section", e);
-                    }}
-                    showError={showError}
-                  />
-                  <CustomInput
-                    type="text"
-                    label="Medium"
-                    name="medium"
-                    placeholder="Select Medium"
-                    value={values.medium}
-                    error={errors.medium}
                     showError={showError}
                     onChange={handleChange}
                   />
