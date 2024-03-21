@@ -6,12 +6,11 @@ import { observer } from "mobx-react-lite";
 const DashWidgetCard = observer(() => {
   return (
     <Grid
-      templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(4, 1fr)" }}
+      templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(3, 1fr)" }}
       gap={4}
       marginX="auto"
     >
       {[
-        { count: 653, title: "Total Quiz", link: dashboard.quiz },
         { count: 2000, title: "Total Videos", link: dashboard.videos },
         { count: 2000, title: "Total Course", link: dashboard.course },
         { count: 2000, title: "Trips", link: dashboard.tripManagement.index },

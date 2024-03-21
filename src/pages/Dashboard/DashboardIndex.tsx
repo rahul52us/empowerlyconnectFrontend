@@ -9,10 +9,9 @@ import DashPageHeader from "../../config/component/common/DashPageHeader/DashPag
 import { headerHeight } from "../../config/constant/variable";
 import { Box, Grid, GridItem } from "@chakra-ui/react";
 import { dashBreadCrumb } from "./utils/breadcrumb.constant";
-import DashboardRight from "./component/DashboardRight";
+// import DashboardRight from "./component/DashboardRight";
 // import MyCoursesTable from "./component/MyCoursesTable";
 // import SkeletanCategoryCard from "../../config/component/Card/CategoryCard/SkeletanCategoryCard";
-import ProfileCard from "./component/ProfileCard";
 
 const DashboardIndex = observer(() => {
   const {
@@ -23,7 +22,7 @@ const DashboardIndex = observer(() => {
     <>
     <Box minHeight={`calc(100vh - ${headerHeight})`} m={-2} p={3}>
       <DashPageHeader title="Dashboard" breadcrumb={dashBreadCrumb} />
-      <Grid templateColumns={{ base: "1fr", xl: "3.5fr 1fr" }} columnGap={3}>
+      <Grid templateColumns={{ base: "1fr", md : '1fr' }} columnGap={3}>
         <GridItem>
           <DashboardBanner />
           <DashWidgetCard />
@@ -31,9 +30,9 @@ const DashboardIndex = observer(() => {
 
           <DashChartContainer />
         </GridItem>
-        <GridItem>
+        {/* <GridItem>
           <DashboardRight />
-        </GridItem>
+        </GridItem> */}
         {/* <MyCoursesTable /> */}
       </Grid>
       <DeleteModel
@@ -45,7 +44,7 @@ const DashboardIndex = observer(() => {
         submit={deleteCategoryFunction}
       />
     </Box>
-      <ProfileCard title="title" />
+      {/* <ProfileCard title="title" /> */}
     </>
   );
 });
