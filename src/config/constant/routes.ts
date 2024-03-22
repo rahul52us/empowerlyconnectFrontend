@@ -31,6 +31,9 @@ export const dashboard = {
     tripManagement: {
         index: `/${dashboardName}/trip`,
     },
+    employes:{
+        index : `/${dashboardName}/employes`
+    }
 };
 
 export const main = {

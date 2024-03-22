@@ -86,8 +86,7 @@ const BarChart = observer(
 
     const chartOptions =
       options && Object.keys(options).length ? options : { responsive: true };
-    const chartData = data && data.datasets ? defaultData : defaultData;
-
+    const chartData = data && Object.keys(data).length > 0 ? data : defaultData;
     return <Bar options={chartOptions} data={chartData} />;
   }
 );

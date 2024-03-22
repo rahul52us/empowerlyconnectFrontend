@@ -1,39 +1,13 @@
 import { Spinner, Text, Box } from "@chakra-ui/react";
 import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement } from "chart.js";
 import { observer } from "mobx-react-lite";
-import { Bar } from "react-chartjs-2";
+import { Pie } from "react-chartjs-2";
 import "./chart.css";
 
+ChartJS.register(Title, Tooltip, ArcElement, Legend);
 
 const PieChart = observer(
   ({ options = {}, data = {}, loading = true }: any) => {
-    ChartJS.register(Title, Tooltip, ArcElement, Legend);
-    const defaultData = {
-      datasets: [
-        {
-          label: 'Default Dataset 1',
-          data: [10, 20, 30, 40, 50], // Default data values
-          backgroundColor: 'rgba(54, 162, 235, 0.5)', // Default background color
-        },
-        {
-          label: 'Default Dataset 2',
-          data: [20, 30, 40, 50, 60], // Default data values
-          backgroundColor: 'rgba(255, 99, 132, 0.5)', // Different color
-        },
-        {
-          label: 'Default Dataset 3',
-          data: [30, 40, 50, 60, 70], // Default data values
-          backgroundColor: 'rgba(75, 192, 192, 0.5)', // Different color
-        },
-        {
-          label: 'Default Dataset 4',
-          data: [12, 40, 50, 60, 110], // Default data values
-          backgroundColor: 'rgba(85, 172, 195, 0.5)', // Different color
-        },
-      ],
-      labels: ['January', 'February', 'March', 'April', 'May'] // Default labels
-    };
-
     if (loading) {
       return (
         <Box
@@ -70,7 +44,7 @@ const PieChart = observer(
 
     const chartOptions =
       options && Object.keys(options).length ? options : { responsive: true };
-    return <Bar options={chartOptions} data={defaultData || data} />;
+    return <Pie options={chartOptions} data={data} />;
   }
 );
 

@@ -53,7 +53,7 @@ const DashChartContainer = observer(() => {
     >
       <Card width={"100%"} minH={350} p={{ base: 0, sm: 2 }}>
         <BarChart
-          data={coursesChartData?.data}
+          data={null}
           options={coursesChartData?.options}
           loading={categoryCoursesCount.loading}
         />

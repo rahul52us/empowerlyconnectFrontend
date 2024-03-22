@@ -63,6 +63,14 @@ const StaffIndex = lazy(
 const TripManagementIndex = lazy(
   () => import("../../pages/Dashboard/Trip/TripManagement")
 );
+
+// Employes
+
+
+const EmployesManagementIndex = lazy(
+  () => import("../../pages/Dashboard/Employes")
+);
+
 export const DashboardRoutes = [
   {
     element: <DashboardIndex />,
@@ -143,4 +151,11 @@ export const DashboardRoutes = [
     path: dashboard.tripManagement.index,
     privateRoutes: true,
   },
+
+  // employes
+  {
+    element : <EmployesManagementIndex />,
+    path : dashboard.employes.index,
+    privateRoutes : true
+  }
 ];

@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 import store from "../../../../store/store";
 import { makeChartResponse } from "../../component/utils/common";
-import PieChart from "../../../../config/component/charts/PieChart";
+import BarChart from "../../../../config/component/charts/BarChart";
 
 const VideoChartContainer = observer(({addData} : any) => {
   const {
@@ -41,8 +41,8 @@ const VideoChartContainer = observer(({addData} : any) => {
       mt={5}
     >
       <Card width={"100%"} minH={350} p={{ base: 0, sm: 2 }}>
-      <PieChart
-          data={videosChartData?.data}
+      <BarChart
+          data={null}
           options={videosChartData?.options}
           loading={categoryVideosCount.loading}
         />

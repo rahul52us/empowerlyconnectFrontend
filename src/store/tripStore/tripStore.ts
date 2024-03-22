@@ -8,11 +8,19 @@ class TripStore {
     hasFetch : false
   }
 
+  tripCount : any = {
+    data : [],
+    loading : false,
+    hasFetch : false
+  }
+
   constructor() {
     makeObservable(this, {
       trips : observable,
+      tripCount: observable,
       createTrip: action,
       updateTrip:action,
+      getTripCounts:action
     });
   }
 
@@ -35,7 +43,6 @@ class TripStore {
     }
   }
 
-
   getAllTrip = async () => {
     try {
       this.trips.loading = true;
@@ -48,6 +55,20 @@ class TripStore {
       this.trips.loading = false;
     }
   };
+
+  getTripCounts = async () => {
+    try {
+      this.tripCount.loading = true;
+      const { data } = await axios.get(`/trip/tripcounts`);
+      this.tripCount.data = data?.data
+      return data;
+    } catch (err: any) {
+      return Promise.reject(err?.response?.data);
+    } finally {
+      this.tripCount.loading = false;
+    }
+  }
+
 }
 
 export default TripStore;

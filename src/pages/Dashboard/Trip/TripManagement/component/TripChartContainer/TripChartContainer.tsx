@@ -3,11 +3,11 @@ import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 import store from "../../../../../../store/store";
 import { makeChartResponse } from "../../../../component/utils/common";
-import PieChart from "../../../../../../config/component/charts/PieChart";
+import BarChart from "../../../../../../config/component/charts/BarChart";
 
 const TripChartContainer = observer(({addData} : any) => {
   const {
-    VideoStore: { getCategoryVideoCount, categoryVideosCount },
+    tripStore: { getTripCounts, tripCount },
   } = store;
 
   const fetchData = (getDataFn: any) =>
@@ -17,20 +17,20 @@ const TripChartContainer = observer(({addData} : any) => {
 
   useEffect(() => {
     Promise.all([
-      fetchData(getCategoryVideoCount),
+      fetchData(getTripCounts),
     ])
       .then(() => {})
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
-  }, [getCategoryVideoCount]);
+  }, [getTripCounts]);
 
-  const videosChartData = makeChartResponse(
-    categoryVideosCount.data,
-    "Videos Data",
+  const tripChartData = makeChartResponse(
+    tripCount.data,
+    "Trip Data",
     "title",
     "count",
-    ["#FF5733", "#33FF57", "#3366FF", "#FF33A1", "#FFD700"]
+    ["rgba(54, 162, 235, 0.5)", "rgba(255, 99, 132, 0.5)", "rgba(75, 192, 192, 0.5)", "rgba(75, 172, 195, 0.5)", "#FFD700"]
   );
 
   return (
@@ -41,10 +41,10 @@ const TripChartContainer = observer(({addData} : any) => {
       mt={5}
     >
       <Card width={"100%"} minH={350} p={{ base: 0, sm: 2 }}>
-      <PieChart
-          data={videosChartData?.data}
-          options={videosChartData?.options}
-          loading={categoryVideosCount.loading}
+      <BarChart
+          data={tripChartData?.data}
+          options={tripChartData?.options}
+          loading={tripCount.loading}
         />
       </Card>
       <Card width={"100%"} minH={350} p={{ base: 0, sm: 2 }}>

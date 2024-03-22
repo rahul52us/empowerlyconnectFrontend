@@ -4,7 +4,7 @@ export const makeChartResponse = (data: any, chartTitle : string, labelProp: str
 
   const datasets = [
     {
-      label: "Count",
+      label: labelProp,
       data: values,
       backgroundColor: colors,
       borderWidth: 1,
