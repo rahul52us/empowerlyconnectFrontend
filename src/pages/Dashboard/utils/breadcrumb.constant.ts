@@ -1,9 +1,9 @@
 import { dashboard } from "../../../config/constant/routes";
 
 const videoBreadCrumb = [
-    { label: "Home", link: "/" },
-    { label: "Dashboard", link: dashboard.home },
-    { label: "Videos" },
+  { label: "Home", link: "/" },
+  { label: "Dashboard", link: dashboard.home },
+  { label: "Videos" },
 ];
 
 const quizBreadCrumb = [
@@ -12,10 +12,7 @@ const quizBreadCrumb = [
   { label: "Quiz" },
 ];
 
-const dashBreadCrumb = [
-  { label: "Home", link: "/" },
-  { label: "Dashboard" },
-];
+const dashBreadCrumb = [{ label: "Home", link: "/" }, { label: "Dashboard" }];
 
 const coursesBreadCrumb = [
   { label: "Home", link: "/" },
@@ -23,11 +20,23 @@ const coursesBreadCrumb = [
   { label: "Courses" },
 ];
 
-const employesBreadCrumb = [
-  { label: "Home", link: "/" },
-  { label: "Dashboard", link: dashboard.home },
-  { label: "Employes" },
-];
+const employesBreadCrumb = {
+  index: [
+    { label: "Home", link: "/" },
+    { label: "Dashboard", link: dashboard.home },
+    { label: "Employes" },
+  ],
+  details: [
+    { label: "Home", link: "/" },
+    { label: "employes", link: dashboard.employes.index },
+    { label: "Details" },
+  ],
+  new : [
+    { label: "Home", link: "/" },
+  { label: "employes", link: dashboard.employes.details },
+  { label: "New" },
+  ]
+};
 
 const tripBreadCrumb = [
   { label: "Home", link: "/" },
@@ -35,4 +44,11 @@ const tripBreadCrumb = [
   { label: "Trip" },
 ];
 
-export {videoBreadCrumb, coursesBreadCrumb, quizBreadCrumb, dashBreadCrumb,tripBreadCrumb, employesBreadCrumb}
+export {
+  videoBreadCrumb,
+  coursesBreadCrumb,
+  quizBreadCrumb,
+  dashBreadCrumb,
+  tripBreadCrumb,
+  employesBreadCrumb
+};

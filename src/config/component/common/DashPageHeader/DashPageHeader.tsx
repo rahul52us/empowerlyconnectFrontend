@@ -9,6 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import CustomBreadcrumb from "../../CustomBreadcrumb/CustomBreadcrumb";
+import { Helmet } from 'react-helmet';
 
 interface BreadcrumbItem {
   label: string;
@@ -45,10 +46,15 @@ const DashPageHeader = observer(
 
     return (
       <>
+      {
+        title &&
+      <Helmet>
+        <title>{title ? `${process.env.REACT_APP_WEBSITE_NAME} | ${title}` : process.env.REACT_APP_WEBSITE_NAME}</title>
+      </Helmet>}
         <Flex
           justify="space-between"
           alignItems="center"
-          mt={{ base: 1 }}
+          mt={{ base: 2 }}
           mb={{ base: 5 }}
           mr={{ base: 1, sm: 2 }}
         >

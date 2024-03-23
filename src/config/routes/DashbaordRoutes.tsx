@@ -71,6 +71,14 @@ const EmployesManagementIndex = lazy(
   () => import("../../pages/Dashboard/Employes")
 );
 
+const EmployeDetails = lazy(
+  () => import("../../pages/Dashboard/Employes/component/EmployeDetails/EmployeDetails")
+);
+
+const EmployeCreate = lazy(
+  () => import("../../pages/Dashboard/Employes/component/EmployeDetails/CreateEmploye")
+);
+
 export const DashboardRoutes = [
   {
     element: <DashboardIndex />,
@@ -157,5 +165,16 @@ export const DashboardRoutes = [
     element : <EmployesManagementIndex />,
     path : dashboard.employes.index,
     privateRoutes : true
-  }
+  },
+  {
+    element : <EmployeDetails />,
+    path : dashboard.employes.details,
+    privateRoutes : true
+  },
+  {
+    element : <EmployeCreate />,
+    path : dashboard.employes.new,
+    privateRoutes : true
+  },
+
 ];
