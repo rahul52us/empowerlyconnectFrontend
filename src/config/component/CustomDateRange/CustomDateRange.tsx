@@ -42,7 +42,7 @@ export default function CustomDateRange({
             endDate,
             "dd/MM/yyyy"
           )}`}
-          width={{ base: "14rem", lg: "18rem" }}
+          width={{ base: "14rem", lg: "14rem" }}
           textAlign="center"
         />
       </PopoverTrigger>

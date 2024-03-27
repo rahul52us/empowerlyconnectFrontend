@@ -54,8 +54,8 @@ const DashPageHeader = observer(
         <Flex
           justify="space-between"
           alignItems="center"
-          mt={{ base: 2 }}
-          mb={{ base: 5 }}
+          mt={{ base: 0 }}
+          mb={{ base: 3 }}
           mr={{ base: 1, sm: 2 }}
         >
           <Box>

@@ -1,49 +1,44 @@
-import { Box, Grid, useBreakpointValue } from "@chakra-ui/react";
+import { Box, Grid } from "@chakra-ui/react";
 import { useLocation } from "react-router-dom";
-import ProfileBanner from "./component/ProfileBanner";
-import ProfileMainTabContainer from "./component/element/component/profileTabContainer/ProfileMainTabContainer";
 import { observer } from "mobx-react-lite";
-import ProfileChangePassword from "./component/TabsComponent/ProfileChangePassword";
-import ProfileEdit from "./component/element/component/ProfileFormContainer/element/ProfileEdit/ProfileEdit";
-import ProfileView from "./component/element/component/ProfileFormContainer/element/ProfileView/ProfileView";
+import PersonalDetails from "../../forms/PersonalDetailsForm";
+import PersonalDetailsChangePassword from "../../forms/PersonalDetailsChangePassword";
 
-const ProfileContainer = observer(
+const EmployeContainer = observer(
   ({
     profileData,
-    editTabLink,
     type,
-    sideTab,
     changePassword,
     handleSubmitProfile,
     initialValues,
     validations,
   }: any) => {
-    const LargerThanMd = useBreakpointValue({ xl: true });
+    // const LargerThanMd = useBreakpointValue({ xl: true });
     const location = useLocation();
-
-    const tab: any = new URLSearchParams(location.search).get("profileTab");
+    const tab: any = new URLSearchParams(location.search).get("tab");
 
     const getEditActiveComponent = ({
       profileData,
       type,
-      changePassword,
       handleSubmitProfile,
     }: any) => {
       switch (tab) {
-        case "edit":
+        case "profile-details":
           return (
-            <ProfileEdit
+            <PersonalDetails
               type={type}
               profileData={profileData}
               handleSubmitProfile={handleSubmitProfile}
-              initialValues={initialValues}
+              initialValues={initialValues?.profileDetails}
               validations={validations}
             />
           );
         case "change-password":
-          return <ProfileChangePassword changePassword={changePassword} />;
+          return (
+            <PersonalDetailsChangePassword changePassword={changePassword} />
+          );
         default:
-          return <ProfileView type={type} profileData={profileData} />;
+          return <h1>Default Page</h1>;
       }
     };
 
@@ -51,47 +46,39 @@ const ProfileContainer = observer(
       switch (type) {
         case "create":
           return (
-            <ProfileEdit
+            <PersonalDetails
               type={type}
               profileData={profileData}
               handleSubmitProfile={handleSubmitProfile}
-              initialValues={initialValues}
+              initialValues={initialValues?.profileDetails}
               validations={validations}
             />
           );
         default:
-          return (
-            <ProfileEdit
-              type={type}
-              profileData={profileData}
-              handleSubmitProfile={handleSubmitProfile}
-              initialValues={initialValues}
-              validations={validations}
-            />
-          );
+          return <h1>Not found</h1>;
       }
     };
 
     return (
-      <Box p={{base: 1.5, lg : 0}}>
-        <ProfileBanner />
+      <Box p={{ base: 1.5, lg: 0 }}>
         <Grid
           gridTemplateColumns={{ lg: "0.35fr 1fr" }}
-          style={{
-            marginLeft: LargerThanMd ? "100px" : "0",
-            marginRight: LargerThanMd ? "100px" : "2px",
-          }}
+          // style={{
+          //   marginLeft: LargerThanMd ? "100px" : "0",
+          //   marginRight: LargerThanMd ? "100px" : "2px",
+          // }}
           gap={5}
           mt={3}
           mb={10}
         >
           <Box>
-            <ProfileMainTabContainer
+            <p>rahul kushwah</p>
+            {/* <ProfileMainTabContainer
               profileData={profileData}
               type={type}
               sideTab={sideTab}
               editTabLink={editTabLink}
-            />
+            /> */}
           </Box>
           <Box border="1px solid #e9ecef" borderRadius={5}>
             {type === "edit"
@@ -109,4 +96,4 @@ const ProfileContainer = observer(
   }
 );
 
-export default ProfileContainer;
+export default EmployeContainer;

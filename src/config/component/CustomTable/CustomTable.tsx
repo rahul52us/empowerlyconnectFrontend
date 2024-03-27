@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Table,
   Thead,
@@ -6,253 +6,374 @@ import {
   Tr,
   Th,
   Td,
+  Box,
+  useBreakpointValue,
   Tooltip,
-  Badge,
-  Link,
+  Flex,
+  Heading,
+  IconButton,
+  Button,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
 } from "@chakra-ui/react";
+import TableLoader from "./TableLoader";
+import { formatDate } from "../../constant/dateUtils";
+import Pagination from "../pagination/Pagination";
+import { MdAddCircleOutline, MdUndo } from "react-icons/md";
+import { RiEditCircleFill } from "react-icons/ri";
+import { FcViewDetails } from "react-icons/fc";
+import { FiDelete } from "react-icons/fi";
+import CustomDateRange from "../CustomDateRange/CustomDateRange";
+import MultiDropdown from "../multiDropdown/MultiDropdown";
+import { BiInfoSquare, BiSearch } from "react-icons/bi";
+import { IoChevronDownCircleOutline } from "react-icons/io5";
 
 interface Column {
-  field: string;
-  title: string;
-  sortable?: boolean;
-  filterable?: boolean;
-  badge?: boolean;
-  tooltip?: boolean;
-  link?: boolean;
-  badgeColor?: string;
-  action?: (row: any) => void;
+  headerName: string;
+  key: string;
+  type?: string;
+  function?: any;
+  props?: any;
 }
 
-interface Props {
-  data: any[];
+interface RowData {
+  [key: string]: any;
+}
+
+interface CustomTableProps {
+  title?: string;
   columns: Column[];
+  data: RowData[];
+  serial?: any;
+  loading: boolean;
+  totalPages?: number;
+  actions?: any;
 }
 
-const CustomTable: React.FC<Props> = ({ data, columns }) => {
-  const [sortConfig, setSortConfig] = useState<{
-    field: string;
-    direction: string;
-  }>({ field: "", direction: "" });
-  const [filterValues, setFilterValues] = useState<{ [field: string]: string }>(
-    {}
-  );
+interface TableActionsProps {
+  actions: any;
+  column: any;
+  row: any;
+}
 
-  const handleSort = (field: string) => {
-    if (sortConfig.field === field) {
-      setSortConfig({
-        field,
-        direction: sortConfig.direction === "asc" ? "desc" : "asc",
-      });
-    } else {
-      setSortConfig({ field, direction: "asc" });
-    }
-  };
-
-  const handleFilterChange = (field: string, value: string) => {
-    setFilterValues((prevValues) => ({ ...prevValues, [field]: value }));
-  };
-
-  const getSortedData = () => {
-    if (sortConfig.field) {
-      const sortedData = [...data].sort((a, b) => {
-        const valueA = a[sortConfig.field];
-        const valueB = b[sortConfig.field];
-
-        if (valueA < valueB) {
-          return sortConfig.direction === "asc" ? -1 : 1;
-        }
-        if (valueA > valueB) {
-          return sortConfig.direction === "asc" ? 1 : -1;
-        }
-        return 0;
-      });
-
-      return sortedData;
-    }
-
-    return data;
-  };
-
-  const getFilteredData = () => {
-    const filteredData = getSortedData().filter((row) => {
-      for (const field in filterValues) {
-        const filterValue = filterValues[field];
-        const cellValue = row[field];
-
-        if (
-          filterValue &&
-          cellValue &&
-          !cellValue.toString().includes(filterValue)
-        ) {
-          return false;
-        }
-      }
-      return true;
-    });
-
-    return filteredData;
-  };
-
-  const sortedAndFilteredData = getFilteredData();
-
+const TableActions: React.FC<TableActionsProps> = ({
+  actions,
+  column,
+  row,
+}) => {
+  const { actionBtn } = actions;
   return (
-    <Table>
-      <Thead>
-        <Tr>
-          {columns.map((column) => (
-            <Th key={column.field}>
-              {column.title}
-              {column.sortable && (
-                <Tooltip
-                  label={
-                    sortConfig.field === column.field
-                      ? sortConfig.direction === "asc"
-                        ? "Sorted in ascending order"
-                        : "Sorted in descending order"
-                      : "Sort"
-                  }
-                  placement="top"
-                >
-                  <span onClick={() => handleSort(column.field)}>
-                    Sort Icon
-                  </span>
-                </Tooltip>
-              )}
-              {column.filterable && (
-                <input
-                  type="text"
-                  placeholder="Filter"
-                  value={filterValues[column.field] || ""}
-                  onChange={(e) =>
-                    handleFilterChange(column.field, e.target.value)
-                  }
-                />
-              )}
-            </Th>
-          ))}
-        </Tr>
-      </Thead>
-      <Tbody>
-        {sortedAndFilteredData.map((row) => (
-          <tr>
-            {columns.map((column) => {
-              const field = row[column.field];
-              let content = field;
-              if (
-                column.link &&
-                column.badge &&
-                column.action &&
-                column.tooltip
-              ) {
-                content = (
-                  <Tooltip label={field}>
-                    <Badge colorScheme={column.badgeColor}>
-                      <Link href={field} onClick={() => column.action?.(row)}>
-                        {content}
-                      </Link>
-                    </Badge>
-                  </Tooltip>
-                );
-              } else if (column.link && column.badge && column.action) {
-                content = (
-                  <Badge colorScheme={column.badgeColor}>
-                    <Link href={field} onClick={() => column.action?.(row)}>
-                      {content}
-                    </Link>
-                  </Badge>
-                );
-              } else if (column.link && column.badge && column.tooltip) {
-                content = (
-                  <Tooltip label={field}>
-                    <Badge colorScheme={column.badgeColor}>
-                      <Link href={field}>{content}</Link>
-                    </Badge>
-                  </Tooltip>
-                );
-              } else if (column.link && column.action && column.tooltip) {
-                content = (
-                  <Tooltip label={field}>
-                    <Link href={field} onClick={() => column.action?.(row)}>
-                      {content}
-                    </Link>
-                  </Tooltip>
-                );
-              } else if (column.badge && column.action && column.tooltip) {
-                content = (
-                  <Tooltip label={field}>
-                    <Badge colorScheme={column.badgeColor}>
-                      <button onClick={() => column.action?.(row)}>
-                        {content}
-                      </button>
-                    </Badge>
-                  </Tooltip>
-                );
-              } else if (column.link && column.badge) {
-                content = (
-                  <Badge colorScheme={column.badgeColor}>
-                    <Link href={field}>{content}</Link>
-                  </Badge>
-                );
-              } else if (column.link && column.action) {
-                content = (
-                  <Link href={field} onClick={() => column.action?.(row)}>
-                    {content}
-                  </Link>
-                );
-              } else if (column.link && column.tooltip) {
-                content = (
-                  <Tooltip label={field}>
-                    <Link href={field}>{content}</Link>
-                  </Tooltip>
-                );
-              } else if (column.badge && column.action) {
-                content = (
-                  <Badge colorScheme={column.badgeColor}>
-                    <button onClick={() => column.action?.(row)}>
-                      {content}
-                    </button>
-                  </Badge>
-                );
-              } else if (column.badge && column.tooltip) {
-                content = (
-                  <Tooltip label={field}>
-                    <Badge colorScheme={column.badgeColor}>{content}</Badge>
-                  </Tooltip>
-                );
-              } else if (column.action && column.tooltip) {
-                content = (
-                  <Tooltip label={field}>
-                    <button onClick={() => column.action?.(row)}>
-                      {content}
-                    </button>
-                  </Tooltip>
-                );
-              } else if (column.link) {
-                content = <Link href={field}>{content}</Link>;
-              } else if (column.badge) {
-                content = (
-                  <Badge colorScheme={column.badgeColor}>{content}</Badge>
-                );
-              } else if (column.action) {
-                content = (
-                  <button onClick={() => column.action?.(row)}>
-                    {content}
-                  </button>
-                );
-              } else if (column.tooltip) {
-                content = (
-                  <Tooltip label={field}>
-                    <span>{content}</span>
-                  </Tooltip>
-                );
-              }
+    <Td {...column?.props?.row}>
+      <Flex columnGap={2}>
+        {actionBtn?.editKey?.showEditButton && (
+          <IconButton
+            size="sm"
+            onClick={() => {
+              if (actionBtn?.addKey?.function) actionBtn?.editKey.function(row);
+            }}
+            aria-label=""
+            title={
+              actionBtn?.editKey?.title
+                ? actionBtn?.editKey?.title
+                : "Edit Data"
+            }
+          >
+            <RiEditCircleFill />
+          </IconButton>
+        )}
+        {actionBtn?.viewKey?.showViewButton && (
+          <IconButton
+            size="sm"
+            onClick={() => {
+              if (actionBtn?.addKey?.function) actionBtn?.viewKey.function(row);
+            }}
+            aria-label=""
+            title={
+              actionBtn?.viewKey?.title
+                ? actionBtn?.viewKey?.title
+                : "View Data"
+            }
+          >
+            <FcViewDetails />
+          </IconButton>
+        )}
+        {actionBtn?.deleteKey?.showDeleteButton && (
+          <IconButton
+            size="sm"
+            onClick={() => {
+              if (actionBtn?.addKey?.function)
+                actionBtn?.deleteKey.function(row);
+            }}
+            aria-label=""
+            title={
+              actionBtn?.deleteKey?.title
+                ? actionBtn?.deleteKey?.title
+                : "Delete Data"
+            }
+          >
+            <FiDelete />
+          </IconButton>
+        )}
+      </Flex>
+    </Td>
+  );
+};
 
-              return <Td key={column.field}>{content}</Td>;
-            })}
-          </tr>
-        ))}
-      </Tbody>
-    </Table>
+const GenerateRows: React.FC<{
+  column: Column;
+  row: RowData;
+  action: any;
+}> = ({ column, row, action }) => {
+  switch (column.type) {
+    case "date":
+      return (
+        <Td
+          whiteSpace="normal"
+          cursor="pointer"
+          fontSize="sm"
+          {...column?.props?.row}
+        >
+          {row[column.key] ? formatDate(row[column.key]) : "--"}
+        </Td>
+      );
+    case "link":
+      return (
+        <Td
+          whiteSpace="normal"
+          cursor="pointer"
+          fontSize="sm"
+          color="blue.400"
+          textDecoration="underline"
+          {...column?.props?.row}
+          onClick={() => {
+            if (column?.function) {
+              column?.function(row);
+            }
+          }}
+        >
+          {row[column.key] || "--"}
+        </Td>
+      );
+    case "tooltip":
+      return (
+        <Td
+          whiteSpace="normal"
+          cursor="pointer"
+          fontSize="sm"
+          {...column?.props?.row}
+        >
+          <Tooltip label={row[column.key]}>
+            {typeof row[column.key] === "string"
+              ? row[column.key].substring(0, 15) || "--"
+              : "-"}
+          </Tooltip>
+        </Td>
+      );
+    case "array":
+      return (
+        <Td
+          whiteSpace="normal"
+          cursor="pointer"
+          fontSize="sm"
+          {...column?.props?.row}
+        >
+          <Tooltip label={JSON.stringify(row[column.key])}>
+            <IconButton aria-label="" borderRadius={"50%"} fontSize="sm">
+              <BiInfoSquare />
+            </IconButton>
+          </Tooltip>
+        </Td>
+      );
+    case "table-actions":
+      return <TableActions actions={action} column={column} row={row} />;
+    default:
+      return (
+        <Td
+          whiteSpace="normal"
+          cursor="pointer"
+          fontSize="sm"
+          {...column?.props?.row}
+          isTruncated={true}
+        >
+          {row[column.key] || "--"}
+        </Td>
+      );
+  }
+};
+
+const CustomTable: React.FC<CustomTableProps> = ({
+  title,
+  columns,
+  data,
+  serial,
+  loading,
+  totalPages = 1,
+  actions,
+}) => {
+  const isMobile = useBreakpointValue({ base: true, md: false });
+  return (
+    <Box border="3px solid lightgray" borderRadius={5} pb={3} shadow="lg">
+      <Flex
+        justifyContent="space-between"
+        alignItems="center"
+        p={4}
+        borderRadius="md"
+        columnGap={2}
+      >
+        <Heading fontSize={isMobile ? "sm" : "xl"}>{title || ""}</Heading>
+        <Flex alignItems="center" columnGap={2}>
+          {actions?.multidropdown?.show && (
+            <Box display={isMobile ? "none" : undefined}>
+              <MultiDropdown
+                title={actions?.multidropdown?.title}
+                dropdowns={actions?.multidropdown?.dropdowns || []}
+                onDropdownChange={actions?.multidropdown?.onDropdownChange}
+                selectedOptions={actions?.multidropdown?.selectedOptions}
+                onApply={actions?.multidropdown?.onApply}
+                search={{
+                  visible: actions?.multidropdown?.search?.visible,
+                  placeholder: actions?.multidropdown?.search?.placeholder,
+                  searchValue: actions?.multidropdown?.search?.searchValue,
+                  onSearchChange:
+                    actions?.multidropdown?.search?.onSearchChange,
+                }}
+              />
+            </Box>
+          )}
+          {actions?.datePicker?.show && actions?.datePicker?.date && (
+            <Box display={isMobile ? "none" : undefined}>
+              <CustomDateRange
+                isMobile={actions?.datePicker?.isMobile}
+                startDate={actions?.datePicker?.date.startDate}
+                endDate={actions?.datePicker?.date.endDate}
+                onStartDateChange={(e) => {
+                  if (actions?.datePicker?.onDateChange) {
+                    actions?.datePicker?.onDateChange(e, "startDate");
+                  }
+                }}
+                onEndDateChange={(e) => {
+                  if (actions?.datePicker?.onDateChange) {
+                    actions?.datePicker?.onDateChange(e, "endDate");
+                  }
+                }}
+              />
+            </Box>
+          )}
+          {actions?.applyFilter?.show && (
+            <IconButton
+              aria-label="Apply Filter"
+              onClick={() => actions?.applyFilter?.function?.()}
+            >
+              <BiSearch />
+            </IconButton>
+          )}
+
+          {/* Move Reset button into a dropdown menu */}
+          <Menu>
+            <MenuButton
+              as={Button}
+              size="sm"
+              variant="outline"
+              colorScheme="red"
+              rightIcon={<IoChevronDownCircleOutline />}
+              _hover={{ bg: "gray.100" }}
+              _active={{ bg: "gray.200" }}
+            >
+              Actions
+            </MenuButton>
+            <MenuList
+              zIndex={15}
+              bg="white"
+              border="1px solid"
+              borderColor="gray.200"
+              boxShadow="md"
+            >
+              {actions?.actionBtn?.addKey?.showAddButton && (
+                <MenuItem
+                  onClick={() => actions?.actionBtn?.addKey?.function?.("add")}
+                  icon={<MdAddCircleOutline />}
+                >
+                  Add
+                </MenuItem>
+              )}
+              {actions?.resetData?.show && (
+                <MenuItem
+                  onClick={actions?.resetData?.function}
+                  icon={<MdUndo />}
+                >
+                  {actions?.resetData?.text || "Reset Data"}
+                </MenuItem>
+              )}
+            </MenuList>
+          </Menu>
+        </Flex>
+      </Flex>
+
+      <Box overflowX="auto" minH={"65vh"} maxH={"65vh"} overflowY={"auto"}>
+        <Table
+          variant="striped"
+          colorScheme="teal"
+          size={isMobile ? "sm" : "md"}
+          borderWidth="1px"
+          borderRadius="lg"
+        >
+          <Thead bg="gray.700" position="sticky" top="0" zIndex="9">
+            <Tr>
+              {serial?.show && (
+                <Th color="white" w={serial?.width || undefined}>
+                  {serial?.text || "S.No."}
+                </Th>
+              )}
+              {columns.map((column, colIndex) => (
+                <Th
+                  key={colIndex}
+                  textAlign="center"
+                  color="white"
+                  {...column?.props?.column}
+                >
+                  {column.headerName}
+                </Th>
+              ))}
+            </Tr>
+          </Thead>
+          <TableLoader loader={loading} show={data.length}>
+            <Tbody height={200} overflowY="scroll">
+              {data.map((row, rowIndex) => (
+                <Tr key={rowIndex}>
+                  {serial?.show && (
+                    <Td fontWeight="bold" w={serial?.width || undefined}>
+                      {rowIndex + 1}
+                    </Td>
+                  )}
+                  {columns.map((column, colIndex) => (
+                    <GenerateRows
+                      key={colIndex}
+                      column={column}
+                      row={row}
+                      action={actions}
+                    />
+                  ))}
+                </Tr>
+              ))}
+            </Tbody>
+          </TableLoader>
+        </Table>
+      </Box>
+      {actions?.pagination?.show && (
+        <Pagination
+          currentPage={actions?.pagination?.currentPage || 1}
+          onPageChange={(e) => {
+            if (actions?.pagination?.onClick) {
+              actions?.pagination?.onClick(e);
+            }
+          }}
+          totalPages={totalPages}
+          props={{ style: { marginTop: "15px" } }}
+        />
+      )}
+    </Box>
   );
 };
 

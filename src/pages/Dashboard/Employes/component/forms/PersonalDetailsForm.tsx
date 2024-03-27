@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Box, Button, Divider, Grid, Heading } from "@chakra-ui/react";
-import CustomInput from "../../../../../../../CustomInput/CustomInput";
 import { FieldArray, Form, Formik } from "formik";
+import CustomInput from "../../../../../config/component/CustomInput/CustomInput";
 
-const ProfileEdit = ({
+const PersonalDetails = ({
   type,
   handleSubmitProfile,
   initialValues,
@@ -44,9 +44,11 @@ const ProfileEdit = ({
         handleSubmit,
         isSubmitting,
       }) => {
+        console.log(values.position)
+        console.log(errors);
         return (
           <Form onSubmit={handleSubmit}>
-            <Box p={4} bg="white" borderRadius="lg" boxShadow="md">
+            <Box p={4} borderRadius="lg" boxShadow="md">
               <Grid>
                 <Heading color="#002058" fontSize="xl" mb={4}>
                   Personal Information :-
@@ -54,8 +56,8 @@ const ProfileEdit = ({
                 <Divider />
                 <Grid
                   gridTemplateColumns={{ md: "1fr 1fr 1fr" }}
-                  columnGap={5}
-                  rowGap={3}
+                  columnGap={4}
+                  rowGap={2}
                   mb={5}
                 >
                   <CustomInput
@@ -93,6 +95,93 @@ const ProfileEdit = ({
                     readOnly={type === "edit" ? true : false}
                   />
                   <CustomInput
+                    type="text"
+                    label="Personal Email"
+                    name="personalEmail"
+                    placeholder="Enter the Personal Email"
+                    value={values.personalEmail}
+                    error={errors.personalEmail}
+                    showError={showError}
+                    onChange={handleChange}
+                  />
+                  <CustomInput
+                    name="code"
+                    type="text"
+                    placeholder="E-Code"
+                    label="E-Code"
+                    value={values?.code}
+                    error={errors.code}
+                    onChange={handleChange}
+                    showError={showError}
+                    required
+                    readOnly={type === "edit" ? true : false}
+                  />
+                  <CustomInput
+                    name="position"
+                    type="select"
+                    placeholder="Select the position"
+                    label="Position"
+                    value={values?.position}
+                    error={errors.position}
+                    isMulti
+                    options={[
+                      {
+                        value: "software developer",
+                        label: "software developer",
+                      },
+                      {
+                        value: "Hr",
+                        label: "Hr",
+                      },
+                      {
+                        value: "financial admin",
+                        label: "Financial Admin",
+                      },
+                      {
+                        value: "UI Designer",
+                        label:"UI Designer",
+                      },
+                    ]}
+                    onChange={(e) => {
+                      setFieldValue('position',e)
+                      console.log(e);
+                    }}
+                    showError={showError}
+                    readOnly={type === "edit" ? true : false}
+                  />
+                  <CustomInput
+                    type="text"
+                    label="Nick Name"
+                    name="nickName"
+                    placeholder="Enter the Nick name"
+                    value={values.nickName}
+                    error={errors.nickName}
+                    showError={showError}
+                    onChange={handleChange}
+                  />
+                  <CustomInput
+                    type="date"
+                    label="Dob"
+                    name="dob"
+                    placeholder="Select Date Of Birth"
+                    value={values.dob}
+                    error={errors.dob}
+                    showError={showError}
+                    onChange={(e: any) => {
+                      setFieldValue("dob", e);
+                    }}
+                  />
+                  <CustomInput
+                    type="text"
+                    label="Marital Status"
+                    name="maritalStatus"
+                    placeholder="Enter the MaritalStatus"
+                    value={values.maritalStatus}
+                    error={errors.maritalStatus}
+                    showError={showError}
+                    onChange={handleChange}
+                  />
+                  <CustomInput
                     type="phone"
                     label="Phone Number"
                     name="mobileNo"
@@ -119,53 +208,109 @@ const ProfileEdit = ({
                   />
                   <CustomInput
                     type="text"
-                    label="Nick Name"
-                    name="nickName"
-                    placeholder="Enter the Nick name"
-                    value={values.nickName}
-                    error={errors.nickName}
+                    label="Blood Group"
+                    name="bloodGroup"
+                    value={values.bloodGroup}
+                    error={errors.bloodGroup}
+                    placeholder="BloodGroup"
                     showError={showError}
                     onChange={handleChange}
                   />
                   <CustomInput
                     type="text"
-                    label="Father Name"
-                    name="fatherName"
-                    placeholder="Enter the father name"
-                    value={values.fatherName}
-                    error={errors.fatherName}
+                    label="Aadhar No."
+                    name="aadharNo"
+                    value={values.aadharNo}
+                    error={errors.aadharNo}
+                    placeholder="Aadhar No"
                     showError={showError}
                     onChange={handleChange}
                   />
                   <CustomInput
                     type="text"
-                    label="Mother Name"
-                    name="motherName"
-                    placeholder="Enter the mother name"
-                    value={values.motherName}
-                    error={errors.motherName}
+                    label="Pan No."
+                    name="panNo"
+                    value={values.panNo}
+                    error={errors.panNo}
+                    placeholder="Pan No"
                     showError={showError}
                     onChange={handleChange}
                   />
                   <CustomInput
                     type="text"
-                    label="Sibling"
-                    name="sibling"
-                    placeholder="Sibling"
-                    value={values.sibling}
-                    error={errors.sibling}
+                    label="PfUan Number"
+                    name="pfUanNo"
+                    value={values.pfUanNo}
+                    error={errors.pfUanNo}
+                    placeholder="pfUan No"
                     showError={showError}
                     onChange={handleChange}
                   />
                   <CustomInput
                     type="text"
-                    label="Language"
+                    label="Insurance CardNo"
+                    name="insuranceCardNo"
+                    value={values.insuranceCardNo}
+                    error={errors.insuranceCardNo}
+                    placeholder="Insurance CardNo"
+                    showError={showError}
+                    onChange={handleChange}
+                  />
+                  <CustomInput
+                    type="text"
+                    label="Reffered By"
+                    name="refferedBy"
+                    value={values.refferedBy}
+                    error={errors.refferedBy}
+                    placeholder="Reffered By"
+                    showError={showError}
+                    onChange={handleChange}
+                  />
+                  <CustomInput
+                    type="text"
+                    label="Medical Certificate Details"
+                    name="medicalCertificationDetails"
+                    value={values.medicalCertificationDetails}
+                    error={errors.medicalCertificationDetails}
+                    placeholder="Medical Certificate Details"
+                    showError={showError}
+                    onChange={handleChange}
+                  />
+                  <CustomInput
+                    type="date"
+                    label="Wedding Date"
+                    name="medicalCertificationDetails"
+                    value={values.weddingDate}
+                    error={errors.weddingDate}
+                    placeholder="Wedding Date"
+                    showError={showError}
+                    onChange={(e: any) => {
+                      setFieldValue("weddingDate", e);
+                    }}
+                  />
+                   <CustomInput
                     name="language"
-                    placeholder="Select Language"
-                    value={values.language}
+                    type="select"
+                    placeholder="Select the language"
+                    label="Language"
+                    isMulti={true}
+                    value={values?.language}
                     error={errors.language}
+                    options={[
+                      {
+                        value: "english",
+                        label: "english",
+                      },
+                      {
+                        value: "hindi",
+                        label: "hindi",
+                      },
+                    ]}
+                    onChange={(e) => {
+                      setFieldValue('language',e)
+                    }}
                     showError={showError}
-                    onChange={handleChange}
+                    readOnly={type === "edit" ? true : false}
                   />
                 </Grid>
                 <Grid mb={4}>
@@ -229,7 +374,7 @@ const ProfileEdit = ({
                           <div key={index}>
                             <Grid
                               gridTemplateColumns={{ md: "1fr 1fr 1fr" }}
-                              gap={3}
+                              gap={2}
                               key={index}
                               mb="20px"
                             >
@@ -355,4 +500,4 @@ const ProfileEdit = ({
   );
 };
 
-export default ProfileEdit;
+export default PersonalDetails;

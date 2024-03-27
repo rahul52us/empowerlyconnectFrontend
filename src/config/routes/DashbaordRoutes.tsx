@@ -76,7 +76,7 @@ const EmployeDetails = lazy(
 );
 
 const EmployeCreate = lazy(
-  () => import("../../pages/Dashboard/Employes/component/EmployeDetails/CreateEmploye")
+  () => import("../../pages/Dashboard/Employes/component/EmployeDetails/formContainer/EmployeFormContainer")
 );
 
 export const DashboardRoutes = [
@@ -176,5 +176,9 @@ export const DashboardRoutes = [
     path : dashboard.employes.new,
     privateRoutes : true
   },
-
+  {
+    element : <EmployeCreate />,
+    path : dashboard.employes.edit,
+    privateRoutes : true
+  },
 ];

@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 interface CardProps {
   title: string;
-  value: string;
+  value: number;
   link: string;
   loading?: boolean;
   icon: IconType;

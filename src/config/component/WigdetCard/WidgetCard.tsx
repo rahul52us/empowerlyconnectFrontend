@@ -3,7 +3,15 @@ import { Box, Text, Flex, Icon } from "@chakra-ui/react";
 import { FiUsers } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 
-const WidgetCard = ({ totalCount, title, link }: { totalCount: number; title: string; link: string }) => {
+const WidgetCard = ({
+  totalCount,
+  title,
+  link,
+}: {
+  totalCount: number;
+  title: string;
+  link: string;
+}) => {
   const [count, setCount] = useState(0);
   const navigate = useNavigate();
   const intervalDelay = 5;
@@ -21,7 +29,7 @@ const WidgetCard = ({ totalCount, title, link }: { totalCount: number; title: st
   return (
     <Box
       borderWidth="1px"
-      borderRadius="lg"
+      borderRadius="md"
       p={3}
       bgGradient="linear(to-r, #4FACFE, #2B8FF7)"
       boxShadow="lg"
@@ -29,18 +37,24 @@ const WidgetCard = ({ totalCount, title, link }: { totalCount: number; title: st
       cursor="pointer"
       transition="transform 0.2s, box-shadow 0.2s"
       color="white"
-      textAlign="center"
       onClick={() => navigate(link)}
     >
-      <Flex align="center" justify="center" mb={2}>
+      <Text fontSize="md" fontWeight="semibold" mb={3}>
+        {title}
+      </Text>
+
+      <Flex justify="space-between" alignItems="center" mb={1}>
         <Icon as={FiUsers} boxSize={8} mr={2} />
         <Text fontSize="3xl" fontWeight="bold">
           {count < totalCount ? count : totalCount}
         </Text>
       </Flex>
-      <Text fontSize="xl" fontWeight="semibold" mb={3}>
-        {title}
-      </Text>
+      <Flex justify="space-between" alignItems="center">
+        <Text>completed orders</Text>
+        <Text fontSize="sm" fontWeight="bold">
+          {count < totalCount ? count : totalCount}
+        </Text>
+      </Flex>
     </Box>
   );
 };

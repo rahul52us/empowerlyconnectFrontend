@@ -64,7 +64,6 @@ const ChartIndex = observer(({ setQuizTableDrawer }: QuizFormI) => {
             ]}
             data={[
               { name: "Rahul kushwah", age: 22, school: "GCA" },
-              { name: "Sanjana kapoliya", age: 21, school: "City" },
               { name: "Name", age: 25, school: "Name School" },
             ]}
             actions={{

@@ -1,12 +1,16 @@
 import { observer } from "mobx-react-lite";
 import DashPageHeader from "../../../../../config/component/common/DashPageHeader/DashPageHeader";
 import { employesBreadCrumb } from "../../../utils/breadcrumb.constant";
+import EmployeDetailsTable from "./Element/EmployeDetailsTable";
 
 const EmployeDetails = observer(() => {
-  return (
+return (
     <div>
-      <DashPageHeader title="Employes" breadcrumb={employesBreadCrumb.details} />
-      EmployeDetails
+      <DashPageHeader
+        title="Employes > Details"
+        breadcrumb={employesBreadCrumb.details}
+      />
+      <EmployeDetailsTable />
     </div>
   );
 });

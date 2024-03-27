@@ -76,7 +76,6 @@ const TableHeader = () => {
 
 const Actions = () => {
   const {actions : {addKey, editKey, viewKey, deleteKey }} = useTableContext()
-
   return (
     <Td>
        <Flex columnGap={2}>

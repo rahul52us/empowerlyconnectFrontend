@@ -40,7 +40,7 @@ const SingleBlogIndex = observer(() => {
           type: "error",
         });
       });
-  }, [openNotification, getSingleBlogs, state]);
+  }, [openNotification, getSingleBlogs, state, param.blogTitle]);
 
   useEffect(() => {
     if(blogData){
@@ -54,7 +54,7 @@ const SingleBlogIndex = observer(() => {
         });
       })
     }
-  }, [openNotification, getComments, blogData]);
+  }, [openNotification, getComments, blogData, currentPage]);
 
   return (
     <Box display="flex" justifyContent="center">
