@@ -22,7 +22,6 @@ const VideosIndex = observer(() => {
     <Box minHeight={`calc(100vh - ${headerHeight})`} m={-2} p={3}>
       <DashPageHeader
         title="Videos"
-        btnTitle="CREATE"
         breadcrumb={videoBreadCrumb}
       />
       <VideoChartContainer addData={() => setOpenVideosList({ open: true })}/>

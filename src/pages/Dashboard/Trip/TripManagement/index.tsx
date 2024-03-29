@@ -15,7 +15,7 @@ const TripManagement = observer(() => {
   });
   return (
     <div>
-      <DashPageHeader breadcrumb={tripBreadCrumb} />
+      <DashPageHeader breadcrumb={tripBreadCrumb} selectedMode="table" btnAction={(type : any) => {alert(type)}}/>
       <TripChartContainer
         addData={() => setTripFormData({ open: true, type: "add", data: null })}
       />

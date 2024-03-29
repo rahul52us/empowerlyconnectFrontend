@@ -37,7 +37,9 @@ const EmployeWidget = observer(() => {
       columnGap={3}
       rowGap={3}
     >
-      {Object.entries(cardData).map(([key, item]) => (
+      {Object.entries(cardData).map(([key, item]) => {
+        console.log(item)
+        return(
         <EmployeWidgetCard
           key={key}
           title={item.title}
@@ -46,7 +48,7 @@ const EmployeWidget = observer(() => {
           icon={item.icon}
           link={item.link}
         />
-      ))}
+      )})}
     </Grid>
   );
 });

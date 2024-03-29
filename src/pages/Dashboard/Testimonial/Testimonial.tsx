@@ -15,7 +15,7 @@ import { dashboard } from "../../../config/constant/routes";
 import DashFormModel from "../../../config/component/common/FormModel/FormModel";
 import CustomDrawer from "../../../config/component/Drawer/CustomDrawer";
 import store from "../../../store/store";
-import { FiPlusCircle, FiSettings } from "react-icons/fi";
+import { FiPlusCircle } from "react-icons/fi";
 import TestimonialTableList from "./TestimonialTableList";
 import CustomInput from "../../../config/component/CustomInput/CustomInput";
 import { RiRefreshLine } from "react-icons/ri";
@@ -61,8 +61,6 @@ const Testimonial = observer(() => {
       <Box display="none">
         <DashPageHeader
           btnAction={() => setOpenTestimonialDrawer()}
-          titleIcon={<FiSettings />}
-          btnTitle="Customize"
           breadcrumb={items}
         />
       </Box>

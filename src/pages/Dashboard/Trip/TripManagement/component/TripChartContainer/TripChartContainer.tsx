@@ -7,7 +7,7 @@ import BarChart from "../../../../../../config/component/charts/BarChart";
 
 const TripChartContainer = observer(({addData} : any) => {
   const {
-    tripStore: { getTripCounts, tripCount },
+    tripStore: { getTripChartCounts, tripChartCount },
   } = store;
 
   const fetchData = (getDataFn: any) =>
@@ -17,16 +17,16 @@ const TripChartContainer = observer(({addData} : any) => {
 
   useEffect(() => {
     Promise.all([
-      fetchData(getTripCounts),
+      fetchData(getTripChartCounts),
     ])
       .then(() => {})
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
-  }, [getTripCounts]);
+  }, [getTripChartCounts]);
 
   const tripChartData = makeChartResponse(
-    tripCount.data,
+    tripChartCount.data,
     "Trip Data",
     "title",
     "count",
@@ -44,7 +44,7 @@ const TripChartContainer = observer(({addData} : any) => {
       <BarChart
           data={tripChartData?.data}
           options={tripChartData?.options}
-          loading={tripCount.loading}
+          loading={tripChartCount.loading}
         />
       </Card>
       <Card width={"100%"} minH={350} p={{ base: 0, sm: 2 }}>

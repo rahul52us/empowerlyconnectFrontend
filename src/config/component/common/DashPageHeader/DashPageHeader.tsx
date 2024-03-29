@@ -1,15 +1,25 @@
 import {
   Box,
-  Button,
   Flex,
   Heading,
+  Icon,
   Text,
   useColorModeValue,
   useTheme,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverArrow,
+  PopoverCloseButton,
+  PopoverHeader,
+  PopoverBody,
+  Divider,
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import CustomBreadcrumb from "../../CustomBreadcrumb/CustomBreadcrumb";
-import { Helmet } from 'react-helmet';
+import { Helmet } from "react-helmet";
+import { RiMenuLine } from "react-icons/ri";
+import { AiOutlineTable, AiOutlineAppstore } from "react-icons/ai";
 
 interface BreadcrumbItem {
   label: string;
@@ -19,20 +29,18 @@ interface BreadcrumbItem {
 interface PageHeaderProps {
   title?: string;
   subTitle?: string;
-  btnTitle?: string;
-  titleIcon?: any;
   breadcrumb?: BreadcrumbItem[];
-  btnAction?: () => void;
+  btnAction?: any;
+  selectedMode?: string;
 }
 
 const DashPageHeader = observer(
   ({
     title,
     subTitle,
-    btnTitle,
-    btnAction,
     breadcrumb,
-    titleIcon,
+    btnAction,
+    selectedMode = "", // Default to empty string
   }: PageHeaderProps) => {
     const theme = useTheme();
     const headingColor = useColorModeValue(
@@ -44,19 +52,24 @@ const DashPageHeader = observer(
       theme.colors.gray[400]
     );
 
+    const isSelected = (mode: string) => mode === selectedMode;
+
     return (
       <>
-      {
-        title &&
-      <Helmet>
-        <title>{title ? `${process.env.REACT_APP_WEBSITE_NAME} | ${title}` : process.env.REACT_APP_WEBSITE_NAME}</title>
-      </Helmet>}
+        {title && (
+          <Helmet>
+            <title>
+              {title
+                ? `${process.env.REACT_APP_WEBSITE_NAME} | ${title}`
+                : process.env.REACT_APP_WEBSITE_NAME}
+            </title>
+          </Helmet>
+        )}
         <Flex
           justify="space-between"
           alignItems="center"
-          mt={{ base: 0 }}
-          mb={{ base: 3 }}
-          mr={{ base: 1, sm: 2 }}
+          mb={4}
+          mr={{ base: 4, sm: 6 }}
         >
           <Box>
             {breadcrumb ? (
@@ -65,29 +78,67 @@ const DashPageHeader = observer(
               </Box>
             ) : (
               <>
-                <Heading fontSize={20} color={headingColor}>
+                <Heading fontSize="lg" color={headingColor} mb={2}>
                   {title}
                 </Heading>
-                <Text color={textColor}>{subTitle}</Text>
+                <Text color={textColor} fontSize="sm">
+                  {subTitle}
+                </Text>
               </>
             )}
           </Box>
           {btnAction && (
-            <Box>
-              <Button
-                leftIcon={titleIcon}
-                onClick={btnAction}
-                colorScheme="blue"
-                variant="solid"
-                size="sm"
-                _hover={{
-                  bg: theme.colors.blue[600],
-                  color: "white"
-                }}
+            <Popover placement="bottom-start">
+              <PopoverTrigger>
+                <Flex alignItems="center" cursor="pointer">
+                  <Icon
+                    as={RiMenuLine}
+                    fontSize="lg"
+                    color="gray.600"
+                    _hover={{ color: "gray.800" }}
+                  />
+                </Flex>
+              </PopoverTrigger>
+              <PopoverContent
+                bg={useColorModeValue("white", "gray.800")}
+                borderColor={useColorModeValue("gray.200", "gray.700")}
+                boxShadow="lg"
+                maxW="xs" // Set maximum width here
               >
-                {btnTitle}
-              </Button>
-            </Box>
+                <PopoverArrow />
+                <PopoverCloseButton />
+                <PopoverHeader fontWeight="bold" fontSize="sm">
+                  Select View
+                </PopoverHeader>
+                <PopoverBody>
+                  <Flex
+                    alignItems="center"
+                    cursor="pointer"
+                    onClick={() => btnAction("table")}
+                    p={3}
+                    borderRadius="md"
+                    bg={isSelected("table") ? "blue.100" : "transparent"}
+                    _hover={{ bg: "blue.50" }} // Hover effect
+                  >
+                    <Icon as={AiOutlineTable} color="blue.400" mr={2} />
+                    <Text fontSize="sm">Table Mode</Text>
+                  </Flex>
+                  <Divider my={2} />
+                  <Flex
+                    alignItems="center"
+                    cursor="pointer"
+                    onClick={() => btnAction("grid")}
+                    p={3}
+                    borderRadius="md"
+                    bg={isSelected("grid") ? "blue.100" : "transparent"}
+                    _hover={{ bg: "blue.50" }} // Hover effect
+                  >
+                    <Icon as={AiOutlineAppstore} color="blue.400" mr={2} />
+                    <Text fontSize="sm">Grid Mode</Text>
+                  </Flex>
+                </PopoverBody>
+              </PopoverContent>
+            </Popover>
           )}
         </Flex>
       </>
