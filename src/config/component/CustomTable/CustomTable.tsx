@@ -224,24 +224,6 @@ const CustomTable: React.FC<CustomTableProps> = ({
       >
         <Heading fontSize={isMobile ? "sm" : "xl"}>{title || ""}</Heading>
         <Flex alignItems="center" columnGap={2}>
-          {actions?.multidropdown?.show && (
-            <Box display={isMobile ? "none" : undefined}>
-              <MultiDropdown
-                title={actions?.multidropdown?.title}
-                dropdowns={actions?.multidropdown?.dropdowns || []}
-                onDropdownChange={actions?.multidropdown?.onDropdownChange}
-                selectedOptions={actions?.multidropdown?.selectedOptions}
-                onApply={actions?.multidropdown?.onApply}
-                search={{
-                  visible: actions?.multidropdown?.search?.visible,
-                  placeholder: actions?.multidropdown?.search?.placeholder,
-                  searchValue: actions?.multidropdown?.search?.searchValue,
-                  onSearchChange:
-                    actions?.multidropdown?.search?.onSearchChange,
-                }}
-              />
-            </Box>
-          )}
           {actions?.datePicker?.show && actions?.datePicker?.date && (
             <Box display={isMobile ? "none" : undefined}>
               <CustomDateRange
@@ -257,6 +239,24 @@ const CustomTable: React.FC<CustomTableProps> = ({
                   if (actions?.datePicker?.onDateChange) {
                     actions?.datePicker?.onDateChange(e, "endDate");
                   }
+                }}
+              />
+            </Box>
+          )}
+          {actions?.multidropdown?.show && (
+            <Box display={isMobile ? "none" : undefined}>
+              <MultiDropdown
+                title={actions?.multidropdown?.title}
+                dropdowns={actions?.multidropdown?.dropdowns || []}
+                onDropdownChange={actions?.multidropdown?.onDropdownChange}
+                selectedOptions={actions?.multidropdown?.selectedOptions}
+                onApply={actions?.multidropdown?.onApply}
+                search={{
+                  visible: actions?.multidropdown?.search?.visible,
+                  placeholder: actions?.multidropdown?.search?.placeholder,
+                  searchValue: actions?.multidropdown?.search?.searchValue,
+                  onSearchChange:
+                    actions?.multidropdown?.search?.onSearchChange,
                 }}
               />
             </Box>

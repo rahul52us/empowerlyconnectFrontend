@@ -112,7 +112,7 @@ const HeaderNotification: React.FC = () => {
           onClick={onOpen}
           mr={2}
         />
-        <MenuList minWidth="350px" p={0} borderRight={10} mt={1.5}>
+        <MenuList minWidth="350px" p={0} borderRight={10} mt={1.5} zIndex={9999999}>
           <Flex
             m={0}
             p={3}

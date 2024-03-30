@@ -4,12 +4,14 @@ import { dashboard } from "../../../config/constant/routes";
 import { observer } from "mobx-react-lite";
 import store from "../../../store/store";
 import { useEffect } from "react";
+import { toJS } from "mobx";
 
 const DashWidgetCard = observer(() => {
   const {
     auth: { openNotification },
     tripStore: { getTripCounts, tripCount },
     Employe: { getEmployesCount, employesCounts },
+    DepartmentStore : {getDepartmentCounts, departmentCounts}
   } = store;
 
   const fetchData = (getDataFn: any) =>
@@ -18,7 +20,7 @@ const DashWidgetCard = observer(() => {
     });
 
   useEffect(() => {
-    Promise.all([fetchData(getTripCounts), fetchData(getEmployesCount)])
+    Promise.all([fetchData(getTripCounts), fetchData(getEmployesCount), fetchData(getDepartmentCounts)])
       .then(() => {})
       .catch((error: any) => {
         openNotification({
@@ -27,8 +29,9 @@ const DashWidgetCard = observer(() => {
           title: "Failed to get dashboard data",
         });
       });
-  }, [getTripCounts, getEmployesCount, openNotification]);
+  }, [getTripCounts, getEmployesCount,getDepartmentCounts, openNotification]);
 
+  console.log(toJS(departmentCounts))
   return (
     <Grid
       templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(4, 1fr)" }}
@@ -55,10 +58,10 @@ const DashWidgetCard = observer(() => {
           loading: tripCount.loading,
         },
         {
-          count: 2000,
-          title: "Videos",
-          link: dashboard.videos,
-          loading: tripCount.loading,
+          count: departmentCounts.data,
+          title: "Departments",
+          link: dashboard.department.index,
+          loading: departmentCounts.loading,
         },
       ].map((item, key) => (
         <GridItem key={key}>

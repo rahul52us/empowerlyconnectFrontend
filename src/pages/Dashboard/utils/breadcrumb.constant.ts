@@ -44,11 +44,18 @@ const tripBreadCrumb = [
   { label: "Trip" },
 ];
 
+const departmentsBreadCrumb = [
+  { label: "Home", link: "/" },
+  { label: "Dashboard", link: dashboard.home },
+  { label: "Departments" },
+];
+
 export {
   videoBreadCrumb,
   coursesBreadCrumb,
   quizBreadCrumb,
   dashBreadCrumb,
   tripBreadCrumb,
-  employesBreadCrumb
+  employesBreadCrumb,
+  departmentsBreadCrumb
 };

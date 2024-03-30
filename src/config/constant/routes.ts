@@ -38,6 +38,12 @@ export const dashboard = {
     new: `/${dashboardName}/employes/details/new`,
     edit: `/${dashboardName}/employes/details/edit/:id`,
   },
+  department: {
+    index: `/${dashboardName}/department`,
+    details: `/${dashboardName}/employes/details`,
+    new: `/${dashboardName}/employes/details/new`,
+    edit: `/${dashboardName}/employes/details/edit/:id`,
+  },
 };
 
 export const main = {

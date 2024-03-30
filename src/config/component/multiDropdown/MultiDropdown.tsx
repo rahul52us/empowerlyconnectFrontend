@@ -8,9 +8,11 @@ import {
   PopoverHeader,
   PopoverBody,
   VStack,
+  IconButton,
 } from "@chakra-ui/react";
 import { debounce } from "lodash";
 import CustomInput from "../CustomInput/CustomInput";
+import { FaFilter } from "react-icons/fa";
 
 interface DropdownOption {
   value: string;
@@ -87,18 +89,18 @@ const MultiDropdown = ({
       placement="bottom-start"
     >
       <PopoverTrigger>
-        <Button
+        <IconButton
+          aria-label=""
           fontSize="sm"
           onClick={() => setIsPopoverOpen(!isPopoverOpen)}
-          variant="outline"
-          border="2px solid"
           borderColor="teal.300"
-          bg="white"
-          // color="gray.600"
+          bg="teal.400"
+          color= "white"
           _hover={{ bg: "teal.400", borderColor: "teal.400", color: "white" }}
+          size="md"
         >
-          {title ? title : "Apply Filter"}
-        </Button>
+          <FaFilter title={title || undefined}/>
+        </IconButton>
       </PopoverTrigger>
       <PopoverContent p={3} bg="white" borderColor="gray.300" boxShadow="md">
         <PopoverHeader

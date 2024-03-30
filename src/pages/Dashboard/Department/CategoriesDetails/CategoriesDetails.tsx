@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
-import store from "../../../../../../store/store";
 import { observer } from "mobx-react-lite";
-import CustomTable from "../../../../../../config/component/CustomTable/CustomTable";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { dashboard } from "../../../../../../config/constant/routes";
-import { employDropdownData, generateTableData } from "../utils/constant";
-import { tablePageLimit } from "../../../../../../config/constant/variable";
+import { employDropdownData, generateTableData } from "../../Employes/component/EmployeDetails/utils/constant";
+import { tablePageLimit } from "../../../../config/constant/variable";
+import store from "../../../../store/store";
+import { dashboard } from "../../../../config/constant/routes";
+import CustomTable from "../../../../config/component/CustomTable/CustomTable";
 
-const EmployeDetailsTable = observer(() => {
+const DepartmentCategories = observer(() => {
   const navigate = useNavigate();
   const [searchValue, setSearchValue] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -20,21 +20,21 @@ const EmployeDetailsTable = observer(() => {
   });
 
   const {
-    Employe: { getAllEmployes, employes },
     auth: { openNotification },
+    DepartmentStore : {getAllDepartmentCategories, departmentCategories}
   } = store;
 
   useEffect(() => {
-    getAllEmployes({ page: 1, limit: tablePageLimit })
+    getAllDepartmentCategories({ page: 1, limit: tablePageLimit })
       .then(() => {})
       .catch((err: any) => {
         openNotification({
           type: "error",
-          title: "Failed to get users",
+          title: "Failed to get Department Categories",
           message: err?.message,
         });
       });
-  }, [getAllEmployes, openNotification]);
+  }, [getAllDepartmentCategories, openNotification]);
 
   // function to get the data from backend on the page, limit, date and others
   const applyGetAllEmployes = ({ page, limit, reset }: any) => {
@@ -51,12 +51,12 @@ const EmployeDetailsTable = observer(() => {
       query["startDate"] = date?.startDate ? date?.startDate : undefined;
       query["endDate"] = date?.endDate ? date?.endDate : undefined;
     }
-    getAllEmployes(query)
+    getAllDepartmentCategories(query)
       .then(() => {})
       .catch((err: any) => {
         openNotification({
           type: "error",
-          title: "Failed to get users",
+          title: "Failed to get Department Categories",
           message: err?.message,
         });
       });
@@ -83,10 +83,10 @@ const EmployeDetailsTable = observer(() => {
     applyGetAllEmployes({ reset: true });
   };
 
-  const employeTableColumns = [
+  const categoriesColumns = [
     {
-      headerName: "Name",
-      key: "name",
+      headerName: "title",
+      key: "title",
       type: "link",
       function: (e: any) => {
         navigate(
@@ -104,50 +104,20 @@ const EmployeDetailsTable = observer(() => {
       },
     },
     {
-      headerName: "E-Code",
+      headerName: "Code",
       key: "code",
       props: { row: { minW: 100, textAlign: "center" } },
-    },
-    {
-      headerName: "UserName",
-      key: "username",
-      props: {
-        row: { minW: 160, textAlign: "left" },
-        column: { textAlign: "left" },
-      },
-    },
-    {
-      headerName: "DOB",
-      key: "dob",
-      type: "date",
-      props: {
-        row: { minW: 120, textAlign: "center" },
-        column: { textAlign: "center" },
-      },
-    },
-    {
-      headerName: "Mobile Number",
-      key: "mobileNo",
-      type:'tooltip',
-      props: {
-        row: { minW: 160, textAlign: "center" },
-        column: { textAlign: "center" },
-      },
-    },
-    {
-      headerName: "Position",
-      key: "position",
-      type:'array',
-      props: {
-        row: { minW: 120, textAlign: "center" },
-        column: { textAlign: "center" },
-      },
     },
     {
       headerName: "Created At",
       key: "createdAt",
       type: "date",
       props: { row: { minW: 120, textAlign: "center" } },
+    },
+    {
+      headerName: "Department Count",
+      key: "departmentCount",
+      props: { row: { minW: 180, textAlign: "center" } },
     },
     {
       headerName: "Actions",
@@ -160,7 +130,6 @@ const EmployeDetailsTable = observer(() => {
     },
   ];
 
-  console.log(searchValue);
   return (
     <CustomTable
       actions={{
@@ -233,14 +202,14 @@ const EmployeDetailsTable = observer(() => {
           },
         },
       }}
-      title="Employes Details"
-      data={generateTableData(employes.data)}
-      columns={employeTableColumns}
-      totalPages={employes.totalPages}
-      loading={employes.loading}
+      title="Departments"
+      data={generateTableData(departmentCategories.data)}
+      columns={categoriesColumns}
+      totalPages={departmentCategories.totalPages}
+      loading={departmentCategories.loading}
       serial={{ show: true, text: "S.No.", width: "10px" }}
     />
   );
 });
 
-export default EmployeDetailsTable;
+export default DepartmentCategories;
