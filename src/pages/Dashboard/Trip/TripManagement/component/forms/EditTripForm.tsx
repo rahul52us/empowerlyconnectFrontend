@@ -9,7 +9,7 @@ import {
   generateTripResponse,
 } from "../../utils/functions";
 
-const EditTripForm = observer(({ tripFormData, setTripFormData }: any) => {
+const EditTripForm = observer(({ tripFormData, setTripFormData, handleGetRecord }: any) => {
   const {
     tripStore: { updateTrip },
     auth: { openNotification },
@@ -71,6 +71,7 @@ const EditTripForm = observer(({ tripFormData, setTripFormData }: any) => {
         setThumbnail([]);
         setIsFileDeleted(0);
         setTripFormData({ open: false, type: "add" });
+        handleGetRecord({})
       })
       .catch((err) => {
         openNotification({

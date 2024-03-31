@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   employDropdownData,
-  generateTableData,
 } from "../../Employes/component/EmployeDetails/utils/constant";
 import { tablePageLimit } from "../../../../config/constant/variable";
 import store from "../../../../store/store";
@@ -239,7 +238,7 @@ const DepartmentCategories = observer(() => {
           },
         }}
         title="Departments"
-        data={generateTableData(departmentCategories.data)}
+        data={departmentCategories.data}
         columns={categoriesColumns}
         loading={departmentCategories.loading}
         serial={{ show: true, text: "S.No.", width: "10px" }}

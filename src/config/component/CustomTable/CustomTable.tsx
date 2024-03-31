@@ -74,7 +74,7 @@ const TableActions: React.FC<TableActionsProps> = ({
           <IconButton
             size="sm"
             onClick={() => {
-              if (actionBtn?.addKey?.function) actionBtn?.editKey.function(row);
+              if (actionBtn?.editKey?.function) actionBtn?.editKey.function(row);
             }}
             aria-label=""
             title={

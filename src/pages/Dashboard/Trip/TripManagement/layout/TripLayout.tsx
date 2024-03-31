@@ -5,8 +5,16 @@ import store from "../../../../../store/store";
 import { useEffect, useState } from "react";
 import CustomTable from "../../../../../config/component/CustomTable/CustomTable";
 import { tablePageLimit } from "../../../../../config/constant/variable";
+import EditTripForm from "../component/forms/EditTripForm";
+import AddTripForm from "../component/forms/AddTripForm";
 const TripLayout = observer(
-  ({ setTripFormData, gridType, gridLoading, setGripType }: any) => {
+  ({
+    setTripFormData,
+    tripFormData,
+    gridType,
+    gridLoading,
+    setGripType,
+  }: any) => {
     const {
       tripStore: {
         getAllTrip,
@@ -118,6 +126,13 @@ const TripLayout = observer(
         },
       },
       {
+        headerName: "Trip Type",
+        key: "type",
+        props: {
+          column: { textAlign: "left" },
+        },
+      },
+      {
         headerName: "Description",
         key: "description",
         props: {
@@ -183,6 +198,14 @@ const TripLayout = observer(
             columns={columns}
             data={data}
             actions={{
+              actionBtn: {
+                editKey: {
+                  showEditButton: true,
+                  function: (item: any) => {
+                    setTripFormData({ open: true, data: item, type: "edit" });
+                  },
+                },
+              },
               datePicker: {
                 show: true,
                 isMobile: true,
@@ -207,6 +230,18 @@ const TripLayout = observer(
             }}
           />
         )}
+        {tripFormData?.type === "edit" && (
+          <EditTripForm
+            tripFormData={tripFormData}
+            setTripFormData={setTripFormData}
+            handleGetRecord={applyGetAllRecord}
+          />
+        )}
+        <AddTripForm
+          tripFormData={tripFormData}
+          setTripFormData={setTripFormData}
+          handleGetRecord={applyGetAllRecord}
+        />
       </Box>
     );
   }

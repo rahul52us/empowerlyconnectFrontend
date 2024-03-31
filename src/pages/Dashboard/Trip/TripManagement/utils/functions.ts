@@ -8,6 +8,9 @@ import {
   TripFormValues,
 } from "./interface";
 
+export const generateTableData = (data : any[]) => {
+  return data.map((item : any) => ({...item,...item}))
+}
 
 export const generateFormError = (errors: any, parent : any, type: string, index: number) => {
   if(errors?.[parent]?.[index]?.[type]){

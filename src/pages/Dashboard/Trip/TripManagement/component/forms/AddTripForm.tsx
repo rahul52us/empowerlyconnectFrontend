@@ -7,7 +7,7 @@ import { initialValues } from "../../utils/constant";
 import {generateTripResponse} from '../../utils/functions'
 import { TripFormValues } from "../../utils/interface";
 
-const AddTripForm = observer(({ tripFormData, setTripFormData }: any) => {
+const AddTripForm = observer(({ tripFormData, setTripFormData,handleGetRecord }: any) => {
   const {
     tripStore: { createTrip },
     auth: { openNotification },
@@ -29,6 +29,7 @@ const AddTripForm = observer(({ tripFormData, setTripFormData }: any) => {
         resetForm();
         setThumbnail([])
         setTripFormData({ open: false, type: "add" });
+        handleGetRecord({page : 1})
       })
       .catch((err) => {
         openNotification({
