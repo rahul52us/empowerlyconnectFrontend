@@ -5,7 +5,8 @@ class TripStore {
   trips : any = {
     data : [],
     loading : false,
-    hasFetch : false
+    hasFetch : false,
+    totalPages : 1
   }
 
   tripChartCount : any = {
@@ -50,11 +51,12 @@ class TripStore {
     }
   }
 
-  getAllTrip = async () => {
+  getAllTrip = async (sendData : any) => {
     try {
       this.trips.loading = true;
-      const { data } = await axios.get("/trip");
-      this.trips.data = data.data;
+      const { data } = await axios.get("/trip", {params : sendData});
+      this.trips.data = data?.data?.data || [];
+      this.trips.totalPages = data?.data?.totalPages || 0
       return data;
     } catch (err: any) {
       return Promise.reject(err?.response?.data || err?.message);

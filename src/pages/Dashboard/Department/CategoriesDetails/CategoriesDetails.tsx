@@ -1,15 +1,24 @@
 import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { employDropdownData, generateTableData } from "../../Employes/component/EmployeDetails/utils/constant";
+import {
+  employDropdownData,
+  generateTableData,
+} from "../../Employes/component/EmployeDetails/utils/constant";
 import { tablePageLimit } from "../../../../config/constant/variable";
 import store from "../../../../store/store";
 import { dashboard } from "../../../../config/constant/routes";
 import CustomTable from "../../../../config/component/CustomTable/CustomTable";
+import DepartmentDetails from "../Departmentdetails/DepartmentDetails";
 
 const DepartmentCategories = observer(() => {
   const navigate = useNavigate();
   const [searchValue, setSearchValue] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<any>({
+    id: null,
+    open: false,
+    data: null,
+  });
   const [currentPage, setCurrentPage] = useState(1);
   const dropdowns = useState(employDropdownData)[0];
   const [selectedOptions, setSelectedOptions] = useState({});
@@ -21,7 +30,11 @@ const DepartmentCategories = observer(() => {
 
   const {
     auth: { openNotification },
-    DepartmentStore : {getAllDepartmentCategories, departmentCategories}
+    DepartmentStore: {
+      getAllDepartmentCategories,
+      departmentCategories,
+      deleteDepartmentCategory,
+    },
   } = store;
 
   useEffect(() => {
@@ -89,9 +102,11 @@ const DepartmentCategories = observer(() => {
       key: "title",
       type: "link",
       function: (e: any) => {
-        navigate(
-          `${dashboard.employes.details}/edit/${e?._id}?tab=profile-details`
-        );
+        setSelectedCategory({
+          id: e?._id,
+          open: true,
+          data: e,
+        });
       },
       props: {
         column: { textAlign: "left" },
@@ -130,85 +145,112 @@ const DepartmentCategories = observer(() => {
     },
   ];
 
+  const deleteRecord = (record: any) => {
+    deleteDepartmentCategory(record?._id)
+      .then(() => {
+        openNotification({
+          type: "success",
+          title: "Successfully Deleted",
+          message: "Record Deleted Successfully",
+        });
+        applyGetAllEmployes({});
+      })
+      .catch((err) => {
+        openNotification({
+          type: "error",
+          title: "Failed to get Department Categories",
+          message: err?.message,
+        });
+      });
+  };
+
   return (
-    <CustomTable
-      actions={{
-        applyFilter: {
-          show: true,
-          function: () => applyGetAllEmployes({ page: currentPage }),
-        },
-        resetData: {
-          show: true,
-          text: "Reset Data",
-          function: () => resetTableData(),
-        },
-        actionBtn: {
-          addKey: {
-            showAddButton: true,
-            function: () => {
-              navigate(dashboard.employes.new);
+    <>
+      <CustomTable
+        actions={{
+          applyFilter: {
+            show: true,
+            function: () => applyGetAllEmployes({ page: currentPage }),
+          },
+          resetData: {
+            show: true,
+            text: "Reset Data",
+            function: () => resetTableData(),
+          },
+          actionBtn: {
+            addKey: {
+              showAddButton: true,
+              function: () => {
+                navigate(dashboard.employes.new);
+              },
+            },
+            editKey: {
+              showEditButton: true,
+              function: (e: any) => {
+                navigate(
+                  `${dashboard.employes.details}/edit/${e?._id}?tab=profile-details`
+                );
+              },
+            },
+            viewKey: {
+              showViewButton: true,
+              function: (dt: string) => {
+                alert(dt);
+              },
+            },
+            deleteKey: {
+              showDeleteButton: true,
+              function: (dt: string) => {
+                deleteRecord(dt);
+              },
             },
           },
-          editKey: {
-            showEditButton: true,
-            function: (e: any) => {
-              navigate(
-                `${dashboard.employes.details}/edit/${e?._id}?tab=profile-details`
-              );
+          pagination: {
+            show: true,
+            onClick: handleChangePage,
+            currentPage: currentPage,
+            totalPages:departmentCategories.totalPages
+          },
+          datePicker: {
+            show: true,
+            isMobile: true,
+            date: {
+              startDate: date.startDate,
+              endDate: date.endDate,
+            },
+            onDateChange: (e: string, type: string) => onDateChange(e, type),
+          },
+          multidropdown: {
+            show: true,
+            title: "Apply Filters",
+            placeholder: "Apply Filters",
+            search: {
+              searchValue: "",
+              visible: true,
+              placeholder: "Search Value here",
+              onSearchChange: (e: string) => setSearchValue(e),
+            },
+            dropdowns: dropdowns,
+            onApply: () => applyGetAllEmployes({}),
+            selectedOptions: selectedOptions,
+            onDropdownChange: (value: any, label: string) => {
+              setSelectedOptions((prev: any) => ({ ...prev, [label]: value }));
             },
           },
-          viewKey: {
-            showViewButton: true,
-            function: (dt: string) => {
-              alert(dt);
-            },
-          },
-          deleteKey: {
-            showDeleteButton: true,
-            function: (dt: string) => {
-              alert(dt);
-            },
-          },
-        },
-        pagination: {
-          show: true,
-          onClick: handleChangePage,
-          currentPage: currentPage,
-        },
-        datePicker: {
-          show: true,
-          isMobile: true,
-          date: {
-            startDate: date.startDate,
-            endDate: date.endDate,
-          },
-          onDateChange: (e: string, type: string) => onDateChange(e, type),
-        },
-        multidropdown: {
-          show: true,
-          title: "Apply Filters",
-          placeholder: "Apply Filters",
-          search: {
-            searchValue: "",
-            visible: true,
-            placeholder: "Search Value here",
-            onSearchChange: (e: string) => setSearchValue(e),
-          },
-          dropdowns: dropdowns,
-          onApply: () => applyGetAllEmployes({}),
-          selectedOptions: selectedOptions,
-          onDropdownChange: (value: any, label: string) => {
-            setSelectedOptions((prev: any) => ({ ...prev, [label]: value }));
-          },
-        },
-      }}
-      title="Departments"
-      data={generateTableData(departmentCategories.data)}
-      columns={categoriesColumns}
-      totalPages={departmentCategories.totalPages}
-      loading={departmentCategories.loading}
-      serial={{ show: true, text: "S.No.", width: "10px" }}
-    />
+        }}
+        title="Departments"
+        data={generateTableData(departmentCategories.data)}
+        columns={categoriesColumns}
+        loading={departmentCategories.loading}
+        serial={{ show: true, text: "S.No.", width: "10px" }}
+      />
+      {selectedCategory.open && (
+        <DepartmentDetails
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
+        />
+      )}
+    </>
   );
 });
 

@@ -8,6 +8,7 @@ import AddTripForm from "./component/forms/AddTripForm";
 import EditTripForm from "./component/forms/EditTripForm";
 
 const TripManagement = observer(() => {
+  const [gridType, setGripType] = useState({loading : true, type : "grid"});
   const [tripFormData, setTripFormData] = useState({
     open: false,
     type: "add",
@@ -15,11 +16,20 @@ const TripManagement = observer(() => {
   });
   return (
     <div>
-      <DashPageHeader breadcrumb={tripBreadCrumb} selectedMode="table" btnAction={(type : any) => {alert(type)}}/>
+      <DashPageHeader
+        breadcrumb={tripBreadCrumb}
+        selectedMode={gridType.type}
+        btnAction={(type: any) => {
+          setGripType((prev) => ({...prev,loading : true}))
+          setTimeout(() => {
+            setGripType({loading : false , type : type});
+          },1000)
+        }}
+      />
       <TripChartContainer
         addData={() => setTripFormData({ open: true, type: "add", data: null })}
       />
-      <TripLayout setTripFormData={setTripFormData} />
+      <TripLayout setTripFormData={setTripFormData} gridType={gridType.type} gridLoading={gridType.loading} setGripType={setGripType} />
       <AddTripForm
         tripFormData={tripFormData}
         setTripFormData={setTripFormData}

@@ -21,6 +21,13 @@ class DepartmentStore {
     totalPages:0
   };
 
+  departments = {
+    data: [],
+    loading: false,
+    hasFetch: false,
+    totalPages:0
+  };
+
   departmentCounts = {
     data : 0,
     loading : false
@@ -43,6 +50,7 @@ class DepartmentStore {
       classes: observable,
       departmentCategories:observable,
       departmentCounts:observable,
+      departments:observable,
       resetStudentDetails:action,
       setHandleFormDrawer: action,
       createEmploye: action,
@@ -51,7 +59,10 @@ class DepartmentStore {
       getEmployesDetailsById:action,
       updateEmployeProfile: action,
       getPositionCount:action,
-      getDepartmentCounts:action
+      getDepartmentCounts:action,
+      getAllDepartment:action,
+      deleteDepartment:action,
+      deleteDepartmentCategory:action
     });
   }
 
@@ -69,6 +80,39 @@ class DepartmentStore {
       this.departmentCategories.loading = false;
     }
   };
+
+  getAllDepartment = async (id : string, sendData: any) => {
+    try {
+      this.departments.loading = true
+      const { data } = await axios.get(`/department/${id}`,{params : sendData});
+      this.departments.hasFetch = true
+      this.departments.data = data?.data?.data || [];
+      this.departments.totalPages = data?.data?.totalPages || 0
+      return data.data
+    } catch (err: any) {
+      return Promise.reject(err?.response?.data || err);
+    } finally {
+      this.departments.loading = false;
+    }
+  };
+
+  deleteDepartment = async (id : string) => {
+    try {
+      const { data } = await axios.delete(`department/${id}`);
+      return data;
+    } catch (err: any) {
+      return Promise.reject(err?.response?.data || err);
+    }
+  }
+
+  deleteDepartmentCategory = async (id : string) => {
+    try {
+      const { data } = await axios.delete(`department/category/${id}`);
+      return data;
+    } catch (err: any) {
+      return Promise.reject(err?.response?.data || err);
+    }
+  }
 
   getPositionCount = async () => {
     try {

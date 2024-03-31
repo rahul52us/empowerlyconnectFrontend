@@ -205,6 +205,7 @@ const EmployeDetailsTable = observer(() => {
           show: true,
           onClick: handleChangePage,
           currentPage: currentPage,
+          totalPages:employes.totalPages
         },
         datePicker: {
           show: true,
@@ -236,7 +237,6 @@ const EmployeDetailsTable = observer(() => {
       title="Employes Details"
       data={generateTableData(employes.data)}
       columns={employeTableColumns}
-      totalPages={employes.totalPages}
       loading={employes.loading}
       serial={{ show: true, text: "S.No.", width: "10px" }}
     />

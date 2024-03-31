@@ -63,6 +63,9 @@ const TableActions: React.FC<TableActionsProps> = ({
   column,
   row,
 }) => {
+  if(!actions){
+    actions = {}
+  }
   const { actionBtn } = actions;
   return (
     <Td {...column?.props?.row}>
@@ -209,16 +212,15 @@ const CustomTable: React.FC<CustomTableProps> = ({
   data,
   serial,
   loading,
-  totalPages = 1,
   actions,
 }) => {
   const isMobile = useBreakpointValue({ base: true, md: false });
   return (
-    <Box border="3px solid lightgray" borderRadius={5} pb={3} shadow="lg">
+    <Box border="3px solid lightgray" borderRadius={5} pb={2} shadow="lg">
       <Flex
         justifyContent="space-between"
         alignItems="center"
-        p={4}
+        p={title ? 4 : 0}
         borderRadius="md"
         columnGap={2}
       >
@@ -271,6 +273,8 @@ const CustomTable: React.FC<CustomTableProps> = ({
           )}
 
           {/* Move Reset button into a dropdown menu */}
+          {
+            actions?.resetData?.show &&
           <Menu>
             <MenuButton
               as={Button}
@@ -307,7 +311,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
                 </MenuItem>
               )}
             </MenuList>
-          </Menu>
+          </Menu>}
         </Flex>
       </Flex>
 
@@ -369,7 +373,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
               actions?.pagination?.onClick(e);
             }
           }}
-          totalPages={totalPages}
+          totalPages={actions?.pagination?.totalPages || 1}
           props={{ style: { marginTop: "15px" } }}
         />
       )}

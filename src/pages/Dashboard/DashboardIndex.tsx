@@ -2,12 +2,12 @@ import DashboardBanner from "./component/DashboardBanner";
 import DashWidgetCard from "./component/DashWidgetCard";
 import { observer } from "mobx-react-lite";
 import store from "../../store/store";
-import DeleteModel from "../../config/component/common/DeleteModel";
+import DeleteModel from "../../config/component/common/DeleteModel/DeleteModel";
 import { deleteCategoryFunction } from "./quiz/component/Forms/utils/function";
 import DashChartContainer from "./component/DashChartContainer";
 import DashPageHeader from "../../config/component/common/DashPageHeader/DashPageHeader";
 import { headerHeight } from "../../config/constant/variable";
-import { Box, Grid, GridItem } from "@chakra-ui/react";
+import { Box, Grid, GridItem, Text } from "@chakra-ui/react";
 import { dashBreadCrumb } from "./utils/breadcrumb.constant";
 // import DashboardRight from "./component/DashboardRight";
 // import MyCoursesTable from "./component/MyCoursesTable";
@@ -45,9 +45,12 @@ const DashboardIndex = observer(() => {
           open={store.quiz.openDeleteCategoryModal?.open}
           close={setDeleteCategoryModal}
           title={"Delete Category"}
-          content={`Are you sure , you want to delete ${store.quiz.openDeleteCategoryModal?.data?.title} category`}
           submit={deleteCategoryFunction}
-        />
+        >
+          <Box>
+            <Text>{`Are you sure , you want to delete ${store.quiz.openDeleteCategoryModal?.data?.title} category`}</Text>
+          </Box>
+        </DeleteModel>
       </Box>
       {/* <ProfileCard title="title" /> */}
     </>
