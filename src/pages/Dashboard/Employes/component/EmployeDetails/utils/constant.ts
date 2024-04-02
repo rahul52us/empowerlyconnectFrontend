@@ -1,5 +1,3 @@
-import moment from "moment";
-
 export const employDropdownData: any = [
   {
     label: "BSE",
@@ -43,7 +41,7 @@ export const employeInitialValues = (data: any) => {
       : [{ label: "english", value: "english" }],
     username: data?.username || "",
     pic: data?.pic || "",
-    // dob:new Date(data?.dob) || new Date(),
+    dob:data.dob ? new Date(data?.dob) : new Date(),
     personalEmail: data?.personalEmail || "",
     nickName: data?.nickName || "",
     healthCardNo: data?.healthCardNo || "",
@@ -55,7 +53,7 @@ export const employeInitialValues = (data: any) => {
     insuranceCardNo: data?.insuranceCardNo || "",
     medicalCertificationDetails: data?.medicalCertificationDetails || "",
     refferedBy: data?.refferedBy || "",
-    // weddingDate:data?.weddingDate || new Date(),
+    weddingDate:data?.weddingDate ? new Date(data?.weddingDate) : new Date(),
     mobileNo: data?.mobileNo || "",
     bio: data?.bio || "",
     password: "",
@@ -91,8 +89,8 @@ export const generateSubmitResponse = (data: any) => {
   delete dt.confirmPassword;
   dt = {
     ...dt,
-    dob: moment(dt.dob).format("YYYY-MM-DD"),
-    weddingDate: moment(dt.weddingDate).format("YYYY-MM-DD"),
+    dob:dt.dob,
+    weddingDate: dt.weddingDate,
   };
   return dt;
 };
