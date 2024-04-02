@@ -36,6 +36,7 @@ const addressValidation = Yup.object().shape({
 });
 
 export const employeCreateValidation = Yup.object().shape({
+  title:Yup.mixed().required('title is required'),
   firstName: Yup.string()
     .min(2, "First Name should be at least 2 characters")
     .max(60, "First Name cannot be longer than 60 characters")
@@ -51,7 +52,7 @@ export const employeCreateValidation = Yup.object().shape({
     phoneRegExp,
     "Emergency number is not valid"
   ),
-  position:Yup.mixed().required('position is required'),
+  designation:Yup.mixed().required('position is required'),
   username: Yup.string()
     .min(3, "Username should be at least 3 characters")
     .required("Username is required"),
@@ -94,6 +95,7 @@ export const employeCreateValidation = Yup.object().shape({
 });
 
 export const employeUpdateProfileValidation = Yup.object().shape({
+  title:Yup.mixed().required('title is required'),
   firstName: Yup.string()
     .min(2, "First Name should be at least 2 characters")
     .max(60, "First Name cannot be longer than 60 characters")
@@ -112,7 +114,7 @@ export const employeUpdateProfileValidation = Yup.object().shape({
   username: Yup.string()
     .min(3, "Username should be at least 3 characters")
     .required("Username is required"),
-  position:Yup.mixed().required('select the positions'),
+  designation:Yup.mixed().required('select the positions'),
   code: Yup.string()
     .min(4, "Code should be at least 4 characters")
     .required("Code is required")

@@ -21,7 +21,7 @@ class EmployeStore {
     totalPages:0
   };
 
-  positionCounts = {
+  designationCount = {
     data : [],
     loading : false
   }
@@ -42,7 +42,7 @@ class EmployeStore {
       studentDetails:observable,
       classes: observable,
       employes:observable,
-      positionCounts:observable,
+      designationCount:observable,
       employesCounts:observable,
       resetStudentDetails:action,
       setHandleFormDrawer: action,
@@ -51,7 +51,7 @@ class EmployeStore {
       getAllEmployes: action,
       getEmployesDetailsById:action,
       updateEmployeProfile: action,
-      getPositionCount:action,
+      getDesignationCount:action,
       getEmployesCount:action
     });
   }
@@ -71,16 +71,16 @@ class EmployeStore {
     }
   };
 
-  getPositionCount = async () => {
+  getDesignationCount = async () => {
     try {
-      this.positionCounts.loading = true
-      const { data } = await axios.get("/employe/position/count");
-      this.positionCounts.data = data?.data || [];
+      this.designationCount.loading = true
+      const { data } = await axios.get("/employe/designation/count");
+      this.designationCount.data = data?.data || [];
       return data.data
     } catch (err: any) {
       return Promise.reject(err?.response?.data || err);
     } finally {
-      this.positionCounts.loading = false;
+      this.designationCount.loading = false;
     }
   };
 

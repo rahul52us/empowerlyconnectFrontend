@@ -1,6 +1,6 @@
 import moment from "moment";
 
-export const employDropdownData : any = [
+export const employDropdownData: any = [
   {
     label: "BSE",
     options: [
@@ -15,21 +15,37 @@ export const employDropdownData : any = [
       { label: "hockey", value: "hockey" },
     ],
   },
-]
+];
+
+export const titles: any = [
+  {
+    label: "MR",
+    value: "mr",
+  },
+  {
+    label: "MRS",
+    value: "mrs",
+  },
+];
 
 export const employeInitialValues = (data: any) => {
   data = { ...data, ...data?.profileDetails[0] };
-  let dt : any = {
+  let dt: any = {
+    title: titles.find((item: any) => item.value === data?.title) || titles[0],
     firstName: data?.name?.split(" ")[0] || "",
     lastName: data?.name?.split(" ")[1] || "",
     code: data?.code || "",
-    position:Array.isArray(data?.position) ? data?.position.map((item : any) => ({label : item, value : item})) : [{label : 'software developer', value : 'software developer'}],
-    language:Array.isArray(data?.language) ? data?.language.map((item : any) => ({label : item, value : item})) : [{label : 'english', value : 'english'}],
+    designation: Array.isArray(data?.designation)
+      ? data?.designation.map((item: any) => ({ label: item, value: item }))
+      : [{ label: "software developer", value: "software developer" }],
+    language: Array.isArray(data?.language)
+      ? data?.language.map((item: any) => ({ label: item, value: item }))
+      : [{ label: "english", value: "english" }],
     username: data?.username || "",
     pic: data?.pic || "",
     // dob:new Date(data?.dob) || new Date(),
     personalEmail: data?.personalEmail || "",
-    nickName:data?.nickName || "",
+    nickName: data?.nickName || "",
     healthCardNo: data?.healthCardNo || "",
     bloodGroup: data?.bloodGroup || "",
     panNo: data?.panNo || "",
@@ -67,8 +83,9 @@ export const employeInitialValues = (data: any) => {
 export const generateSubmitResponse = (data: any) => {
   let dt: any = { ...data };
   dt.name = `${dt.firstName} ${dt.lastName}`;
-  dt.position = dt.position?.map((item : any) => item.value)
-  dt.language = dt.language?.map((item : any) => item.value)
+  dt.title = dt.title?.value;
+  dt.designation = dt.designation?.map((item: any) => item.value);
+  dt.language = dt.language?.map((item: any) => item.value);
   delete dt.firstName;
   delete dt.lastName;
   delete dt.confirmPassword;
@@ -80,6 +97,10 @@ export const generateSubmitResponse = (data: any) => {
   return dt;
 };
 
-export const generateTableData = (data : any[]) => {
-  return data.map((item : any) => ({...item,...item.profileDetails[0],_id : item._id}))
-}
+export const generateTableData = (data: any[]) => {
+  return data.map((item: any) => ({
+    ...item,
+    ...item.profileDetails[0],
+    _id: item._id,
+  }));
+};

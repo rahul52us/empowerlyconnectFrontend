@@ -87,7 +87,7 @@ const EmployeDetailsTable = observer(() => {
     {
       headerName: "Name",
       key: "name",
-      type: "link",
+      type:'link',
       function: (e: any) => {
         navigate(
           `${dashboard.employes.details}/edit/${e?._id}?tab=profile-details`
@@ -135,8 +135,8 @@ const EmployeDetailsTable = observer(() => {
       },
     },
     {
-      headerName: "Position",
-      key: "position",
+      headerName: "Designation",
+      key: "designation",
       type:'array',
       props: {
         row: { minW: 120, textAlign: "center" },
@@ -160,7 +160,6 @@ const EmployeDetailsTable = observer(() => {
     },
   ];
 
-  console.log(searchValue);
   return (
     <CustomTable
       actions={{
@@ -238,7 +237,7 @@ const EmployeDetailsTable = observer(() => {
       data={generateTableData(employes.data)}
       columns={employeTableColumns}
       loading={employes.loading}
-      serial={{ show: true, text: "S.No.", width: "10px" }}
+      serial={{ show: false, text: "S.No.", width: "10px" }}
     />
   );
 });

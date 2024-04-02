@@ -9,14 +9,23 @@ import store from "../../../../store/store";
 import { dashboard } from "../../../../config/constant/routes";
 import CustomTable from "../../../../config/component/CustomTable/CustomTable";
 import DepartmentDetails from "../Departmentdetails/DepartmentDetails";
+import { Box, Text, useColorMode } from "@chakra-ui/react";
+import DeleteModel from "../../../../config/component/common/DeleteModel/DeleteModel";
 
 const DepartmentCategories = observer(() => {
+  const {colorMode} = useColorMode()
   const navigate = useNavigate();
   const [searchValue, setSearchValue] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<any>({
     id: null,
     open: false,
     data: null,
+  });
+  const [openModel, setOpenModel] = useState<any>({
+    open: false,
+    data: null,
+    type: "add",
+    loading: false,
   });
   const [currentPage, setCurrentPage] = useState(1);
   const dropdowns = useState(employDropdownData)[0];
@@ -49,7 +58,7 @@ const DepartmentCategories = observer(() => {
   }, [getAllDepartmentCategories, openNotification]);
 
   // function to get the data from backend on the page, limit, date and others
-  const applyGetAllEmployes = ({ page, limit, reset }: any) => {
+  const applyGetRecords = ({ page, limit, reset }: any) => {
     const query: any = {};
     if (reset) {
       query["page"] = 1;
@@ -80,7 +89,7 @@ const DepartmentCategories = observer(() => {
 
   const handleChangePage = (page: number) => {
     setCurrentPage(page);
-    applyGetAllEmployes({ page, limit: pageLimit });
+    applyGetRecords({ page, limit: pageLimit });
   };
 
   const resetTableData = () => {
@@ -92,7 +101,7 @@ const DepartmentCategories = observer(() => {
     });
     setSelectedOptions({});
     setSearchValue("");
-    applyGetAllEmployes({ reset: true });
+    applyGetRecords({ reset: true });
   };
 
   const categoriesColumns = [
@@ -144,15 +153,22 @@ const DepartmentCategories = observer(() => {
     },
   ];
 
-  const deleteRecord = (record: any) => {
-    deleteDepartmentCategory(record?._id)
+  const deleteRecord = (id: any) => {
+    setOpenModel((prev : any) => ({...prev,loading : true}))
+    deleteDepartmentCategory(id)
       .then(() => {
         openNotification({
           type: "success",
           title: "Successfully Deleted",
           message: "Record Deleted Successfully",
         });
-        applyGetAllEmployes({});
+        applyGetRecords({});
+        setOpenModel({
+          loading : false,
+          data : null,
+          open : false,
+          type : 'add'
+        })
       })
       .catch((err) => {
         openNotification({
@@ -160,6 +176,11 @@ const DepartmentCategories = observer(() => {
           title: "Failed to get Department Categories",
           message: err?.message,
         });
+      }).finally(() => {
+        setOpenModel((prev : any) => ({
+          ...prev,loading : false
+
+        }))
       });
   };
 
@@ -169,7 +190,7 @@ const DepartmentCategories = observer(() => {
         actions={{
           applyFilter: {
             show: true,
-            function: () => applyGetAllEmployes({ page: currentPage }),
+            function: () => applyGetRecords({ page: currentPage }),
           },
           resetData: {
             show: true,
@@ -200,7 +221,11 @@ const DepartmentCategories = observer(() => {
             deleteKey: {
               showDeleteButton: true,
               function: (dt: string) => {
-                deleteRecord(dt);
+                setOpenModel({
+                  type : 'delete',
+                  data : dt,
+                  open : true
+                })
               },
             },
           },
@@ -230,7 +255,7 @@ const DepartmentCategories = observer(() => {
               onSearchChange: (e: string) => setSearchValue(e),
             },
             dropdowns: dropdowns,
-            onApply: () => applyGetAllEmployes({}),
+            onApply: () => applyGetRecords({}),
             selectedOptions: selectedOptions,
             onDropdownChange: (value: any, label: string) => {
               setSelectedOptions((prev: any) => ({ ...prev, [label]: value }));
@@ -248,6 +273,37 @@ const DepartmentCategories = observer(() => {
           selectedCategory={selectedCategory}
           setSelectedCategory={setSelectedCategory}
         />
+      )}
+      {openModel?.open && openModel?.type === "delete" && (
+        <DeleteModel
+          id={openModel?.data?._id}
+          open={openModel?.open}
+          close={() => {
+            setOpenModel({
+              type: "add",
+              data: null,
+              open: false,
+              loading: false,
+            });
+          }}
+          title={openModel?.data?.title}
+          submit={(id: any) => deleteRecord(id)}
+          loading={openModel?.loading}
+        >
+          <Box p={5} textAlign="center" borderRadius="md">
+            <Text fontSize="xl" fontWeight="bold" mb={3}>
+              Confirm Deletion
+            </Text>
+            <Text fontWeight="bold" color={colorMode === "dark" ? "white" : "gray.800"} fontSize="lg" mb={4}>
+              Are you sure you want to delete the position{" "}
+              <Text as="span" color="red.500" fontWeight="bold">
+                "{openModel?.data?.title}"
+              </Text>
+              ? This action cannot be undone. All associated data will also be
+              permanently removed.
+            </Text>
+          </Box>
+        </DeleteModel>
       )}
     </>
   );

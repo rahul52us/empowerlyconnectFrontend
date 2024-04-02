@@ -38,7 +38,6 @@ const EmployeWidget = observer(() => {
       rowGap={3}
     >
       {Object.entries(cardData).map(([key, item]) => {
-        console.log(item)
         return(
         <EmployeWidgetCard
           key={key}

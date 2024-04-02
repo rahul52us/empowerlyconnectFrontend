@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Box, Button, Divider, Grid, Heading } from "@chakra-ui/react";
 import { FieldArray, Form, Formik } from "formik";
 import CustomInput from "../../../../../config/component/CustomInput/CustomInput";
+import { titles } from "../EmployeDetails/utils/constant";
 
 const PersonalDetails = ({
   type,
@@ -44,8 +45,6 @@ const PersonalDetails = ({
         handleSubmit,
         isSubmitting,
       }) => {
-        console.log(values.position)
-        console.log(errors);
         return (
           <Form onSubmit={handleSubmit}>
             <Box p={4} borderRadius="lg" boxShadow="md">
@@ -60,6 +59,20 @@ const PersonalDetails = ({
                   rowGap={2}
                   mb={5}
                 >
+                  <CustomInput
+                    name="title"
+                    type="select"
+                    placeholder="Enter the Title"
+                    label="Title"
+                    value={values.title}
+                    error={errors.title}
+                    showError={showError}
+                    options={titles}
+                    onChange={(e) => {
+                      setFieldValue('title',e)
+                      console.log(e);
+                    }}
+                  />
                   <CustomInput
                     name="firstName"
                     type="text"
@@ -117,12 +130,12 @@ const PersonalDetails = ({
                     readOnly={type === "edit" ? true : false}
                   />
                   <CustomInput
-                    name="position"
+                    name="designation"
                     type="select"
-                    placeholder="Select the position"
-                    label="Position"
-                    value={values?.position}
-                    error={errors.position}
+                    placeholder="Select the designation"
+                    label="Designation"
+                    value={values?.designation}
+                    error={errors.designation}
                     isMulti
                     options={[
                       {
@@ -143,7 +156,7 @@ const PersonalDetails = ({
                       },
                     ]}
                     onChange={(e) => {
-                      setFieldValue('position',e)
+                      setFieldValue('designation',e)
                       console.log(e);
                     }}
                     showError={showError}

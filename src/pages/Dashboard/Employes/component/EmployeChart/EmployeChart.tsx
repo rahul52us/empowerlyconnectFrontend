@@ -8,26 +8,26 @@ import { useEffect } from "react";
 
 const EmployeChart = observer(() => {
   const {
-    Employe: { getPositionCount, positionCounts },
+    Employe: { getDesignationCount, designationCount },
     auth: { openNotification },
   } = store;
 
   useEffect(() => {
-    getPositionCount()
+    getDesignationCount()
       .then(() => {})
       .catch((err: any) => {
         openNotification({
           type: "error",
-          title: "Failed to Position Count",
+          title: "Failed to Designation Count",
           message: err?.message,
         });
       });
-  }, [getPositionCount, openNotification]);
+  }, [getDesignationCount, openNotification]);
 
   const coursesChartData = makeChartResponse(
-    positionCounts.data,
-    "Employe Roles",
-    "role",
+    designationCount.data,
+    "Designation",
+    "designation",
     "count",
     ["#FFB6C1", "#98FB98", "#87CEEB", "#FFDAB9", "#FFFACD"]
   );
@@ -38,14 +38,14 @@ const EmployeChart = observer(() => {
         <BarChart
           data={coursesChartData.data}
           options={coursesChartData.options}
-          loading={positionCounts.loading}
+          loading={designationCount.loading}
         />
       </Card>
       <Card width={"100%"} minH={350} p={{ base: 0, sm: 2 }}>
         <LineGraph
           data={coursesChartData.data}
           options={coursesChartData.options}
-          loading={positionCounts.loading}
+          loading={designationCount.loading}
         />
       </Card>
     </Grid>

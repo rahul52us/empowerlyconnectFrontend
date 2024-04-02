@@ -35,6 +35,7 @@ interface Column {
   key: string;
   type?: string;
   function?: any;
+  addkey?:any;
   props?: any;
 }
 
@@ -191,6 +192,18 @@ const GenerateRows: React.FC<{
       );
     case "table-actions":
       return <TableActions actions={action} column={column} row={row} />;
+    case "combineKey":
+      return (
+        <Td
+          whiteSpace="normal"
+          cursor="pointer"
+          fontSize="sm"
+          {...column?.props?.row}
+          isTruncated={true}
+        >
+          {row[column.key] || "--"}
+        </Td>
+      );
     default:
       return (
         <Td
