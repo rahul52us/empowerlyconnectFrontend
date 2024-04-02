@@ -2,7 +2,8 @@ import { lazy } from "react";
 import { main } from "../constant/routes";
 import AddingparaForm from "../../pages/main/Contact/AddingparaForm";
 import SingleProduct from "../../pages/main/Product/component/SingleProduct";
-const Home = lazy(() => import("../../pages/main/Home/Home"));
+import Home2 from "../../pages/main/Home/Home2";
+// const Home = lazy(() => import("../../pages/main/Home/Home"));
 const About = lazy(() => import("../../pages/main/About/About"));
 const ProfileIndex = lazy(
   () => import("../../pages/main/profile/ProfileIndex")
@@ -31,7 +32,7 @@ const IndividualCompanyHome = lazy(() => import("../../pages/main/IndividualComp
 
 export const MainPublicRoutes = [
   {
-    element: <Home />,
+    element: <Home2 />,
     path: main.home,
     publicRoute: true,
   },
