@@ -2,6 +2,8 @@ import { Box, Grid } from "@chakra-ui/react";
 import Card1 from "./component/Card1/Card1";
 import FlipCard from "./component/FlipCard/Flipcard";
 import Card2 from "./component/Card2/Card2";
+import MultiCardComponent from "./component/MultiCardComponent/MultiCardComponent";
+import CircularProgressBar from "./component/CircularProgressBar/CircularProgressBar";
 
 const servicesData = [
   {
@@ -140,6 +142,24 @@ const data = [
   },
 ];
 
+const card = [
+  {
+    image:
+      "https://img.freepik.com/free-vector/woman-thinking-isoalted-design-illustration_18591-83949.jpg?t=st=1712074549~exp=1712078149~hmac=8701df5ed01458315f895f4ec71052571f98651a538d5c911fdcdc4c75a7860b&w=740",
+    button: "FAQ",
+  },
+  {
+    image:
+      "https://img.freepik.com/free-vector/woman-thinking-isoalted-design-illustration_18591-83949.jpg?t=st=1712074549~exp=1712078149~hmac=8701df5ed01458315f895f4ec71052571f98651a538d5c911fdcdc4c75a7860b&w=740",
+    button: "About",
+  },
+  {
+    image:
+      "https://img.freepik.com/free-vector/woman-thinking-isoalted-design-illustration_18591-83949.jpg?t=st=1712074549~exp=1712078149~hmac=8701df5ed01458315f895f4ec71052571f98651a538d5c911fdcdc4c75a7860b&w=740",
+    button: "Contact Us",
+  },
+];
+
 const Home2 = () => {
   return (
     <>
@@ -189,6 +209,24 @@ const Home2 = () => {
             />
           ))}
         </Grid>
+      </Box>
+      <Box my={6}>
+        <CircularProgressBar progressValue={50} description={"Million Views"} />
+      </Box>
+      <Box m={{ base: "1rem", lg: "6rem" }}>
+        <MultiCardComponent
+          bgColor={"telegram.500"}
+          buttonColor={"telegram.500"}
+          description={
+            "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Fuga amet vitae sed ipsum incidunt eius commodi atque nemo magnam, dolore quia  dolorem tempora."
+          }
+          title={"Got Question?"}
+          card={card}
+          // image={
+          //   "https://img.freepik.com/free-vector/woman-thinking-isoalted-design-illustration_18591-83949.jpg?t=st=1712074549~exp=1712078149~hmac=8701df5ed01458315f895f4ec71052571f98651a538d5c911fdcdc4c75a7860b&w=740"
+          // }
+          // button={"FAQ"}
+        />
       </Box>
     </>
   );
