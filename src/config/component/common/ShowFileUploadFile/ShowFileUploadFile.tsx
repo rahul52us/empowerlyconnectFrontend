@@ -21,6 +21,7 @@ const ShowFileUploadFile = observer(({ files, removeFile, edit, isFileDeleted }:
     file: null,
   });
 
+  console.log(files)
   const setSelectedFileFun = async (item: any) => {
     if (edit) {
       setSelectedFile({
@@ -63,6 +64,8 @@ const ShowFileUploadFile = observer(({ files, removeFile, edit, isFileDeleted }:
     if (Array.isArray(files)) return files;
     return [files];
   };
+
+  console.log(selectedFile)
 
   return (
     <>

@@ -26,7 +26,9 @@ export const titles: any = [
   },
 ];
 
-export const employeInitialValues = (data: any) => {
+export const employeInitialValues = (type : string , data: any) => {
+  if(type === "profile-details")
+  {
   data = { ...data, ...data?.profileDetails[0] };
   let dt: any = {
     title: titles.find((item: any) => item.value === data?.title) || titles[0],
@@ -41,7 +43,7 @@ export const employeInitialValues = (data: any) => {
       : [{ label: "english", value: "english" }],
     username: data?.username || "",
     pic: data?.pic || "",
-    dob:data.dob ? new Date(data?.dob) : new Date(),
+    dob: data.dob ? new Date(data?.dob) : new Date(),
     personalEmail: data?.personalEmail || "",
     nickName: data?.nickName || "",
     healthCardNo: data?.healthCardNo || "",
@@ -53,7 +55,7 @@ export const employeInitialValues = (data: any) => {
     insuranceCardNo: data?.insuranceCardNo || "",
     medicalCertificationDetails: data?.medicalCertificationDetails || "",
     refferedBy: data?.refferedBy || "",
-    weddingDate:data?.weddingDate ? new Date(data?.weddingDate) : new Date(),
+    weddingDate: data?.weddingDate ? new Date(data?.weddingDate) : new Date(),
     mobileNo: data?.mobileNo || "",
     bio: data?.bio || "",
     password: "",
@@ -76,6 +78,22 @@ export const employeInitialValues = (data: any) => {
     delete dt.confirmPassword;
   }
   return { profileDetails: dt };
+ }
+ else if(type === "bank-details"){
+  let bankDetail = { ...data?.bankDetails[0] };
+  return {bankDetails : {
+    cancelledCheque: bankDetail?.cancelledCheque || {},
+    nameAsPerBank: bankDetail?.nameAsPerBank || "",
+    name: bankDetail?.name || "",
+    accountNo: bankDetail?.accountNo || "",
+    ifsc: bankDetail?.ifsc || "",
+    branch: bankDetail?.branch || "",
+  }}
+ }
+ else
+ {
+  return {profileDetails : {}}
+ }
 };
 
 export const generateSubmitResponse = (data: any) => {
@@ -89,7 +107,7 @@ export const generateSubmitResponse = (data: any) => {
   delete dt.confirmPassword;
   dt = {
     ...dt,
-    dob:dt.dob,
+    dob: dt.dob,
     weddingDate: dt.weddingDate,
   };
   return dt;

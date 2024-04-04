@@ -180,3 +180,49 @@ export const employeEditValidation = Yup.object().shape({
     .min(1, "atleast 1 address is required")
     .of(addressValidation),
 });
+
+
+export const bankCreationValidation = Yup.object().shape({
+  nameAsPerBank: Yup.string()
+    .min(2, "Name atleast of 2 characters")
+    .max(120, "Name cannot greater than 120 characters").trim()
+    .required("Name is required"),
+  name: Yup.string()
+    .min(2, "Bank Name atleast of 2 characters")
+    .max(120, "Bank Name cannot greater than 120 characters").trim()
+    .required("Bank Name is required"),
+  accountNo: Yup.string()
+    .min(8, "Account Number atleast of 8 characters")
+    .max(60, "Bank Name cannot greater than 60 characters").trim()
+    .required("Account Number is required"),
+  ifsc: Yup.string()
+    .min(6, "IFSC Number atleast of 6 characters")
+    .max(60, "IFSC cannot greater than 60 characters").trim()
+    .required("IFSC is required"),
+    branch: Yup.string()
+    .min(2, "Branch atleast of 2 characters")
+    .max(180, "Branch cannot greater than 120 characters").trim()
+    .required("Branch is required"),
+})
+
+export const getValidation = (type : string, mode : string) => {
+  if(type === "profile-details"){
+    if(mode === "edit"){
+      return employeUpdateProfileValidation
+    }
+    else {
+      return employeCreateValidation
+    }
+  }
+  else if(type === "bank-details"){
+    if(mode === "edit"){
+      return bankCreationValidation
+    }
+    else {
+      return bankCreationValidation
+    }
+  }
+  else {
+    return employeCreateValidation
+  }
+}

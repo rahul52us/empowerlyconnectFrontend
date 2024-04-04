@@ -67,7 +67,6 @@ return (
 		}}
 	>
 		{({ handleChange, setFieldValue, values, errors }) => {
-			console.log('the error is', errors)
 		return (
 			<Form>
 			<SimpleGrid columns={2} spacing={4}>

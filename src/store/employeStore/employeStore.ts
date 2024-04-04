@@ -52,7 +52,8 @@ class EmployeStore {
       getEmployesDetailsById:action,
       updateEmployeProfile: action,
       getDesignationCount:action,
-      getEmployesCount:action
+      getEmployesCount:action,
+      updateEmployeBankDetails:action
     });
   }
 
@@ -127,6 +128,15 @@ class EmployeStore {
   updateEmployeProfile = async (id : any , sendData : any) => {
     try {
       const { data } = await axios.put(`employe/profile/${id}`, sendData);
+      return data;
+    } catch (err: any) {
+      return Promise.reject(err?.response?.data || err);
+    }
+  }
+
+  updateEmployeBankDetails = async (id : any , sendData : any) => {
+    try {
+      const { data } = await axios.put(`employe/bankDetails/${id}`, sendData);
       return data;
     } catch (err: any) {
       return Promise.reject(err?.response?.data || err);

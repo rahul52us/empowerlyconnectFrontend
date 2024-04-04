@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import PersonalDetails from "../../forms/PersonalDetailsForm";
 import PersonalDetailsChangePassword from "../../forms/PersonalDetailsChangePassword";
+import PersonalBankDetails from "../../forms/PersonalBankDetails";
 
 const EmployeContainer = observer(
   ({
@@ -12,6 +13,8 @@ const EmployeContainer = observer(
     handleSubmitProfile,
     initialValues,
     validations,
+    files,
+    setFiles
   }: any) => {
     // const LargerThanMd = useBreakpointValue({ xl: true });
     const location = useLocation();
@@ -33,6 +36,19 @@ const EmployeContainer = observer(
               validations={validations}
             />
           );
+        case "bank-details":
+          return (
+            <PersonalBankDetails
+              type={type}
+              profileData={profileData}
+              handleSubmitProfile={handleSubmitProfile}
+              initialValues={initialValues?.bankDetails}
+              validations={validations}
+              files={files}
+              setFiles={setFiles}
+
+            />
+          );
         case "change-password":
           return (
             <PersonalDetailsChangePassword changePassword={changePassword} />
@@ -43,8 +59,8 @@ const EmployeContainer = observer(
     };
 
     const getCreateActiveComponent = () => {
-      switch (type) {
-        case "create":
+      switch (tab) {
+        case "profile-details":
           return (
             <PersonalDetails
               type={type}
@@ -54,8 +70,20 @@ const EmployeContainer = observer(
               validations={validations}
             />
           );
+        case "bank-details":
+          return (
+            <PersonalBankDetails
+              type={type}
+              profileData={profileData}
+              handleSubmitProfile={handleSubmitProfile}
+              initialValues={initialValues?.bankDetails}
+              validations={validations}
+              files={files}
+              setFiles={setFiles}
+            />
+          );
         default:
-          return <h1>Not found</h1>;
+          return <p>Something went wrong</p>
       }
     };
 

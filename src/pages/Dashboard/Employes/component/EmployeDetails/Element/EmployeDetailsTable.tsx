@@ -176,7 +176,9 @@ const EmployeDetailsTable = observer(() => {
           addKey: {
             showAddButton: true,
             function: () => {
-              navigate(dashboard.employes.new);
+              navigate(
+                `${dashboard.employes.details}/new/?tab=profile-details`
+              );
             },
           },
           editKey: {

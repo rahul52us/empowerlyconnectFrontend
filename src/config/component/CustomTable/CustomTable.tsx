@@ -327,7 +327,6 @@ const CustomTable: React.FC<CustomTableProps> = ({
           </Menu>}
         </Flex>
       </Flex>
-
       <Box overflowX="auto" minH={"65vh"} maxH={"65vh"} overflowY={"auto"}>
         <Table
           variant="striped"
@@ -356,7 +355,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
             </Tr>
           </Thead>
           <TableLoader loader={loading} show={data.length}>
-            <Tbody height={200} overflowY="scroll">
+            <Tbody overflowY="scroll">
               {data.map((row, rowIndex) => (
                 <Tr key={rowIndex}>
                   {serial?.show && (

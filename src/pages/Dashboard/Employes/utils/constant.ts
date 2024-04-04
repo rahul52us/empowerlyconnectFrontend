@@ -22,6 +22,6 @@ export const cardArrayData = {
     title: "Total Number of Users",
     value: 0,
     icon: FaTimesCircle,
-    link: dashboard.employes.new,
+    link: `${dashboard.employes.details}/new/?tab=profile-details`,
   },
 };

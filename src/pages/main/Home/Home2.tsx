@@ -48,7 +48,6 @@ const cardData = [
     backDescription:
       "Welcome to our hub for all things food and beverages, where indulgence meets convenience.",
   },
-
   {
     id: 2,
     imageUrl:
@@ -58,7 +57,6 @@ const cardData = [
     backDescription:
       "Discover the ease of online fashion and footwear shopping with our seamless interface.",
   },
-
   {
     id: 3,
     imageUrl: "/images/ondc/electronics.webp",
@@ -67,7 +65,6 @@ const cardData = [
     backDescription:
       "Discover our platform, crafted to make your shopping experience for electronics seamless and hassle-free.",
   },
-
   {
     id: 4,
     imageUrl: "/images/ondc/home.webp",
@@ -76,7 +73,6 @@ const cardData = [
     backDescription:
       "Upgrade your home and kitchen effortlessly with our streamlined online shopping experience.",
   },
-
   {
     id: 5,
     imageUrl: "/images/ondc/grocery.webp",
@@ -85,7 +81,6 @@ const cardData = [
     backDescription:
       "Join us and discover the ultimate convenience of online grocery shopping today!",
   },
-
   {
     id: 6,
     imageUrl: "/images/ondc/beauty-selfcare.webp",
@@ -143,7 +138,7 @@ const data = [
 const Home2 = () => {
   return (
     <>
-      <Box m={20}>
+      <Box>
         <Grid templateColumns={"1fr 1fr 1fr 1fr"} columnGap={4}>
           {servicesData.map((value) => (
             <Card1
