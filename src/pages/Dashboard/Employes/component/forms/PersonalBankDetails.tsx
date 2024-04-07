@@ -10,10 +10,9 @@ const PersonalBankDetails = ({
   initialValues,
   validations,
   files,
-  setFiles
+  setFiles,
 }: any) => {
   const [showError, setShowError] = useState(false);
-  console.log(type)
   return (
     <Formik
       validationSchema={validations}
@@ -28,13 +27,7 @@ const PersonalBankDetails = ({
         );
       }}
     >
-      {({
-        values,
-        errors,
-        handleChange,
-        handleSubmit,
-        isSubmitting,
-      }) => {
+      {({ values, errors, handleChange, handleSubmit, isSubmitting }) => {
         return (
           <Form onSubmit={handleSubmit}>
             <Box p={4} borderRadius="lg" boxShadow="md">
@@ -44,36 +37,49 @@ const PersonalBankDetails = ({
                 </Heading>
                 <Divider />
                 <Flex>
-					{files.cancelledCheque === null ? (
-					<CustomInput
-						type="file-drag"
-						name="cancelledCheque"
-						value={files.cancelledCheque}
-						isMulti={false}
-						accept="image/*"
-						onChange={(e: any) => {
-              setFiles((prev : any) => ({...prev,cancelledCheque : e.target.files}))
-						// insertUniqueFile(
-						// 	setThumbnail,
-						// 	thumbnail,
-						// 	e.target.files
-						// );
-						}}
-					/>
-					) : (
-					<Box mt={-5} width="100%">
-						<ShowFileUploadFile
-						edit={false}
-						files={files?.cancelledCheque ? files?.cancelledCheque[0] : []}
-						removeFile={(_: any) => {
-              setFiles((prev : any) => ({...prev, cancelledCheque : null}))
-						}
-						}
-						/>
-					</Box>
-					)}
-				</Flex>
-
+                  {files.cancelledCheque?.file === null ? (
+                    <CustomInput
+                      type="file-drag"
+                      name="cancelledCheque"
+                      value={files.cancelledCheque}
+                      isMulti={false}
+                      accept="image/*"
+                      onChange={(e: any) => {
+                        setFiles((prev: any) => ({
+                          ...prev,
+                          cancelledCheque: {
+                            ...prev.cancelledCheque,
+                            file: e.target.files,
+                            isAdd: 1,
+                          },
+                        }));
+                      }}
+                    />
+                  ) : (
+                    <Box mt={-5} width="100%">
+                      <ShowFileUploadFile
+                        isFileDeleted={files.cancelledCheque.isDeleted}
+                        edit={type === "edit" ? true : false}
+                        files={
+                          files?.cancelledCheque?.file
+                            ? files?.cancelledCheque.file[0]
+                            : []
+                        }
+                        removeFile={(_: any) => {
+                          setFiles((prev: any) => ({
+                            ...prev,
+                            cancelledCheque: {
+                              ...prev.cancelledCheque,
+                              file: null,
+                              isDeleted: 1,
+                              isAdd: 0,
+                            },
+                          }));
+                        }}
+                      />
+                    </Box>
+                  )}
+                </Flex>
                 <Grid
                   gridTemplateColumns={{ md: "1fr 1fr 1fr" }}
                   columnGap={4}

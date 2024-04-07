@@ -7,9 +7,7 @@ import {
   employeInitialValues,
   generateSubmitResponse,
 } from "../utils/constant";
-import {
-  getValidation,
-} from "../utils/validations";
+import { getValidation } from "../utils/validations";
 import store from "../../../../../../store/store";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -18,25 +16,56 @@ import Loader from "../../../../../../config/component/Loader/Loader";
 import { readFileAsBase64 } from "../../../../../../config/constant/function";
 
 const EmployeFormContainer = observer(() => {
-  const [files,setFiles] = useState<any>({
-    cancelledCheque : null
-  })
+  const [files, setFiles] = useState<any>({
+    cancelledCheque: {
+      file: null,
+      isDeleted: 0,
+      isAdd: 0,
+    },
+  });
 
   const location = useLocation();
   const tab: any = new URLSearchParams(location.search).get("tab");
   const navigate = useNavigate();
   const {
-    Employe: { createEmploye, updateEmployeProfile, getEmployesDetailsById,updateEmployeBankDetails },
+    Employe: {
+      createEmploye,
+      updateEmployeProfile,
+      getEmployesDetailsById,
+      updateEmployeBankDetails,
+      updateFamilyDetails
+    },
     auth: { openNotification },
   } = store;
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState<any>(null);
   const { id } = useParams();
   const type = useState<any>(
     location.pathname?.split("/")[4] === "edit" && id
   )[0];
 
-  // this is for the submit the form to backend
-  const handleSubmitProfile = async(
+  useEffect(() => {
+    if (
+      userData &&
+      userData?.bankDetails &&
+      userData?.bankDetails[0] &&
+      userData?.bankDetails[0]?.cancelledCheque?.name
+    ) {
+      setFiles((files: any) => ({
+        ...files,
+        cancelledCheque: {
+          isDeleted: 0,
+          file: [
+            {
+              ...userData?.bankDetails[0].cancelledCheque,
+              file: userData?.bankDetails[0].cancelledCheque?.url,
+            },
+          ],
+        },
+      }));
+    }
+  }, [userData]);
+
+  const handleSubmitProfile = async (
     values: any,
     setLoading: any,
     resetForm: any,
@@ -65,19 +94,31 @@ const EmployeFormContainer = observer(() => {
           .finally(() => {
             setLoading(false);
           });
-      }
-      else if(tab === "bank-details"){
-        let bankDetails : any = values
-        if (files?.cancelledCheque) {
-          const buffer = await readFileAsBase64(files.cancelledCheque[0]);
+      } else if (tab === "bank-details") {
+        let bankDetails: any = values;
+        if (files?.cancelledCheque?.file && (files?.cancelledCheque?.isAdd || files.cancelledCheque?.isDeleted)) {
+          const buffer = await readFileAsBase64(files.cancelledCheque.file[0]);
           const fileData = {
             buffer: buffer,
-            filename: files.cancelledCheque[0].name,
-            type: files.cancelledCheque[0].type,
+            filename: files.cancelledCheque.file[0].name,
+            type: files.cancelledCheque.file[0].type,
+            isFileDeleted: files.cancelledCheque.isDeleted,
+            isAdd: files.cancelledCheque.isAdd,
           };
-          bankDetails = {...bankDetails,cancelledCheque:fileData}
+          bankDetails = {
+            ...bankDetails,
+            cancelledCheque: fileData,
+          };
+        } else {
+          bankDetails = {
+            ...bankDetails,
+            cancelledCheque: {
+              isFileDeleted: files.cancelledCheque.isDeleted,
+              isAdd: 0,
+            },
+          };
         }
-        updateEmployeBankDetails(id,bankDetails)
+        updateEmployeBankDetails(id, bankDetails)
           .then(() => {
             setShowError(false);
             setErrors({});
@@ -92,6 +133,28 @@ const EmployeFormContainer = observer(() => {
               type: "error",
               message: err?.message,
               title: "Failed to Update",
+            });
+          })
+          .finally(() => {
+            setLoading(false);
+          });
+      }
+      else if(tab === "family-details"){
+        updateFamilyDetails(id, values)
+          .then(() => {
+            setShowError(false);
+            setErrors({});
+            openNotification({
+              type: "success",
+              message: "Update Family Successfully",
+              title: "Updated Successfully",
+            });
+          })
+          .catch((err) => {
+            openNotification({
+              type: "error",
+              message: err?.message,
+              title: "Failed to Update Family Details",
             });
           })
           .finally(() => {
@@ -121,10 +184,9 @@ const EmployeFormContainer = observer(() => {
           .finally(() => {
             setLoading(false);
           });
-      }
-      else if(tab === "bank-details"){
-        alert("rahlu")
-        setLoading(false)
+      } else if (tab === "bank-details") {
+        alert("rahlu");
+        setLoading(false);
       }
     }
   };
@@ -152,11 +214,11 @@ const EmployeFormContainer = observer(() => {
   const commonProps = {
     handleSubmitProfile,
     initialValues: employeInitialValues(tab, userData),
-    validations: getValidation(tab,type ? 'edit' : 'create'),
+    validations: getValidation(tab, type ? "edit" : "create"),
     type: type ? "edit" : "create",
     changePassword: () => alert("rahul"),
-    files : files,
-    setFiles : setFiles
+    files: files,
+    setFiles: setFiles,
   };
 
   const isDataLoaded = type && userData;

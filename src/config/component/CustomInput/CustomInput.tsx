@@ -107,7 +107,6 @@ const CustomInput: React.FC<CustomInputProps> = ({
     (event: React.DragEvent<HTMLDivElement>) => {
       event.preventDefault();
       const files = event.dataTransfer.files;
-      console.log(files);
       if (onFileDrop) {
         onFileDrop(files);
       }

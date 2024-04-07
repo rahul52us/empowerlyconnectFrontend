@@ -15,20 +15,21 @@ import { readFileAsBase64 } from "../../../constant/function";
 import FileViewer from "../../FilesViewer/FileViewer";
 import CustomDrawer from "../../Drawer/CustomDrawer";
 
-const ShowFileUploadFile = observer(({ files, removeFile, edit, isFileDeleted }: any) => {
+const ShowFileUploadFile = observer(({ files, removeFile, edit }: any) => {
   const [selectedFile, setSelectedFile] = useState<any>({
     type: null,
     file: null,
   });
 
-  console.log(files)
   const setSelectedFileFun = async (item: any) => {
     if (edit) {
-      setSelectedFile({
-        type: item.type,
-        file: item.file,
-      });
-      if(isFileDeleted === 1){
+      if(item.url){
+        setSelectedFile({
+          type: item.type,
+          file: item.file,
+        });
+      }
+      else {
         let file: any = await readFileAsBase64(item);
         if (file) {
           if (item.name.endsWith(".pdf")) {
@@ -36,7 +37,11 @@ const ShowFileUploadFile = observer(({ files, removeFile, edit, isFileDeleted }:
           } else {
             setSelectedFile({ type: "image", file: file });
           }
-        }
+          setSelectedFile({
+            type: item.type,
+            file: file,
+          });
+      }
       }
     } else {
       let file: any = await readFileAsBase64(item);
@@ -64,8 +69,6 @@ const ShowFileUploadFile = observer(({ files, removeFile, edit, isFileDeleted }:
     if (Array.isArray(files)) return files;
     return [files];
   };
-
-  console.log(selectedFile)
 
   return (
     <>

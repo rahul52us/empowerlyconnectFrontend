@@ -205,6 +205,25 @@ export const bankCreationValidation = Yup.object().shape({
     .required("Branch is required"),
 })
 
+const FamilyDetailsValidationSchema = Yup.object().shape({
+  relations: Yup.array().of(
+    Yup.object().shape({
+      name: Yup.string(),
+      relation: Yup.string(),
+      dob: Yup.string(),
+      contactNo: Yup.string(),
+      aadharNo: Yup.string(),
+      occupation: Yup.string(),
+      pf_nomination: Yup.string(),
+      gratuity_nomination: Yup.string(),
+      esic_nomination: Yup.string(),
+      coveredEsic: Yup.string(),
+      coveredMediclaim: Yup.string(),
+      address: Yup.string()
+    })
+  ),
+});
+
 export const getValidation = (type : string, mode : string) => {
   if(type === "profile-details"){
     if(mode === "edit"){
@@ -220,6 +239,14 @@ export const getValidation = (type : string, mode : string) => {
     }
     else {
       return bankCreationValidation
+    }
+  }
+  else if(type === "family-details"){
+    if(mode === "edit"){
+      return FamilyDetailsValidationSchema
+    }
+    else {
+      return FamilyDetailsValidationSchema
     }
   }
   else {

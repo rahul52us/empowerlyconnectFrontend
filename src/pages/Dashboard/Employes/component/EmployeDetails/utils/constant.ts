@@ -90,6 +90,12 @@ export const employeInitialValues = (type : string , data: any) => {
     branch: bankDetail?.branch || "",
   }}
  }
+ else if(type === "family-details"){
+  let familyDetails = { ...data?.familyDetails[0] };
+  return {familyDetails : {
+    relations: familyDetails?.relations || [],
+  }}
+ }
  else
  {
   return {profileDetails : {}}
