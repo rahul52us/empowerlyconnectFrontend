@@ -7,6 +7,7 @@ import PersonalBankDetails from "../../forms/PersonalBankDetails";
 import FamilyDetails from "../../forms/PersonalFamilyDetails";
 import { dashboard } from "../../../../../../config/constant/routes";
 import EmployFormSidebar from "../component/EmployFormSidebar";
+import PersonalWorkExperience from "../../forms/PersonalWorkExperience";
 
 const EmployeContainer = observer(
   ({
@@ -19,10 +20,9 @@ const EmployeContainer = observer(
     files,
     setFiles,
   }: any) => {
-    const {id} = useParams()
-    // const LargerThanMd = useBreakpointValue({ xl: true });
+    const { id } = useParams();
     const location = useLocation();
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const tab: any = new URLSearchParams(location.search).get("tab");
 
     const getEditActiveComponent = ({
@@ -69,10 +69,30 @@ const EmployeContainer = observer(
           return (
             <PersonalDetailsChangePassword changePassword={changePassword} />
           );
+        case "work-experience":
+          return (
+            <PersonalWorkExperience
+              type={type}
+              profileData={profileData}
+              handleSubmitProfile={handleSubmitProfile}
+              initialValues={initialValues?.workExperience}
+              validations={validations}
+              files={files}
+              setFiles={setFiles}
+            />
+          );
         default:
-          return <Button onClick={() => navigate(
-            `${dashboard.employes.details}/edit/${id}?tab=profile-details`
-          )}>Something went here</Button>;
+          return (
+            <Button
+              onClick={() =>
+                navigate(
+                  `${dashboard.employes.details}/edit/${id}?tab=profile-details`
+                )
+              }
+            >
+              Something went here
+            </Button>
+          );
       }
     };
 
@@ -112,10 +132,30 @@ const EmployeContainer = observer(
               setFiles={setFiles}
             />
           );
-          default:
-            return <Button onClick={() => navigate(
-              `${dashboard.employes.details}/new?tab=profile-details`
-            )}>Something went here</Button>;
+        case "work-experience":
+          return (
+            <PersonalWorkExperience
+              type={type}
+              profileData={profileData}
+              handleSubmitProfile={handleSubmitProfile}
+              initialValues={initialValues?.workExperience}
+              validations={validations}
+              files={files}
+              setFiles={setFiles}
+            />
+          );
+        default:
+          return (
+            <Button
+              onClick={() =>
+                navigate(
+                  `${dashboard.employes.details}/new?tab=profile-details`
+                )
+              }
+            >
+              Something went here
+            </Button>
+          );
       }
     };
 
@@ -123,10 +163,6 @@ const EmployeContainer = observer(
       <Box p={{ base: 1.5, lg: 0 }}>
         <Grid
           gridTemplateColumns={{ lg: "0.25fr 1fr" }}
-          // style={{
-          //   marginLeft: LargerThanMd ? "100px" : "0",
-          //   marginRight: LargerThanMd ? "100px" : "2px",
-          // }}
           gap={5}
           mt={3}
           mb={10}

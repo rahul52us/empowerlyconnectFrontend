@@ -224,6 +224,24 @@ const FamilyDetailsValidationSchema = Yup.object().shape({
   ),
 });
 
+const WorkExperienceDetails = Yup.object().shape({
+  experienceDetails: Yup.array()
+    .of(
+      Yup.object().shape({
+        pastEmployer: Yup.string().trim().required('Past Employer is required'),
+        startDate: Yup.date().required('start Date is required'),
+        endDate: Yup.date().required('End Date is required'),
+        relevantExperience: Yup.string().trim().required('Relevant Experience is required'),
+        designation: Yup.string().trim().required('Desination is required'),
+        jobProfile: Yup.string().trim(),
+        Lastctc: Yup.string().trim().required('Ctc is required'),
+        leavingReason: Yup.string().trim().required('Leaving reason is required')
+      })
+    )
+    .required("Experience details are required"),
+});
+
+
 export const getValidation = (type : string, mode : string) => {
   if(type === "profile-details"){
     if(mode === "edit"){
@@ -247,6 +265,14 @@ export const getValidation = (type : string, mode : string) => {
     }
     else {
       return FamilyDetailsValidationSchema
+    }
+  }
+  else if(type === "work-experience"){
+    if(mode === "edit"){
+      return WorkExperienceDetails
+    }
+    else {
+      return WorkExperienceDetails
     }
   }
   else {

@@ -16,6 +16,7 @@ import Loader from "../../../../../../config/component/Loader/Loader";
 import { readFileAsBase64 } from "../../../../../../config/constant/function";
 
 const EmployeFormContainer = observer(() => {
+  const [haveApiCall, setHaveApiCall] = useState(false)
   const [files, setFiles] = useState<any>({
     cancelledCheque: {
       file: null,
@@ -33,7 +34,8 @@ const EmployeFormContainer = observer(() => {
       updateEmployeProfile,
       getEmployesDetailsById,
       updateEmployeBankDetails,
-      updateFamilyDetails
+      updateFamilyDetails,
+      updateWorkExperience
     },
     auth: { openNotification },
   } = store;
@@ -83,6 +85,7 @@ const EmployeFormContainer = observer(() => {
               message: "Update Profile Successfully",
               title: "Updated Successfully",
             });
+            setHaveApiCall(false)
           })
           .catch((err) => {
             openNotification({
@@ -127,6 +130,7 @@ const EmployeFormContainer = observer(() => {
               message: "Update Bank Successfully",
               title: "Updated Successfully",
             });
+            setHaveApiCall(false)
           })
           .catch((err) => {
             openNotification({
@@ -149,12 +153,69 @@ const EmployeFormContainer = observer(() => {
               message: "Update Family Successfully",
               title: "Updated Successfully",
             });
+            setHaveApiCall(false)
           })
           .catch((err) => {
             openNotification({
               type: "error",
               message: err?.message,
               title: "Failed to Update Family Details",
+            });
+          })
+          .finally(() => {
+            setLoading(false);
+          });
+      }
+      else if(tab === "work-experience"){
+        let dt = await Promise.all(values.experienceDetails.map(async (item : any) => {
+          if (item?.certificate?.isAdd && item?.certificate?.file) {
+            const buffer = await readFileAsBase64(item?.certificate?.file[0]);
+          const fileData = {
+            buffer: buffer,
+            filename: item.certificate.file[0].name,
+            type: item.certificate.file[0].type,
+            isFileDeleted: item.certificate.isDeleted,
+            isAdd: item.certificate.isAdd,
+          };
+            return {
+              ...item,
+              certificate: fileData
+            };
+          }
+          else if(item.certificate?.isDeleted){
+            const fileData = {
+              isFileDeleted: item.certificate.isDeleted
+            };
+            return {
+              ...item,
+              certificate: fileData
+            };
+          }
+          else {
+            if (item?.certificate && Array.isArray(item?.certificate?.file) && item?.certificate?.file?.length > 0) {
+              return {...item,certificate : item?.certificate?.file[0]}
+            }
+            else {
+              return item
+            }
+          }
+        }));
+        updateWorkExperience(id, {experienceDetails : dt})
+          .then(() => {
+            setShowError(false);
+            setErrors({});
+            openNotification({
+              type: "success",
+              message: "Update Work Experience Successfully",
+              title: "Updated Successfully",
+            });
+            setHaveApiCall(false)
+          })
+          .catch((err) => {
+            openNotification({
+              type: "error",
+              message: err?.message,
+              title: "Failed to Update Work Experience",
             });
           })
           .finally(() => {
@@ -173,6 +234,7 @@ const EmployeFormContainer = observer(() => {
               message: "Create New Employe Successfully",
               title: "Create Successfully",
             });
+            setHaveApiCall(false)
           })
           .catch((err) => {
             openNotification({
@@ -185,18 +247,44 @@ const EmployeFormContainer = observer(() => {
             setLoading(false);
           });
       } else if (tab === "bank-details") {
-        alert("rahlu");
         setLoading(false);
+      }
+      else if(tab === "work-experience"){
+        console.log(values)
+        setLoading(false)
+        return
+        updateWorkExperience(id, values)
+          .then(() => {
+            setShowError(false);
+            setErrors({});
+            openNotification({
+              type: "success",
+              message: "Create Work Experience Successfully",
+              title: "Updated Successfully",
+            });
+            setHaveApiCall(false)
+          })
+          .catch((err) => {
+            openNotification({
+              type: "error",
+              message: err?.message,
+              title: "Failed to Create Work Experience",
+            });
+          })
+          .finally(() => {
+            setLoading(false);
+          });
       }
     }
   };
 
   useEffect(() => {
     // check this, is it edit page or not
-    if (type) {
+    if (type && !haveApiCall) {
       getEmployesDetailsById(id)
         .then((data: any) => {
           setUserData(data);
+          setHaveApiCall(true)
         })
         .catch((err: any) => {
           openNotification({
@@ -209,7 +297,7 @@ const EmployeFormContainer = observer(() => {
           }, 2000);
         });
     }
-  }, [type, location, id, openNotification, getEmployesDetailsById, navigate]);
+  }, [type, location, id, openNotification, getEmployesDetailsById, navigate, haveApiCall]);
 
   const commonProps = {
     handleSubmitProfile,

@@ -56,6 +56,16 @@ const EmployFormSidebar = observer(() => {
           >
             Documents
           </Link>
+          <Divider />
+          <Link
+            onClick={() => handleChange("work-experience")}
+            fontSize="lg"
+            fontWeight="medium"
+            _hover={{ textDecoration: "underline", color: "blue.700" }}
+            cursor="pointer"
+          >
+            Work Experience
+          </Link>
         </VStack>
       </VStack>
     </Box>
