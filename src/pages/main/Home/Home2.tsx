@@ -4,6 +4,11 @@ import FlipCard from "./component/FlipCard/Flipcard";
 import Card2 from "./component/Card2/Card2";
 import MultiCardComponent from "./component/MultiCardComponent/MultiCardComponent";
 import CircularProgressBar from "./component/CircularProgressBar/CircularProgressBar";
+import CourseCard from "./component/CourseCard/CourseCard";
+import WhyUs from "./component/WhyUs/WhyUs";
+import TeachersCard from "./component/TeachersCard/TeachersCard";
+import whyus from "./component/WhyUs/whyus.webp";
+import icon from "./component/WhyUs/scholar.webp";
 
 const servicesData = [
   {
@@ -75,38 +80,6 @@ const cardData = [
     backDescription:
       "Upgrade your home and kitchen effortlessly with our streamlined online shopping experience.",
   },
-  {
-    id: 5,
-    imageUrl: "/images/ondc/grocery.webp",
-    imageAlt: "Grocery",
-    name: "Grocery",
-    backDescription:
-      "Join us and discover the ultimate convenience of online grocery shopping today!",
-  },
-  {
-    id: 6,
-    imageUrl: "/images/ondc/beauty-selfcare.webp",
-    imageAlt: "Beauty and Personal Care",
-    name: "Beauty and Personal Care",
-    backDescription:
-      "Elevate your beauty and personal care routine effortlessly with our curated selection and user-friendly shopping experience",
-  },
-  {
-    id: 7,
-    imageUrl: "/images/ondc/mobility.webp",
-    imageAlt: "Mobility",
-    name: "Mobility",
-    backDescription:
-      "Unlock boundless mobility possibilities with our platform - your key to seamless journeys and newfound freedom.",
-  },
-  {
-    id: 8,
-    imageUrl: "/images/ondc/financial-services.webp",
-    imageAlt: "Financial Services",
-    name: "Financial Services",
-    backDescription:
-      "Effortlessly explore diverse finance options on our platform, from gift cards to investments and insurance.",
-  },
 ];
 
 const data = [
@@ -155,10 +128,96 @@ const card = [
   },
 ];
 
+const courses = [
+  {
+    id: 1,
+    title: "React Course",
+    admin: "admin",
+    price: "500.00",
+    rating: 4,
+    duration: "12",
+    imageUrl:
+      "https://studentwp.wptech.co/wp-content/uploads/2021/07/img-4-356x253.jpg",
+  },
+  {
+    id: 1,
+    title: "React Course",
+    admin: "admin",
+    price: "500.00",
+    rating: 4,
+    duration: "12",
+    imageUrl:
+      "https://studentwp.wptech.co/wp-content/uploads/2021/07/img-4-356x253.jpg",
+  },
+  {
+    id: 1,
+    title: "React Course",
+    admin: "admin",
+    price: "500.00",
+    rating: 4,
+    duration: "12",
+    imageUrl:
+      "https://studentwp.wptech.co/wp-content/uploads/2021/07/img-4-356x253.jpg",
+  },
+  {
+    id: 1,
+    title: "React Course",
+    admin: "admin",
+    price: "500.00",
+    rating: 4,
+    duration: "12",
+    imageUrl:
+      "https://studentwp.wptech.co/wp-content/uploads/2021/07/img-4-356x253.jpg",
+  },
+];
+
+const cardData1 = [
+  {
+    icon: icon,
+    heading: "Professional Trainer",
+    text: "If you're considering whether to do a postgraduate degree, probably a lot of questions.",
+  },
+  {
+    icon: icon,
+    heading: "Another Heading",
+    text: "If you're considering whether to do a postgraduate degree, probably a lot of questions.",
+  },
+  {
+    icon: icon,
+    heading: "Another Heading",
+    text: "If you're considering whether to do a postgraduate degree, probably a lot of questions.",
+  },
+  {
+    icon: icon,
+    heading: "Another Heading",
+    text: "If you're considering whether to do a postgraduate degree, probably a lot of questions.",
+  },
+];
+
+const teachers = [
+  {
+    imageUrl:
+      "https://studentwp.wptech.co/wp-content/uploads/2021/08/teacher1-337x329.jpg",
+    name: "Tarun Verma",
+    role: "Cypress",
+    linkedin: "https://www.linkedin.com/in/johndoe",
+    twitter: "https://twitter.com/johndoe",
+    instagram: "https://www.instagram.com/janesmith",
+  },
+  {
+    imageUrl:
+      "https://studentwp.wptech.co/wp-content/uploads/2021/08/teacher1-337x329.jpg",
+    name: "Jane Smith",
+    role: "Mathematics Teacher",
+    linkedin: "https://www.linkedin.com/in/janesmith",
+    instagram: "https://www.instagram.com/janesmith",
+  },
+];
+
 const Home2 = () => {
   return (
     <>
-      <Box>
+      <Box m={12}>
         <Grid templateColumns={"1fr 1fr 1fr 1fr"} columnGap={4}>
           {servicesData.map((value) => (
             <Card1
@@ -223,6 +282,30 @@ const Home2 = () => {
           // button={"FAQ"}
         />
       </Box>
+
+      <Grid
+        templateColumns={{ base: "1fr", md: "1fr 1fr", lg: "1fr 1fr 1fr 1fr" }}
+        gap={2}
+        p={10}
+      >
+        {courses.map((course) => (
+          <CourseCard key={course.id} {...course} />
+        ))}
+      </Grid>
+      <WhyUs cards={cardData1} whyus={whyus} />
+      <Grid templateColumns={"1fr 1fr 1fr 1fr"} gap={4} m={30}>
+        {teachers.map((teacher, index) => (
+          <TeachersCard
+            key={index}
+            imageUrl={teacher.imageUrl}
+            name={teacher.name}
+            role={teacher.role}
+            linkedin={teacher.linkedin}
+            instagram={teacher.instagram}
+            twitter={teacher.twitter}
+          />
+        ))}
+      </Grid>
     </>
   );
 };
