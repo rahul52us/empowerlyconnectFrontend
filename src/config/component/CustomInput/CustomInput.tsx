@@ -65,6 +65,7 @@ interface CustomInputProps {
   onFileDrop?: (files: FileList) => void;
   readOnly?:boolean;
   rest?: any;
+  labelcolor?:any
 }
 
 const CustomInput: React.FC<CustomInputProps> = ({
@@ -93,6 +94,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
   onFileDrop,
   accept,
   readOnly,
+  labelcolor,
   // Added onFileDrop prop
   ...rest
 }) => {
@@ -404,7 +406,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
 
   return (
     <FormControl id={name} isInvalid={!!error && showError}>
-      <FormLabel fontSize={"small"} mt={2}>
+      <FormLabel color={labelcolor} fontSize={"small"} mt={2}>
         {label} {required && <span style={{ color: "red" }}>*</span>}
       </FormLabel>
       {renderInputComponent()}
