@@ -55,7 +55,8 @@ class EmployeStore {
       getEmployesCount:action,
       updateEmployeBankDetails:action,
       updateFamilyDetails:action,
-      updateWorkExperience:action
+      updateWorkExperience:action,
+      updateDocuments:action
     });
   }
 
@@ -127,6 +128,15 @@ class EmployeStore {
     }
   }
 
+
+  updateDocuments = async (id : any , sendData : any) => {
+    try {
+      const { data } = await axios.put(`employe/updateDocuments/${id}`, sendData);
+      return data;
+    } catch (err: any) {
+      return Promise.reject(err?.response?.data || err);
+    }
+  }
   updateEmployeProfile = async (id : any , sendData : any) => {
     try {
       const { data } = await axios.put(`employe/profile/${id}`, sendData);

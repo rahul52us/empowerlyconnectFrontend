@@ -35,6 +35,7 @@ const PersonalWorkExperience = ({
         setFieldValue,
       }: any) => {
         console.log(errors);
+        console.log(values)
         return (
           <Form onSubmit={handleSubmit}>
             <Box p={4} borderRadius="lg" boxShadow="md">

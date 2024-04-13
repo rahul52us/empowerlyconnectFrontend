@@ -8,6 +8,7 @@ import FamilyDetails from "../../forms/PersonalFamilyDetails";
 import { dashboard } from "../../../../../../config/constant/routes";
 import EmployFormSidebar from "../component/EmployFormSidebar";
 import PersonalWorkExperience from "../../forms/PersonalWorkExperience";
+import PersonalDocuments from "../../forms/PersonalDocuments";
 
 const EmployeContainer = observer(
   ({
@@ -25,6 +26,7 @@ const EmployeContainer = observer(
     const navigate = useNavigate();
     const tab: any = new URLSearchParams(location.search).get("tab");
 
+    console.log(files)
     const getEditActiveComponent = ({
       profileData,
       type,
@@ -81,6 +83,18 @@ const EmployeContainer = observer(
               setFiles={setFiles}
             />
           );
+        case "documents":
+            return (
+              <PersonalDocuments
+                type={type}
+                profileData={profileData}
+                handleSubmitProfile={handleSubmitProfile}
+                initialValues={initialValues?.documents}
+                validations={validations}
+                files={files}
+                setFiles={setFiles}
+              />
+        );
         default:
           return (
             <Button
@@ -144,6 +158,18 @@ const EmployeContainer = observer(
               setFiles={setFiles}
             />
           );
+        case "documents":
+            return (
+              <PersonalDocuments
+                type={type}
+                profileData={profileData}
+                handleSubmitProfile={handleSubmitProfile}
+                initialValues={initialValues?.documents}
+                validations={validations}
+                files={files}
+                setFiles={setFiles}
+              />
+            );
         default:
           return (
             <Button

@@ -128,7 +128,7 @@ export const employeInitialValues = (type: string, data: any) => {
             startDate: new Date(item.startDate),
             endDate: new Date(item.endDate),
             certificate: item.certificate
-              ? { file: [{ ...item.certificate, file: item.certificate?.url }]}
+              ? { file: [{ ...item.certificate, file: item.certificate?.url }] }
               : null,
           })
         ),
@@ -136,6 +136,33 @@ export const employeInitialValues = (type: string, data: any) => {
     }
     return {
       workExperience: workExperience,
+    };
+  } else if (type === "documents") {
+    let documents = { ...data?.documents[0] };
+    return {
+      documents: documents?.documents || {
+        class10: {
+          file:null,
+          isDeleted: 0,
+          isAdd: 0,
+          validTill: "",
+          effectiveForm: "",
+        },
+        class12: {
+          file:null,
+          isDeleted: 0,
+          isAdd: 0,
+          validTill: "",
+          effectiveForm: "",
+        },
+        games: {
+          file:null,
+          isDeleted: 0,
+          isAdd: 0,
+          validTill: "",
+          effectiveForm: "",
+        },
+      },
     };
   } else {
     return { profileDetails: {} };

@@ -48,7 +48,7 @@ const EmployFormSidebar = observer(() => {
           </Link>
           <Divider />
           <Link
-            onClick={() => handleChange("family-details")}
+            onClick={() => handleChange("documents")}
             fontSize="lg"
             fontWeight="medium"
             _hover={{ textDecoration: "underline", color: "blue.700" }}

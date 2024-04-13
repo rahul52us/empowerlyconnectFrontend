@@ -35,7 +35,8 @@ const EmployeFormContainer = observer(() => {
       getEmployesDetailsById,
       updateEmployeBankDetails,
       updateFamilyDetails,
-      updateWorkExperience
+      updateWorkExperience,
+      updateDocuments
     },
     auth: { openNotification },
   } = store;
@@ -222,6 +223,45 @@ const EmployeFormContainer = observer(() => {
             setLoading(false);
           });
       }
+      else if(tab === "documents"){
+        let dt = await Promise.all(Object.entries(values).map(async ([key, item] : any) => {
+          if (item?.isAdd && item?.file) {
+              const buffer = await readFileAsBase64(item?.file[0]);
+              const fileData = {
+                  buffer: buffer,
+                  filename: item.file[0].name,
+                  type: item.file[0].type,
+                  isFileDeleted: item.isDeleted,
+                  isAdd: item.isAdd,
+              };
+              return [key, fileData];
+          } else {
+              return [key, item];
+          }
+      }));
+        dt = Object.fromEntries(dt);
+        updateDocuments(id, {documents : dt})
+          .then(() => {
+            setShowError(false);
+            setErrors({});
+            openNotification({
+              type: "success",
+              message: "Update Documents Successfully",
+              title: "Updated Successfully",
+            });
+            setHaveApiCall(false)
+          })
+          .catch((err) => {
+            openNotification({
+              type: "error",
+              message: err?.message,
+              title: "Failed to Update Documents",
+            });
+          })
+          .finally(() => {
+            setLoading(false);
+          });
+      }
     } else {
       if (tab === "profile-details") {
         createEmploye({ ...generateSubmitResponse(values) })
@@ -250,9 +290,6 @@ const EmployeFormContainer = observer(() => {
         setLoading(false);
       }
       else if(tab === "work-experience"){
-        console.log(values)
-        setLoading(false)
-        return
         updateWorkExperience(id, values)
           .then(() => {
             setShowError(false);
@@ -275,7 +312,9 @@ const EmployeFormContainer = observer(() => {
             setLoading(false);
           });
       }
+      else if(tab === "documents"){
     }
+  }
   };
 
   useEffect(() => {
