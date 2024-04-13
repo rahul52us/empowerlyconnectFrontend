@@ -217,8 +217,8 @@ const teachers = [
 const Home2 = () => {
   return (
     <>
-      <Box m={12}>
-        <Grid templateColumns={"1fr 1fr 1fr 1fr"} columnGap={4}>
+      <Box m={14}>
+        <Grid templateColumns={"1fr 1fr 1fr 1fr"} gap={8}>
           {servicesData.map((value) => (
             <Card1
               id={value.id}
@@ -265,7 +265,7 @@ const Home2 = () => {
         </Grid>
       </Box>
       <Box my={6}>
-        <CircularProgressBar progressValue={50} description={"Million Views"} />
+        <CircularProgressBar progressValue={100} description={"Million Views"} />
       </Box>
       <Box m={{ base: "1rem", lg: "6rem" }}>
         <MultiCardComponent
@@ -276,10 +276,6 @@ const Home2 = () => {
           }
           title={"Got Question?"}
           card={card}
-          // image={
-          //   "https://img.freepik.com/free-vector/woman-thinking-isoalted-design-illustration_18591-83949.jpg?t=st=1712074549~exp=1712078149~hmac=8701df5ed01458315f895f4ec71052571f98651a538d5c911fdcdc4c75a7860b&w=740"
-          // }
-          // button={"FAQ"}
         />
       </Box>
 

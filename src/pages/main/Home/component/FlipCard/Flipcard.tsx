@@ -1,4 +1,4 @@
-import { Box, Text, Image } from "@chakra-ui/react";
+import { Box, Text, Image, useColorModeValue } from "@chakra-ui/react";
 import { useState } from "react";
 
 interface Props {
@@ -25,7 +25,7 @@ const FlipCard = ({ imageUrl, imageAlt, name, backDescription }: Props) => {
     height: "100%",
     backfaceVisibility: "hidden",
   };
-  
+
   const backFaceStyles: React.CSSProperties = {
     ...cardFaceStyles,
     transform: "rotateY(180deg)",
@@ -51,7 +51,7 @@ const FlipCard = ({ imageUrl, imageAlt, name, backDescription }: Props) => {
           rounded={16}
           boxShadow={"md"}
           p={"1rem"}
-          bg={"blue.50"}
+          bg={useColorModeValue("pink.100", "blue.800")}
         >
           <Image src={imageUrl} alt={imageAlt} objectFit="contain" />
           <Text
@@ -59,6 +59,7 @@ const FlipCard = ({ imageUrl, imageAlt, name, backDescription }: Props) => {
             fontWeight="500"
             textAlign="center"
             pt="1.5rem"
+            color={"black"}
           >
             {name}
           </Text>
@@ -85,7 +86,7 @@ const FlipCard = ({ imageUrl, imageAlt, name, backDescription }: Props) => {
             rounded={16}
             backdropFilter={"blur(3px)"}
           />
-          <Text lineHeight="2.4rem" color="white" zIndex={2}>
+          <Text lineHeight="2rem" color="white" zIndex={2}>
             {backDescription}
           </Text>
         </Box>

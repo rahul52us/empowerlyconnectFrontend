@@ -1,4 +1,4 @@
-import { Box, Image, Text } from "@chakra-ui/react";
+import { Box, Image, Text, useColorModeValue } from "@chakra-ui/react";
 
 interface Props {
   title: string;
@@ -20,6 +20,7 @@ const Card1 = ({ title, description, alt, image, id }: Props) => {
       cursor="pointer"
       _hover={{ transform: "scale(1.06)" }}
       transition="transform 0.3s ease-in-out"
+      bg={useColorModeValue("white", "blue.800")}
     >
       <Image src={image} alt={alt} w="auto" h="auto" objectFit="contain" />
       <Text mt={2} fontWeight="600" fontSize={{ base: "1.8rem", md: "1.4rem" }}>

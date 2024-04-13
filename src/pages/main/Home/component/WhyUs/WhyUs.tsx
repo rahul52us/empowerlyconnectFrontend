@@ -71,10 +71,15 @@ const WhyUs: React.FC<WhyUsProps> = ({ cards, whyus }: WhyUsProps) => {
                   <Heading
                     textAlign={{ base: "center", md: "unset" }}
                     fontSize={{ base: "xl", md: "2xl", lg: "2xl" }}
+                    color={"black"}
                   >
                     {card.heading}
                   </Heading>
-                  <Text my={2} textAlign={{ base: "center", md: "unset" }}>
+                  <Text
+                    color={"black"}
+                    my={2}
+                    textAlign={{ base: "center", md: "unset" }}
+                  >
                     {card.text}
                   </Text>
                 </Box>
