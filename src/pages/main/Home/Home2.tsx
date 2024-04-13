@@ -10,6 +10,7 @@ import TeachersCard from "./component/TeachersCard/TeachersCard";
 import whyus from "./component/WhyUs/whyus.webp";
 import icon from "./component/WhyUs/scholar.webp";
 import ExpandCard from "./component/ExpandCard/ExpandCard";
+import InstructorCard from "./component/InstructorCard/InstructorCard";
 
 const servicesData = [
   {
@@ -218,6 +219,19 @@ const teachers = [
 const Home2 = () => {
   return (
     <>
+      {/* <InstructorCard/> */}
+      <InstructorCard
+        name="Edward Norton"
+        jobTitle="Web Developer"
+        profileImageUrl="https://demo.edublink.co/wp-content/uploads/2023/07/team-06.webp"
+        instagram="https://instagram.com/edwardnorton"
+        linkedin="https://linkedin.com/in/edwardnorton"
+        twitter="https://twitter.com/edwardnorton"
+        about={
+          "Consectetur adipisicing elit, sed do eius mod tempor incididunt"
+        }
+      />
+
       <ExpandCard
         image={
           "https://demo.edublink.co/wp-content/uploads/2023/03/course-43-590x430.jpg"
