@@ -9,6 +9,7 @@ import WhyUs from "./component/WhyUs/WhyUs";
 import TeachersCard from "./component/TeachersCard/TeachersCard";
 import whyus from "./component/WhyUs/whyus.webp";
 import icon from "./component/WhyUs/scholar.webp";
+import ExpandCard from "./component/ExpandCard/ExpandCard";
 
 const servicesData = [
   {
@@ -217,6 +218,17 @@ const teachers = [
 const Home2 = () => {
   return (
     <>
+      <ExpandCard
+        image={
+          "https://demo.edublink.co/wp-content/uploads/2023/03/course-43-590x430.jpg"
+        }
+        title={"Living room Sofa"}
+        description={
+          " This sofa is perfect for modern tropical spaces, baroque inspired spaces, earthy toned spaces and for people who love a chic design with a sprinkle of vintage design."
+        }
+        buttonText={"Learn More"}
+      />
+
       <Box m={14}>
         <Grid templateColumns={"1fr 1fr 1fr 1fr"} gap={8}>
           {servicesData.map((value) => (
@@ -265,7 +277,10 @@ const Home2 = () => {
         </Grid>
       </Box>
       <Box my={6}>
-        <CircularProgressBar progressValue={100} description={"Million Views"} />
+        <CircularProgressBar
+          progressValue={100}
+          description={"Million Views"}
+        />
       </Box>
       <Box m={{ base: "1rem", lg: "6rem" }}>
         <MultiCardComponent
