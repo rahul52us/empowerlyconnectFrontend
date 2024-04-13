@@ -32,10 +32,13 @@ const Card2 = ({
           <Image src={image} alt={title} width={70} height={70} />
         </Flex>
         <Box p="1rem" flex="1">
-          <Text color="teal.300" fontWeight="600" fontSize="xl">
+          <Text color={bgColor} fontWeight="600" fontSize="xl">
             {title}
           </Text>
-          <Text fontSize={{ base: "1rem", md: "lg" }}>{about}</Text>
+          <Text 
+          color={'black'}
+          // color={useColorModeValue("")}
+          fontSize={{ base: "1rem", md: "lg" }}>{about}</Text>
         </Box>
       </Flex>
     </Box>
