@@ -11,6 +11,7 @@ import whyus from "./component/WhyUs/whyus.webp";
 import icon from "./component/WhyUs/scholar.webp";
 import ExpandCard from "./component/ExpandCard/ExpandCard";
 import InstructorCard from "./component/InstructorCard/InstructorCard";
+import HeroSection2 from "./component/HeroSection2/HeroSection2";
 
 const servicesData = [
   {
@@ -219,7 +220,9 @@ const teachers = [
 const Home2 = () => {
   return (
     <>
-      {/* <InstructorCard/> */}
+      
+    <HeroSection2/>
+
       <InstructorCard
         name="Edward Norton"
         jobTitle="Web Developer"
