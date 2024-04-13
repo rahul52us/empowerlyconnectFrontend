@@ -16,7 +16,7 @@ import Loader from "../../../../../../config/component/Loader/Loader";
 import { readFileAsBase64 } from "../../../../../../config/constant/function";
 
 const EmployeFormContainer = observer(() => {
-  const [haveApiCall, setHaveApiCall] = useState(false)
+  const [haveApiCall, setHaveApiCall] = useState(false);
   const [files, setFiles] = useState<any>({
     cancelledCheque: {
       file: null,
@@ -36,7 +36,7 @@ const EmployeFormContainer = observer(() => {
       updateEmployeBankDetails,
       updateFamilyDetails,
       updateWorkExperience,
-      updateDocuments
+      updateDocuments,
     },
     auth: { openNotification },
   } = store;
@@ -86,7 +86,7 @@ const EmployeFormContainer = observer(() => {
               message: "Update Profile Successfully",
               title: "Updated Successfully",
             });
-            setHaveApiCall(false)
+            setHaveApiCall(false);
           })
           .catch((err) => {
             openNotification({
@@ -100,7 +100,10 @@ const EmployeFormContainer = observer(() => {
           });
       } else if (tab === "bank-details") {
         let bankDetails: any = values;
-        if (files?.cancelledCheque?.file && (files?.cancelledCheque?.isAdd || files.cancelledCheque?.isDeleted)) {
+        if (
+          files?.cancelledCheque?.file &&
+          (files?.cancelledCheque?.isAdd || files.cancelledCheque?.isDeleted)
+        ) {
           const buffer = await readFileAsBase64(files.cancelledCheque.file[0]);
           const fileData = {
             buffer: buffer,
@@ -131,7 +134,7 @@ const EmployeFormContainer = observer(() => {
               message: "Update Bank Successfully",
               title: "Updated Successfully",
             });
-            setHaveApiCall(false)
+            setHaveApiCall(false);
           })
           .catch((err) => {
             openNotification({
@@ -143,8 +146,7 @@ const EmployeFormContainer = observer(() => {
           .finally(() => {
             setLoading(false);
           });
-      }
-      else if(tab === "family-details"){
+      } else if (tab === "family-details") {
         updateFamilyDetails(id, values)
           .then(() => {
             setShowError(false);
@@ -154,7 +156,7 @@ const EmployeFormContainer = observer(() => {
               message: "Update Family Successfully",
               title: "Updated Successfully",
             });
-            setHaveApiCall(false)
+            setHaveApiCall(false);
           })
           .catch((err) => {
             openNotification({
@@ -166,42 +168,44 @@ const EmployeFormContainer = observer(() => {
           .finally(() => {
             setLoading(false);
           });
-      }
-      else if(tab === "work-experience"){
-        let dt = await Promise.all(values.experienceDetails.map(async (item : any) => {
-          if (item?.certificate?.isAdd && item?.certificate?.file) {
-            const buffer = await readFileAsBase64(item?.certificate?.file[0]);
-          const fileData = {
-            buffer: buffer,
-            filename: item.certificate.file[0].name,
-            type: item.certificate.file[0].type,
-            isFileDeleted: item.certificate.isDeleted,
-            isAdd: item.certificate.isAdd,
-          };
-            return {
-              ...item,
-              certificate: fileData
-            };
-          }
-          else if(item.certificate?.isDeleted){
-            const fileData = {
-              isFileDeleted: item.certificate.isDeleted
-            };
-            return {
-              ...item,
-              certificate: fileData
-            };
-          }
-          else {
-            if (item?.certificate && Array.isArray(item?.certificate?.file) && item?.certificate?.file?.length > 0) {
-              return {...item,certificate : item?.certificate?.file[0]}
+      } else if (tab === "work-experience") {
+        let dt = await Promise.all(
+          values.experienceDetails.map(async (item: any) => {
+            if (item?.certificate?.isAdd && item?.certificate?.file) {
+              const buffer = await readFileAsBase64(item?.certificate?.file[0]);
+              const fileData = {
+                buffer: buffer,
+                filename: item.certificate.file[0].name,
+                type: item.certificate.file[0].type,
+                isFileDeleted: item.certificate.isDeleted,
+                isAdd: item.certificate.isAdd,
+              };
+              return {
+                ...item,
+                certificate: fileData,
+              };
+            } else if (item.certificate?.isDeleted) {
+              const fileData = {
+                isFileDeleted: item.certificate.isDeleted,
+              };
+              return {
+                ...item,
+                certificate: fileData,
+              };
+            } else {
+              if (
+                item?.certificate &&
+                Array.isArray(item?.certificate?.file) &&
+                item?.certificate?.file?.length > 0
+              ) {
+                return { ...item, certificate: item?.certificate?.file[0] };
+              } else {
+                return item;
+              }
             }
-            else {
-              return item
-            }
-          }
-        }));
-        updateWorkExperience(id, {experienceDetails : dt})
+          })
+        );
+        updateWorkExperience(id, { experienceDetails: dt })
           .then(() => {
             setShowError(false);
             setErrors({});
@@ -210,7 +214,7 @@ const EmployeFormContainer = observer(() => {
               message: "Update Work Experience Successfully",
               title: "Updated Successfully",
             });
-            setHaveApiCall(false)
+            setHaveApiCall(false);
           })
           .catch((err) => {
             openNotification({
@@ -222,25 +226,29 @@ const EmployeFormContainer = observer(() => {
           .finally(() => {
             setLoading(false);
           });
-      }
-      else if(tab === "documents"){
-        let dt = await Promise.all(Object.entries(values).map(async ([key, item] : any) => {
-          if (item?.isAdd && item?.file) {
+      } else if (tab === "documents") {
+        let dt = await Promise.all(
+          Object.entries(values).map(async ([key, item]: any) => {
+            if (item?.isAdd && item?.file) {
               const buffer = await readFileAsBase64(item?.file[0]);
               const fileData = {
-                  buffer: buffer,
-                  filename: item.file[0].name,
-                  type: item.file[0].type,
-                  isFileDeleted: item.isDeleted,
-                  isAdd: item.isAdd,
+                buffer: buffer,
+                filename: item.file[0].name,
+                type: item.file[0].type,
+                isFileDeleted: item.isDeleted,
+                isAdd: item.isAdd,
               };
               return [key, fileData];
-          } else {
+            } else {
+              if(Array.isArray(item.file) && item?.file?.length){
+                return [key, item.file[0]];
+              }
               return [key, item];
-          }
-      }));
+            }
+          })
+        );
         dt = Object.fromEntries(dt);
-        updateDocuments(id, {documents : dt})
+        updateDocuments(id, { documents: dt })
           .then(() => {
             setShowError(false);
             setErrors({});
@@ -249,7 +257,7 @@ const EmployeFormContainer = observer(() => {
               message: "Update Documents Successfully",
               title: "Updated Successfully",
             });
-            setHaveApiCall(false)
+            setHaveApiCall(false);
           })
           .catch((err) => {
             openNotification({
@@ -274,7 +282,7 @@ const EmployeFormContainer = observer(() => {
               message: "Create New Employe Successfully",
               title: "Create Successfully",
             });
-            setHaveApiCall(false)
+            setHaveApiCall(false);
           })
           .catch((err) => {
             openNotification({
@@ -288,8 +296,7 @@ const EmployeFormContainer = observer(() => {
           });
       } else if (tab === "bank-details") {
         setLoading(false);
-      }
-      else if(tab === "work-experience"){
+      } else if (tab === "work-experience") {
         updateWorkExperience(id, values)
           .then(() => {
             setShowError(false);
@@ -299,7 +306,7 @@ const EmployeFormContainer = observer(() => {
               message: "Create Work Experience Successfully",
               title: "Updated Successfully",
             });
-            setHaveApiCall(false)
+            setHaveApiCall(false);
           })
           .catch((err) => {
             openNotification({
@@ -311,10 +318,9 @@ const EmployeFormContainer = observer(() => {
           .finally(() => {
             setLoading(false);
           });
+      } else if (tab === "documents") {
       }
-      else if(tab === "documents"){
     }
-  }
   };
 
   useEffect(() => {
@@ -323,7 +329,7 @@ const EmployeFormContainer = observer(() => {
       getEmployesDetailsById(id)
         .then((data: any) => {
           setUserData(data);
-          setHaveApiCall(true)
+          setHaveApiCall(true);
         })
         .catch((err: any) => {
           openNotification({
@@ -336,7 +342,15 @@ const EmployeFormContainer = observer(() => {
           }, 2000);
         });
     }
-  }, [type, location, id, openNotification, getEmployesDetailsById, navigate, haveApiCall]);
+  }, [
+    type,
+    location,
+    id,
+    openNotification,
+    getEmployesDetailsById,
+    navigate,
+    haveApiCall,
+  ]);
 
   const commonProps = {
     handleSubmitProfile,

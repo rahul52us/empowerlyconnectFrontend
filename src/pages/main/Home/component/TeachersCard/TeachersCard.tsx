@@ -1,6 +1,5 @@
 import { Box, Flex, Heading, IconButton, Image, Text } from "@chakra-ui/react";
-import { FaInstagram, FaLinkedinIn } from "react-icons/fa";
-import { FaXTwitter } from "react-icons/fa6";
+import { FaInstagram, FaLinkedinIn, FaTwitter } from "react-icons/fa";
 
 interface Teacher {
   imageUrl: string;
@@ -66,7 +65,7 @@ export default function TeachersCard({
             color={"white"}
             aria-label="Twitter"
             fontSize={"2xl"}
-            icon={<FaXTwitter />}
+            icon={<FaTwitter />}
             as="a"
             href={twitter}
             target="_blank"

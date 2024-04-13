@@ -138,9 +138,17 @@ export const employeInitialValues = (type: string, data: any) => {
       workExperience: workExperience,
     };
   } else if (type === "documents") {
+    let docs : any = {}
     let documents = { ...data?.documents[0] };
+    if(documents.documents){
+      const documentFields = Object.keys(documents.documents)
+      for (const fieldName of documentFields) {
+        docs[fieldName] = {file : [{...documents.documents[fieldName], file : documents.documents[fieldName].url}]}
+      }
+    }
+
     return {
-      documents: documents?.documents || {
+      documents: Object.keys(docs).length ? docs : {
         class10: {
           file:null,
           isDeleted: 0,

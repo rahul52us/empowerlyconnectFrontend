@@ -1,4 +1,3 @@
-import { CalendarIcon, StarIcon } from "@chakra-ui/icons";
 import {
   Box,
   Flex,
@@ -7,6 +6,8 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { BiCalendar } from "react-icons/bi";
+import { RiAttachmentLine } from "react-icons/ri";
 
 export default function CourseCard({
   title,
@@ -49,12 +50,12 @@ export default function CourseCard({
               </Text>
               <Flex color={"gold"} gap={1}>
                 {Array.from({ length: rating }, (_, index) => (
-                  <StarIcon key={index} />
+                  <RiAttachmentLine key={index} />
                 ))}
               </Flex>
             </Flex>
             <Flex mt={6} alignItems={"center"} gap={2}>
-              <CalendarIcon color={"gray"} />
+              <BiCalendar color={"gray"} />
               <Text color={"gray"}>Duration: {duration} Weeks</Text>
             </Flex>
           </Box>
