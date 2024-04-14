@@ -214,13 +214,14 @@ const teachers = [
     role: "Mathematics Teacher",
     linkedin: "https://www.linkedin.com/in/janesmith",
     instagram: "https://www.instagram.com/janesmith",
+    twitter: "https://twitter.com/johndoe",
   },
 ];
 
 const Home2 = () => {
   return (
     <>
-      
+
     <HeroSection2/>
 
       <InstructorCard
@@ -320,9 +321,11 @@ const Home2 = () => {
           <CourseCard key={course.id} {...course} />
         ))}
       </Grid>
-      <WhyUs cards={cardData1} whyus={whyus} />
-      <Grid templateColumns={"1fr 1fr 1fr 1fr"} gap={4} m={30}>
-        {teachers.map((teacher, index) => (
+      <Grid
+        templateColumns={{ base: "1fr", md: "1fr 1fr", lg: "1fr 1fr 1fr 1fr" }}
+        gap={2}
+        p={10}
+      >        {teachers.map((teacher, index) => (
           <TeachersCard
             key={index}
             imageUrl={teacher.imageUrl}
@@ -334,6 +337,7 @@ const Home2 = () => {
           />
         ))}
       </Grid>
+      <WhyUs cards={cardData1} whyus={whyus} />
     </>
   );
 };
