@@ -14,12 +14,12 @@ import {
   AiOutlineShareAlt,
 } from "react-icons/ai";
 
-type ProfileCard = {
+type ProfileCardI= {
   title?: string;
   src?: string;
 };
 
-function ProfileCard({ src }: ProfileCard) {
+function ProfileCard({ src }: ProfileCardI) {
   return (
     <Grid templateColumns={{ md: "1fr 1fr" }}>
       <Grid

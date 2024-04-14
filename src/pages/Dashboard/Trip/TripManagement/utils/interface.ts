@@ -49,5 +49,7 @@ export interface TripFormI {
   onSubmit : any,
   thumbnail : any,
   setThumbnail : any,
-  isEdit? : boolean
+  isEdit? : boolean,
+  isFileDeleted?:number,
+  setIsFileDeleted?:any
 }

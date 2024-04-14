@@ -1,10 +1,10 @@
 import { Card, Grid } from "@chakra-ui/react";
 import BarChart from "../../../config/component/charts/BarChart";
-import PieChart from "../../../config/component/charts/PieChart";
 import { observer } from "mobx-react-lite";
 import store from "../../../store/store";
 import { useEffect } from "react";
 import { makeChartResponse } from "./utils/common";
+import LineGraph from "../../../config/component/charts/LineChart";
 
 const DashChartContainer = observer(() => {
   const {
@@ -53,13 +53,13 @@ const DashChartContainer = observer(() => {
     >
       <Card width={"100%"} minH={350} p={{ base: 0, sm: 2 }}>
         <BarChart
-          data={coursesChartData?.data}
+          data={null}
           options={coursesChartData?.options}
           loading={categoryCoursesCount.loading}
         />
       </Card>
       <Card width={"100%"} minH={350} p={{ base: 0, sm: 2 }}>
-        <PieChart
+        <LineGraph
           data={videosChartData?.data}
           options={videosChartData?.options}
           loading={categoryVideosCount.loading}

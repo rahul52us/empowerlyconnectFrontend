@@ -87,7 +87,6 @@ const CreateOrganisation = observer(() => {
               first_name: "",
               last_name: "",
               company_name: "",
-              username: "",
               password: "",
               remember_me: false,
               token: token,
@@ -121,7 +120,7 @@ const CreateOrganisation = observer(() => {
           >
             {({ handleSubmit, handleChange, errors, values, isSubmitting }) => (
               <Form onSubmit={handleSubmit}>
-                  <Grid gridTemplateColumns={{base : '1fr', md : '1fr 1fr'}} gap={2}>
+                  <Grid gridTemplateColumns={{base : '1fr', md : '1fr'}} gap={2}>
                   <CustomInput
                     type="text"
                     name="first_name"
@@ -142,17 +141,6 @@ const CreateOrganisation = observer(() => {
                     error={errors.last_name}
                     onChange={handleChange}
                     value={values.last_name}
-                    showError={showError}
-                  />
-                  <CustomInput
-                    type="text"
-                    name="username"
-                    label="Email"
-                    placeholder="Enter the email"
-                    required={true}
-                    error={errors.username}
-                    onChange={handleChange}
-                    value={values.username}
                     showError={showError}
                   />
                   <CustomInput

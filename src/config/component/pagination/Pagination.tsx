@@ -6,16 +6,17 @@ interface PaginationProps {
   currentPage: number;
   totalPages: number;
   onPageChange: (page: number) => void;
+  props?:any
 }
 
-const Pagination = ({ currentPage, totalPages, onPageChange }: PaginationProps) => {
+const Pagination = ({ currentPage, totalPages, onPageChange, props }: PaginationProps) => {
   const handlePageChange = (selectedItem: { selected: number }) => {
     onPageChange(selectedItem.selected + 1);
   };
 
   return (
     totalPages ?
-    <Box display="flex" alignItems="center" justifyContent="center" marginTop="0.1rem">
+    <Box display="flex" alignItems="center" justifyContent="center" marginTop="0.1rem" {...props}>
       <ReactPaginate
         previousLabel="Prev"
         nextLabel="Next"
@@ -30,7 +31,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }: PaginationProps) 
         activeClassName="paginationActive"
         pageClassName="paginationItem"
         pageLinkClassName="paginationLink"
-        pageRangeDisplayed={2}
+        pageRangeDisplayed={5} // Show 5 pages at a time
         marginPagesDisplayed={1}
       />
     </Box> : null

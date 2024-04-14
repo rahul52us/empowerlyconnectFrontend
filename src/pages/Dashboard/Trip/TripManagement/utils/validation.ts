@@ -25,7 +25,7 @@ export interface TravelDetails {
 export interface TripFormValues {
   title: string;
   description: string;
-  thumbnail: string;
+  thumbnail: any;
   country: string;
   type: { label: string, value: string };
   travelDetails: TravelDetails[];
@@ -36,7 +36,6 @@ export interface TripFormValues {
 const tripFormValidation: any = Yup.object().shape({
   title: Yup.string().required('Title is required'),
   description: Yup.string().required('Description is required'),
-  thumbnail: Yup.string().url('Thumbnail must be a valid URL'),
   country: Yup.string().required('Country is required'),
   travelDetails: Yup.array().of(
     Yup.object().shape({

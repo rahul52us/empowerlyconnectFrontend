@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import {
   Button,
   Input,
@@ -8,9 +8,11 @@ import {
   PopoverHeader,
   PopoverBody,
   VStack,
+  IconButton,
 } from "@chakra-ui/react";
-import { debounce } from 'lodash';
+import { debounce } from "lodash";
 import CustomInput from "../CustomInput/CustomInput";
+import { FaFilter } from "react-icons/fa";
 
 interface DropdownOption {
   value: string;
@@ -20,17 +22,18 @@ interface DropdownOption {
 interface Dropdown {
   label: string;
   options: DropdownOption[];
+  placeholder?: string;
 }
 
 interface MultiDropdownProps {
-  search?:any;
-  title?:string;
+  search?: any;
+  title?: string;
   dropdowns: Dropdown[];
   selectedOptions: { [key: string]: DropdownOption[] };
   onDropdownChange: (value: any, label: string) => void;
   onApply: () => void;
-  searchValue: string;
-  onSearchChange: (value: string) => void;
+  resetFilters?: any;
+  minH?: any;
 }
 
 const MultiDropdown = ({
@@ -40,17 +43,27 @@ const MultiDropdown = ({
   selectedOptions,
   onDropdownChange,
   onApply,
-  onSearchChange,
+  resetFilters,
 }: MultiDropdownProps) => {
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState(search?.searchValue || "");
   const [isPopoverOpen, setIsPopoverOpen] = useState<boolean>(false);
 
-  const debouncedSearchChange = useCallback(
-    debounce((value: string) => {
-      onSearchChange(value);
-    }, 1000),
-    [onSearchChange]
-  );
+  useEffect(() => {
+    const debouncedHandler = debounce((value: string) => {
+      if(search?.onSearchChange){
+        search?.onSearchChange(value);
+      }
+    }, 1000);
+
+    const timeoutId = setTimeout(() => {
+      debouncedHandler(inputValue);
+    }, 1000);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [inputValue, search]);
+
 
   const handlePopoverClose = () => {
     setIsPopoverOpen(false);
@@ -60,11 +73,14 @@ const MultiDropdown = ({
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
       setInputValue(value);
-      debouncedSearchChange(value);
     },
-    [setInputValue, debouncedSearchChange]
+    [setInputValue]
   );
 
+  const resetFilterss = () => {
+    resetFilters();
+    setInputValue("");
+  };
 
   return (
     <Popover
@@ -73,51 +89,63 @@ const MultiDropdown = ({
       placement="bottom-start"
     >
       <PopoverTrigger>
-        <Button
+        <IconButton
+          aria-label=""
+          fontSize="sm"
           onClick={() => setIsPopoverOpen(!isPopoverOpen)}
-          variant="outline"
-          colorScheme="blue"
-          _hover={{ bg: "blue.100" }}
+          borderColor="teal.300"
+          bg="teal.400"
+          color= "white"
+          _hover={{ bg: "teal.400", borderColor: "teal.400", color: "white" }}
+          size="md"
         >
-         {title ? title : 'Apply Filter'}
-        </Button>
+          <FaFilter title={title || undefined}/>
+        </IconButton>
       </PopoverTrigger>
       <PopoverContent p={3} bg="white" borderColor="gray.300" boxShadow="md">
-        <PopoverHeader mt={-1} fontWeight="bold" borderBottomWidth="1px">
+        <PopoverHeader
+          mt={-1}
+          fontWeight="bold"
+          borderBottomWidth="1px"
+          color="teal.400"
+        >
           Select Options
         </PopoverHeader>
         <PopoverBody>
           <VStack rowGap={1} align="stretch">
-            {
-            search && search?.visible &&
-            <Input
-              placeholder={search?.placeholder || "Search"}
-              value={inputValue}
-              onChange={handleInputChange}
-              borderRadius="md"
-              bg="white"
-              borderColor="gray.300"
-              _focus={{ borderColor: "blue.500", boxShadow: "outline" }}
-            />}
-            {dropdowns.map((dropdown: Dropdown, index: number) => (
-              <CustomInput
-                label={dropdown.label}
-                isClear
-                isSearchable={false}
-                name="select"
-                type="select"
-                key={index}
-                options={dropdown.options}
-                placeholder={`${dropdown.label}`}
-                value={selectedOptions[dropdown.label]}
-                onChange={(selected) =>
-                  onDropdownChange(selected, dropdown.label)
-                }
+            {search && search?.visible && (
+              <Input
+                placeholder={search?.placeholder || "Search"}
+                value={inputValue}
+                onChange={handleInputChange}
+                borderRadius="md"
+                bg="white"
+                borderColor="gray.300"
+                _focus={{ borderColor: "blue.500", boxShadow: "outline" }}
               />
-            ))}
+            )}
+            {dropdowns.map((dropdown: Dropdown, index: number) => {
+              return (
+                <CustomInput
+                  label={dropdown.label}
+                  isClear
+                  isSearchable={false}
+                  name="select"
+                  type="select"
+                  isMulti={true}
+                  key={index}
+                  options={dropdown.options}
+                  placeholder={dropdown.placeholder || "Select Option"}
+                  value={selectedOptions[dropdown.label] || null}
+                  onChange={(selected : any) => {
+                    onDropdownChange(selected, dropdown.label);
+                  }}
+                />
+              );
+            })}
             <Button
-              colorScheme="blue"
-              _hover={{ bg: "blue.500" }}
+              colorScheme="teal"
+              // _hover={{ bg: "blue.500" }}
               onClick={() => {
                 onApply();
                 handlePopoverClose();
@@ -126,6 +154,21 @@ const MultiDropdown = ({
             >
               Apply
             </Button>
+            {resetFilters && (
+              <Button
+                variant="outline"
+                mt={1}
+                onClick={() => resetFilterss()}
+                // bg="white"
+                // color="teal.500"
+                border="2px solid"
+                // borderColor="teal.400"
+                colorScheme="red"
+                // _hover={{ bg: "teal.50" }}
+              >
+                Reset Filter
+              </Button>
+            )}
           </VStack>
         </PopoverBody>
       </PopoverContent>

@@ -1,167 +1,189 @@
+import React from "react";
 import {
-    Badge,
-    Box,
-    Flex,
-    IconButton,
-    Menu,
-    MenuButton,
-    MenuItem,
-    MenuList,
-    Tooltip,
-    useDisclosure,
-    VStack,
-  } from "@chakra-ui/react";
-  import {
-    FiBell,
-    FiMail,
-    FiClock,
-    FiAlertCircle,
-    FiCheck,
-    FiTrash,
-  } from "react-icons/fi";
-  import { useState } from "react";
+  Badge,
+  Box,
+  Divider,
+  Flex,
+  IconButton,
+  Image,
+  Menu,
+  MenuButton,
+  MenuList,
+  Text,
+  useDisclosure,
+} from "@chakra-ui/react";
+import styles from './blinking.module.css';
+import { FiBell } from "react-icons/fi";
+import { useState } from "react";
+import { BiTime } from "react-icons/bi";
 
-  interface Notification {
-    id: number;
-    type: "message" | "deadline" | "update";
-    text: string;
-    time: string;
-  }
+interface Notification {
+  id: number;
+  type: "message" | "deadline" | "update";
+  text: string;
+  time: string;
+  image?: string;
+}
 
-  const HeaderNotification: React.FC = () => {
-    const [notifications] = useState<Notification[]>([
-      {
-        id: 1,
-        type: "message",
-        text: "New message received",
-        time: "10 minutes ago",
-      },
-      {
-        id: 2,
-        type: "deadline",
-        text: "Task deadline approaching",
-        time: "1 hour ago",
-      },
-      { id: 3, type: "update", text: "New update available", time: "2 days ago" },
-      { id: 4, type: "update", text: "New update available", time: "2 days ago" },
-      { id: 5, type: "update", text: "New update available", time: "2 days ago" },
-      { id: 6, type: "update", text: "New update available", time: "2 days ago" },
-    ]);
+const HeaderNotification: React.FC = () => {
+  const [notifications] = useState<Notification[]>([
+    {
+      id: 1,
+      type: "message",
+      text: "New message received",
+      time: "10 min",
+      image:
+        "https://res.cloudinary.com/dsckn1jjj/image/upload/v1711637410/taskManager/modified.jpg",
+    },
+    {
+      id: 2,
+      type: "deadline",
+      text: "Task deadline approaching",
+      time: "1 hour",
+      image:
+        "https://res.cloudinary.com/dsckn1jjj/image/upload/v1711674003/taskManager/334843157_977901480284799_1399147790687063389_n%20%281%29.jpg", // Placeholder image URL
+    },
+    {
+      id: 3,
+      type: "update",
+      text: "New update available",
+      time: "2 days",
+      image:
+        "https://res.cloudinary.com/dsckn1jjj/image/upload/v1711651813/taskManager/WhatsApp%20Image%202024-03-29%20at%2000.13.36_33e5c4ea.jpg",
+    },
+    {
+      id: 4,
+      type: "update",
+      text: "New update available",
+      time: "2 days",
+      image:
+        "https://res.cloudinary.com/dsckn1jjj/image/upload/v1711635563/taskManager/WhatsApp%20Image%202024-03-20%20at%2017.54.37_3199f02c_magicstudio_2h8r6rwgi0g.png",
+    },
+    { id: 5, type: "update", text: "New update available", time: "2 days" },
+  ]);
 
-    const unreadCount = notifications.length; // Calculate the unread notifications count
+  const unreadCount = notifications.length;
 
-    const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
-    const markAsRead = (id: number) => {
-      // Implement logic to mark notification as read
-      console.log(`Notification marked as read: ${id}`);
-    };
-
-    const deleteNotification = (id: number) => {
-      // Implement logic to delete notification
-      console.log(`Notification deleted: ${id}`);
-    };
-
-    const getNotificationIcon = (type: string) => {
-      switch (type) {
-        case "message":
-          return <FiMail />;
-        case "deadline":
-          return <FiClock />;
-        case "update":
-          return <FiAlertCircle />;
-        default:
-          return null;
-      }
-    };
-
+  const MessageContainer = ({ item }: any) => {
     return (
-      <Tooltip>
-        <Flex position="relative" align="center">
-          <Menu isOpen={isOpen} onClose={onClose} closeOnSelect={false}>
-            <MenuButton
-              as={IconButton}
-              icon={<FiBell />}
-              variant="ghost"
-              aria-label="Notifications"
-              fontSize="xl"
-              onClick={onOpen}
-              mr={2}
-            />
-            <MenuList minWidth="240px" boxShadow="md" borderRadius="md">
-              <Box maxHeight="400px" overflowY="auto">
-                {notifications.length > 0 ? (
-                  <VStack align="start" spacing={2} p={2}>
-                    {notifications.map((notification) => (
-                      <MenuItem
-                        key={notification.id}
-                        borderRadius="md"
-                        _hover={{ bg: "gray.100" }}
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="space-between"
-                        px={3}
-                        py={2}
-                      >
-                        <Flex align="center">
-                          <Box as="span" fontSize="lg" mr={2}>
-                            {getNotificationIcon(notification.type)}
-                          </Box>
-                          <VStack align="start" spacing={1}>
-                            <Box>{notification.text}</Box>
-                            <Box fontSize="xs" color="gray.500">
-                              {notification.time}
-                            </Box>
-                          </VStack>
-                        </Flex>
-                        <Flex align="center">
-                          <IconButton
-                            icon={<FiCheck />}
-                            variant="ghost"
-                            fontSize="sm"
-                            color="green.500"
-                            aria-label="Mark as Read"
-                            onClick={() => markAsRead(notification.id)}
-                            _hover={{ color: "green.600" }}
-                            mr={2}
-                          />
-                          <IconButton
-                            icon={<FiTrash />}
-                            variant="ghost"
-                            fontSize="sm"
-                            color="red.500"
-                            aria-label="Delete"
-                            onClick={() => deleteNotification(notification.id)}
-                            _hover={{ color: "red.600" }}
-                          />
-                        </Flex>
-                      </MenuItem>
-                    ))}
-                  </VStack>
-                ) : (
-                  <MenuItem>No new notifications</MenuItem>
-                )}
-              </Box>
-            </MenuList>
-          </Menu>
-          {unreadCount > 0 && (
-            <Badge
-              position="absolute"
-              top="-2px"
-              right="-3px"
+      <Flex flexDirection="column" cursor="pointer">
+        <Flex
+          p={4}
+          borderBottom="2px solid lightgray"
+          justifyContent="space-between"
+        >
+          <Flex alignItems="center">
+            <Image
+              src={item.image}
               borderRadius="full"
-              variant="solid"
-              colorScheme="red"
-              fontSize="0.5em"
-              px={2}
-              py={1}
-            >
-              {unreadCount}
-            </Badge>
-          )}
+              boxSize="45px"
+              objectFit="cover"
+              title={item.type}
+            />
+            <Flex flexDirection="column" ml={3}>
+              <Text fontWeight="bold">{item.type}</Text>
+              <Text fontSize="sm" color="gray.600" maxWidth="300px">
+                {item.text}
+              </Text>
+            </Flex>
+          </Flex>
+          <Flex alignItems="center">
+            <BiTime fontSize="xs" />
+            <Text fontSize="xs" ml={2}>
+              {item.time}
+            </Text>
+          </Flex>
         </Flex>
-      </Tooltip>
+      </Flex>
     );
   };
 
-  export default HeaderNotification;
+  return (
+    <Flex position="relative" align="center">
+      <Menu isOpen={isOpen} onClose={onClose} closeOnSelect={false}>
+        <MenuButton
+          as={IconButton}
+          icon={<FiBell />}
+          variant="ghost"
+          aria-label="Notifications"
+          fontSize="xl"
+          onClick={onOpen}
+          mr={2}
+        />
+        <MenuList minWidth="350px" p={0} borderRight={10} mt={1.5} zIndex={9999999}>
+          <Flex
+            m={0}
+            p={3}
+            pb={3.5}
+            bgColor="#3b4650"
+            justifyContent="space-between"
+            alignItems="center"
+            textColor="white"
+            borderRadius={5}
+            borderBottomRightRadius={0}
+            borderBottomLeftRadius={0}
+          >
+            <Box>
+              <Text>Notifications</Text>
+            </Box>
+            <Flex columnGap={4}>
+              <Text textDecoration="underline" cursor="pointer">
+                mark as read
+              </Text>
+              <Text textDecoration="underline" cursor="pointer">
+                clear
+              </Text>
+            </Flex>
+          </Flex>
+          <Box maxHeight="300px" overflowY="auto">
+            {notifications.map((item: any, index: number) => {
+              return <MessageContainer item={item} key={index} />;
+            })}
+          </Box>
+          {notifications.length === 0 && (
+            <Flex h="120px" justifyContent="center" flexDirection="column">
+              <Box>
+                <Text fontSize="sm" cursor="pointer" textAlign="center">
+                  No notifications Are found
+                </Text>
+              </Box>
+            </Flex>
+          )}
+          <Divider />
+          <Flex justifyContent="center" p={3} bgColor="#f6f7fb">
+            <Text
+              textDecoration="underline"
+              fontSize="sm"
+              cursor="pointer"
+              fontWeight="bold"
+            >
+              Show All
+            </Text>
+          </Flex>
+        </MenuList>
+      </Menu>
+      <>
+      {unreadCount > 0 && (
+        <Badge
+          className={styles.blink}
+          position="absolute"
+          top="-2px"
+          right="-3px"
+          borderRadius="full"
+          variant="solid"
+          colorScheme="red"
+          fontSize="0.8em"
+          px={2}
+          py={1}
+        >
+          {unreadCount}
+        </Badge>
+      )}
+    </>
+    </Flex>
+  );
+};
+
+export default HeaderNotification;

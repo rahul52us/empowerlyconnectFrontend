@@ -63,6 +63,25 @@ const StaffIndex = lazy(
 const TripManagementIndex = lazy(
   () => import("../../pages/Dashboard/Trip/TripManagement")
 );
+
+// Employes
+
+
+const EmployesManagementIndex = lazy(
+  () => import("../../pages/Dashboard/Employes")
+);
+
+const EmployeDetails = lazy(
+  () => import("../../pages/Dashboard/Employes/component/EmployeDetails/EmployeDetails")
+);
+
+const EmployeCreate = lazy(
+  () => import("../../pages/Dashboard/Employes/component/EmployeDetails/formContainer/EmployeFormContainer")
+);
+
+
+const Department = lazy(() => import("../../pages/Dashboard/Department/Department"))
+
 export const DashboardRoutes = [
   {
     element: <DashboardIndex />,
@@ -143,4 +162,31 @@ export const DashboardRoutes = [
     path: dashboard.tripManagement.index,
     privateRoutes: true,
   },
+
+  // employes
+  {
+    element : <EmployesManagementIndex />,
+    path : dashboard.employes.index,
+    privateRoutes : true
+  },
+  {
+    element : <EmployeDetails />,
+    path : dashboard.employes.details,
+    privateRoutes : true
+  },
+  {
+    element : <EmployeCreate />,
+    path : dashboard.employes.new,
+    privateRoutes : true
+  },
+  {
+    element : <EmployeCreate />,
+    path : dashboard.employes.edit,
+    privateRoutes : true
+  },
+  {
+    element : <Department />,
+    path:dashboard.department.index,
+    privateRoutes:true
+  }
 ];

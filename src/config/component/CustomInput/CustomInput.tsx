@@ -12,6 +12,8 @@ import {
   Flex,
   Radio,
   RadioGroup,
+  InputRightElement,
+  InputGroup,
 } from "@chakra-ui/react";
 import { RiCloseFill, RiEyeLine, RiEyeOffLine } from "react-icons/ri";
 import { useState } from "react";
@@ -58,9 +60,12 @@ interface CustomInputProps {
   showError?: boolean;
   style?: any;
   phone?: string;
+  accept?:any;
   // Callback for file drop
   onFileDrop?: (files: FileList) => void;
-  props?: any;
+  readOnly?:boolean;
+  rest?: any;
+  labelcolor?:any
 }
 
 const CustomInput: React.FC<CustomInputProps> = ({
@@ -87,6 +92,9 @@ const CustomInput: React.FC<CustomInputProps> = ({
   disabledDates,
   phone,
   onFileDrop,
+  accept,
+  readOnly,
+  labelcolor,
   // Added onFileDrop prop
   ...rest
 }) => {
@@ -101,7 +109,6 @@ const CustomInput: React.FC<CustomInputProps> = ({
     (event: React.DragEvent<HTMLDivElement>) => {
       event.preventDefault();
       const files = event.dataTransfer.files;
-      console.log(files);
       if (onFileDrop) {
         onFileDrop(files);
       }
@@ -113,6 +120,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
     switch (type) {
       case "password":
         return (
+          <InputGroup>
           <Input
             type={showPassword ? "text" : "password"}
             pr="4.5rem"
@@ -121,11 +129,19 @@ const CustomInput: React.FC<CustomInputProps> = ({
             value={value}
             onChange={onChange}
             name={name}
-            required={required}
+            isRequired={required}
             disabled={disabled}
-            _placeholder={{ fontSize: "12px" }}
+            fontSize="sm"
             {...rest}
           />
+          <InputRightElement cursor="pointer" onClick={()=> {if (handleTogglePassword) {handleTogglePassword()}}}>
+          {showPassword ? (
+              <RiEyeOffLine size={18} />
+            ) : (
+              <RiEyeLine size={18} />
+            )}
+          </InputRightElement>
+          </InputGroup>
         );
       case "number":
         return (
@@ -172,6 +188,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
             name={name}
             disabled={disabled}
             _placeholder={{ fontSize: "12px" }}
+            readOnly={readOnly}
             {...rest}
           />
         );
@@ -186,6 +203,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
             name={name}
             disabled={disabled}
             _placeholder={{ fontSize: "12px" }}
+            readOnly={readOnly}
             {...rest}
           />
         );
@@ -218,6 +236,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
             name={name}
             onChange={onChange}
             isChecked={value}
+            readOnly={readOnly}
             {...rest}
           />
         );
@@ -317,6 +336,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
       case "file":
         return (
           <Input
+            readOnly={readOnly}
             style={style}
             type="file"
             placeholder={placeholder}
@@ -325,6 +345,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
             name={name}
             disabled={disabled}
             _placeholder={{ fontSize: "12px" }}
+            accept={accept}
             {...rest}
           />
         );
@@ -349,6 +370,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
               onChange={onChange}
               style={{ display: "none" }}
               id={`multiple-file-upload-with-draggable-${name}`}
+              accept={accept}
             />
             <Button
               colorScheme="blue"
@@ -367,6 +389,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
       default:
         return (
           <Input
+            readOnly={readOnly}
             style={style}
             type="text"
             placeholder={placeholder}
@@ -383,30 +406,10 @@ const CustomInput: React.FC<CustomInputProps> = ({
 
   return (
     <FormControl id={name} isInvalid={!!error && showError}>
-      <FormLabel fontSize={"small"} mt={2}>
+      <FormLabel color={labelcolor} fontSize={"small"} mt={2}>
         {label} {required && <span style={{ color: "red" }}>*</span>}
       </FormLabel>
-      <div style={{ position: "relative" }}>
-        {renderInputComponent()}
-        {type === "password" && (
-          <div
-            style={{
-              position: "absolute",
-              top: "50%",
-              right: "0.75rem",
-              transform: "translateY(-50%)",
-              cursor: "pointer",
-            }}
-            onClick={handleTogglePassword}
-          >
-            {showPassword ? (
-              <RiEyeOffLine size={18} />
-            ) : (
-              <RiEyeLine size={18} />
-            )}
-          </div>
-        )}
-      </div>
+      {renderInputComponent()}
       {showError && error && <FormErrorMessage>{error}</FormErrorMessage>}
     </FormControl>
   );

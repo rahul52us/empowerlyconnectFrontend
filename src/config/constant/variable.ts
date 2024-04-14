@@ -1,3 +1,4 @@
+export const tablePageLimit = 10
 export const LargeScreenHeaderHeight = "60px"
 export const SmallScreenHeaderHeight = "50px"
 export const sidebarWidth = '230px';

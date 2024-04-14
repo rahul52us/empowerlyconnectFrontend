@@ -17,16 +17,32 @@ import CustomDrawer from "../../Drawer/CustomDrawer";
 
 const ShowFileUploadFile = observer(({ files, removeFile, edit }: any) => {
   const [selectedFile, setSelectedFile] = useState<any>({
-    type: edit ? files.type : null,
-    file: edit ? files.file : null,
+    type: null,
+    file: null,
   });
 
   const setSelectedFileFun = async (item: any) => {
     if (edit) {
-      setSelectedFile({
-        type: selectedFile.type,
-        file: selectedFile.file,
-      });
+      if(item.url){
+        setSelectedFile({
+          type: item.type,
+          file: item.file,
+        });
+      }
+      else {
+        let file: any = await readFileAsBase64(item);
+        if (file) {
+          if (item.name.endsWith(".pdf")) {
+            setSelectedFile({ type: "pdf", file: file });
+          } else {
+            setSelectedFile({ type: "image", file: file });
+          }
+          setSelectedFile({
+            type: item.type,
+            file: file,
+          });
+      }
+      }
     } else {
       let file: any = await readFileAsBase64(item);
       if (file) {
@@ -40,10 +56,10 @@ const ShowFileUploadFile = observer(({ files, removeFile, edit }: any) => {
   };
 
   const renderFileComponent = (type: string, url: any) => {
-    if (type === "pdf") {
+    if (type === "pdf" || type?.startsWith("application/pfd")) {
       return <FileViewer url={url} />;
     }
-    if (type === "image") {
+    if (type === "image" || type?.startsWith("image/")) {
       return <Image src={url} />;
     }
     return null;

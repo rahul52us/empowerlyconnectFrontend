@@ -9,7 +9,7 @@ import {
   generateTripResponse,
 } from "../../utils/functions";
 
-const EditTripForm = observer(({ tripFormData, setTripFormData }: any) => {
+const EditTripForm = observer(({ tripFormData, setTripFormData, handleGetRecord }: any) => {
   const {
     tripStore: { updateTrip },
     auth: { openNotification },
@@ -17,7 +17,7 @@ const EditTripForm = observer(({ tripFormData, setTripFormData }: any) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [showError, setShowError] = useState(false);
   const [thumbnail, setThumbnail] = useState<any>([]);
-
+  const [isFileDeleted, setIsFileDeleted] = useState(0);
   useEffect(() => {
     if (
       tripFormData?.data?.thumbnail?.name &&
@@ -42,9 +42,26 @@ const EditTripForm = observer(({ tripFormData, setTripFormData }: any) => {
 
   const submitForm = async (values: TripFormValues, resetForm: any) => {
     setLoading(true);
-    values.thumbnail = thumbnail;
+    if (isFileDeleted === 1 && thumbnail?.length) {
+      values.thumbnail = thumbnail;
+    } else {
+      if (thumbnail?.length) {
+        if (thumbnail[0]?.url) {
+          delete values["thumbnail"];
+        } else {
+          values.thumbnail = thumbnail;
+        }
+      }
+    }
+    if (isFileDeleted === 1 && thumbnail?.length === 0) {
+      delete values["thumbnail"];
+    }
+
     const payload = await generateTripResponse(values);
-    updateTrip(payload, tripFormData?.data?._id)
+    updateTrip(
+      { ...payload, isFileDeleted: isFileDeleted },
+      tripFormData?.data?._id
+    )
       .then(() => {
         openNotification({
           title: "Trip Updated Successfully",
@@ -52,7 +69,9 @@ const EditTripForm = observer(({ tripFormData, setTripFormData }: any) => {
         });
         resetForm();
         setThumbnail([]);
+        setIsFileDeleted(0);
         setTripFormData({ open: false, type: "add" });
+        handleGetRecord({})
       })
       .catch((err) => {
         openNotification({
@@ -66,13 +85,14 @@ const EditTripForm = observer(({ tripFormData, setTripFormData }: any) => {
       });
   };
 
-  console.log("the thumbnail is", thumbnail);
   return (
     <CustomDrawer
       title={`Edit Trip`}
       open={tripFormData.open && tripFormData.type === "edit"}
       close={() => {
         setTripFormData({ open: false, data: null, type: "add" });
+        setThumbnail([]);
+        setIsFileDeleted(0);
       }}
       props={{ minWidth: "85vw" }}
     >
@@ -85,9 +105,13 @@ const EditTripForm = observer(({ tripFormData, setTripFormData }: any) => {
         onSubmit={submitForm}
         showError={showError}
         setShowError={setShowError}
-        onClose={() =>
-          setTripFormData({ open: false, data: null, type: "add" })
-        }
+        isFileDeleted={isFileDeleted}
+        setIsFileDeleted={setIsFileDeleted}
+        onClose={() => {
+          setTripFormData({ open: false, data: null, type: "add" });
+          setIsFileDeleted(0);
+          setThumbnail([]);
+        }}
       />
     </CustomDrawer>
   );

@@ -1,4 +1,3 @@
-import { toJS } from "mobx";
 import { YYYYMMDD_FORMAT, formatDate } from "../../../../../config/constant/dateUtils";
 import { readFileAsBase64 } from "../../../../../config/constant/function";
 import { categoryTypes, travelModes, tripTypes } from "./constant";
@@ -9,10 +8,12 @@ import {
   TripFormValues,
 } from "./interface";
 
+export const generateTableData = (data : any[]) => {
+  return data.map((item : any) => ({...item,...item}))
+}
 
 export const generateFormError = (errors: any, parent : any, type: string, index: number) => {
   if(errors?.[parent]?.[index]?.[type]){
-    console.log('the error is', errors)
     return errors?.[parent]?.[index]?.[type];
   }else{
     return undefined
@@ -20,7 +21,7 @@ export const generateFormError = (errors: any, parent : any, type: string, index
 }
 
 export const generateTripResponse = async (data: TripFormValues) => {
-  if (Array.isArray(data.thumbnail) && data.thumbnail.length) {
+  if (Array.isArray(data?.thumbnail) && data.thumbnail?.length) {
     const buffer = await readFileAsBase64(data.thumbnail[0]);
     const fileData = {
       buffer: buffer,
@@ -28,9 +29,6 @@ export const generateTripResponse = async (data: TripFormValues) => {
       type: data.thumbnail[0].type,
     };
     data.thumbnail = fileData;
-  }
-  else{
-    data.thumbnail = ""
   }
   const updatedTravelDetails = data.travelDetails.map(
     (item: TravelDetails) => ({
@@ -64,13 +62,9 @@ export const generateTripResponse = async (data: TripFormValues) => {
 
 
 export const generateEditInitialValues = (data : any) => {
-
-  console.log('the data is', toJS(data))
   const updatedTravelDetails = data.travelDetails.map(
     (item: TravelDetails) => {
       let td : any = travelModes.filter((it : any) => it.value === item.travelMode)
-
-      console.log('the td is', td)
       return({
       ...item,
       travelMode: item?.travelMode ? td.length ? td[0] : undefined :  undefined,
@@ -80,8 +74,6 @@ export const generateEditInitialValues = (data : any) => {
       isCab:String(item.isCab)
     })
 });
-
-  console.log('the updated travels is', toJS(updatedTravelDetails))
   let types = tripTypes.filter((it : any) => it.value === data.type.value)
   const type = data.type ? types.length ? types[0] : undefined : undefined;
 

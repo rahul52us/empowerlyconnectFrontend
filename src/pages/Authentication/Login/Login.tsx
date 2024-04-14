@@ -1,5 +1,4 @@
 import {
-  Box,
   Checkbox,
   Stack,
   Link,
@@ -7,6 +6,7 @@ import {
   Heading,
   Text,
   useColorModeValue,
+  Flex,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { observer } from "mobx-react-lite";
@@ -25,22 +25,29 @@ const Login = observer(() => {
   const navigate = useNavigate();
 
   return (
-    <Box
+    <Flex flexDir="column"
+
+    justifyContent={"center"}
       bg={useColorModeValue("", "gray.800")}
     >
-        <Stack align={"center"} mb={10}>
-          <Heading fontSize={"4xl"}>Sign in to your account</Heading>
-          <Text fontSize={"lg"} color={"gray.600"}>
+        
+        <Flex
+          rounded={"lg"}
+          flexDir={"column"}
+          justifyContent={"center"}
+          bg={useColorModeValue("transparent", "gray.700")}
+          backdropFilter={"blur(12px)"}
+          filter={'brightness(0.7)'}
+          // boxShadow={"lg"}
+          p={8}
+        >
+          <Stack align={"center"} mb={10} >
+          <Heading color={"snow"} fontSize={"4xl"}>Sign In</Heading>
+          <Text fontSize={"lg"} color={"snow"}>
             to enjoy all of
              our cool <Link color={"blue.400"}>features</Link> ✌️
           </Text>
         </Stack>
-        <Box
-          rounded={"lg"}
-          bg={useColorModeValue("white", "gray.700")}
-          boxShadow={"lg"}
-          p={8}
-        >
           <Formik
             initialValues={{
               username: "",
@@ -75,6 +82,7 @@ const Login = observer(() => {
                 <Stack spacing={4}>
                   <CustomInput
                     type="text"
+                    labelcolor={"snow"}
                     name="username"
                     label="Email"
                     placeholder="Enter the email"
@@ -86,6 +94,7 @@ const Login = observer(() => {
                   />
                   <CustomInput
                     type="password"
+                    labelcolor={"snow"}
                     name="password"
                     label="Password"
                     placeholder="Enter the password"
@@ -101,7 +110,7 @@ const Login = observer(() => {
                       align={"start"}
                       justify={"space-between"}
                     >
-                      <Field as={Checkbox} name="remember_me">
+                      <Field color='white' as={Checkbox} name="remember_me">
                         Remember me
                       </Field>
                       <Link
@@ -130,8 +139,8 @@ const Login = observer(() => {
               </Form>
             )}
           </Formik>
-        </Box>
-    </Box>
+        </Flex>
+    </Flex>
   );
 });
 

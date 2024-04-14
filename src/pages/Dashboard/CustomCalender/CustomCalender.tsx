@@ -1,132 +1,113 @@
-import React, { useState, useRef } from 'react';
-import FullCalendar from '@fullcalendar/react';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import interactionPlugin, { DateClickArg } from '@fullcalendar/interaction';
-import { Tooltip } from '@chakra-ui/react';
-import { ButtonGroup, IconButton } from '@chakra-ui/react';
-import { FaCalendarDay, FaCalendarWeek, FaCalendarAlt, FaCalendar } from 'react-icons/fa';
-import { EventClickArg } from '@fullcalendar/core';
+import { useState } from "react";
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import interactionPlugin, { DateClickArg } from "@fullcalendar/interaction";
+import {
+  Box,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Button,
+} from "@chakra-ui/react";
+import moment from "moment";
 
-// import './calendar.css'; // Import your CSS file for custom styling
-
-interface Task {
-  title: string;
-  start: string;
-  end: string;
-  description: string;
-  location: string;
-}
-
-const MyCalendar: React.FC = () => {
-  const [tasks, setTasks] = useState<Task[]>([]);
-  const calendarRef = useRef<FullCalendar>(null);
+const AttendanceCalendar = () => {
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
-
-  const handleAddTask = () => {
-    const newTask: Task = {
-      title: 'Task 1',
-      start: '2023-07-26',
-      end: '2023-07-28',
-      description: 'This is task 2 description',
-      location: 'Task Location',
-    };
-    setTasks([...tasks, newTask]);
-  };
-
-
-  console.log(tasks)
-
-  const renderEventContent = (eventInfo: any) => {
-    const { event } = eventInfo;
-
-    return (
-      <Tooltip label={event.extendedProps.description} placement="top">
-        <div>{event.title}</div>
-      </Tooltip>
-    );
-  };
-
-  const handleEventClick = (arg: EventClickArg) => {
-    const clickedEvent = arg.event;
-    console.log(clickedEvent.extendedProps);
-    // Handle event click
-  };
-
-  const handleDatesSet = (arg: any) => {
-    console.log(arg.start, arg.end);
-    // Handle dates set
-  };
-
-  const handleViewChange = (view: string) => {
-    if (calendarRef.current) {
-      calendarRef.current.getApi().changeView(view);
-    }
-  };
+  const [eventDetails, setEventDetails] = useState<any>(null);
 
   const handleCellClick = (arg: DateClickArg) => {
     setSelectedDate(arg.dateStr);
   };
 
-  const handleCellSelectionComplete = () => {
-    // Perform actions with the selected cells
-    console.log(selectedDate);
+  const handleEventClick = (clickInfo: any) => {
+    console.log("Event clicked:", clickInfo.event);
+    setEventDetails(clickInfo.event);
+  };
+
+  const closeModal = () => {
+    setEventDetails(null);
   };
 
   const calendarOptions = {
-    plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
-    initialView: 'dayGridMonth',
-    events: tasks.map(task => ({
-      title: task.title,
-      start: task.start,
-      end: task.end,
-      extendedProps: {
-        description: task.description,
-        location: task.location,
-      },
-    })),
-    eventContent: renderEventContent,
+    plugins: [dayGridPlugin, interactionPlugin],
+    initialView: "dayGridMonth",
+    dateClick: handleCellClick,
+    selectable: true,
     eventClick: handleEventClick,
-    datesSet: handleDatesSet,
-    dateClick: handleCellClick, // Use custom cell click event
-    selectable: true, // Enable cell selection
-    select: handleCellSelectionComplete, // Trigger function when cell selection is complete
-    eventRender: function(info : any) {
-      if (selectedDate && info.event.startStr === selectedDate) {
-        info.el.classList.add('selected-date');
-      }
-    },
+    eventSources: [
+      // Array of event sources
+      {
+        events: [
+          {
+            title: "John Doe - Present",
+            start: moment("2024-03-15").toDate(),
+            end: moment("2024-03-18").add(1, "hours").toDate(),
+            classNames: ["present-event"], // Add class to style present events differently
+            color: "green", // Define color for present events
+          },
+          {
+            title: "John Doe - Present",
+            start: moment("2024-03-20").toDate(),
+            end: moment("2024-03-20").add(1, "hours").toDate(),
+            classNames: ["present-event"], // Add class to style present events differently
+            color: "green", // Define color for present events
+          },
+          {
+            title: "John Doe - Present",
+            start: moment().toDate(),
+            end: moment().add(1, "hours").toDate(),
+            classNames: ["present-event"], // Add class to style present events differently
+            color: "green", // Define color for present events
+          },
+          {
+            title: "Jane Smith - Leave",
+            start: moment().add(2, "days").toDate(),
+            end: moment().add(3, "days").toDate(),
+            classNames: ["leave-event"], // Add class to style leave events differently
+            color: "red", // Define color for leave events
+          },
+          // Add more events as needed
+        ],
+        color: "transparent", // Hide default background color
+        textColor: "black", // Set text color for events
+      },
+    ],
     // Add more options as per your requirements
   };
 
+  console.log("Event details:", eventDetails);
+  console.log("selected Date", selectedDate)
   return (
-    <div>
-      <ButtonGroup>
-        <IconButton
-          aria-label="Month View"
-          icon={<FaCalendarAlt />}
-          onClick={() => handleViewChange('dayGridMonth')}
-        />
-        <IconButton
-          aria-label="Week View"
-          icon={<FaCalendarWeek />}
-          onClick={() => handleViewChange('timeGridWeek')}
-        />
-        <IconButton
-          aria-label="Day View"
-          icon={<FaCalendarDay />}
-          onClick={() => handleViewChange('timeGridDay')}
-        />
-        <IconButton
-          aria-label="Year View"
-          icon={<FaCalendar />}
-          onClick={() => handleViewChange('dayGridYear')}
-        />
-      </ButtonGroup>
-      <button onClick={handleAddTask}>Add Task</button>
-      <FullCalendar {...calendarOptions} ref={calendarRef} />
-    </div>
+    <>
+      <Box height={"100%"}>
+        <FullCalendar {...calendarOptions} />
+      </Box>
+      {eventDetails && (
+        <Modal isOpen={true} onClose={closeModal} isCentered>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Event Details</ModalHeader>
+            <ModalBody>
+              <p>Title: {eventDetails.title}</p>
+              <p>
+                Start: {moment(eventDetails.start).format("YYYY-MM-DD HH:mm")}
+              </p>
+              <p>End: {moment(eventDetails.end).format("YYYY-MM-DD HH:mm")}</p>
+              {/* Add more event details as needed */}
+            </ModalBody>
+            <ModalFooter>
+              <Button colorScheme="blue" onClick={closeModal}>
+                Close
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      )}
+    </>
   );
 };
 
-export default MyCalendar;
+export default AttendanceCalendar;

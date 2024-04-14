@@ -53,7 +53,9 @@ onSubmit,
 initialValues,
 thumbnail,
 setThumbnail,
-isEdit
+isEdit,
+isFileDeleted,
+setIsFileDeleted
 }: TripFormI) => {
 return (
 	<Box>
@@ -65,8 +67,6 @@ return (
 		}}
 	>
 		{({ handleChange, setFieldValue, values, errors }) => {
-		console.log("the value is ", values);
-		console.log("the error is", errors)
 		return (
 			<Form>
 			<SimpleGrid columns={2} spacing={4}>
@@ -78,6 +78,7 @@ return (
 						name="thumbnail"
 						value={thumbnail}
 						isMulti={false}
+						accept="image/*"
 						onChange={(e: any) => {
 						insertUniqueFile(
 							setThumbnail,
@@ -91,8 +92,14 @@ return (
 						<ShowFileUploadFile
 						edit={isEdit}
 						files={thumbnail}
-						removeFile={(_: any, index: number) =>
+						setIsFileDeleted={setIsFileDeleted}
+						isFileDeleted={isFileDeleted}
+						removeFile={(_: any, index: number) => {
 							setThumbnail(removeDataByIndex(thumbnail, index))
+							if(isEdit && isFileDeleted === 0){
+								setIsFileDeleted(1)
+							}
+						}
 						}
 						/>
 					</Box>
