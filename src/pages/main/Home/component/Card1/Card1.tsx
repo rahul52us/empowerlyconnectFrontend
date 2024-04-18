@@ -14,13 +14,14 @@ const Card1 = ({ title, description, alt, image, id }: Props) => {
   return (
     <Box
       key={id}
-      boxShadow="lg"
+      shadow="md"
       p="1.2rem"
       borderRadius="1.5rem"
       cursor="pointer"
       _hover={{ transform: "scale(1.06)" }}
       transition="transform 0.3s ease-in-out"
       bg={useColorModeValue("white", "blue.800")}
+      minH={"25rem"}
     >
       <Image src={image} alt={alt} w="auto" h="auto" objectFit="contain" />
       <Text mt={2} fontWeight="600" fontSize={{ base: "1.8rem", md: "1.4rem" }}>

@@ -9,7 +9,9 @@ import {
   Image,
   Text,
   useColorModeValue,
+  Flex,
 } from "@chakra-ui/react";
+import { IoMdTime } from "react-icons/io";
 
 interface Props {
   image: string;
@@ -17,6 +19,7 @@ interface Props {
   description: string;
   buttonText: string;
   buttonColorScheme?: any;
+  dateTime: string;
 }
 
 const ExpandCard = ({
@@ -24,12 +27,14 @@ const ExpandCard = ({
   title,
   description,
   buttonText,
-  buttonColorScheme = 'blue',
+  buttonColorScheme = "blue",
+  dateTime,
 }: Props) => {
   return (
-    <Box m={2}>
+    <Box m={2} cursor={"pointer"}>
       <Card
-        h={"29rem"}
+        maxH={"29rem"}
+        minH={"28rem"}
         maxW="xs"
         transition="box-shadow 0.3s ease-in-out" // Add transition for boxShadow
         _hover={{
@@ -57,9 +62,10 @@ const ExpandCard = ({
           >
             <Heading size="md">{title}</Heading>
             <Text>{description}</Text>
-            <Text mb={2} color="red.300" fontSize="xl">
-              $450
-            </Text>
+            <Flex alignItems={"center"} my={3} fontWeight={500} color={"gray"}>
+              <IoMdTime />
+              <Text>{dateTime}</Text>
+            </Flex>
           </Stack>
           <CardFooter
             p={0}
