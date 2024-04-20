@@ -9,19 +9,18 @@ interface Props {
 }
 
 const Card1 = ({ title, description, alt, image, id }: Props) => {
-  // const columnCount = useBreakpointValue({ base: 1, md: 2, lg: 4 });
-
   return (
     <Box
       key={id}
       shadow="md"
       p="1.2rem"
-      borderRadius="1.5rem"
+      borderRadius="0.8rem"
       cursor="pointer"
-      _hover={{ transform: "scale(1.06)" }}
+      _hover={{ transform: "scale(1.02)", borderRadius: "0.8rem" }}
       transition="transform 0.3s ease-in-out"
       bg={useColorModeValue("white", "blue.800")}
       minH={"25rem"}
+      m={2}
     >
       <Image src={image} alt={alt} w="auto" h="auto" objectFit="contain" />
       <Text mt={2} fontWeight="600" fontSize={{ base: "1.8rem", md: "1.4rem" }}>

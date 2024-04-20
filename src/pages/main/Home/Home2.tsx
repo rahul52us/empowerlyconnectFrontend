@@ -406,7 +406,6 @@ const Home2 = () => {
           ))}
         </Grid>
       </Box>
-
       <SliderCard1 />
       {/* <Box my={6}>
         <CircularProgressBar
@@ -426,7 +425,6 @@ const Home2 = () => {
           card={card}
         />
       </Box>
-
       <Grid
         templateColumns={{ base: "1fr", md: "1fr 1fr", lg: "1fr 1fr 1fr 1fr" }}
         gap={2}

@@ -1,4 +1,4 @@
-import { Heading, Box, Text } from "@chakra-ui/react";
+import { Heading, Box, Text, useBreakpointValue } from "@chakra-ui/react";
 import Card1 from "./Card1";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -60,7 +60,7 @@ const SliderCard1 = () => {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 4, // Adjust the number of slides to show
+    slidesToShow: useBreakpointValue({base : 1 , md : 2 , lg : 3}),
     slidesToScroll: 2,
     arrow: true,
   };
@@ -68,22 +68,26 @@ const SliderCard1 = () => {
   return (
     <>
       <Box mx={"6rem"}>
-        <Text mt={"4rem"} textAlign={"center"} color={"gray"}>
-          ARTICLES
-        </Text>
-        <Heading textAlign={"center"}>Latest Educational Articles</Heading>
-
+        <Box mb={10}>
+          <Text mt={"4rem"} textAlign={"center"} color={"gray"}>
+            ARTICLES
+          </Text>
+          <Heading textAlign={"center"}>Latest Educational Articles</Heading>
+        </Box>
         <Slider {...settings}>
-          {servicesData.map((value) => (
-            <Card1
-              key={value.id}
-              id={value.id}
-              title={value.title}
-              description={value.description}
-              alt={value.alt}
-              image={value.src}
-            />
-          ))}
+          {servicesData.map((value) => {
+            return (
+              <Box key={value.id}>
+                <Card1
+                  id={value.id}
+                  title={value.title}
+                  description={value.description}
+                  alt={value.alt}
+                  image={value.src}
+                />
+              </Box>
+            );
+          })}
         </Slider>
       </Box>
     </>
