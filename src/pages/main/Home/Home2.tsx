@@ -1,9 +1,8 @@
-import { Box, Grid } from "@chakra-ui/react";
-import Card1 from "./component/Card1/Card1";
-import FlipCard from "./component/FlipCard/Flipcard";
+import { Box, Grid, Heading, Text } from "@chakra-ui/react";
+// import FlipCard from "./component/FlipCard/Flipcard";
 import Card2 from "./component/Card2/Card2";
 import MultiCardComponent from "./component/MultiCardComponent/MultiCardComponent";
-import CircularProgressBar from "./component/CircularProgressBar/CircularProgressBar";
+// import CircularProgressBar from "./component/CircularProgressBar/CircularProgressBar";
 import CourseCard from "./component/CourseCard/CourseCard";
 import WhyUs from "./component/WhyUs/WhyUs";
 import TeachersCard from "./component/TeachersCard/TeachersCard";
@@ -12,78 +11,44 @@ import icon from "./component/WhyUs/scholar.webp";
 import ExpandCard from "./component/ExpandCard/ExpandCard";
 import InstructorCard from "./component/InstructorCard/InstructorCard";
 import HeroSection2 from "./component/HeroSection2/HeroSection2";
+import SliderCard1 from "./component/Card1/SliderCard1";
 
-const servicesData = [
-  {
-    id: 0,
-    src: "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg",
-    alt: "System Analysis & Integration",
-    title: "System Analysis & Integration",
-    description:
-      "Understanding and working closely with Network Partners to analyze their systems and integration requirements.",
-  },
-  {
-    id: 1,
-    src: "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg",
-    alt: "Gap Analysis",
-    title: "Gap Analysis",
-    description:
-      "Identifying and addressing any discrepancies for ONDC integration.",
-  },
-  {
-    id: 2,
-    src: "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg",
-    alt: "Guidance & Recommendations",
-    title: "Guidance & Recommendations",
-    description:
-      "Advising on necessary changes and enhancements for compatibility.",
-  },
-  {
-    id: 3,
-    src: "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg",
-    alt: "Custom Development",
-    title: "Custom Development",
-    description:
-      "Creating adapters and extensions for mapping APIs to ONDC standards.",
-  },
-];
-
-const cardData = [
-  {
-    id: 1,
-    imageUrl:
-      "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg",
-    imageAlt: "Food and Beverage",
-    name: "Food and Beverage",
-    backDescription:
-      "Welcome to our hub for all things food and beverages, where indulgence meets convenience.",
-  },
-  {
-    id: 2,
-    imageUrl:
-      "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg",
-    imageAlt: "Fashion",
-    name: "Fashion and Footwear",
-    backDescription:
-      "Discover the ease of online fashion and footwear shopping with our seamless interface.",
-  },
-  {
-    id: 3,
-    imageUrl: "/images/ondc/electronics.webp",
-    imageAlt: "electronics",
-    name: "Electronic",
-    backDescription:
-      "Discover our platform, crafted to make your shopping experience for electronics seamless and hassle-free.",
-  },
-  {
-    id: 4,
-    imageUrl: "/images/ondc/home.webp",
-    imageAlt: "Home and Kitchen",
-    name: "Home and Kitchen",
-    backDescription:
-      "Upgrade your home and kitchen effortlessly with our streamlined online shopping experience.",
-  },
-];
+// const cardData = [
+//   {
+//     id: 1,
+//     imageUrl:
+//       "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg",
+//     imageAlt: "Food and Beverage",
+//     name: "Food and Beverage",
+//     backDescription:
+//       "Welcome to our hub for all things food and beverages, where indulgence meets convenience.",
+//   },
+//   {
+//     id: 2,
+//     imageUrl:
+//       "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg",
+//     imageAlt: "Fashion",
+//     name: "Fashion and Footwear",
+//     backDescription:
+//       "Discover the ease of online fashion and footwear shopping with our seamless interface.",
+//   },
+//   {
+//     id: 3,
+//     imageUrl: "/images/ondc/electronics.webp",
+//     imageAlt: "electronics",
+//     name: "Electronic",
+//     backDescription:
+//       "Discover our platform, crafted to make your shopping experience for electronics seamless and hassle-free.",
+//   },
+//   {
+//     id: 4,
+//     imageUrl: "/images/ondc/home.webp",
+//     imageAlt: "Home and Kitchen",
+//     name: "Home and Kitchen",
+//     backDescription:
+//       "Upgrade your home and kitchen effortlessly with our streamlined online shopping experience.",
+//   },
+// ];
 
 const data = [
   {
@@ -172,6 +137,36 @@ const courses = [
     imageUrl:
       "https://studentwp.wptech.co/wp-content/uploads/2021/07/img-4-356x253.jpg",
   },
+  {
+    id: 1,
+    title: "React Course",
+    admin: "admin",
+    price: "500.00",
+    rating: 4,
+    duration: "12",
+    imageUrl:
+      "https://studentwp.wptech.co/wp-content/uploads/2021/07/img-4-356x253.jpg",
+  },
+  {
+    id: 1,
+    title: "React Course",
+    admin: "admin",
+    price: "500.00",
+    rating: 4,
+    duration: "12",
+    imageUrl:
+      "https://studentwp.wptech.co/wp-content/uploads/2021/07/img-4-356x253.jpg",
+  },
+  {
+    id: 1,
+    title: "React Course",
+    admin: "admin",
+    price: "500.00",
+    rating: 4,
+    duration: "12",
+    imageUrl:
+      "https://studentwp.wptech.co/wp-content/uploads/2021/07/img-4-356x253.jpg",
+  },
 ];
 
 const cardData1 = [
@@ -218,48 +213,165 @@ const teachers = [
   },
 ];
 
+const eventCardData = [
+  {
+    image:
+      "https://demo.edublink.co/wp-content/uploads/2023/03/course-43-590x430.jpg",
+    title: "Learn English in Ease Basic to Advance",
+    description:
+      "Excepteur sint occaecat cupidatat non proident sunt in id est laborum. Sed ut perspiciatis unde omnis.",
+    buttonText: "Learn More",
+    dateTime: "16 Dec 2024 10:00 AM",
+  },
+  {
+    image:
+      "https://demo.edublink.co/wp-content/uploads/2023/03/course-43-590x430.jpg",
+    title: "Learn English in Ease Basic to Advance",
+    description:
+      "Excepteur sint occaecat cupidatat non proident sunt in id est laborum. Sed ut perspiciatis unde omnis.",
+    buttonText: "Learn More",
+    dateTime: "16 Dec 2024 10:00 AM",
+  },
+  {
+    image:
+      "https://demo.edublink.co/wp-content/uploads/2023/03/course-43-590x430.jpg",
+    title: "Learn English in Ease Basic to Advance",
+    description:
+      "Excepteur sint occaecat cupidatat non proident sunt in id est laborum. Sed ut perspiciatis unde omnis.",
+    buttonText: "Learn More",
+    dateTime: "16 Dec 2024 10:00 AM",
+  },
+  {
+    image:
+      "https://demo.edublink.co/wp-content/uploads/2023/03/course-43-590x430.jpg",
+    title: "Learn English in Ease Basic to Advance",
+    description:
+      "Excepteur sint occaecat cupidatat non proident sunt in id est laborum. Sed ut perspiciatis unde omnis.",
+    buttonText: "Learn More",
+    dateTime: "16 Dec 2024 10:00 AM",
+  },
+  // Add more data objects here if you want to render more ExpandCard components
+];
+
+const instructorsData = [
+  {
+    name: "Edward Norton",
+    jobTitle: "Web Developer",
+    profileImageUrl:
+      "https://demo.edublink.co/wp-content/uploads/2023/07/team-06.webp",
+    instagram: "https://instagram.com/edwardnorton",
+    linkedin: "https://linkedin.com/in/edwardnorton",
+    twitter: "https://twitter.com/edwardnorton",
+    about: "Consectetur adipisicing elit, sed do eius mod tempor incididunt",
+  },
+  {
+    name: "Edward Norton",
+    jobTitle: "Web Developer",
+    profileImageUrl:
+      "https://demo.edublink.co/wp-content/uploads/2023/07/team-06.webp",
+    instagram: "https://instagram.com/edwardnorton",
+    linkedin: "https://linkedin.com/in/edwardnorton",
+    twitter: "https://twitter.com/edwardnorton",
+    about: "Consectetur adipisicing elit, sed do eius mod tempor incididunt",
+  },
+  {
+    name: "Edward Norton",
+    jobTitle: "Web Developer",
+    profileImageUrl:
+      "https://demo.edublink.co/wp-content/uploads/2023/07/team-06.webp",
+    instagram: "https://instagram.com/edwardnorton",
+    linkedin: "https://linkedin.com/in/edwardnorton",
+    twitter: "https://twitter.com/edwardnorton",
+    about: "Consectetur adipisicing elit, sed do eius mod tempor incididunt",
+  },
+  {
+    name: "Edward Norton",
+    jobTitle: "Web Developer",
+    profileImageUrl:
+      "https://demo.edublink.co/wp-content/uploads/2023/07/team-06.webp",
+    instagram: "https://instagram.com/edwardnorton",
+    linkedin: "https://linkedin.com/in/edwardnorton",
+    twitter: "https://twitter.com/edwardnorton",
+    about: "Consectetur adipisicing elit, sed do eius mod tempor incididunt",
+  },
+];
+
 const Home2 = () => {
   return (
     <>
       <HeroSection2 />
+      <Box>
+        <Text mt={"4rem"} textAlign={"center"} color={"gray"}>
+          POPULAR COURSES
+        </Text>
+        <Heading textAlign={"center"}>Pick A Course To Get Started</Heading>
+        <Grid
+          templateColumns={{
+            base: "1fr",
+            md: "1fr 1fr",
+            lg: "1fr 1fr 1fr 1fr",
+          }}
+          gap={2}
+          p={10}
+          mx={{ base: "0.5rem", md: "4rem" }}
+        >
+          {courses.map((course) => (
+            <CourseCard key={course.id} {...course} />
+          ))}
+        </Grid>
+      </Box>
 
-      <InstructorCard
-        name="Edward Norton"
-        jobTitle="Web Developer"
-        profileImageUrl="https://demo.edublink.co/wp-content/uploads/2023/07/team-06.webp"
-        instagram="https://instagram.com/edwardnorton"
-        linkedin="https://linkedin.com/in/edwardnorton"
-        twitter="https://twitter.com/edwardnorton"
-        about={
-          "Consectetur adipisicing elit, sed do eius mod tempor incididunt"
-        }
-      />
+      <WhyUs cards={cardData1} whyus={whyus} />
 
-      <ExpandCard
-        image={
-          "https://demo.edublink.co/wp-content/uploads/2023/03/course-43-590x430.jpg"
-        }
-        title={"Living room Sofa"}
-        description={
-          " This sofa is perfect for modern tropical spaces, baroque inspired spaces, earthy toned spaces and for people who love a chic design with a sprinkle of vintage design."
-        }
-        buttonText={"Learn More"}
-      />
-
-      <Box m={14}>
-        <Grid templateColumns={"1fr 1fr 1fr 1fr"} gap={8}>
-          {servicesData.map((value) => (
-            <Card1
-              id={value.id}
-              title={value.title}
-              description={value.description}
-              alt={value.alt}
-              image={value.src}
+      <Box mx={{ base: "0.5rem", md: "6rem" }}>
+        <Text mt={"4rem"} textAlign={"center"} color={"gray"}>
+          EVENTS
+        </Text>
+        <Heading textAlign={"center"}>Popular Events</Heading>
+        <Grid templateColumns={"1fr 1fr 1fr 1fr"} mt={"2rem"} gap={2}>
+          {eventCardData.map((item, index) => (
+            <ExpandCard
+              key={index}
+              image={item.image}
+              title={item.title}
+              description={item.description}
+              buttonText={item.buttonText}
+              dateTime={item.dateTime}
             />
           ))}
         </Grid>
       </Box>
-      <Grid
+
+      <Box mx={{ base: "0.5rem", md: "6rem" }}>
+        <Text mt={"4rem"} textAlign={"center"} color={"gray"}>
+          INSTRUCTORS
+        </Text>
+        <Heading textAlign={"center"}>Course Instructors</Heading>
+        <Grid
+          templateColumns={{
+            base: "1fr",
+            md: "1fr 1fr 1fr",
+            lg: "1fr 1fr 1fr 1fr",
+          }}
+          mt={"2rem"}
+          gap={6}
+        >
+          {instructorsData.map((instructor, index) => (
+            <InstructorCard
+              key={index} // Make sure to provide a unique key
+              name={instructor.name}
+              jobTitle={instructor.jobTitle}
+              profileImageUrl={instructor.profileImageUrl}
+              instagram={instructor.instagram}
+              linkedin={instructor.linkedin}
+              twitter={instructor.twitter}
+              about={instructor.about}
+            />
+          ))}
+        </Grid>
+      </Box>
+
+      {/* <Grid
         templateColumns={{
           base: "1fr",
           md: "repeat(3, 1fr)",
@@ -278,7 +390,8 @@ const Home2 = () => {
             backDescription={card.backDescription}
           />
         ))}
-      </Grid>
+      </Grid> */}
+
       <Box my={6}>
         <Grid templateColumns={"1fr 1fr"}>
           {data.map((value) => (
@@ -287,18 +400,21 @@ const Home2 = () => {
               image={value.image}
               about={value.about}
               title={value.title}
-              bgColor="teal.300"
+              bgColor="telegram.500"
               cardBg={"white"}
             />
           ))}
         </Grid>
       </Box>
-      <Box my={6}>
+
+      <SliderCard1 />
+      {/* <Box my={6}>
         <CircularProgressBar
           progressValue={100}
           description={"Million Views"}
         />
-      </Box>
+      </Box> */}
+
       <Box m={{ base: "1rem", lg: "6rem" }}>
         <MultiCardComponent
           bgColor={"telegram.500"}
@@ -311,15 +427,6 @@ const Home2 = () => {
         />
       </Box>
 
-      <Grid
-        templateColumns={{ base: "1fr", md: "1fr 1fr", lg: "1fr 1fr 1fr 1fr" }}
-        gap={2}
-        p={10}
-      >
-        {courses.map((course) => (
-          <CourseCard key={course.id} {...course} />
-        ))}
-      </Grid>
       <Grid
         templateColumns={{ base: "1fr", md: "1fr 1fr", lg: "1fr 1fr 1fr 1fr" }}
         gap={2}
@@ -338,7 +445,6 @@ const Home2 = () => {
           />
         ))}
       </Grid>
-      <WhyUs cards={cardData1} whyus={whyus} />
     </>
   );
 };

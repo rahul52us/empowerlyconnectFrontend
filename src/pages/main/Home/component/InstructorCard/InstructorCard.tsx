@@ -19,7 +19,7 @@ interface Props {
   instagram?: any;
   linkedin?: any;
   twitter?: any;
-  about:string;
+  about: string;
 }
 
 const InstructorCard = ({
@@ -29,7 +29,7 @@ const InstructorCard = ({
   instagram,
   linkedin,
   twitter,
-  about
+  about,
 }: Props) => {
   const [isHovered, setIsHovered] = useState(false);
   const iconButtonStyles = {
@@ -44,8 +44,8 @@ const InstructorCard = ({
   };
 
   return (
-    <Box m={12}>
-      <Card maxW="xs" shadow={"md"}>
+    <Box>
+      <Card shadow={"md"}>
         <CardBody
           position="relative"
           onMouseEnter={() => setIsHovered(true)}
@@ -108,9 +108,7 @@ const InstructorCard = ({
             >
               {jobTitle}
             </Text>
-            <Text textAlign="center">
-              {about}
-            </Text>
+            <Text textAlign="center">{about}</Text>
           </Stack>
         </CardBody>
       </Card>
