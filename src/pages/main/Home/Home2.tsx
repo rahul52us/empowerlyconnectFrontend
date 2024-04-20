@@ -221,8 +221,7 @@ const teachers = [
 const Home2 = () => {
   return (
     <>
-
-    <HeroSection2/>
+      <HeroSection2 />
 
       <InstructorCard
         name="Edward Norton"
@@ -325,7 +324,9 @@ const Home2 = () => {
         templateColumns={{ base: "1fr", md: "1fr 1fr", lg: "1fr 1fr 1fr 1fr" }}
         gap={2}
         p={10}
-      >        {teachers.map((teacher, index) => (
+      >
+        {" "}
+        {teachers.map((teacher, index) => (
           <TeachersCard
             key={index}
             imageUrl={teacher.imageUrl}

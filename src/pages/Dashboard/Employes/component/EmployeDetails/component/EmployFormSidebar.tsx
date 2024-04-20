@@ -28,6 +28,16 @@ const EmployFormSidebar = observer(() => {
           </Link>
           <Divider />
           <Link
+            onClick={() => handleChange("company-details")}
+            fontSize="lg"
+            fontWeight="medium"
+            _hover={{ textDecoration: "underline", color: "blue.700" }}
+            cursor="pointer"
+          >
+            Company Details
+          </Link>
+          <Divider />
+          <Link
             onClick={() => handleChange("bank-details")}
             fontSize="lg"
             fontWeight="medium"
