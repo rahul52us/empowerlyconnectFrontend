@@ -26,7 +26,7 @@ const navigate = useNavigate();
 return (
   <Box
     bg={useColorModeValue("", "gray.800")}
-  > 
+  >
       <Stack align={"center"} mb={10}>
         <Heading fontSize={"4xl"}>Create Organisation</Heading>
         <Text fontSize={"lg"} color={"gray.600"}>
@@ -40,10 +40,10 @@ return (
         p={8}
       >
         <Formik
-          initialValues={{ username: "",role:"admin" }}
+          initialValues={{ username: "",role:"superadmin" }}
           validationSchema={ForgotEmailValidation}
           onSubmit={(values, { setSubmitting }) => {
-            values['role'] = "admin"
+            values['role'] = "superadmin"
             createOrganisationUser(values)
               .then((data) => {
                 openNotification({

@@ -15,13 +15,13 @@ const PersonalDocuments = ({
     <Formik
       initialValues={initialValues}
       onSubmit={(values, { setSubmitting, resetForm, setErrors }) => {
-        handleSubmitProfile(
+        handleSubmitProfile({
           values,
           setSubmitting,
           resetForm,
           setErrors,
           setShowError
-        );
+      });
       }}
     >
       {({ handleSubmit, isSubmitting, setFieldValue, values }) => {

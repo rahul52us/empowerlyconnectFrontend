@@ -16,6 +16,7 @@ import Loader from "../../../../../../config/component/Loader/Loader";
 import { readFileAsBase64 } from "../../../../../../config/constant/function";
 
 const EmployeFormContainer = observer(() => {
+  const {auth : {user}} = store
   const [haveApiCall, setHaveApiCall] = useState(false);
   const [files, setFiles] = useState<any>({
     cancelledCheque: {
@@ -24,6 +25,8 @@ const EmployeFormContainer = observer(() => {
       isAdd: 0,
     },
   });
+
+  console.log(user?.companyDetail?.company)
 
   const location = useLocation();
   const tab: any = new URLSearchParams(location.search).get("tab");
@@ -68,16 +71,15 @@ const EmployeFormContainer = observer(() => {
     }
   }, [userData]);
 
-  const handleSubmitProfile = async (
-    values: any,
-    setLoading: any,
-    resetForm: any,
-    setErrors: any,
-    setShowError: any
-  ) => {
+  const handleSubmitProfile = async ({
+    values,
+    setSubmitting,
+    setErrors,
+    setShowError
+  } : any) => {
     if (type) {
       if (tab === "profile-details") {
-        updateEmployeProfile(id, { ...generateSubmitResponse(values) })
+        updateEmployeProfile(id, { ...generateSubmitResponse(values), company : user?.companyDetail?.company })
           .then(() => {
             setShowError(false);
             setErrors({});
@@ -96,7 +98,7 @@ const EmployeFormContainer = observer(() => {
             });
           })
           .finally(() => {
-            setLoading(false);
+            setSubmitting(false);
           });
       } else if (tab === "bank-details") {
         let bankDetails: any = values;
@@ -144,7 +146,7 @@ const EmployeFormContainer = observer(() => {
             });
           })
           .finally(() => {
-            setLoading(false);
+            setSubmitting(false);
           });
       } else if (tab === "family-details") {
         updateFamilyDetails(id, values)
@@ -166,7 +168,7 @@ const EmployeFormContainer = observer(() => {
             });
           })
           .finally(() => {
-            setLoading(false);
+            setSubmitting(false);
           });
       } else if (tab === "work-experience") {
         let dt = await Promise.all(
@@ -224,7 +226,7 @@ const EmployeFormContainer = observer(() => {
             });
           })
           .finally(() => {
-            setLoading(false);
+            setSubmitting(false);
           });
       } else if (tab === "documents") {
         let dt = await Promise.all(
@@ -267,14 +269,13 @@ const EmployeFormContainer = observer(() => {
             });
           })
           .finally(() => {
-            setLoading(false);
+            setSubmitting(false);
           });
       }
     } else {
       if (tab === "profile-details") {
-        createEmploye({ ...generateSubmitResponse(values) })
+        createEmploye({ ...generateSubmitResponse(values),company : user?.companyDetail?.company })
           .then(() => {
-            resetForm();
             setShowError(false);
             setErrors({});
             openNotification({
@@ -292,10 +293,10 @@ const EmployeFormContainer = observer(() => {
             });
           })
           .finally(() => {
-            setLoading(false);
+            setSubmitting(false);
           });
       } else if (tab === "bank-details") {
-        setLoading(false);
+        setSubmitting(false);
       } else if (tab === "work-experience") {
         updateWorkExperience(id, values)
           .then(() => {
@@ -316,7 +317,7 @@ const EmployeFormContainer = observer(() => {
             });
           })
           .finally(() => {
-            setLoading(false);
+            setSubmitting(false);
           });
       } else if (tab === "documents") {
       }

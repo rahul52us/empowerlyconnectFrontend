@@ -18,13 +18,13 @@ const PersonalBankDetails = ({
       validationSchema={validations}
       initialValues={initialValues}
       onSubmit={(values, { setSubmitting, resetForm, setErrors }) => {
-        handleSubmitProfile(
+        handleSubmitProfile({
           values,
           setSubmitting,
           resetForm,
           setErrors,
           setShowError
-        );
+      });
       }}
     >
       {({ values, errors, handleChange, handleSubmit, isSubmitting }) => {

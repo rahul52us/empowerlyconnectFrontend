@@ -27,7 +27,6 @@ const EmployeContainer = observer(
     const navigate = useNavigate();
     const tab: any = new URLSearchParams(location.search).get("tab");
 
-    console.log(files);
     const getEditActiveComponent = ({
       profileData,
       type,
