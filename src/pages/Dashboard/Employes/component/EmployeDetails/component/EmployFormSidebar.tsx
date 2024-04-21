@@ -3,11 +3,16 @@ import { Box, Text, VStack, Link, Divider } from "@chakra-ui/react";
 import { useNavigate, useParams } from "react-router-dom";
 import { dashboard } from "../../../../../../config/constant/routes";
 
-const EmployFormSidebar = observer(() => {
+const EmployFormSidebar = observer(({type} : any) => {
   const navigate = useNavigate();
   const { id } = useParams();
   const handleChange = (tab : string) => {
-    navigate(`${dashboard.employes.details}/edit/${id}?tab=${tab}`);
+    if(type === "edit"){
+      navigate(`${dashboard.employes.details}/edit/${id}?tab=${tab}`);
+    }
+    else {
+      navigate(`${dashboard.employes.details}/new?tab=${tab}`)
+    }
   };
 
   return (

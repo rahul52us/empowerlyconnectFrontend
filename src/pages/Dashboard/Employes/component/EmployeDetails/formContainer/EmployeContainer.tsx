@@ -214,7 +214,7 @@ const EmployeContainer = observer(
       <Box p={{ base: 1.5, lg: 0 }}>
         <Grid gridTemplateColumns={{ lg: "0.25fr 1fr" }} gap={5} mt={3} mb={10}>
           <Box>
-            <EmployFormSidebar />
+            <EmployFormSidebar type={type} />
           </Box>
           <Box border="1px solid #e9ecef" borderRadius={5}>
             {type === "edit"
