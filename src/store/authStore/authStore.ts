@@ -273,12 +273,12 @@ class AuthStore {
   };
 
   checkPermission = (check: { key: string; value: string }) => {
-    if (this.user?.adminType === "admin") {
+    if (this.user?.role === "superadmin") {
       return true;
     } else {
-      if (this.user?.permission) {
+      if (this.user?.permissions) {
         var status = false;
-        Object.entries(this.user.permission).forEach((item: any) => {
+        Object.entries(this.user.permissions).forEach((item: any) => {
           if (item[0] === check?.key) {
             if (item[1][check.value]) {
               status = true;

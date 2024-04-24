@@ -4,7 +4,6 @@ import { dashboard } from "../../../config/constant/routes";
 import { observer } from "mobx-react-lite";
 import store from "../../../store/store";
 import { useEffect } from "react";
-import { toJS } from "mobx";
 
 const DashWidgetCard = observer(() => {
   const {
@@ -31,10 +30,9 @@ const DashWidgetCard = observer(() => {
       });
   }, [getTripCounts, getEmployesCount,getDepartmentCounts, openNotification]);
 
-  console.log(toJS(departmentCounts))
   return (
     <Grid
-      templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(4, 1fr)" }}
+      templateColumns={{ base: "repeat(1, 1fr)", sm: "repeat(2, 1fr)", md: "repeat(4, 1fr)", lg: "repeat(5, 1fr)" }}
       gap={4}
       marginX="auto"
     >
@@ -43,6 +41,12 @@ const DashWidgetCard = observer(() => {
           count: employesCounts.data,
           title: "Users",
           link: dashboard.employes.index,
+          loading: employesCounts.loading,
+        },
+        {
+          count: employesCounts.data,
+          title: "Company",
+          link: dashboard.company.index,
           loading: employesCounts.loading,
         },
         {

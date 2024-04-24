@@ -50,6 +50,12 @@ const departmentsBreadCrumb = [
   { label: "Departments" },
 ];
 
+const companyBreadCrumb = [
+  { label: "Home", link: "/" },
+  { label: "Dashboard", link: dashboard.home },
+  { label: "Company" },
+];
+
 export {
   videoBreadCrumb,
   coursesBreadCrumb,
@@ -57,5 +63,6 @@ export {
   dashBreadCrumb,
   tripBreadCrumb,
   employesBreadCrumb,
-  departmentsBreadCrumb
+  departmentsBreadCrumb,
+  companyBreadCrumb
 };

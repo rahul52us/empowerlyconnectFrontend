@@ -32,7 +32,6 @@ const DashboardIndex = observer(() => {
             </Box>
             <DashWidgetCard />
             {/* <SkeletanCategoryCard/> */}
-
             <DashChartContainer />
           </GridItem>
           {/* <GridItem>

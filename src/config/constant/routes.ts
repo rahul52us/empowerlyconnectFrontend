@@ -44,6 +44,9 @@ export const dashboard = {
     new: `/${dashboardName}/employes/details/new`,
     edit: `/${dashboardName}/employes/details/edit/:id`,
   },
+  company: {
+    index: `/${dashboardName}/company`,
+  },
 };
 
 export const main = {
