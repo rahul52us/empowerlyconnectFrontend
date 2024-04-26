@@ -9,7 +9,7 @@ import store from "../../../../store/store";
 import CustomTable from "../../../../config/component/CustomTable/CustomTable";
 import { dashboard } from "../../../../config/constant/routes";
 import AddHoliday from "./component/AddHoliday";
-import { statusCode } from "../../../../config/constant/statusCode";
+import { getStatusType } from "../../../../config/constant/statusCode";
 
 const EmployeDetailsTable = observer(() => {
   const navigate = useNavigate();
@@ -37,7 +37,7 @@ const EmployeDetailsTable = observer(() => {
       .then(() => {})
       .catch((err: any) => {
         openNotification({
-          type: err?.status === statusCode.info ? "info" : "error",
+          type: getStatusType(err.status),
           title: "Failed to get Holidays",
           message: err?.data?.message,
         });
@@ -119,6 +119,15 @@ const EmployeDetailsTable = observer(() => {
     {
       headerName: "Day",
       key: "day",
+      props: {
+        row: { minW: 160, textAlign: "left" },
+        column: { textAlign: "left" },
+      },
+    },
+    {
+      headerName: "Description",
+      key: "description",
+      type:"tooltip",
       props: {
         row: { minW: 160, textAlign: "left" },
         column: { textAlign: "left" },

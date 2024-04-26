@@ -47,6 +47,8 @@ class AuthStore {
       verifyEmail: action,
       createOrganisation: action,
       getCompanyUsers: action,
+      getCurrentCompany:action,
+      company : observable
     });
   }
 
@@ -83,8 +85,8 @@ class AuthStore {
     axios
       .post("/auth/me")
       .then(({ data }: AxiosResponse<{ data: any }>) => {
+        this.company = data.data?.companyDetail?.company?._id
         this.user = data.data;
-        console.log(data.data)
       })
       .catch(() => {
         this.loading = false;
@@ -195,8 +197,12 @@ class AuthStore {
   };
 
   register = () => {
-    console.log(this.user);
+    return this.user
   };
+
+  getCurrentCompany = () => {
+    return this.company
+  }
 
   updateProfile = async (sendData: any) => {
     try {
@@ -237,7 +243,7 @@ class AuthStore {
     try {
       const { data } = await axios.post("/auth/change-password", {
         oldPassword: value.oldPassword,
-        newPassword: value.newPassword,
+        newPassword: value.newPassword
       });
       return data.data;
     } catch (err: any) {

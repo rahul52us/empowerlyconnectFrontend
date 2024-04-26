@@ -367,7 +367,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
                     <GenerateRows
                       key={colIndex}
                       column={column}
-                      row={row}
+                      row={row || {}}
                       action={actions}
                     />
                   ))}

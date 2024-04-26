@@ -1,6 +1,6 @@
 import axios from "axios";
 import { action, makeObservable, observable } from "mobx";
-
+import store from "../store";
 class CompanyStore {
   holidays = {
     data: [],
@@ -19,17 +19,17 @@ class CompanyStore {
       openTaskDrawer: observable,
       holidays: observable,
       getHolidays: action,
-      createClass: action,
+      createHolidays: action,
       updateClass: action
     });
   }
 
-  createClass = async (sendData: any) => {
+  createHolidays = async (sendData: any) => {
     try {
-      const { data } = await axios.post("/class/create", sendData);
+      const { data } = await axios.put("/company/policy/holidays", {...sendData,company:store.auth.getCurrentCompany()});
       return data;
     } catch (err: any) {
-      return Promise.reject(err?.response?.data || err);
+      return Promise.reject(err?.response || err);
     }
   };
 
@@ -46,9 +46,8 @@ class CompanyStore {
     try {
       this.holidays.loading = true
       this.holidays.hasFetch = true
-      const { data } = await axios.post("/company/holidays", sendData);
-
-      this.holidays.data = data.data?.holidays || [];
+      const { data } = await axios.post("/company/policy/holidays", {...sendData,company:store.auth.getCurrentCompany()});
+      this.holidays.data = data.data || [];
       this.holidays.totalPages = data.data?.totalPages || 0
       return data;
     } catch (err: any) {

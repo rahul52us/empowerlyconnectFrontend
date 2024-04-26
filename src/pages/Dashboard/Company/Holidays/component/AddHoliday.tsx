@@ -2,24 +2,45 @@ import { observer } from "mobx-react-lite";
 import HolidayForm from "./form/HolidayForm";
 import FormModel from "../../../../../config/component/common/FormModel/FormModel";
 import { useState } from "react";
+import store from "../../../../../store/store";
+import { getStatusType } from "../../../../../config/constant/statusCode";
 
 const AddHoliday = observer(({ addFormValues, setAddFormValues }: any) => {
-  const [showError,setShowError] = useState(false)
+  const {
+    company: { createHolidays },
+    auth: { openNotification },
+  } = store;
+  const [showError, setShowError] = useState(false);
 
   const closeModel = () => {
     setAddFormValues({ open: false, loading: false });
-    setShowError(false)
-  }
+    setShowError(false);
+  };
 
-  const handleSubmit = ({values,setSubmitting, resetForm} : any) => {
-    setSubmitting(true)
-    console.log(values)
-    setTimeout(() => {
-      setSubmitting(false)
-      resetForm()
-    },3000)
-  }
-
+  const handleSubmit = ({ values, setSubmitting, resetForm }: any) => {
+    createHolidays({ ...values })
+      .then((data: any) => {
+        console.log(data)
+        openNotification({
+          title: "Create Successfully",
+          message: data?.message,
+          type: "success",
+        });
+        resetForm();
+        closeModel();
+      })
+      .catch((err: any) => {
+        openNotification({
+          title: "Create Failed",
+          message: err?.data?.message,
+          type: getStatusType(err.status),
+        });
+      })
+      .finally(() => {
+        setSubmitting(false);
+        setShowError(false);
+      });
+  };
 
   return (
     <FormModel
