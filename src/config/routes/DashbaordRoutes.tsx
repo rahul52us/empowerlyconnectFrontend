@@ -204,7 +204,7 @@ export const DashboardRoutes = [
   },
   {
     element : <CompanyPolicy />,
-    path : dashboard.company.policy,
+    path : dashboard.company.holidays,
     privateRoutes: true
   }
 ];

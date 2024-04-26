@@ -10,6 +10,7 @@ import CustomTable from "../../../../config/component/CustomTable/CustomTable";
 import { dashboard } from "../../../../config/constant/routes";
 import AddHoliday from "./component/AddHoliday";
 import { getStatusType } from "../../../../config/constant/statusCode";
+import { generateResponse } from "./utils/function";
 
 const EmployeDetailsTable = observer(() => {
   const navigate = useNavigate();
@@ -219,7 +220,7 @@ const EmployeDetailsTable = observer(() => {
           },
         }}
         title="Holidays"
-        data={holidays.data}
+        data={generateResponse(holidays.data)}
         columns={employeTableColumns}
         loading={holidays.loading}
         serial={{ show: true, text: "S.No.", width: "10px" }}

@@ -10,7 +10,7 @@ const Company = observer(() => {
     {
       totalCount: 2,
       title: "Policy",
-      link: dashboard.company.policy,
+      link: dashboard.company.holidays,
       loading: false,
     },
     {
