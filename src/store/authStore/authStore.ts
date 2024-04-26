@@ -13,6 +13,7 @@ interface Notification {
 class AuthStore {
   loading: boolean = false;
   user: any | null = null;
+  company: any | null = null;
   openSearch: any = false;
   loginModel : Boolean = false;
   notification: Notification | null = null;
@@ -83,6 +84,7 @@ class AuthStore {
       .post("/auth/me")
       .then(({ data }: AxiosResponse<{ data: any }>) => {
         this.user = data.data;
+        console.log(data.data)
       })
       .catch(() => {
         this.loading = false;

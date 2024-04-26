@@ -46,6 +46,7 @@ export const dashboard = {
   },
   company: {
     index: `/${dashboardName}/company`,
+    policy: `/${dashboardName}/company/policy`,
   },
 };
 

@@ -50,11 +50,16 @@ const departmentsBreadCrumb = [
   { label: "Departments" },
 ];
 
-const companyBreadCrumb = [
+const companyBreadCrumb = {
+  index : [
   { label: "Home", link: "/" },
   { label: "Dashboard", link: dashboard.home },
   { label: "Company" },
-];
+],policy : [
+  { label: "Home", link: "/" },
+  { label: "Company", link: dashboard.company.index },
+  { label: "Policy" },
+]};
 
 export {
   videoBreadCrumb,

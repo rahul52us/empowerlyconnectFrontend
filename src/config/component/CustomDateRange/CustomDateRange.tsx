@@ -11,6 +11,8 @@ import {
   PopoverContent,
   PopoverBody,
   useBreakpointValue,
+  FormLabel,
+  Flex,
 } from "@chakra-ui/react";
 
 interface CustomDateRangeProps {
@@ -20,6 +22,7 @@ interface CustomDateRangeProps {
   onEndDateChange: (endDate: Date) => void;
   isMobile?: boolean;
   months?: number;
+  label?:string
 }
 
 export default function CustomDateRange({
@@ -29,6 +32,7 @@ export default function CustomDateRange({
   onEndDateChange,
   isMobile = false,
   months = 2,
+  label
 }: CustomDateRangeProps): JSX.Element {
 
   const LargerThanMd = useBreakpointValue({ md: true });
@@ -36,6 +40,8 @@ export default function CustomDateRange({
   return (isMobile || !LargerThanMd ) ? (
     <Popover placement="auto-end">
       <PopoverTrigger>
+        <Flex flexDirection="column">
+        {label && <FormLabel fontSize={"small"} mt={2}>{label}</FormLabel>}
         <Input
           name="datePicker"
           value={`${format(startDate, "dd/MM/yyyy")} to ${format(
@@ -45,6 +51,7 @@ export default function CustomDateRange({
           width={{ base: "14rem", lg: "14rem" }}
           textAlign="center"
         />
+        </Flex>
       </PopoverTrigger>
       <PopoverContent width="auto">
         <PopoverBody>
@@ -56,6 +63,7 @@ export default function CustomDateRange({
             showPreview={true}
             editableDateInputs={true}
             moveRangeOnFirstSelection={false}
+            date={startDate}
             ranges={[
               {
                 startDate: startDate,
@@ -82,6 +90,7 @@ export default function CustomDateRange({
           )}`}
           width={{ lg: "18rem" }}
           textAlign="center"
+          minWidth="100%"
         />
       </PopoverTrigger>
       <PopoverContent width="auto">
@@ -94,13 +103,14 @@ export default function CustomDateRange({
             editableDateInputs={true}
             moveRangeOnFirstSelection={false}
             showPreview={true}
-            ranges={[
-              {
-                startDate: startDate,
-                endDate: endDate,
-                key: "selection",
-              },
-            ]}
+            date={startDate}
+            // ranges={[
+            //   {
+            //     startDate: startDate,
+            //     endDate: endDate,
+            //     key: "selection",
+            //   },
+            // ]}
             months={months}
             direction="horizontal"
             className="calendarElement"

@@ -84,7 +84,9 @@ const Department = lazy(() => import("../../pages/Dashboard/Department/Departmen
 
 // Company
 
-const CompanyPolicy = lazy(() => import( "../../pages/Dashboard/Company/component/CompanyPolicy"));
+const CompanyPolicy = lazy(() => import( "../../pages/Dashboard/Company/CompanyPolicy"));
+const Company = lazy(() => import( "../../pages/Dashboard/Company/index"));
+
 
 export const DashboardRoutes = [
   {
@@ -196,8 +198,13 @@ export const DashboardRoutes = [
 
   // Company
   {
-    element : <CompanyPolicy />,
+    element : <Company />,
     path : dashboard.company.index,
+    privateRoutes: true
+  },
+  {
+    element : <CompanyPolicy />,
+    path : dashboard.company.policy,
     privateRoutes: true
   }
 ];

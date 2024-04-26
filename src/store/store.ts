@@ -18,6 +18,7 @@ import StudentStore from "./userTypes/StudentStore";
 import TripStore from './tripStore/tripStore';
 import EmployeStore from './employeStore/employeStore';
 import DepartmentStore from "./departmentStore/departmentStore";
+import CompanyStore from "./companyStore/companyStore";
 
 configure({ enforceActions: "never" });
 
@@ -39,6 +40,7 @@ const store = {
   BlogStore: new BlogStore(),
   tripStore: new TripStore(),
   // users
+  company: new CompanyStore(),
   Student: new StudentStore(),
   Employe: new EmployeStore(),
   DepartmentStore: new DepartmentStore()
