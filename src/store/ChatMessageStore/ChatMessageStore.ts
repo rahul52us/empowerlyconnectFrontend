@@ -1,5 +1,6 @@
 import { action, makeObservable, observable } from "mobx";
 import { io, Socket } from "socket.io-client";
+import { backendBaseSocketUrl } from "../../config/constant/backendUrl";
 
 type DefaultEventsMap = Record<string, unknown>; // Define the DefaultEventsMap type
 
@@ -36,7 +37,7 @@ class ChatMessageStore {
   };
 
   createSocketConnection = () => {
-    const socketUrl = process.env.REACT_APP_BACKEND_BASE_URL_FOR_SOCKET || 'http://localhost:8080';
+    const socketUrl = backendBaseSocketUrl;
     this.socket = io(socketUrl);
     this.socket.on("connect", () => {
       this.sockteId = this.socket?.id;

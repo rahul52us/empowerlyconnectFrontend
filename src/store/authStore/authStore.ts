@@ -1,6 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { action, makeObservable, observable } from "mobx";
 import CryptoJS from "crypto-js";
+import { backendBaseUrl } from "../../config/constant/backendUrl";
 
 interface Notification {
   title?: any;
@@ -53,7 +54,7 @@ class AuthStore {
   }
 
   setAppAxiosDefaults = async () => {
-    axios.defaults.baseURL = process.env.REACT_APP_BACKEND_BASE_URL;
+    axios.defaults.baseURL = backendBaseUrl;
   };
 
   initiatAppOptions = () => {
