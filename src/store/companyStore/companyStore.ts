@@ -19,12 +19,12 @@ class CompanyStore {
       openTaskDrawer: observable,
       holidays: observable,
       getHolidays: action,
-      createHolidays: action,
+      updateHoliday: action,
       updateClass: action
     });
   }
 
-  createHolidays = async (sendData: any) => {
+  updateHoliday = async (sendData: any) => {
     try {
       const { data } = await axios.put("/company/policy/holidays", {...sendData,company:store.auth.getCurrentCompany()});
       return data;

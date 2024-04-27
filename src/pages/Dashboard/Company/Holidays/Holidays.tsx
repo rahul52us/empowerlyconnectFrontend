@@ -1,40 +1,37 @@
 import { useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
-import { useNavigate } from "react-router-dom";
 import {
   employDropdownData,
 } from "../../Employes/component/EmployeDetails/utils/constant";
-import { tablePageLimit } from "../../../../config/constant/variable";
 import store from "../../../../store/store";
 import CustomTable from "../../../../config/component/CustomTable/CustomTable";
-import { dashboard } from "../../../../config/constant/routes";
 import AddHoliday from "./component/AddHoliday";
 import { getStatusType } from "../../../../config/constant/statusCode";
 import { generateResponse } from "./utils/function";
+import EditHoliday from "./component/EditHoliday";
+import DeleteHoliday from "./component/DeleteHoliday";
 
-const EmployeDetailsTable = observer(() => {
-  const navigate = useNavigate();
-  const [searchValue, setSearchValue] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
+const HolidaysDetailTable = observer(() => {
   const dropdowns = useState(employDropdownData)[0];
   const [selectedOptions, setSelectedOptions] = useState({});
-  const [pageLimit, setPageLimit] = useState(tablePageLimit);
   const [date, setDate] = useState<any>({
     startDate: new Date(),
     endDate: new Date(),
   });
-  const [addFormValues, setAddFormValues] = useState({
+  const [formValues, setFormValues] = useState<any>({
     open: false,
     loading: false,
+    type : 'add',
+    data : null
   });
 
   const {
-    company: { getHolidays, holidays },
+    company: { getHolidays, holidays, updateHoliday },
     auth: { openNotification },
   } = store;
 
   useEffect(() => {
-    getHolidays({ page: 1, limit: tablePageLimit })
+    getHolidays({})
       .then(() => {})
       .catch((err: any) => {
         openNotification({
@@ -46,20 +43,8 @@ const EmployeDetailsTable = observer(() => {
   }, [getHolidays, openNotification]);
 
   // function to get the data from backend on the page, limit, date and others
-  const applyGetAllRecords = ({ page, limit, reset }: any) => {
+  const applyGetAllRecords = () => {
     const query: any = {};
-    if (reset) {
-      query["page"] = 1;
-      query["limit"] = tablePageLimit;
-    } else {
-      if (searchValue?.length > 0 && searchValue?.trim()) {
-        query["search"] = searchValue;
-      }
-      query["page"] = page || currentPage;
-      query["limit"] = limit || pageLimit;
-      query["startDate"] = date?.startDate ? date?.startDate : undefined;
-      query["endDate"] = date?.endDate ? date?.endDate : undefined;
-    }
     getHolidays(query)
       .then(() => {})
       .catch((err: any) => {
@@ -75,22 +60,40 @@ const EmployeDetailsTable = observer(() => {
     setDate((prev: any) => ({ ...prev, [type]: e }));
   };
 
-  const handleChangePage = (page: number) => {
-    setCurrentPage(page);
-    applyGetAllRecords({ page, limit: pageLimit });
+  const handleChangePage = () => {
+    applyGetAllRecords();
   };
 
   const resetTableData = () => {
-    setCurrentPage(1);
-    setPageLimit(tablePageLimit);
     setDate({
       startDate: new Date(),
       endDate: new Date(),
     });
     setSelectedOptions({});
-    setSearchValue("");
-    applyGetAllRecords({ reset: true });
+    applyGetAllRecords();
   };
+
+  const deleteRecord = (data : any) => {
+    setFormValues(() => ({...formValues, loading : true}))
+    updateHoliday({ title : data.title?.trim(), delete : 1 })
+      .then((data: any) => {
+        openNotification({
+          title: "Deleted Successfully",
+          message: data?.message,
+          type: "success",
+        });
+        applyGetAllRecords()
+        setFormValues(() => ({...formValues, loading : false , data : null, type : 'add', open : false}))
+      })
+      .catch((err: any) => {
+        openNotification({
+          title: "Deleted Failed",
+          message: err?.data?.message,
+          type: getStatusType(err.status),
+        });
+        setFormValues(() => ({...formValues, loading : false}))
+      })
+  }
 
   const employeTableColumns = [
     {
@@ -98,9 +101,7 @@ const EmployeDetailsTable = observer(() => {
       key: "title",
       type: "link",
       function: (e: any) => {
-        navigate(
-          `${dashboard.employes.details}/edit/${e?._id}?tab=profile-details`
-        );
+        setFormValues(() => ({...formValues, type : 'edit', data : e, open : true }))
       },
       props: {
         column: { textAlign: "left" },
@@ -115,6 +116,7 @@ const EmployeDetailsTable = observer(() => {
     {
       headerName: "Date",
       key: "date",
+      type:"date",
       props: { row: { minW: 100, textAlign: "center" } },
     },
     {
@@ -150,8 +152,8 @@ const EmployeDetailsTable = observer(() => {
       <CustomTable
         actions={{
           applyFilter: {
-            show: true,
-            function: () => applyGetAllRecords({ page: currentPage }),
+            show: false,
+            function: () => applyGetAllRecords(),
           },
           resetData: {
             show: true,
@@ -162,19 +164,17 @@ const EmployeDetailsTable = observer(() => {
             addKey: {
               showAddButton: true,
               function: () => {
-                setAddFormValues(() => ({...addFormValues,open : true}))
+                setFormValues(() => ({...formValues,open : true, type : 'add'}))
               },
             },
             editKey: {
               showEditButton: true,
               function: (e: any) => {
-                navigate(
-                  `${dashboard.employes.details}/edit/${e?._id}?tab=profile-details`
-                );
+                setFormValues(() => ({...formValues, type : 'edit', data : e, open : true }))
               },
             },
             viewKey: {
-              showViewButton: true,
+              showViewButton: false,
               function: (dt: string) => {
                 alert(dt);
               },
@@ -182,18 +182,18 @@ const EmployeDetailsTable = observer(() => {
             deleteKey: {
               showDeleteButton: true,
               function: (dt: string) => {
-                alert(dt);
+                setFormValues(() => ({...formValues, data : dt, open : true, type : 'delete'}))
               },
             },
           },
           pagination: {
-            show: true,
+            show: false,
             onClick: handleChangePage,
-            currentPage: currentPage,
+            currentPage: 1,
             totalPages: holidays.totalPages,
           },
           datePicker: {
-            show: true,
+            show: false,
             isMobile: true,
             date: {
               startDate: date.startDate,
@@ -202,17 +202,17 @@ const EmployeDetailsTable = observer(() => {
             onDateChange: (e: string, type: string) => onDateChange(e, type),
           },
           multidropdown: {
-            show: true,
+            show: false,
             title: "Apply Filters",
             placeholder: "Apply Filters",
             search: {
               searchValue: "",
               visible: true,
               placeholder: "Search Value here",
-              onSearchChange: (e: string) => setSearchValue(e),
+              onSearchChange: () => {},
             },
             dropdowns: dropdowns,
-            onApply: () => applyGetAllRecords({}),
+            onApply: () => applyGetAllRecords(),
             selectedOptions: selectedOptions,
             onDropdownChange: (value: any, label: string) => {
               setSelectedOptions((prev: any) => ({ ...prev, [label]: value }));
@@ -225,9 +225,11 @@ const EmployeDetailsTable = observer(() => {
         loading={holidays.loading}
         serial={{ show: true, text: "S.No.", width: "10px" }}
       />
-      <AddHoliday addFormValues={addFormValues} setAddFormValues={setAddFormValues} />
+      <AddHoliday formValues={formValues} setFormValues={setFormValues} getAllRecords={applyGetAllRecords}/>
+      <EditHoliday formValues={formValues} setFormValues={setFormValues} getAllRecords={applyGetAllRecords}/>
+      <DeleteHoliday formValues={formValues} setFormValues={setFormValues} deleteRecord={deleteRecord} />
     </>
   );
 });
 
-export default EmployeDetailsTable;
+export default HolidaysDetailTable;

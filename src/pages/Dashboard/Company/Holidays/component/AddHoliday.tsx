@@ -5,27 +5,27 @@ import { useState } from "react";
 import store from "../../../../../store/store";
 import { getStatusType } from "../../../../../config/constant/statusCode";
 
-const AddHoliday = observer(({ addFormValues, setAddFormValues }: any) => {
+const AddHoliday = observer(({ formValues, setFormValues, getAllRecords }: any) => {
   const {
-    company: { createHolidays },
+    company: { updateHoliday },
     auth: { openNotification },
   } = store;
   const [showError, setShowError] = useState(false);
 
   const closeModel = () => {
-    setAddFormValues({ open: false, loading: false });
+    setFormValues({ open: false, loading: false, data : null, type : 'add' });
     setShowError(false);
   };
 
   const handleSubmit = ({ values, setSubmitting, resetForm }: any) => {
-    createHolidays({ ...values })
+    updateHoliday({ ...values, title : values.title?.trim() })
       .then((data: any) => {
-        console.log(data)
         openNotification({
           title: "Create Successfully",
           message: data?.message,
           type: "success",
         });
+        getAllRecords()
         resetForm();
         closeModel();
       })
@@ -45,7 +45,7 @@ const AddHoliday = observer(({ addFormValues, setAddFormValues }: any) => {
   return (
     <FormModel
       isCentered
-      open={addFormValues.open}
+      open={formValues.open && formValues.type === "add"}
       title="Add Holiday"
       footer={false}
       close={closeModel}

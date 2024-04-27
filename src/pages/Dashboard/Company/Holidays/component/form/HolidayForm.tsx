@@ -22,7 +22,6 @@ const HolidayForm = observer(
           validationSchema={holidaysValidation}
         >
           {({ handleChange, values, setFieldValue, errors, isSubmitting }) => {
-            console.log(errors);
             return (
               <Form>
                 <Flex gap={4} flexDirection={{ base: "column", sm: "row" }}>
@@ -54,7 +53,7 @@ const HolidayForm = observer(
                   error={errors.description}
                   onChange={handleChange}
                   value={values.description}
-                  rows={4}
+                  rows={3}
                   showError={showError}
                 />
                 <Divider />
