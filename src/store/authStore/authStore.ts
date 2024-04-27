@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { action, makeObservable, observable } from "mobx";
 import CryptoJS from "crypto-js";
-import { backendBaseUrl } from "../../config/constant/backendUrl";
+import { backendBaseUrl } from "../../config/constant/urls";
 
 interface Notification {
   title?: any;

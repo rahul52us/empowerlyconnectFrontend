@@ -1,6 +1,6 @@
 import { action, makeObservable, observable } from "mobx";
 import { io, Socket } from "socket.io-client";
-import { backendBaseSocketUrl } from "../../config/constant/backendUrl";
+import { backendBaseSocketUrl } from "../../config/constant/urls";
 
 type DefaultEventsMap = Record<string, unknown>; // Define the DefaultEventsMap type
 
