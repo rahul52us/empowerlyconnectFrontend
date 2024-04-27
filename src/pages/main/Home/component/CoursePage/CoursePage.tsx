@@ -33,9 +33,11 @@ const CoursePage = () => {
         <Grid templateColumns={"1fr 1fr"} gap={4}>
           <Box p={8}>
             <Image
-              objectFit={"contain"}
               rounded={12}
-              src="https://img.freepik.com/free-photo/still-life-books-versus-technology_23-2150063081.jpg?t=st=1713720893~exp=1713724493~hmac=31a120a1d20ae9d601ecb42268a3fe08845fd34fe81db407a2ed60650a50a89b&w=996"
+              objectFit={"fill"}
+              src="https://res.cloudinary.com/dsckn1jjj/image/upload/v1711674121/taskManager/WhatsApp%20Image%202024-03-29%20at%2006.31.01_b00d028f.jpg"
+              maxH={450}
+              minW="100%"
             />
           </Box>
           <Box p={8}>
@@ -54,7 +56,8 @@ const CoursePage = () => {
                   <Avatar
                     borderRadius={10}
                     name="Dan Abrahmov"
-                    src="https://bit.ly/dan-abramov"
+                    objectFit="contain"
+                    src="https://res.cloudinary.com/dsckn1jjj/image/upload/v1711674121/taskManager/WhatsApp%20Image%202024-03-29%20at%2006.31.01_b00d028f.jpg"
                   />
                 </WrapItem>
               </Wrap>
