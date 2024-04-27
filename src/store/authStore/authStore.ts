@@ -20,6 +20,7 @@ class AuthStore {
   notification: Notification | null = null;
   isRememberCredential = true;
   companyUsers = [];
+  companyType : any = 'user'
 
   constructor() {
     this.initiatAppOptions();
@@ -29,6 +30,8 @@ class AuthStore {
       companyUsers: observable,
       openSearch: observable,
       loginModel:observable,
+      company : observable,
+      companyType:observable,
       openLoginModel:action,
       login: action,
       register: action,
@@ -48,8 +51,7 @@ class AuthStore {
       verifyEmail: action,
       createOrganisation: action,
       getCompanyUsers: action,
-      getCurrentCompany:action,
-      company : observable
+      getCurrentCompany:action
     });
   }
 
@@ -88,6 +90,13 @@ class AuthStore {
       .then(({ data }: AxiosResponse<{ data: any }>) => {
         this.company = data.data?.companyDetail?.company?._id
         this.user = data.data;
+        localStorage.setItem(
+          process.env.REACT_APP_AUTHORIZATION_USER_DATA!,
+          CryptoJS.AES.encrypt(
+            JSON.stringify(this.user),
+            process.env.REACT_APP_ENCRYPT_SECRET_KEY!
+          ).toString()
+        );
       })
       .catch(() => {
         this.loading = false;
@@ -124,14 +133,6 @@ class AuthStore {
         username: sendData.username,
         password: sendData.password,
       });
-      this.user = data.data;
-      localStorage.setItem(
-        process.env.REACT_APP_AUTHORIZATION_USER_DATA!,
-        CryptoJS.AES.encrypt(
-          JSON.stringify(this.user),
-          process.env.REACT_APP_ENCRYPT_SECRET_KEY!
-        ).toString()
-      );
       const headersToUpdate = {
         Accept: "application/json",
         Authorization: `Bearer ${data.data.authorization_token}`,
@@ -145,6 +146,7 @@ class AuthStore {
         process.env.REACT_APP_AUTHORIZATION_TOKEN as string,
         data.data.authorization_token
       );
+      this.setUserOptions()
       return data;
     } catch (err: any) {
       return Promise.reject(err?.response?.data || err.message);
