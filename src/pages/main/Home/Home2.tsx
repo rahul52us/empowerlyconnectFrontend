@@ -12,7 +12,6 @@ import ExpandCard from "./component/ExpandCard/ExpandCard";
 import InstructorCard from "./component/InstructorCard/InstructorCard";
 import HeroSection2 from "./component/HeroSection2/HeroSection2";
 import SliderCard1 from "./component/Card1/SliderCard1";
-import CoursePage from "./component/CoursePage/CoursePage";
 
 // const cardData = [
 //   {
@@ -300,7 +299,6 @@ const instructorsData = [
 const Home2 = () => {
   return (
     <Box>
-      <CoursePage />
       <HeroSection2 />
       <Box>
         <Text mt={"4rem"} textAlign={"center"} color={"gray"}>
