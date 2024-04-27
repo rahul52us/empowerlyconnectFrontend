@@ -18,6 +18,7 @@ import {
   ListItem,
   Tag,
   TagLabel,
+  useColorModeValue,
   TagLeftIcon,
   Text,
   Wrap,
@@ -63,7 +64,7 @@ const CoursePage = () => {
                 </Text>
                 <Text
                   fontSize={"sm"}
-                  color={"gray.400"}
+                  color={useColorModeValue("gray", "gray.400")}
                   fontFamily={"monospace"}
                 >
                   UI Course Instructor
@@ -85,8 +86,11 @@ const CoursePage = () => {
                 justify={"space-between"}
                 border={"2px groove"}
                 borderColor={"blue.600"}
+                bg={useColorModeValue("blue.50", "unset")}
               >
-                <Text color={"gray.400"}>Duration :</Text>
+                <Text color={useColorModeValue("gray.600", "gray.400")}>
+                  Duration :
+                </Text>
                 <Text>16 Hours </Text>
               </Flex>
               <Flex
@@ -95,8 +99,11 @@ const CoursePage = () => {
                 justify={"space-between"}
                 border={"2px groove"}
                 borderColor={"blue.600"}
+                bg={useColorModeValue("blue.50", "unset")}
               >
-                <Text color={"gray.400"}>Status :</Text>
+                <Text color={useColorModeValue("gray.600", "gray.400")}>
+                  Status :
+                </Text>
                 <Text>Completed </Text>
               </Flex>
               <Flex
@@ -105,15 +112,18 @@ const CoursePage = () => {
                 justify={"space-between"}
                 border={"2px groove"}
                 borderColor={"blue.600"}
+                bg={useColorModeValue("blue.50", "unset")}
               >
-                <Text color={"gray.400"}>Students :</Text>
+                <Text color={useColorModeValue("gray.600", "gray.400")}>
+                  Students :
+                </Text>
                 <Text>2647 </Text>
               </Flex>
             </Grid>
 
             <Box bg={"blue.600"} p={4} mt={12} rounded={14}>
               <Grid templateColumns={"1fr 1fr"}>
-                <Text fontSize={"2xl"} fontWeight={500}>
+                <Text fontSize={"2xl"} fontWeight={500} color={"white"}>
                   Rs. 500
                 </Text>
                 <Flex gap={4} justify={"end"}>
@@ -121,6 +131,7 @@ const CoursePage = () => {
                     Enroll Now
                   </Button>
                   <IconButton
+                    color={"white"}
                     border={"2px"}
                     variant="outline"
                     aria-label="enroll now"

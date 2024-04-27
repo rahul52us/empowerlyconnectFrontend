@@ -61,13 +61,13 @@ const SliderCard1 = () => {
     infinite: true,
     speed: 500,
     slidesToShow: useBreakpointValue({base : 1 , md : 2 , lg : 3}),
-    slidesToScroll: 2,
+    slidesToScroll: 1,
     arrow: true,
   };
 
   return (
     <>
-      <Box mx={"6rem"}>
+      <Box mx={{base:'2rem',md:"6rem"}}>
         <Box mb={10}>
           <Text mt={"4rem"} textAlign={"center"} color={"gray"}>
             ARTICLES
