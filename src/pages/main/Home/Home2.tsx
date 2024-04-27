@@ -299,7 +299,7 @@ const instructorsData = [
 
 const Home2 = () => {
   return (
-    <>
+    <Box>
 
     <CoursePage/>
       <HeroSection2 />
@@ -445,8 +445,10 @@ const Home2 = () => {
             twitter={teacher.twitter}
           />
         ))}
-      </Grid>
-    </>
+      </Grid> 
+      {/* <WhyUs cards={cardData1} whyus={whyus} /> */}
+
+    </Box>
   );
 };
 
