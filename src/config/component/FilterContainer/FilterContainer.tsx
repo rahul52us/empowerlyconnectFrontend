@@ -10,8 +10,8 @@ const FilterContainer = () => {
   };
 
   return (
-    <Box width="100%">
-      <Flex justifyContent="end">
+    <Box>
+      <Flex justifyContent="center">
         <Box
           display="flex"
           alignItems="center"
@@ -21,12 +21,15 @@ const FilterContainer = () => {
           pr={5}
           _hover={{ borderColor: "white" }}
           _focus={{ borderColor: "white", boxShadow: "none" }}
+          w={"80%"}
+          ml={20}
         >
           <Input
             name="search"
-            placeholder="Search Your Course"
+            placeholder="Search Your Course.."
             borderWidth={0}
             color="white"
+            size={'lg'}
             _hover={{ borderWidth: 0 }}
             _placeholder={{ color: "white" }}
             _focus={{ borderColor: "white", boxShadow: "none" }}
@@ -48,8 +51,14 @@ const FilterContainer = () => {
           Filter
         </Button>
       </Flex>
-      <Collapse in={isFilterOpen} animateOpacity style={{marginTop:'10px'}}>
-        <Box p={4} mt={2} borderRadius="md" width="100%" borderTop={'1px solid skyblue'}>
+      <Collapse in={isFilterOpen} animateOpacity style={{ marginTop: "10px" }}>
+        <Box
+          p={4}
+          mt={2}
+          borderRadius="md"
+          width="100%"
+          borderTop={"1px solid skyblue"}
+        >
           <Box>Filter Option 1</Box>
           <Box>Filter Option 2</Box>
         </Box>

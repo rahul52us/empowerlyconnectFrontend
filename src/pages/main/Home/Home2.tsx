@@ -299,9 +299,8 @@ const instructorsData = [
 
 const Home2 = () => {
   return (
-    <>
-
-    <CoursePage/>
+    <Box>
+      <CoursePage />
       <HeroSection2 />
       <Box>
         <Text mt={"4rem"} textAlign={"center"} color={"gray"}>
@@ -331,7 +330,12 @@ const Home2 = () => {
           EVENTS
         </Text>
         <Heading textAlign={"center"}>Popular Events</Heading>
-        <Grid templateColumns={"1fr 1fr 1fr 1fr"} mt={"2rem"} gap={2}>
+        <Grid
+          templateColumns={{ base: "1fr", lg: "1fr 1fr 1fr 1fr" }}
+          mt={"2rem"}
+          gap={2}
+          p={4}
+        >
           {eventCardData.map((item, index) => (
             <ExpandCard
               key={index}
@@ -396,7 +400,7 @@ const Home2 = () => {
       </Grid> */}
 
       <Box my={6}>
-        <Grid templateColumns={"1fr 1fr"}>
+        <Grid templateColumns={{ base: "1fr", md: "1fr 1fr" }}>
           {data.map((value) => (
             <Card2
               key={value.id}
@@ -446,7 +450,8 @@ const Home2 = () => {
           />
         ))}
       </Grid>
-    </>
+      {/* <WhyUs cards={cardData1} whyus={whyus} /> */}
+    </Box>
   );
 };
 
