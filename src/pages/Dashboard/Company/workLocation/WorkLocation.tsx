@@ -5,13 +5,13 @@ import {
 } from "../../Employes/component/EmployeDetails/utils/constant";
 import store from "../../../../store/store";
 import CustomTable from "../../../../config/component/CustomTable/CustomTable";
-import AddHoliday from "./component/AddHoliday";
 import { getStatusType } from "../../../../config/constant/statusCode";
 import { generateResponse } from "./utils/function";
-import EditHoliday from "./component/EditHoliday";
-import DeleteHoliday from "./component/DeleteHoliday";
+import AddWorkLocation from "./component/AddWorkLocation";
+import EditWorkLocation from "./component/EditWorkLocation";
+import DeleteWorkLocation from "./component/DeleteWorkLocation";
 
-const HolidaysDetailTable = observer(() => {
+const WorkLocationDetails = observer(() => {
   const dropdowns = useState(employDropdownData)[0];
   const [selectedOptions, setSelectedOptions] = useState({});
   const [date, setDate] = useState<any>({
@@ -26,31 +26,31 @@ const HolidaysDetailTable = observer(() => {
   });
 
   const {
-    company: { getHolidays, holidays, updateHoliday },
+    company: { getWorkLocations, workLocations, updateHoliday },
     auth: { openNotification },
   } = store;
 
   useEffect(() => {
-    getHolidays({})
+    getWorkLocations({})
       .then(() => {})
       .catch((err: any) => {
         openNotification({
           type: getStatusType(err.status),
-          title: "Failed to get Holidays",
+          title: "Failed to get Locations",
           message: err?.data?.message,
         });
       });
-  }, [getHolidays, openNotification]);
+  }, [getWorkLocations, openNotification]);
 
   // function to get the data from backend on the page, limit, date and others
   const applyGetAllRecords = () => {
     const query: any = {};
-    getHolidays(query)
+    getWorkLocations(query)
       .then(() => {})
       .catch((err: any) => {
         openNotification({
           type: "error",
-          title: "Failed to get holidays",
+          title: "Failed to get workLocations",
           message: err?.message,
         });
       });
@@ -97,8 +97,8 @@ const HolidaysDetailTable = observer(() => {
 
   const employeTableColumns = [
     {
-      headerName: "Title",
-      key: "title",
+      headerName: "Location",
+      key: "locationName",
       type: "tooltip",
       function: (e: any) => {
         setFormValues(() => ({...formValues, type : 'edit', data : e, open : true }))
@@ -114,34 +114,16 @@ const HolidaysDetailTable = observer(() => {
       },
     },
     {
-      headerName: "Date",
-      key: "date",
-      type:"date",
+      headerName: "Ip Address",
+      key: "ipAddress",
       props: { row: { minW: 100, textAlign: "center" } },
-    },
-    {
-      headerName: "Day",
-      key: "day",
-      props: {
-        row: { minW: 120, textAlign: "left" },
-        column: { textAlign: "left" },
-      },
-    },
-    {
-      headerName: "Description",
-      key: "description",
-      type:"tooltip",
-      props: {
-        row: { minW: 160, textAlign: "left" },
-        column: { textAlign: "left" },
-      },
     },
     {
       headerName: "Actions",
       key: "table-actions",
       type: "table-actions",
       props: {
-        row: {maxW:60, textAlign: "center" },
+        row: {maxW : 60, textAlign: "center" },
         column: { maxW : 60, textAlign: "center" },
       },
     },
@@ -191,7 +173,7 @@ const HolidaysDetailTable = observer(() => {
             show: false,
             onClick: handleChangePage,
             currentPage: 1,
-            totalPages: holidays.totalPages,
+            totalPages: workLocations.totalPages,
           },
           datePicker: {
             show: false,
@@ -220,17 +202,17 @@ const HolidaysDetailTable = observer(() => {
             },
           },
         }}
-        title="Holidays"
-        data={generateResponse(holidays.data)}
+        title="Locations"
+        data={generateResponse(workLocations.data)}
         columns={employeTableColumns}
-        loading={holidays.loading}
+        loading={workLocations.loading}
         serial={{ show: false, text: "S.No.", width: "10px" }}
       />
-      <AddHoliday formValues={formValues} setFormValues={setFormValues} getAllRecords={applyGetAllRecords}/>
-      <EditHoliday formValues={formValues} setFormValues={setFormValues} getAllRecords={applyGetAllRecords}/>
-      <DeleteHoliday formValues={formValues} setFormValues={setFormValues} deleteRecord={deleteRecord} />
+      <AddWorkLocation formValues={formValues} setFormValues={setFormValues} getAllRecords={applyGetAllRecords}/>
+      <EditWorkLocation formValues={formValues} setFormValues={setFormValues} getAllRecords={applyGetAllRecords}/>
+      <DeleteWorkLocation formValues={formValues} setFormValues={setFormValues} deleteRecord={deleteRecord} />
     </>
   );
 });
 
-export default HolidaysDetailTable;
+export default WorkLocationDetails;

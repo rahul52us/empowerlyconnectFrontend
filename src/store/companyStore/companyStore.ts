@@ -9,6 +9,13 @@ class CompanyStore {
     totalPages:0
   };
 
+  workLocations = {
+    data: [],
+    loading: false,
+    hasFetch: false,
+    totalPages:0
+  };
+
   openTaskDrawer = {
     type: "",
     open: false,
@@ -18,10 +25,12 @@ class CompanyStore {
     makeObservable(this, {
       openTaskDrawer: observable,
       holidays: observable,
+      workLocations:observable,
       getHolidays: action,
       updateHoliday: action,
       updateClass: action,
-      updateWorkTiming:action
+      updateWorkTiming:action,
+      getWorkLocations:action
     });
   }
 
@@ -67,6 +76,24 @@ class CompanyStore {
       this.holidays.loading = false;
     }
   };
+
+  getWorkLocations = async (sendData: any) => {
+    try {
+      this.workLocations.loading = true
+      this.workLocations.hasFetch = true
+      const { data } = await axios.post("/company/policy/workLocations", {...sendData,company:store.auth.getCurrentCompany()});
+      this.workLocations.data = data.data || [];
+      this.workLocations.totalPages = data.data?.totalPages || 0
+      return data;
+    } catch (err: any) {
+      this.workLocations.hasFetch = false
+      return Promise.reject(err?.response || err);
+    } finally {
+      this.workLocations.loading = false;
+  };
 }
+}
+
+
 
 export default CompanyStore;

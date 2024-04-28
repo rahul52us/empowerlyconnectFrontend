@@ -51,6 +51,7 @@ interface CustomTableProps {
   loading: boolean;
   totalPages?: number;
   actions?: any;
+  extraProps?:any
 }
 
 interface TableActionsProps {
@@ -70,10 +71,11 @@ const TableActions: React.FC<TableActionsProps> = ({
   const { actionBtn } = actions;
   return (
     <Td {...column?.props?.row}>
-      <Flex columnGap={2}>
+      <Flex columnGap={2} justifyContent="center">
         {actionBtn?.editKey?.showEditButton && (
           <IconButton
             size="sm"
+            p={0}
             onClick={() => {
               if (actionBtn?.editKey?.function) actionBtn?.editKey.function(row);
             }}
@@ -90,6 +92,7 @@ const TableActions: React.FC<TableActionsProps> = ({
         {actionBtn?.viewKey?.showViewButton && (
           <IconButton
             size="sm"
+            p={0}
             onClick={() => {
               if (actionBtn?.addKey?.function) actionBtn?.viewKey.function(row);
             }}
@@ -106,6 +109,7 @@ const TableActions: React.FC<TableActionsProps> = ({
         {actionBtn?.deleteKey?.showDeleteButton && (
           <IconButton
             size="sm"
+            p={0}
             onClick={() => {
               if (actionBtn?.addKey?.function)
                 actionBtn?.deleteKey.function(row);
@@ -226,6 +230,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
   serial,
   loading,
   actions,
+  extraProps
 }) => {
   const isMobile = useBreakpointValue({ base: true, md: false });
   return (
@@ -327,7 +332,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
           </Menu>}
         </Flex>
       </Flex>
-      <Box overflowX="auto" minH={"65vh"} maxH={"65vh"} overflowY={"auto"}>
+      <Box overflowX="auto" minH={"65vh"} maxH={"65vh"} overflowY={"auto"} {...extraProps}>
         <Table
           variant="striped"
           colorScheme="teal"

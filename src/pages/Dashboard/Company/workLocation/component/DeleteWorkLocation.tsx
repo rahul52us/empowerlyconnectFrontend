@@ -1,7 +1,7 @@
 import { Box, Text, useColorMode } from "@chakra-ui/react";
 import DeleteModel from "../../../../../config/component/common/DeleteModel/DeleteModel";
 
-const DeleteHoliday = ({formValues, setFormValues, deleteRecord} : any) => {
+const DeleteWorkLocation = ({formValues, setFormValues, deleteRecord} : any) => {
    const {colorMode} = useColorMode()
   return (
     <div>
@@ -25,9 +25,9 @@ const DeleteHoliday = ({formValues, setFormValues, deleteRecord} : any) => {
               Confirm Deletion
             </Text>
             <Text fontWeight="bold" color={colorMode === "dark" ? "white" : "gray.800"} fontSize="lg" mb={4}>
-              Are you sure you want to delete the holiday{" "}
+              Are you sure you want to delete the Location{" "}
               <Text as="span" color="red.500" fontWeight="bold">
-                "{formValues?.data?.title}"
+                "{formValues?.data?.locationName}"
               </Text>
               ? This action cannot be undone. All associated data will also be
                 Effected.
@@ -38,4 +38,4 @@ const DeleteHoliday = ({formValues, setFormValues, deleteRecord} : any) => {
   )
 }
 
-export default DeleteHoliday
+export default DeleteWorkLocation

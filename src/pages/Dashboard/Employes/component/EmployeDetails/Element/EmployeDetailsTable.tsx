@@ -154,8 +154,8 @@ const EmployeDetailsTable = observer(() => {
       key: "table-actions",
       type: "table-actions",
       props: {
-        row: { minW: 180, textAlign: "left" },
-        column: { textAlign: "left" },
+        row: { minW: 180, textAlign: "center" },
+        column: { textAlign: "center" },
       },
     },
   ];
