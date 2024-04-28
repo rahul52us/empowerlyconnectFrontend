@@ -20,13 +20,23 @@ class CompanyStore {
       holidays: observable,
       getHolidays: action,
       updateHoliday: action,
-      updateClass: action
+      updateClass: action,
+      updateWorkTiming:action
     });
   }
 
   updateHoliday = async (sendData: any) => {
     try {
       const { data } = await axios.put("/company/policy/holidays", {...sendData,company:store.auth.getCurrentCompany()});
+      return data;
+    } catch (err: any) {
+      return Promise.reject(err?.response || err);
+    }
+  };
+
+  updateWorkTiming = async (sendData: any) => {
+    try {
+      const { data } = await axios.put("/company/policy/workTiming", {...sendData,company:store.auth.getCurrentCompany()});
       return data;
     } catch (err: any) {
       return Promise.reject(err?.response || err);
