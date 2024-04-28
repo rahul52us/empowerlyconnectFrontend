@@ -1,5 +1,6 @@
 import axios from "axios";
 import { action, makeObservable, observable } from "mobx";
+import store from "../store";
 
 class DepartmentStore {
   studentDetails : any = {
@@ -66,10 +67,10 @@ class DepartmentStore {
     });
   }
 
-  getAllDepartmentCategories = async (sendData: any) => {
+  getAllDepartmentCategories = async (sendData : any) => {
     try {
       this.departmentCategories.loading = true
-      const { data } = await axios.get("/department/categories",{params : sendData});
+      const { data } = await axios.get("/department/categories",{params : {company : store.auth.getCurrentCompany(), ...sendData}});
       this.departmentCategories.hasFetch = true
       this.departmentCategories.data = data?.data?.data || [];
       this.departmentCategories.totalPages = data?.data?.totalPages || 0
@@ -84,7 +85,7 @@ class DepartmentStore {
   getAllDepartment = async (id : string, sendData: any) => {
     try {
       this.departments.loading = true
-      const { data } = await axios.get(`/department/${id}`,{params : sendData});
+      const { data } = await axios.get(`/department/${id}`,{params : {id : id, company : store.auth.getCurrentCompany(), ...sendData}});
       this.departments.hasFetch = true
       this.departments.data = data?.data?.data || [];
       this.departments.totalPages = data?.data?.totalPages || 0
@@ -130,7 +131,7 @@ class DepartmentStore {
   getDepartmentCounts = async () => {
     try {
       this.departmentCounts.loading = true
-      const { data } = await axios.get("/department/categories/count");
+      const { data } = await axios.get("/department/categories/count",{params : {company : store.auth.getCurrentCompany()}});
       this.departmentCounts.data = data?.data || 0;
       return data.data
     } catch (err: any) {

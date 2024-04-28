@@ -1,5 +1,6 @@
 import axios from "axios";
 import { action, makeObservable, observable } from "mobx";
+import store from "../store";
 
 class TripStore {
   trips : any = {
@@ -35,7 +36,7 @@ class TripStore {
 
   createTrip = async (sendData : any) => {
     try {
-      const { data } = await axios.post("trip/create", sendData);
+      const { data } = await axios.post("trip/create", {...sendData,company : store.auth.getCurrentCompany()});
       return data;
     } catch (err: any) {
       return Promise.reject(err?.response?.data || err?.message);
@@ -54,7 +55,7 @@ class TripStore {
   getAllTrip = async (sendData : any) => {
     try {
       this.trips.loading = true;
-      const { data } = await axios.get("/trip", {params : sendData});
+      const { data } = await axios.get("/trip", {params : {...sendData, company : store.auth.getCurrentCompany()}});
       this.trips.data = data?.data?.data || [];
       this.trips.totalPages = data?.data?.totalPages || 0
       return data;
@@ -81,7 +82,7 @@ class TripStore {
   getTripCounts = async () => {
     try {
       this.tripCount.loading = true;
-      const { data } = await axios.get(`/trip/total/count`);
+      const { data } = await axios.get(`/trip/total/count`,{params : {company : store.auth.getCurrentCompany()}});
       this.tripCount.data = data?.data || 0
       return data;
     } catch (err: any) {

@@ -20,7 +20,7 @@ class AuthStore {
   notification: Notification | null = null;
   isRememberCredential = true;
   companyUsers = [];
-  companyType : any = 'user'
+  role : any = 'user'
 
   constructor() {
     this.initiatAppOptions();
@@ -31,7 +31,7 @@ class AuthStore {
       openSearch: observable,
       loginModel:observable,
       company : observable,
-      companyType:observable,
+      role:observable,
       openLoginModel:action,
       login: action,
       register: action,
@@ -90,6 +90,7 @@ class AuthStore {
       .then(({ data }: AxiosResponse<{ data: any }>) => {
         this.company = data.data?.companyDetail?.company?._id
         this.user = data.data;
+        this.role = this.user?.role
         localStorage.setItem(
           process.env.REACT_APP_AUTHORIZATION_USER_DATA!,
           CryptoJS.AES.encrypt(

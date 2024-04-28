@@ -135,6 +135,7 @@ const TripLayout = observer(
       {
         headerName: "Description",
         key: "description",
+        type : "tooltip",
         props: {
           column: { textAlign: "left" },
         },
