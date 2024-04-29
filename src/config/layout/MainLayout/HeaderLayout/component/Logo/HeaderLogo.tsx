@@ -8,7 +8,7 @@ const HeaderLogo = observer(() => {
   const navigate = useNavigate()
   return (
     <Box p={5}>
-      <Image src='https://themefisher.com/images/logo/logo.svg' alt="" mb={3} onClick={() => navigate(main.home)}/>
+      <Image src='https://themefisher.com/images/logo/logo.svg' alt="" cursor='pointer' mb={3} onClick={() => navigate(main.home)}/>
       {/* <Heading color="blue.400">LOGO</Heading> */}
     </Box>
   );
