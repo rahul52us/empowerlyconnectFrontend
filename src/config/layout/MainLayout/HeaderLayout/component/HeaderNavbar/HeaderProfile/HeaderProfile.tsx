@@ -41,7 +41,8 @@ const HeaderProfile = observer(() => {
         icon={
           <Avatar
             src={user?.pic}
-            size="md"
+            width="45px"
+            height="45px"
             borderRadius={'full'}
             name={user?.name}
           />

@@ -25,7 +25,7 @@ const HeaderNavbar = observer(() => {
           <Header title="About" link={main.about}/>
           <Header title="Contact" link={main.contact}/>
           <Header title="Blogs" link={main.blog}/>
-          <Header title="Help" link={main.about}/>
+          <Header title="Faq" link={main.faq}/>
           <Box display="none">
             <HeaderLanguageSwitch />
             <HeaderThemeSwitch />
