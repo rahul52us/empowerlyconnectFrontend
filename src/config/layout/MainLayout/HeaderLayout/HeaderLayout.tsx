@@ -33,7 +33,7 @@ const HeaderLayout = observer(() => {
         themeConfig.colors.custom.dark.primary
       )}
     >
-      <Box width={isLargerThan1020 ? "60%" : "90%"}>
+      <Box width={isLargerThan1020 ? "20%" : "80%"}>
         <HeaderLogo />
       </Box>
       <HeaderNavbar />
