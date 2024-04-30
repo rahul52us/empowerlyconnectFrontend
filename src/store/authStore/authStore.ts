@@ -21,6 +21,7 @@ class AuthStore {
   isRememberCredential = true;
   companyUsers = [];
   role : any = 'user'
+  webLoader : boolean = false
 
   constructor() {
     this.initiatAppOptions();
@@ -32,6 +33,7 @@ class AuthStore {
       loginModel:observable,
       company : observable,
       role:observable,
+      webLoader:observable,
       openLoginModel:action,
       login: action,
       register: action,
@@ -85,6 +87,7 @@ class AuthStore {
   };
 
   setUserOptions = () => {
+    this.webLoader = true
     axios
       .post("/auth/me")
       .then(({ data }: AxiosResponse<{ data: any }>) => {
@@ -103,6 +106,8 @@ class AuthStore {
         this.loading = false;
         this.clearLocalStorage();
         this.initiatAppOptions();
+      }).finally(() => {
+        this.webLoader = false
       });
   };
 
