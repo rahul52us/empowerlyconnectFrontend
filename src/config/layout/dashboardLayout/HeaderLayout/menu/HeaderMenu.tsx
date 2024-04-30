@@ -1,5 +1,4 @@
 import {
-  Box,
   Text,
   Popover,
   PopoverTrigger,
@@ -9,7 +8,7 @@ import {
 import "./styles.css"; // Import the CSS file
 import { useNavigate } from "react-router-dom";
 
-const Header = ({ title, menus, link }: any) => {
+const Header = ({ title, Menus, link }: any) => {
   const navigate = useNavigate();
   return (
     <Popover trigger="hover" placement="bottom">
@@ -25,7 +24,7 @@ const Header = ({ title, menus, link }: any) => {
           fontWeight="500"
           className="animated-text"
           onClick={() => {
-            if (link && !menus) {
+            if (link && !Menus) {
               navigate(link);
             }
           }}
@@ -33,14 +32,10 @@ const Header = ({ title, menus, link }: any) => {
           {title}
         </Text>
       </PopoverTrigger>
-      {menus && (
+      {Menus && (
         <PopoverContent mt={5}>
           <PopoverBody borderRadius={0}>
-            <Box color="black">
-              <Text>Item 1</Text>
-              <Text>Item 2</Text>
-              <Text>Item 3</Text>
-            </Box>
+            {<Menus />}
           </PopoverBody>
         </PopoverContent>
       )}

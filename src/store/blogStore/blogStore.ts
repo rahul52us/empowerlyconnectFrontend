@@ -1,5 +1,6 @@
 import axios from "axios";
 import { action, makeObservable, observable } from "mobx";
+import store from "../store";
 
 class BlogStore {
   auth : any;
@@ -45,6 +46,10 @@ class BlogStore {
 
   getSingleBlogs = async (sendData: any) => {
     try {
+      this.blogComments.data = []
+      this.blogComments.totalComments = 0;
+      this.blogComments.TotalPages = 0;
+      this.blogComments.currentPage = 1
       this.blogs.loading = true;
       let url = sendData.title ? `title=${sendData.title}` :`blogId=${sendData.blogId}`
       const { data } = await axios.get(`/blog/?${url}`);
@@ -95,6 +100,7 @@ class BlogStore {
         content: sendData.content,
         createdAt: new Date(),
         parentComment: sendData?.parentComment,
+        company:store.auth.getCurrentCompany()
       });
       let createdResponse : any = {
         ...data.data,
