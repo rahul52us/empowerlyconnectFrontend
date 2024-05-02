@@ -19,7 +19,7 @@ const Header = ({ title, Menus, link }: any) => {
             color: "blue.500",
             animation: "slideFromLeft 0.3s ease forwards",
           }}
-          fontSize="18px"
+          fontSize="17px"
           cursor="pointer"
           fontWeight="500"
           className="animated-text"

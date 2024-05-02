@@ -65,7 +65,7 @@ class CompanyStore {
     try {
       this.holidays.loading = true
       this.holidays.hasFetch = true
-      const { data } = await axios.post("/company/policy/holidays", {...sendData,company:store.auth.getCurrentCompany()});
+      const { data } = await axios.get("/company/policy/holidays", {params : {...sendData, company:store.auth.getCurrentCompany()}});
       this.holidays.data = data.data || [];
       this.holidays.totalPages = data.data?.totalPages || 0
       return data;
@@ -77,11 +77,11 @@ class CompanyStore {
     }
   };
 
-  getWorkLocations = async (sendData: any) => {
+  getWorkLocations = async (sendData : any) => {
     try {
       this.workLocations.loading = true
       this.workLocations.hasFetch = true
-      const { data } = await axios.post("/company/policy/workLocations", {...sendData,company:store.auth.getCurrentCompany()});
+      const { data } = await axios.get("/company/policy/workLocations", {params :  {...sendData,company:store.auth.getCurrentCompany()}});
       this.workLocations.data = data.data || [];
       this.workLocations.totalPages = data.data?.totalPages || 0
       return data;

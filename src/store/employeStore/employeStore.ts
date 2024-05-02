@@ -1,12 +1,13 @@
 import axios from "axios";
 import { action, makeObservable, observable } from "mobx";
+import store from "../store";
 
 class EmployeStore {
-  studentDetails : any = {
-    data : null,
-    loading:true,
-    hasFetch:false
-  }
+  studentDetails: any = {
+    data: null,
+    loading: true,
+    hasFetch: false,
+  };
 
   classes = {
     data: [],
@@ -18,18 +19,18 @@ class EmployeStore {
     data: [],
     loading: false,
     hasFetch: false,
-    totalPages:0
+    totalPages: 0,
   };
 
   designationCount = {
-    data : [],
-    loading : false
-  }
+    data: [],
+    loading: false,
+  };
 
-  employesCounts : any = {
-    data : 0,
-    loading : false
-  }
+  employesCounts: any = {
+    data: 0,
+    loading: false,
+  };
 
   studentDrawerForm = {
     type: "",
@@ -39,35 +40,37 @@ class EmployeStore {
   constructor() {
     makeObservable(this, {
       studentDrawerForm: observable,
-      studentDetails:observable,
+      studentDetails: observable,
       classes: observable,
-      employes:observable,
-      designationCount:observable,
-      employesCounts:observable,
-      resetStudentDetails:action,
+      employes: observable,
+      designationCount: observable,
+      employesCounts: observable,
+      resetStudentDetails: action,
       setHandleFormDrawer: action,
       createEmploye: action,
-      getStudentById:action,
+      getStudentById: action,
       getAllEmployes: action,
-      getEmployesDetailsById:action,
+      getEmployesDetailsById: action,
       updateEmployeProfile: action,
-      getDesignationCount:action,
-      getEmployesCount:action,
-      updateEmployeBankDetails:action,
-      updateFamilyDetails:action,
-      updateWorkExperience:action,
-      updateDocuments:action
+      getDesignationCount: action,
+      getEmployesCount: action,
+      updateEmployeBankDetails: action,
+      updateFamilyDetails: action,
+      updateWorkExperience: action,
+      updateDocuments: action,
     });
   }
 
   getAllEmployes = async (sendData: any) => {
     try {
-      this.employes.loading = true
-      const { data } = await axios.get("/employe",{params : sendData});
-      this.employes.hasFetch = true
+      this.employes.loading = true;
+      const { data } = await axios.get("/employe", {
+        params: { ...sendData, company: store.auth.company },
+      });
+      this.employes.hasFetch = true;
       this.employes.data = data?.data?.data || [];
-      this.employes.totalPages = data?.data?.totalPages || 0
-      return data.data
+      this.employes.totalPages = data?.data?.totalPages || 0;
+      return data.data;
     } catch (err: any) {
       return Promise.reject(err?.response?.data || err);
     } finally {
@@ -77,10 +80,10 @@ class EmployeStore {
 
   getDesignationCount = async () => {
     try {
-      this.designationCount.loading = true
+      this.designationCount.loading = true;
       const { data } = await axios.get("/employe/designation/count");
       this.designationCount.data = data?.data || [];
-      return data.data
+      return data.data;
     } catch (err: any) {
       return Promise.reject(err?.response?.data || err);
     } finally {
@@ -90,10 +93,10 @@ class EmployeStore {
 
   getEmployesCount = async () => {
     try {
-      this.employesCounts.loading = true
-      const { data } = await axios.get("/employe/total/count");
+      this.employesCounts.loading = true;
+      const { data } = await axios.get("/employe/total/count",{params : {company: store.auth.company}});
       this.employesCounts.data = data?.data || 0;
-      return data.data
+      return data.data;
     } catch (err: any) {
       return Promise.reject(err?.response?.data || err);
     } finally {
@@ -104,7 +107,7 @@ class EmployeStore {
   getEmployesDetailsById = async (id: any) => {
     try {
       const { data } = await axios.get(`/employe/${id}`);
-      return data.data
+      return data.data;
     } catch (err: any) {
       return Promise.reject(err?.response?.data || err);
     }
@@ -119,79 +122,84 @@ class EmployeStore {
     }
   };
 
-  createEmploye = async (sendData : any) => {
+  createEmploye = async (sendData: any) => {
     try {
-      const { data } = await axios.post("employe/create", sendData);
+      const { data } = await axios.post("employe/create", {...sendData, company: store.auth.company});
       return data;
     } catch (err: any) {
       return Promise.reject(err?.response?.data || err);
     }
-  }
+  };
 
-
-  updateDocuments = async (id : any , sendData : any) => {
+  updateDocuments = async (id: any, sendData: any) => {
     try {
-      const { data } = await axios.put(`employe/updateDocuments/${id}`, sendData);
+      const { data } = await axios.put(
+        `employe/updateDocuments/${id}`,
+        sendData
+      );
       return data;
     } catch (err: any) {
       return Promise.reject(err?.response?.data || err);
     }
-  }
-  updateEmployeProfile = async (id : any , sendData : any) => {
+  };
+  updateEmployeProfile = async (id: any, sendData: any) => {
     try {
       const { data } = await axios.put(`employe/profile/${id}`, sendData);
       return data;
     } catch (err: any) {
       return Promise.reject(err?.response?.data || err);
     }
-  }
+  };
 
-  updateWorkExperience = async (id : any , sendData : any) => {
+  updateWorkExperience = async (id: any, sendData: any) => {
     try {
-      const { data } = await axios.put(`employe/workExperience/${id}`, sendData);
+      const { data } = await axios.put(
+        `employe/workExperience/${id}`,
+        sendData
+      );
       return data;
     } catch (err: any) {
       return Promise.reject(err?.response?.data || err);
     }
-  }
+  };
 
-  updateFamilyDetails = async (id : any , sendData : any) => {
+  updateFamilyDetails = async (id: any, sendData: any) => {
     try {
       const { data } = await axios.put(`employe/familyDetails/${id}`, sendData);
       return data;
     } catch (err: any) {
       return Promise.reject(err?.response?.data || err);
     }
-  }
+  };
 
-  updateEmployeBankDetails = async (id : any , sendData : any) => {
+  updateEmployeBankDetails = async (id: any, sendData: any) => {
     try {
       const { data } = await axios.put(`employe/bankDetails/${id}`, sendData);
       return data;
     } catch (err: any) {
       return Promise.reject(err?.response?.data || err);
     }
-  }
+  };
 
-  getStudentById = async (sendData : any) => {
+  getStudentById = async (sendData: any) => {
     try {
       const { data } = await axios.get(`student/${sendData._id}`);
-      this.studentDetails.data = data.data
-      this.studentDetails.hasFetch = true
+      this.studentDetails.data = data.data;
+      this.studentDetails.hasFetch = true;
       return data;
     } catch (err: any) {
-      this.studentDetails.hasFetch = false
+      this.studentDetails.hasFetch = false;
       return Promise.reject(err?.response?.data || err);
-    }finally{
-      this.studentDetails.loading = false
+    } finally {
+      this.studentDetails.loading = false;
     }
-  }
+  };
 
   resetStudentDetails = async () => {
     this.studentDetails.data = null;
-    this.studentDetails.loading = true
-    this.studentDetails.hasFetch = false
-  }
+    this.studentDetails.loading = true;
+    this.studentDetails.hasFetch = false;
+  };
 }
 
 export default EmployeStore;
