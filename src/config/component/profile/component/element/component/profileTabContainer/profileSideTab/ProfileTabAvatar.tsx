@@ -10,6 +10,7 @@ const ProfileTabAvatar = ({ profileData }: any) => {
       borderRadius="lg"
       overflow="hidden"
       boxShadow="md"
+      maxH="max-content"
     >
       <Box bgColor="#ff6575" p={6} borderRadius="lg 0 0 0">
         <Flex justifyContent="center" mb={4}>

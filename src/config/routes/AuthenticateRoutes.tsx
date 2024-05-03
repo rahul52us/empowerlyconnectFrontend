@@ -11,8 +11,8 @@ const ForgotPassword = lazy(
 const ResetPassword = lazy(
   () => import("../../pages/Authentication/ResetPassword/ResetPassword")
 );
-const CreateOrganisation = lazy(
-  () => import("../../pages/Authentication/CreateOrganisation/CreateOrganisation")
+const CreateOrganisation2 = lazy(
+  () => import("../../pages/Authentication/CreateOrganisation/createOrganisationStep2/CreateOrganisationStep2")
 );
 
 const VerifyEmail = lazy(
@@ -47,8 +47,8 @@ export const AuthenticateRoutes = [
       path: authentication.verifyEmail,
     },
     {
-      element: <CreateOrganisation />,
-      path: authentication.createOrganisation,
+      element: <CreateOrganisation2 />,
+      path: authentication.createOrganisation2,
     },
     {
       element : <CreateOrganisationStep1 />,

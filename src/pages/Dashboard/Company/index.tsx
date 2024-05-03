@@ -7,8 +7,15 @@ import { dashboard } from "../../../config/constant/routes";
 import WorkTiming from "./WorkTiming/WorkTiming";
 import WorkLocationDetails from "./workLocation/WorkLocation";
 import HolidaysDetailTable from "./Holidays/Holidays";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const Company = observer(() => {
+  const navigate = useNavigate();
+  const [workTimingForm, setworkTimingForm] = useState({
+    open : false
+  })
+
   const cards: any = [
     {
       totalCount: 2,
@@ -19,7 +26,7 @@ const Company = observer(() => {
     {
       totalCount: 14,
       title: "Work Timing",
-      link: "",
+      onclick: () => setworkTimingForm({open : true}),
       loading: false,
     },
     {
@@ -49,22 +56,29 @@ const Company = observer(() => {
                 key={index}
                 totalCount={item.totalCount}
                 title={item.title}
-                link={item.link}
+                handleClick={() => {
+                  if(item.link){
+                    navigate(item.link);
+                  }
+                  if(item.onclick){
+                    item.onclick()
+                  }
+                }}
                 loading={item.loading}
               />
             </GridItem>
           );
         })}
       </Grid>
-      <Grid gridTemplateColumns={{md : '1fr', xl : '1fr 1fr'}} gap={4} mt={5}>
+      <Grid gridTemplateColumns={{ md: "1fr", xl: "1fr 1fr" }} gap={4} mt={5}>
         <GridItem overflowX="auto">
-        <HolidaysDetailTable />
+          <HolidaysDetailTable />
         </GridItem>
         <GridItem overflowX="auto">
-        <WorkLocationDetails />
+          <WorkLocationDetails />
         </GridItem>
       </Grid>
-      <WorkTiming />
+      <WorkTiming formData={workTimingForm} setFormData={setworkTimingForm}/>
     </div>
   );
 });

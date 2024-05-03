@@ -26,7 +26,7 @@ const WorkLocationDetails = observer(() => {
   });
 
   const {
-    company: { getWorkLocations, workLocations, updateHoliday },
+    company: { getWorkLocations, workLocations, updateWorkLocation },
     auth: { openNotification },
   } = store;
 
@@ -75,7 +75,7 @@ const WorkLocationDetails = observer(() => {
 
   const deleteRecord = (data : any) => {
     setFormValues(() => ({...formValues, loading : true}))
-    updateHoliday({ title : data.title?.trim(), delete : 1 })
+    updateWorkLocation({ locationName : data.locationName?.trim(), delete : 1 })
       .then((data: any) => {
         openNotification({
           title: "Deleted Successfully",

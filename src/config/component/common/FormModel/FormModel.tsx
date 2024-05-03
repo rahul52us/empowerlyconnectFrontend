@@ -11,7 +11,7 @@ import {
   Divider,
 } from "@chakra-ui/react";
 
-function FormModel({ open, close, isCentered, title, footer, children }: any) {
+function FormModel({ open, close, isCentered, title, footer, children, ...rest }: any) {
   const { colorMode } = useColorMode();
 
   const headerBgColor = colorMode === "dark" ? "blue.900" : "blue.500";
@@ -19,7 +19,7 @@ function FormModel({ open, close, isCentered, title, footer, children }: any) {
 
   return (
     <>
-      <Modal isCentered={isCentered} size={"2xl"} isOpen={open} onClose={close}>
+      <Modal isCentered={isCentered} size="2xl" isOpen={open} onClose={close} {...rest}>
         <ModalOverlay style={{ backgroundColor: "rgba(0, 0, 0, 0.6)" }} />{" "}
         {/* Increase opacity */}
         <ModalContent>

@@ -4,7 +4,7 @@ export const authentication = {
   forgotPassword: "/forgot-password",
   resetPassword: "/reset-password/:token",
   verifyEmail: "/verify-account/:token",
-  createOrganisation: "/create/company/:token",
+  createOrganisation2: "/create/company/:token",
   createOrganisationStep1: "/create/company",
 };
 

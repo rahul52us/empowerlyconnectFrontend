@@ -2,60 +2,49 @@ import { Box, Button, Divider, Flex } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import { observer } from "mobx-react-lite";
 import CustomInput from "../../../../../../config/component/CustomInput/CustomInput";
-import { holidaysValidation } from "../../utils/validation";
+import { workLocationValidaion } from "../../utils/validation";
 
-interface HolidaysFormValues {
-  title: string;
-  description: string;
-  date?: any;
+interface workLocationFormValues {
+  locationName: string;
+  ipAddress: string;
 }
 
-const HolidayForm = observer(
+const WorkLocationForm = observer(
   ({ initialValues, showError, setShowError, close, handleSubmit }: any) => {
     return (
       <Box p={4}>
-        <Formik<HolidaysFormValues>
+        <Formik<workLocationFormValues>
           initialValues={initialValues}
           onSubmit={(values, { setSubmitting, resetForm }) => {
             handleSubmit({ values, setSubmitting, resetForm });
           }}
-          validationSchema={holidaysValidation}
+          validationSchema={workLocationValidaion}
         >
-          {({ handleChange, values, setFieldValue, errors, isSubmitting }) => {
+          {({ handleChange, values , errors, isSubmitting }) => {
             return (
               <Form>
-                <Flex gap={4} flexDirection={{ base: "column", sm: "row" }}>
+                <Flex gap={4} flexDirection={'column'}>
                   <CustomInput
-                    name="title"
-                    placeholder="Enter the Title"
-                    label="Title"
+                    name="locationName"
+                    placeholder="Enter the Location"
+                    label="Location"
                     required={true}
                     onChange={handleChange}
-                    value={values.title}
-                    error={errors.title}
+                    value={values.locationName}
+                    error={errors.locationName}
                     showError={showError}
                   />
                   <CustomInput
-                    label="Date"
-                    value={values.date}
-                    placeholder="please select the date"
-                    required
-                    name="date"
-                    type="date"
-                    onChange={(e) => setFieldValue("date", e)}
+                    name="ipAddress"
+                    placeholder="Enter the Ip Address"
+                    label="Ip Address"
+                    required={true}
+                    onChange={handleChange}
+                    value={values.ipAddress}
+                    error={errors.ipAddress}
+                    showError={showError}
                   />
                 </Flex>
-                <CustomInput
-                  name="description"
-                  placeholder="Description"
-                  label="Description"
-                  type="textarea"
-                  error={errors.description}
-                  onChange={handleChange}
-                  value={values.description}
-                  rows={3}
-                  showError={showError}
-                />
                 <Divider />
                 <Flex
                   justifyContent="flex-end"
@@ -84,4 +73,4 @@ const HolidayForm = observer(
   }
 );
 
-export default HolidayForm;
+export default WorkLocationForm;

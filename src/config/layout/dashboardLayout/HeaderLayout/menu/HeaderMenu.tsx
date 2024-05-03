@@ -5,7 +5,7 @@ import {
   PopoverContent,
   PopoverBody,
 } from "@chakra-ui/react";
-import "./styles.css"; // Import the CSS file
+import "./styles.css";
 import { useNavigate } from "react-router-dom";
 
 const Header = ({ title, Menus, link }: any) => {
@@ -19,7 +19,7 @@ const Header = ({ title, Menus, link }: any) => {
             color: "blue.500",
             animation: "slideFromLeft 0.3s ease forwards",
           }}
-          fontSize="17px"
+          fontSize="16px"
           cursor="pointer"
           fontWeight="500"
           className="animated-text"

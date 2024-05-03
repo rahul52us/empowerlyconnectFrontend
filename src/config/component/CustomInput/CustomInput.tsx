@@ -14,6 +14,7 @@ import {
   RadioGroup,
   InputRightElement,
   InputGroup,
+  useColorMode,
 } from "@chakra-ui/react";
 import { RiCloseFill, RiEyeLine, RiEyeOffLine } from "react-icons/ri";
 import { useState } from "react";
@@ -36,6 +37,7 @@ interface CustomInputProps {
     | "textarea"
     | "select"
     | "date"
+    | "url"
     | "phone"
     | "file-drag"; // New type for file drag-and-drop
   label?: string;
@@ -99,6 +101,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
   ...rest
 }) => {
   const theme = useTheme();
+  const {colorMode} = useColorMode()
   const [showPassword, setShowPassword] = useState(false);
 
   const handleTogglePassword = () => {
@@ -256,6 +259,17 @@ const CustomInput: React.FC<CustomInputProps> = ({
             getOptionLabel={getOptionLabel}
             getOptionValue={getOptionValue}
             isDisabled={disabled}
+            styles={{
+              control: (baseStyles, state) => ({
+                ...baseStyles,
+                borderColor: state.isFocused ? 'rgb(255 255 255 / 16%)' : 'rgb(255 255 255 / 20%)',
+                backgroundColor:colorMode === "light" ? 'white' : '#1A202C'
+              }),
+              option: (styles,{isSelected}) => ({
+               ...styles,
+               backgroundColor:colorMode === "light" ? isSelected ? 'blue' : 'white' : '#1A202C',
+              })
+            }}
             components={{
               IndicatorSeparator: null,
               DropdownIndicator: () => (
@@ -331,6 +345,16 @@ const CustomInput: React.FC<CustomInputProps> = ({
             value={value}
             onChange={onChange}
             placeholder={placeholder}
+            inputStyle={{
+              backgroundColor:colorMode === "light" ? 'white' : '#1A202C'
+            }}
+            dropdownStyle	= {{
+              backgroundColor:colorMode === "light" ? 'white' : '#1A202C',
+              color:'black'
+            }}
+            buttonStyle={{
+              backgroundColor:colorMode === "light" ? 'white' : '#1A202C'
+            }}
           />
         );
       case "file":
@@ -385,6 +409,21 @@ const CustomInput: React.FC<CustomInputProps> = ({
               Browse
             </Button>
           </div>
+        );
+      case 'url':
+        return (
+          <Input
+            readOnly={readOnly}
+            style={style}
+            type="url"
+            placeholder={placeholder}
+            value={value}
+            onChange={onChange}
+            name={name}
+            disabled={disabled}
+            _placeholder={{ fontSize: "12px" }}
+            {...rest}
+          />
         );
       default:
         return (

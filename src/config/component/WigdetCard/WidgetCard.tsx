@@ -1,21 +1,19 @@
 import { useState, useEffect } from "react";
 import { Box, Text, Flex, Icon, Spinner } from "@chakra-ui/react";
 import { FiUsers } from "react-icons/fi";
-import { useNavigate } from "react-router-dom";
 
 const WidgetCard = ({
   totalCount,
   title,
-  link,
+  handleClick,
   loading,
 }: {
   totalCount: number;
   title: string;
-  link: string;
+  handleClick: any;
   loading: boolean; // Changed the type to boolean
 }) => {
   const [count, setCount] = useState(0);
-  const navigate = useNavigate();
   const intervalDelay = 5;
 
   useEffect(() => {
@@ -38,7 +36,7 @@ const WidgetCard = ({
       cursor="pointer"
       transition="transform 0.2s, box-shadow 0.2s"
       color="white"
-      onClick={() => navigate(link)}
+      onClick={() => handleClick()}
     >
       {loading ? (
         <Flex height="110px" justifyContent="center">

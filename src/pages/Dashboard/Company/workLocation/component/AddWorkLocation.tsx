@@ -7,7 +7,7 @@ import { getStatusType } from "../../../../../config/constant/statusCode";
 
 const AddWorkLocation = observer(({ formValues, setFormValues, getAllRecords }: any) => {
   const {
-    company: { updateHoliday },
+    company: { updateWorkLocation },
     auth: { openNotification },
   } = store;
   const [showError, setShowError] = useState(false);
@@ -18,7 +18,7 @@ const AddWorkLocation = observer(({ formValues, setFormValues, getAllRecords }: 
   };
 
   const handleSubmit = ({ values, setSubmitting, resetForm }: any) => {
-    updateHoliday({ ...values, title : values.title?.trim() })
+    updateWorkLocation({ ...values, locationName : values.locationName?.trim(), ipAddress : values.ipAddress?.trim() })
       .then((data: any) => {
         openNotification({
           title: "Create Successfully",
@@ -46,15 +46,14 @@ const AddWorkLocation = observer(({ formValues, setFormValues, getAllRecords }: 
     <FormModel
       isCentered
       open={formValues.open && formValues.type === "add"}
-      title="Add Holiday"
+      title="Add Location"
       footer={false}
       close={closeModel}
     >
       <WorkLocationForm
         initialValues={{
-          title: "",
-          date: new Date(),
-          description: "",
+          locationName: "",
+          ipAddress: ""
         }}
         close={closeModel}
         setShowError={setShowError}

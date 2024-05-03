@@ -11,11 +11,11 @@ import {
 import { observer } from "mobx-react-lite";
 import { useColorModeValue, useMediaQuery, useTheme } from "@chakra-ui/react";
 import styled from "styled-components";
+import { main } from "../../constant/routes";
 
 const MainLayout = observer(() => {
   const theme = useTheme();
   const location = useLocation();
-
   const [sizeStatus] = useMediaQuery(`(max-width: ${theme.breakpoints.xl})`);
 
   // Scroll to top when the location changes (new page is opened)
@@ -34,7 +34,7 @@ const MainLayout = observer(() => {
         <Suspense fallback={<Loader height="90vh" />}>
           <Outlet />
         </Suspense>
-        <Footer />
+        {location.pathname !== main.profile && <Footer />}
       </ContentContainer>
     </div>
   );

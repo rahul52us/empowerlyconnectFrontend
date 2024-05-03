@@ -16,6 +16,11 @@ class CompanyStore {
     totalPages:0
   };
 
+  workTiming = {
+    data: [],
+    loading: false
+  };
+
   openTaskDrawer = {
     type: "",
     open: false,
@@ -26,11 +31,14 @@ class CompanyStore {
       openTaskDrawer: observable,
       holidays: observable,
       workLocations:observable,
+      workTiming:observable,
       getHolidays: action,
+      getWorkLocations:action,
+      getWorkTiming:action,
       updateHoliday: action,
       updateClass: action,
       updateWorkTiming:action,
-      getWorkLocations:action
+      updateWorkLocation:action
     });
   }
 
@@ -51,6 +59,15 @@ class CompanyStore {
       return Promise.reject(err?.response || err);
     }
   };
+
+  updateWorkLocation = async (sendData: any) => {
+    try {
+      const { data } = await axios.put("/company/policy/workLocation", {...sendData,company:store.auth.getCurrentCompany()});
+      return data;
+    } catch (err: any) {
+      return Promise.reject(err?.response || err);
+    }
+  }
 
   updateClass = async (sendData: any) => {
     try {
@@ -92,8 +109,19 @@ class CompanyStore {
       this.workLocations.loading = false;
   };
 }
+
+getWorkTiming = async (sendData : any) => {
+  try {
+    this.workTiming.loading = true
+    const { data } = await axios.get("/company/policy/workTiming", {params :  {...sendData,company:store.auth.getCurrentCompany()}});
+    this.workTiming.data = data.data || [];
+    return data;
+  } catch (err: any) {
+    return Promise.reject(err?.response || err);
+  } finally {
+    this.workTiming.loading = false;
+};
 }
-
-
+}
 
 export default CompanyStore;

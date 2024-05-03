@@ -4,8 +4,10 @@ import { dashboard } from "../../../config/constant/routes";
 import { observer } from "mobx-react-lite";
 import store from "../../../store/store";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const DashWidgetCard = observer(() => {
+  const navigate = useNavigate()
   const {
     auth: { openNotification },
     tripStore: { getTripCounts, tripCount },
@@ -72,7 +74,7 @@ const DashWidgetCard = observer(() => {
           <WidgetCard
             totalCount={item.count}
             title={item.title}
-            link={item.link}
+            handleClick={() => navigate(item.link)}
             loading={item.loading}
           />
         </GridItem>

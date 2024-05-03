@@ -1,8 +1,9 @@
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Text, useColorMode } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const TabElement = observer(({ Icon, title, path, editTabLink }: any) => {
+  const {colorMode} = useColorMode()
   const navigate = useNavigate();
   const location = useLocation();
   const profileTab = new URLSearchParams(location.search).get("profileTab");
@@ -17,7 +18,7 @@ const TabElement = observer(({ Icon, title, path, editTabLink }: any) => {
       pl={4}
       borderRadius="md"
       color={isActive ? "white" : "gray.600"}
-      bg={isActive ? "brand.500" : "transparent"}
+      bg={isActive ? colorMode === "light" ? "brand.500"  : "brand.800" : "transparent"}
       _hover={{ bg: isActive ? "brand.600" : "gray.100", transition: "200ms ease-in" }}
       cursor={editTabLink ? "pointer" : "default"}
       onClick={() => {
@@ -28,7 +29,7 @@ const TabElement = observer(({ Icon, title, path, editTabLink }: any) => {
       }}
     >
       <Box>{Icon}</Box>
-      <Text ml={3} fontSize="sm" fontWeight="500">
+      <Text color={colorMode === "light" ? "gray.800" : "gray.300"} ml={3} fontSize="sm" fontWeight="500">
         {title}
       </Text>
     </Box>
