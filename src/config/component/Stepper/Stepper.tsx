@@ -49,7 +49,7 @@ const CustomStepper: React.FC<CustomStepperProps> = ({
 
   useEffect(() => {
     setActiveStep(activeStepIndex)
-  },[activeStepIndex])
+  },[activeStepIndex,setActiveStep])
 
   const handleClick = (index: number) => {
     setActiveStep(index);

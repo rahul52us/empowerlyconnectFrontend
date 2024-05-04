@@ -1,20 +1,17 @@
 import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import {
   employDropdownData,
 } from "../../Employes/component/EmployeDetails/utils/constant";
 import { tablePageLimit } from "../../../../config/constant/variable";
 import store from "../../../../store/store";
-import { dashboard } from "../../../../config/constant/routes";
 import CustomTable from "../../../../config/component/CustomTable/CustomTable";
 import DepartmentDetails from "../Departmentdetails/DepartmentDetails";
-import { Box, Text, useColorMode } from "@chakra-ui/react";
-import DeleteModel from "../../../../config/component/common/DeleteModel/DeleteModel";
+import DeleteCategory from "./Category/component/DeleteCategory";
+import AddCategory from "./Category/component/AddCategory";
+import EditCategory from "./Category/component/EditCategory";
 
 const DepartmentCategories = observer(() => {
-  const {colorMode} = useColorMode()
-  const navigate = useNavigate();
   const [searchValue, setSearchValue] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<any>({
     id: null,
@@ -201,19 +198,25 @@ const DepartmentCategories = observer(() => {
             addKey: {
               showAddButton: true,
               function: () => {
-                navigate(dashboard.employes.new);
+                setOpenModel({
+                  type : 'add',
+                  data : null,
+                  open : true
+                })
               },
             },
             editKey: {
               showEditButton: true,
               function: (e: any) => {
-                navigate(
-                  `${dashboard.employes.details}/edit/${e?._id}?tab=profile-details`
-                );
+                setOpenModel({
+                  type : 'edit',
+                  data : e,
+                  open : true
+                })
               },
             },
             viewKey: {
-              showViewButton: true,
+              showViewButton: false,
               function: (dt: string) => {
                 alert(dt);
               },
@@ -275,35 +278,13 @@ const DepartmentCategories = observer(() => {
         />
       )}
       {openModel?.open && openModel?.type === "delete" && (
-        <DeleteModel
-          id={openModel?.data?._id}
-          open={openModel?.open}
-          close={() => {
-            setOpenModel({
-              type: "add",
-              data: null,
-              open: false,
-              loading: false,
-            });
-          }}
-          title={openModel?.data?.title}
-          submit={(id: any) => deleteRecord(id)}
-          loading={openModel?.loading}
-        >
-          <Box p={5} textAlign="center" borderRadius="md">
-            <Text fontSize="xl" fontWeight="bold" mb={3}>
-              Confirm Deletion
-            </Text>
-            <Text fontWeight="bold" color={colorMode === "dark" ? "white" : "gray.800"} fontSize="lg" mb={4}>
-              Are you sure you want to delete the position{" "}
-              <Text as="span" color="red.500" fontWeight="bold">
-                "{openModel?.data?.title}"
-              </Text>
-              ? This action cannot be undone. All associated data will also be
-              permanently removed.
-            </Text>
-          </Box>
-        </DeleteModel>
+        <DeleteCategory openModel={openModel} deleteRecord={deleteRecord} setOpenModel={setOpenModel} />
+      )}
+      {openModel?.open && openModel?.type === "add" && (
+        <AddCategory openModel={openModel} setOpenModel={setOpenModel} getAllRecords={applyGetRecords}/>
+      )}
+      {openModel?.open && openModel?.type === "edit" && (
+        <EditCategory openModel={openModel} setOpenModel={setOpenModel} getAllRecords={applyGetRecords}/>
       )}
     </>
   );

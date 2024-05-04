@@ -63,7 +63,11 @@ class DepartmentStore {
       getDepartmentCounts:action,
       getAllDepartment:action,
       deleteDepartment:action,
-      deleteDepartmentCategory:action
+      deleteDepartmentCategory:action,
+      addDepartmentCategory:action,
+      updateDepartmentCategory:action,
+      addDepartment:action,
+      updateDepartment:action
     });
   }
 
@@ -79,6 +83,24 @@ class DepartmentStore {
       return Promise.reject(err?.response?.data || err);
     } finally {
       this.departmentCategories.loading = false;
+    }
+  };
+
+  addDepartmentCategory = async (sendData : any) => {
+    try {
+      const { data } = await axios.post("/department/category",{company : store.auth.getCurrentCompany(), ...sendData});
+      return data
+    } catch (err: any) {
+      return Promise.reject(err?.response || err);
+    }
+  };
+
+  addDepartment = async (sendData : any) => {
+    try {
+      const { data } = await axios.post("/department",{company : store.auth.getCurrentCompany(), ...sendData});
+      return data
+    } catch (err: any) {
+      return Promise.reject(err?.response || err);
     }
   };
 
@@ -112,6 +134,24 @@ class DepartmentStore {
       return data;
     } catch (err: any) {
       return Promise.reject(err?.response?.data || err);
+    }
+  }
+
+  updateDepartmentCategory = async (id : string, sendData : any) => {
+    try {
+      const { data } = await axios.put(`department/category/${id}`,{...sendData,company : store.auth.getCurrentCompany()});
+      return data;
+    } catch (err: any) {
+      return Promise.reject(err?.response || err);
+    }
+  }
+
+  updateDepartment = async (id : string, sendData : any) => {
+    try {
+      const { data } = await axios.put(`/department/${id}`,{...sendData,company : store.auth.getCurrentCompany()});
+      return data;
+    } catch (err: any) {
+      return Promise.reject(err?.response || err);
     }
   }
 
