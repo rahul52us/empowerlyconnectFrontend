@@ -77,7 +77,14 @@ const CreateOrganisationPersonalDetails = observer(
             }
           }}
         >
-          {({ handleSubmit, handleChange, setFieldValue ,  errors, values, isSubmitting }) => (
+          {({
+            handleSubmit,
+            handleChange,
+            setFieldValue,
+            errors,
+            values,
+            isSubmitting,
+          }) => (
             <Form
               onSubmit={handleSubmit}
               style={{
@@ -103,6 +110,9 @@ const CreateOrganisationPersonalDetails = observer(
                   errors={errors}
                   handleChange={handleChange}
                   showError={showError}
+                  organisationError={organisationError}
+                  handleSearchChange={handleSearchChange}
+                  setFieldValue={setFieldValue}
                 />
               </Box>
               <Box display={activeIndex === 2 ? undefined : "none"}>
@@ -118,7 +128,6 @@ const CreateOrganisationPersonalDetails = observer(
               <Flex justifyContent="end" columnGap={4} mb={1}>
                 <Button
                   disabled
-                  type="submit"
                   bg={"blue.400"}
                   color={"white"}
                   w={120}
@@ -138,6 +147,22 @@ const CreateOrganisationPersonalDetails = observer(
                   disabled
                   type="submit"
                   bg={"blue.400"}
+                  color={"white"}
+                  w={120}
+                  _hover={{
+                    bg: "blue.500",
+                  }}
+                  display={activeIndex === steps.length - 1 ? undefined : "none"}
+                  isLoading={isSubmitting}
+                  onClick={() => {
+                    setShowError(true);
+                  }}
+                >
+                  Submit
+                </Button>
+                <Button
+                  disabled
+                  bg={"blue.400"}
                   w={120}
                   color={"white"}
                   _hover={{
@@ -146,8 +171,8 @@ const CreateOrganisationPersonalDetails = observer(
                   display={
                     activeIndex === steps.length - 1 ? "none" : undefined
                   }
-                  isLoading={isSubmitting}
                   onClick={() => {
+                    setShowError(true);
                     setActiveIndex(activeIndex + 1);
                   }}
                 >

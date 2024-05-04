@@ -7,6 +7,7 @@ import store from "../../../../store/store";
 import { useNavigate, useParams } from "react-router-dom";
 import { authentication, main } from "../../../../config/constant/routes";
 import { useState } from "react";
+import { readFileAsBase64 } from "../../../../config/constant/function";
 
 const CreateOrganisationStep2 = () => {
   const navigate = useNavigate();
@@ -15,6 +16,7 @@ const CreateOrganisationStep2 = () => {
   const {
     auth: { openNotification, createOrganisation },
   } = store;
+
   const steps = [
     {
       title: "Personal Details",
@@ -22,12 +24,22 @@ const CreateOrganisationStep2 = () => {
       Icon: <StepIcon />,
     },
     { title: "Company Details", description: "Date & Time", Icon: <BiHome /> },
-    { title: "Links", description: "Select Rooms", Icon: <StepIcon /> },
-    { title: "Other", description: "Other", Icon: <StepIcon /> },
+    { title: "Links", description: "Select Rooms", Icon: <StepIcon /> }
   ];
 
-  const handleSubmit = ({ values, setSubmitting }: any) => {
-    createOrganisation({ ...values, token: token })
+  const handleSubmit = async ({ values, setSubmitting }: any) => {
+    let logo : any = null
+    if (values.logo && values.logo?.length !== 0) {
+      const buffer = await readFileAsBase64(values.logo);
+      const fileData = {
+        buffer: buffer,
+        filename: values.logo?.name,
+        type: values.logo?.type,
+      };
+      logo = fileData;
+    }
+    const {first_name,last_name, password, username, ...rest} = values
+    createOrganisation({ name : `${first_name} ${last_name}`, password, username , companyDetails : {...rest, logo }, token: token })
       .then((data) => {
         openNotification({
           title: "Create Success",

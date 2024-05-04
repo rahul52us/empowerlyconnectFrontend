@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Box,
   Flex,
@@ -46,6 +46,10 @@ const CustomStepper: React.FC<CustomStepperProps> = ({
     index: activeStepIndex,
     count: steps.length,
   });
+
+  useEffect(() => {
+    setActiveStep(activeStepIndex)
+  },[activeStepIndex])
 
   const handleClick = (index: number) => {
     setActiveStep(index);
