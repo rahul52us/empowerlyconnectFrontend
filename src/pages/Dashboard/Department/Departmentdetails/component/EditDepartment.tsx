@@ -55,6 +55,7 @@ const EditDepartment = observer(
         title={`${openModel?.data?.title} (${openModel?.data?.code})`}
         footer={false}
         close={closeModel}
+        size="xl"
       >
         <CategoryForm
           initialValues={{

@@ -262,12 +262,13 @@ const CustomInput: React.FC<CustomInputProps> = ({
             styles={{
               control: (baseStyles, state) => ({
                 ...baseStyles,
-                borderColor: state.isFocused ? 'rgb(255 255 255 / 16%)' : 'rgb(255 255 255 / 20%)',
-                backgroundColor:colorMode === "light" ? 'white' : '#1A202C'
+                borderColor: state.isFocused ? 'gray.200' : 'gray.300',
+                backgroundColor:colorMode === "light" ? 'white' : 'transparent',
+                fontSize:'14px',
               }),
               option: (styles,{isSelected}) => ({
                ...styles,
-               backgroundColor:colorMode === "light" ? isSelected ? 'blue' : 'white' : '#1A202C',
+               backgroundColor:colorMode === "light" ? isSelected ? 'blue' : 'white' : '#2D3748',
               })
             }}
             components={{
@@ -346,14 +347,15 @@ const CustomInput: React.FC<CustomInputProps> = ({
             onChange={onChange}
             placeholder={placeholder}
             inputStyle={{
-              backgroundColor:colorMode === "light" ? 'white' : '#1A202C'
+              backgroundColor:colorMode === "light" ? 'transparent' : 'transparent',
+              borderColor:'gray.400'
             }}
             dropdownStyle	= {{
-              backgroundColor:colorMode === "light" ? 'white' : '#1A202C',
-              color:'black'
+              backgroundColor:colorMode === "light" ? 'white' : '#2D3748',
+              color:colorMode === "light" ? 'black' : "gray.300",
             }}
             buttonStyle={{
-              backgroundColor:colorMode === "light" ? 'white' : '#1A202C'
+              backgroundColor:colorMode === "light" ? 'transparent' : 'transparent'
             }}
           />
         );
