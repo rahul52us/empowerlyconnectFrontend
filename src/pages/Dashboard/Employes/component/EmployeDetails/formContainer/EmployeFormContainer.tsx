@@ -26,8 +26,6 @@ const EmployeFormContainer = observer(() => {
     },
   });
 
-  console.log(user?.companyDetail?.company)
-
   const location = useLocation();
   const tab: any = new URLSearchParams(location.search).get("tab");
   const navigate = useNavigate();
@@ -100,7 +98,12 @@ const EmployeFormContainer = observer(() => {
           .finally(() => {
             setSubmitting(false);
           });
-      } else if (tab === "bank-details") {
+      }
+      else if(tab === "company-details"){
+        console.log(values)
+        setSubmitting(false)
+      }
+      else if (tab === "bank-details") {
         let bankDetails: any = values;
         if (
           files?.cancelledCheque?.file &&

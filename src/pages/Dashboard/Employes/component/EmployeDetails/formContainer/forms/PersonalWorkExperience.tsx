@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Box, Button, Divider, Flex, Grid, Heading } from "@chakra-ui/react";
 import { Form, Formik, FieldArray } from "formik";
-import CustomInput from "../../../../../config/component/CustomInput/CustomInput";
-import ShowFileUploadFile from "../../../../../config/component/common/ShowFileUploadFile/ShowFileUploadFile";
+import CustomInput from "../../../../../../../config/component/CustomInput/CustomInput";
+import ShowFileUploadFile from "../../../../../../../config/component/common/ShowFileUploadFile/ShowFileUploadFile";
 
 const PersonalWorkExperience = ({
   handleSubmitProfile,
@@ -34,8 +34,6 @@ const PersonalWorkExperience = ({
         isSubmitting,
         setFieldValue,
       }: any) => {
-        console.log(errors);
-        console.log(values)
         return (
           <Form onSubmit={handleSubmit}>
             <Box p={4} borderRadius="lg" boxShadow="md">

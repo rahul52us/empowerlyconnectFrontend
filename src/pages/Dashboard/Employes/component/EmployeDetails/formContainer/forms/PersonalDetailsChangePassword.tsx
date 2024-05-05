@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Box, Flex, Grid, Heading } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
-import store from "../../../../../store/store";
-import { ChangePasswordValidation } from "../EmployeDetails/utils/validations";
-import CustomInput from "../../../../../config/component/CustomInput/CustomInput";
-import CustomSubmitBtn from "../../../../../config/component/Button/CustomSubmitBtn";
+import store from "../../../../../../../store/store";
+import { ChangePasswordValidation } from "../../utils/validations";
+import CustomInput from "../../../../../../../config/component/CustomInput/CustomInput";
+import CustomSubmitBtn from "../../../../../../../config/component/Button/CustomSubmitBtn";
 
 interface ProfileChangePasswordI {
   changePassword?: any;

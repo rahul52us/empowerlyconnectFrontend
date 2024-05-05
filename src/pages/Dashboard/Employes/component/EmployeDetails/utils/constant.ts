@@ -172,7 +172,14 @@ export const employeInitialValues = (type: string, data: any) => {
         },
       },
     };
-  } else {
+  }
+  else if (type === "company-details"){
+    return {companyDetails : {
+      department : [],
+      designation : [{label : 'gaa', value : '66361fd244b33c5ec295b050'}]
+    }}
+  }
+  else {
     return { profileDetails: {} };
   }
 };

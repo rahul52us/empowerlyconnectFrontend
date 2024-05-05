@@ -1,15 +1,15 @@
 import { Box, Button, Grid } from "@chakra-ui/react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { observer } from "mobx-react-lite";
-import PersonalDetails from "../../forms/PersonalDetailsForm";
-import PersonalDetailsChangePassword from "../../forms/PersonalDetailsChangePassword";
-import PersonalBankDetails from "../../forms/PersonalBankDetails";
-import FamilyDetails from "../../forms/PersonalFamilyDetails";
 import { dashboard } from "../../../../../../config/constant/routes";
 import EmployFormSidebar from "../component/EmployFormSidebar";
-import PersonalWorkExperience from "../../forms/PersonalWorkExperience";
-import PersonalDocuments from "../../forms/PersonalDocuments";
-import PersonalCompanyDetails from "../../forms/PersonalCompanyDetails";
+import PersonalCompanyDetails from "./forms/PersonalCompanyDetails";
+import PersonalDetails from "./forms/PersonalDetailsForm";
+import PersonalBankDetails from "./forms/PersonalBankDetails";
+import FamilyDetails from "./forms/PersonalFamilyDetails";
+import PersonalDetailsChangePassword from "./forms/PersonalDetailsChangePassword";
+import PersonalWorkExperience from "./forms/PersonalWorkExperience";
+import PersonalDocuments from "./forms/PersonalDocuments";
 
 const EmployeContainer = observer(
   ({
@@ -101,7 +101,7 @@ const EmployeContainer = observer(
               type={type}
               profileData={profileData}
               handleSubmitProfile={handleSubmitProfile}
-              initialValues={initialValues?.documents}
+              initialValues={initialValues?.companyDetails}
               validations={validations}
               files={files}
               setFiles={setFiles}
@@ -188,7 +188,7 @@ const EmployeContainer = observer(
               type={type}
               profileData={profileData}
               handleSubmitProfile={handleSubmitProfile}
-              initialValues={initialValues?.documents}
+              initialValues={initialValues?.companyDetails}
               validations={validations}
               files={files}
               setFiles={setFiles}

@@ -264,7 +264,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
                 ...baseStyles,
                 borderColor: state.isFocused ? 'gray.200' : 'gray.300',
                 backgroundColor:colorMode === "light" ? 'white' : 'transparent',
-                fontSize:'14px',
+                fontSize:'12px',
               }),
               option: (styles,{isSelected}) => ({
                ...styles,
@@ -310,6 +310,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
                 },
                 inputProps: {
                   size: "md",
+                  fontSize:'12px',
                   placeholder: placeholder,
                 },
               }}

@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Box, Button, Divider, Grid, Heading } from "@chakra-ui/react";
 import { FieldArray, Form, Formik } from "formik";
-import CustomInput from "../../../../../config/component/CustomInput/CustomInput";
-import { titles } from "../EmployeDetails/utils/constant";
+import CustomInput from "../../../../../../../config/component/CustomInput/CustomInput";
+import { titles } from "../../utils/constant";
 
 const PersonalDetails = ({
   type,

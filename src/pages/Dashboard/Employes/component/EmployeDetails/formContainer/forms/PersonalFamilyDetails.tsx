@@ -12,7 +12,7 @@ import {
   Heading,
   Divider,
 } from "@chakra-ui/react";
-import CustomInput from "../../../../../config/component/CustomInput/CustomInput";
+import CustomInput from "../../../../../../../config/component/CustomInput/CustomInput";
 
 const FamilyDetails = ({
   handleSubmitProfile,
