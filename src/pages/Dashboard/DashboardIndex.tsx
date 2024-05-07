@@ -9,6 +9,7 @@ import DashPageHeader from "../../config/component/common/DashPageHeader/DashPag
 import { headerHeight } from "../../config/constant/variable";
 import { Box, Grid, GridItem, Text } from "@chakra-ui/react";
 import { dashBreadCrumb } from "./utils/breadcrumb.constant";
+import NormalTable from "../../config/component/Table/NormalTable/NormalTable";
 // import DashboardRight from "./component/DashboardRight";
 // import MyCoursesTable from "./component/MyCoursesTable";
 // import SkeletanCategoryCard from "../../config/component/Card/CategoryCard/SkeletanCategoryCard";
@@ -20,6 +21,14 @@ const DashboardIndex = observer(() => {
   const {
     quiz: { setDeleteCategoryModal },
   } = store;
+
+  const users : any = [
+    { id: 1, name: "John", age: 30, country: "USA", email: "john@example.com" },
+    { id: 2, name: "Jane", age: 25, country: "USA", email: "jane@example.com"},
+    { id: 3, name: "Doe", age: 40, country: "USA", email: "doe@example.com"},
+    { id: 4, name: "Doe", age: 40, country: "USA", email: "doe@example.com"},
+    { id: 5, name: "Doe", age: 40, country: "USA", email: "doe@example.com"}
+  ];
 
   return (
     <>
@@ -38,6 +47,10 @@ const DashboardIndex = observer(() => {
           <DashboardRight />
         </GridItem> */}
           {/* <MyCoursesTable /> */}
+        </Grid>
+        <Grid templateColumns={{base : "1fr", md : "1fr 1fr"}} columnGap={4}>
+        <NormalTable data={users}/>
+        <NormalTable data={users}/>
         </Grid>
         <DeleteModel
           id={store.quiz.openDeleteCategoryModal?.data?._id}
