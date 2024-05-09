@@ -1,9 +1,10 @@
 import { Grid } from "@chakra-ui/react";
-import CategoryCard from "../../../../config/component/Card/CategoryCard/CategoryCard";
 import SideFilterContainer from "../../../../config/component/FilterContainer/SideFilterContainer/SideFilterContainer";
 import { observer } from "mobx-react-lite";
 import store from "../../../../store/store";
 import SkeletanCategoryCard from "../../../../config/component/Card/CategoryCard/SkeletanCategoryCard";
+import CourseCard from "../component/CourseCard";
+import { coursesData } from "../utils/constant";
 
 const CourseCardContainer = observer(() => {
   const {
@@ -22,6 +23,7 @@ const CourseCardContainer = observer(() => {
       }}
       gap={4}
       columnGap={3}
+      justifyContent={"space-between"}
     >
       <SideFilterContainer
         data={data}
@@ -32,13 +34,16 @@ const CourseCardContainer = observer(() => {
         templateColumns={{
           base: "1fr",
           sm: "1fr",
-          md: "1fr",
-          lg: "1fr 1fr",
+          md: "1fr 1fr",
           xl: "1fr 1fr 1fr",
         }}
         gap={5}
+        justifyContent="space-around"
       >
-        {data.map((item: any, index: any) => {
+        {coursesData.map((course: any, index: number) => {
+          return <CourseCard course={course} key={index} />;
+        })}
+        {/* {data.map((item: any, index: any) => {
           return (
             <CategoryCard
               thumbnail={item.thumbnail}
@@ -53,7 +58,7 @@ const CourseCardContainer = observer(() => {
               totalCount={item?.totalChildData}
             />
           );
-        })}
+        })} */}
         <SkeletanCategoryCard />
       </Grid>
     </Grid>

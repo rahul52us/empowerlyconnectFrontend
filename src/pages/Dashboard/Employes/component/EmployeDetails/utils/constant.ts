@@ -1,3 +1,5 @@
+// import { manipulateDateWithMonth } from "../../../../../../config/constant/dateUtils";
+
 export const employDropdownData: any = [
   {
     label: "BSE",
@@ -25,6 +27,14 @@ export const titles: any = [
     value: "mrs",
   },
 ];
+
+export const eTypeOption = [
+  {
+    label: "Manager",
+    value: "manager",
+  },
+  { label: "Staff", value: "staff" },
+]
 
 export const employeInitialValues = (type: string, data: any) => {
   if (type === "profile-details") {
@@ -174,9 +184,22 @@ export const employeInitialValues = (type: string, data: any) => {
     };
   }
   else if (type === "company-details"){
+    console.log(data)
+    let details : any = {}
+    if(data){
+     details = data?.companyDetail?.length ? data.companyDetail[0].details?.length ? data.companyDetail[0].details[data.companyDetail[0].details?.length - 1] : {} : {}
+    }
     return {companyDetails : {
-      department : [],
-      designation : [{label : 'gaa', value : '66361fd244b33c5ec295b050'}]
+      department : undefined,
+      designation : undefined,
+      managers:undefined,
+      workTiming:undefined,
+      workingLocation:undefined,
+      eType:[],
+      description:"",
+      ...details,
+      doj:details.doj ? new Date(details.doj) : new Date(),
+      confirmationDate:details.confirmationDate ? new Date(details.confirmationDate) : new Date(),
     }}
   }
   else {

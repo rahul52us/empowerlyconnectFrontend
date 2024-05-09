@@ -241,6 +241,17 @@ const WorkExperienceDetails = Yup.object().shape({
     .required("Experience details are required"),
 });
 
+export const employeCompanyDetailsValidation = Yup.object().shape({
+  workTiming:Yup.mixed().required('workTiming is required'),
+  department:Yup.mixed().required('department is required'),
+  designation:Yup.mixed().required('designation is required'),
+  managers:Yup.mixed(),
+  doj:Yup.mixed().required('Date of joining is required'),
+  confirmationDate : Yup.mixed().required('Confirmation Date is required'),
+  workingLocation:Yup.mixed().required('work Location is required'),
+  eType:Yup.mixed().required('E-Type is required'),
+  description:Yup.string().trim()
+})
 
 export const getValidation = (type : string, mode : string) => {
   if(type === "profile-details"){
@@ -273,6 +284,14 @@ export const getValidation = (type : string, mode : string) => {
     }
     else {
       return WorkExperienceDetails
+    }
+  }
+  else if(type === "company-details"){
+    if(mode === "edit"){
+      return employeCompanyDetailsValidation
+    }
+    else {
+      return employeCompanyDetailsValidation
     }
   }
   else {

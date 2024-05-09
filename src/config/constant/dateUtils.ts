@@ -15,6 +15,17 @@ export function formatDate(date: Date, format?: string): string {
   return moment(date).format(format || DDMMYYYY_FORMAT);
 }
 
+export function manipulateDateWithMonth(date: Date, numberOfMonths: number, type: 'add' | 'sub'): string {
+  const manipulatedDate = moment(date);
+  if (type === 'add') {
+    manipulatedDate.add(numberOfMonths, 'months');
+  } else {
+    manipulatedDate.subtract(numberOfMonths, 'months');
+  }
+  return manipulatedDate.format('YYYY-MM-DD');
+}
+
+
 // dateUtils.ts
 export function formatDateTime(
   timestamp: string,

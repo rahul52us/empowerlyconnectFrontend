@@ -6,7 +6,7 @@ interface NormalTableProps {
 
 const NormalTable: React.FC<NormalTableProps> = ({ data } : any) => {
   const columnWidth = useBreakpointValue({ base: "100%", sm: "25%", md: "15%", lg: "12.5%" });
-  const cellHeight = "50px";
+  const cellHeight = "40px";
   const bgColor = useColorModeValue("gray.100", "gray.700");
   const headerColor = useColorModeValue("gray.200", "gray.600");
   const textColor = useColorModeValue("black", "white");
@@ -22,7 +22,7 @@ const NormalTable: React.FC<NormalTableProps> = ({ data } : any) => {
         alignItems="center"
         borderBottom={borderColor}
         p={2}
-        height={cellHeight}
+        height={50}
         bg={headerColor} // Header color
       >
         <Heading fontSize="md" color={textColor}>Recent Users</Heading>
@@ -30,7 +30,7 @@ const NormalTable: React.FC<NormalTableProps> = ({ data } : any) => {
           <Input placeholder="Search" fontSize="sm" />
         </Box>
       </Flex>
-      <Box p={3} height="325px" overflowY="auto" maxWidth="100%">
+      <Box p={3} height="265px" overflowY="auto" maxWidth="100%">
         <Table variant="simple" width="100%" border={borderColor} size="sm">
           <Thead>
             <Tr bg={headerColor} height={cellHeight}>
