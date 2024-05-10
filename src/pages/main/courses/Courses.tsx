@@ -15,6 +15,7 @@ import { observer } from "mobx-react-lite";
 import store from "../../../store/store";
 // import CoursesPage from "./component/CoursesPage/CoursesPage";
 import BgImg from "./component/bg2.jpeg";
+import CourseModules from "./CourseCardContainer/CourseModules";
 
 const Courses = observer(() => {
   const {
@@ -86,6 +87,7 @@ const Courses = observer(() => {
         <Box mt={10}>
           <CourseCardContainer />
         </Box>
+        <CourseModules />
     </Box>
   );
 });

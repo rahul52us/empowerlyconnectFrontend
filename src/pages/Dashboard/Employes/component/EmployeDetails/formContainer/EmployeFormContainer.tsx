@@ -302,16 +302,6 @@ const EmployeFormContainer = observer(() => {
             setSubmitting(false);
           });
       }
-      else if (tab === "company-details"){
-        setSubmitting(false)
-        setShowError(false)
-        setErrors({})
-        openNotification({
-          type: "success",
-          message: "Company Details has been created Successfully",
-          title: "Create Successfully",
-        });
-      }
     } else {
       if (tab === "profile-details") {
         createEmploye({ ...generateSubmitResponse(values),company : user?.companyDetail?.company })
@@ -360,6 +350,36 @@ const EmployeFormContainer = observer(() => {
             setSubmitting(false);
           });
       } else if (tab === "documents") {
+      }
+      else if(tab === "company-details"){
+        let data : any = {}
+        data['workTiming'] = values.workTiming.map((item : any) => item.value)
+        data['workingLocation'] = values.workingLocation.map((item : any) => item.value)
+        data['managers'] = values.managers.map((item : any) => item.value)
+        data['eType'] = values.eType?.value
+        data['department'] = values.department?.value
+        data['designation'] = values.designation?.value
+        updateCompanyDetails(id, {details : {...values, ...data}})
+          .then(() => {
+            setShowError(false);
+            setErrors({});
+            openNotification({
+              type: "success",
+              message: "Update Company Details Successfully",
+              title: "Updated Successfully",
+            });
+            setHaveApiCall(false);
+          })
+          .catch((err) => {
+            openNotification({
+              type: "error",
+              message: err?.message,
+              title: "Failed to Update",
+            });
+          })
+          .finally(() => {
+            setSubmitting(false);
+          });
       }
     }
   };

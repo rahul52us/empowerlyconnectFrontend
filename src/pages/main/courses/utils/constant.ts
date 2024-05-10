@@ -150,3 +150,48 @@ export const coursesData : any = [
       logo: "favicon.png",
     }
   ];
+
+export const modules = [
+    {
+      id: 1,
+      title: "Introduction to React",
+      topics: [
+        {
+          title: "Getting Started with React",
+          duration: "20 Min",
+        },
+        {
+          title: "JSX and Props",
+          duration: "10 Min",
+        },
+      ],
+    },
+    {
+      id: 2,
+      title: " Advanced React Patterns",
+      topics: [
+        {
+          title: "Hooks and Functional Components",
+          duration: "15 Min",
+        },
+        {
+          title: "Context API",
+          duration: "30 Min",
+        },
+      ],
+    },
+    {
+      id: 3,
+      title: " State Management",
+      topics: [
+        {
+          title: "Redux Introduction",
+          duration: "25 Min",
+        },
+        {
+          title: "Redux with React",
+          duration: "20 Min",
+        },
+      ],
+    },
+  ];
