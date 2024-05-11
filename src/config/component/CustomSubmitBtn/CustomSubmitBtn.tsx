@@ -3,22 +3,46 @@ import { Box, Button } from "@chakra-ui/react";
 interface CustomBtnI {
   loading: boolean;
   onClick?: any;
+  buttonText?:string;
+  cancelFunctionality?: any;
+  rest?:any;
+  type?:string
 }
 
-const CustomSubmitBtn = ({ loading, onClick }: CustomBtnI) => {
+const CustomSubmitBtn = ({
+  loading,
+  onClick,
+  buttonText,
+  cancelFunctionality,
+  type,
+  rest
+}: CustomBtnI) => {
   return (
     <Box mt={3}>
-      <Button>Cancel</Button>
+      {
+        cancelFunctionality && cancelFunctionality.show &&
       <Button
-        type="submit"
+        onClick={() => {
+          if (cancelFunctionality.onClick) {
+            cancelFunctionality.onClick();
+          }
+        }}
+        {...cancelFunctionality.rest}
+      >
+        {cancelFunctionality.text ?  cancelFunctionality.text : 'Cancel'}
+      </Button>}
+      <Button
+        type={type ? type : "submit"}
         isLoading={loading}
         onClick={() => {
           if (onClick) {
             onClick();
           }
         }}
+        colorScheme="blue"
+        {...rest}
       >
-        Submit
+        {buttonText ? buttonText : 'Submit'}
       </Button>
     </Box>
   );

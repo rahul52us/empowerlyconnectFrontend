@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
-import { Box, Button, Divider, Flex, Grid, Heading } from "@chakra-ui/react";
+import { Box, Divider, Flex, Grid, Heading } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import CustomInput from "../../../../../../../config/component/CustomInput/CustomInput";
 import { observer } from "mobx-react-lite";
 import store from "../../../../../../../store/store";
 import { eTypeOption } from "../../utils/constant";
+import CustomSubmitBtn from "../../../../../../../config/component/CustomSubmitBtn/CustomSubmitBtn";
 
 const PersonalCompanyDetails = observer(
   ({ handleSubmitProfile, initialValues, validations }: any) => {
@@ -381,16 +382,13 @@ const PersonalCompanyDetails = observer(
                     showError={showError}
                   />
                 </Grid>
-                <Flex justifyContent="end" mt={3}>
-                  <Button
-                    type="submit"
+                <Flex justifyContent="end">
+                  <CustomSubmitBtn
+                    loading={isSubmitting}
                     onClick={() => {
                       setShowError(true);
                     }}
-                    isLoading={isSubmitting}
-                  >
-                    Submit
-                  </Button>
+                  />
                 </Flex>
               </Box>
             </Form>

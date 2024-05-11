@@ -11,8 +11,10 @@ import {
   Box,
   Heading,
   Divider,
+  Flex,
 } from "@chakra-ui/react";
 import CustomInput from "../../../../../../../config/component/CustomInput/CustomInput";
+import CustomSubmitBtn from "../../../../../../../config/component/CustomSubmitBtn/CustomSubmitBtn";
 
 const FamilyDetails = ({
   handleSubmitProfile,
@@ -22,7 +24,7 @@ const FamilyDetails = ({
   const [showError, setShowError] = useState(false);
   return (
     <Box p={4} borderRadius="lg" boxShadow="md">
-    <Heading color="#002058" fontSize="xl" mb={4}>
+      <Heading color="#002058" fontSize="xl" mb={4}>
         Family Details :-
       </Heading>
       <Divider />
@@ -35,8 +37,8 @@ const FamilyDetails = ({
             setSubmitting,
             resetForm,
             setErrors,
-            setShowError
-        });
+            setShowError,
+          });
         }}
       >
         {({ values, errors, handleChange, isSubmitting }: any) => (
@@ -44,7 +46,12 @@ const FamilyDetails = ({
             <FieldArray name="relations">
               {({ push, remove }) => (
                 <Box overflowX="auto" w="70vw">
-                  <Table variant="striped" colorScheme="teal" size="md" w="100%">
+                  <Table
+                    variant="striped"
+                    colorScheme="teal"
+                    size="md"
+                    w="100%"
+                  >
                     <Thead>
                       <Tr>
                         <Th minW="150px">Name</Th>
@@ -271,14 +278,14 @@ const FamilyDetails = ({
                 </Box>
               )}
             </FieldArray>
-            <Button
-              mt={4}
-              colorScheme="teal"
-              type="submit"
-              isLoading={isSubmitting}
-            >
-              Submit
-            </Button>
+            <Flex justifyContent="end">
+              <CustomSubmitBtn
+                loading={isSubmitting}
+                onClick={() => {
+                  setShowError(true);
+                }}
+              />
+            </Flex>
           </Form>
         )}
       </Formik>

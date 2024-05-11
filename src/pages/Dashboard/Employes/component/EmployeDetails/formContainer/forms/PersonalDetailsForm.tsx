@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { Box, Button, Divider, Grid, Heading } from "@chakra-ui/react";
+import { Box, Button, Divider, Flex, Grid, Heading } from "@chakra-ui/react";
 import { FieldArray, Form, Formik } from "formik";
 import CustomInput from "../../../../../../../config/component/CustomInput/CustomInput";
 import { titles } from "../../utils/constant";
+import CustomSubmitBtn from "../../../../../../../config/component/CustomSubmitBtn/CustomSubmitBtn";
 
 const PersonalDetails = ({
   type,
@@ -497,15 +498,11 @@ const PersonalDetails = ({
                   </FieldArray>
                 </Grid>
               </Grid>
-              <Button
-                type="submit"
-                onClick={() => {
-                  setShowError(true);
-                }}
-                isLoading={isSubmitting}
-              >
-                Submit
-              </Button>
+              <Flex justifyContent="end">
+              <CustomSubmitBtn loading={isSubmitting} onClick={() => {
+                setShowError(true)
+              }}/>
+              </Flex>
             </Box>
           </Form>
         );

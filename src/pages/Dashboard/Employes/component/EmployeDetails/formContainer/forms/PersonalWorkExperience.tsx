@@ -3,6 +3,7 @@ import { Box, Button, Divider, Flex, Grid, Heading } from "@chakra-ui/react";
 import { Form, Formik, FieldArray } from "formik";
 import CustomInput from "../../../../../../../config/component/CustomInput/CustomInput";
 import ShowFileUploadFile from "../../../../../../../config/component/common/ShowFileUploadFile/ShowFileUploadFile";
+import CustomSubmitBtn from "../../../../../../../config/component/CustomSubmitBtn/CustomSubmitBtn";
 
 const PersonalWorkExperience = ({
   handleSubmitProfile,
@@ -258,13 +259,11 @@ const PersonalWorkExperience = ({
                   )}
                 </FieldArray>
               </Grid>
-              <Button
-                type="submit"
-                onClick={() => setShowError(true)}
-                isLoading={isSubmitting}
-              >
-                Submit
-              </Button>
+              <Flex justifyContent="end">
+              <CustomSubmitBtn loading={isSubmitting} onClick={() => {
+                setShowError(true)
+              }}/>
+              </Flex>
             </Box>
           </Form>
         );

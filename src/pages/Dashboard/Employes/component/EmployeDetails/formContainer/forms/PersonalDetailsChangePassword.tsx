@@ -4,7 +4,7 @@ import { Form, Formik } from "formik";
 import store from "../../../../../../../store/store";
 import { ChangePasswordValidation } from "../../utils/validations";
 import CustomInput from "../../../../../../../config/component/CustomInput/CustomInput";
-import CustomSubmitBtn from "../../../../../../../config/component/Button/CustomSubmitBtn";
+import CustomSubmitBtn from "../../../../../../../config/component/CustomSubmitBtn/CustomSubmitBtn";
 
 interface ProfileChangePasswordI {
   changePassword?: any;

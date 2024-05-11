@@ -7,7 +7,12 @@ const HeaderLogo = observer(() => {
   const isLargerThanXl = useBreakpointValue({ lg: true });
 
   const {
-    layout: { fullScreenModeFun, fullScreenMode },
+    layout: {
+      fullScreenModeFun,
+      mediumScreenModeFun,
+      fullScreenMode,
+      mediumScreenMode,
+    },
     auth: { closeSearchBar },
   } = store;
   return (
@@ -23,14 +28,27 @@ const HeaderLogo = observer(() => {
             aria-label="open the drawer button"
           />
         ) : (
-          <IconButton
-            icon={<BiLeftArrowAlt fontSize={25} />}
-            onClick={() => fullScreenModeFun(!fullScreenMode)}
-            variant="ghost"
-            size="lg"
-            style={{ marginRight: "1rem", marginTop: "2px" }}
-            aria-label="open the drawer button"
-          />
+          <Flex alignItems="center">
+            <IconButton
+              icon={<BiLeftArrowAlt fontSize={25} />}
+              aria-label=""
+              variant="ghost"
+              size="lg"
+              style={{ marginRight: "1rem", marginTop: "2px" }}
+              onClick={() => {
+                mediumScreenModeFun(!mediumScreenMode);
+              }}
+            />
+            <IconButton
+              icon={<BiLeftArrowAlt fontSize={25} />}
+              onClick={() => fullScreenModeFun(!fullScreenMode)}
+              variant="ghost"
+              size="lg"
+              style={{ marginRight: "1rem", marginTop: "2px" }}
+              aria-label="open the drawer button"
+              display="none"
+            />
+          </Flex>
         ))}
       <Input
         type="text"

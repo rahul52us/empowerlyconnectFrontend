@@ -4,6 +4,7 @@ class LayoutStore {
   selectMenu = localStorage.getItem('selected_menu') ? JSON.parse(localStorage.getItem('selected_menu')) : null
   themeMode = localStorage.getItem('theme_mode') === 'dark' ? 'dark' : 'light';
   headerSettingDrawer = localStorage.getItem('headerSettingDrawer') === 'true' ? true : false;
+  mediumScreenMode = localStorage.getItem('mediumScreenMode') === 'true' ? true : false;
   fullScreenMode = localStorage.getItem('fullScreenMode') === 'true' ? true : false;
   MobileSidebar = localStorage.getItem('MobileSidebar') === 'true' ? true : false;
   SearchDialog = localStorage.getItem('SearchDialog') === 'true' ? true : false;
@@ -19,10 +20,12 @@ class LayoutStore {
       showDashboardNote: observable,
       themeMode: observable,
       openNotification: observable,
+      mediumScreenMode:observable,
       setSelectedMenu:action,
       setShowDashboardNode: action,
       headerSettingDrawerFun: action,
       fullScreenModeFun: action,
+      mediumScreenModeFun:action,
       MobileSidebarFun: action,
       SearchDialogFun: action,
       changeThemeMode: action,
@@ -44,6 +47,11 @@ class LayoutStore {
   fullScreenModeFun = (status) => {
     this.fullScreenMode = status;
     localStorage.setItem('fullScreenMode', status);
+  };
+
+  mediumScreenModeFun = (status) => {
+    this.mediumScreenMode = status;
+    localStorage.setItem('mediumScreenMode', status);
   };
 
   MobileSidebarFun = (status) => {

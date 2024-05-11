@@ -6,6 +6,7 @@ import {
   contentLargeBodyPadding,
   contentSmallBodyPadding,
   headerHeight,
+  mediumSidebarWidth,
   sidebarWidth,
 } from "../../constant/variable";
 import Loader from "../../component/Loader/Loader";
@@ -31,7 +32,7 @@ const RedirectComponent = observer(() => {
 const DashboardLayout = observer(() => {
   const {
     auth: { restoreUser, user },
-    layout: { fullScreenMode },
+    layout: { fullScreenMode, mediumScreenMode },
     themeStore: { themeConfig },
   } = store;
   const navigate = useNavigate();
@@ -49,14 +50,15 @@ const DashboardLayout = observer(() => {
     <MainContainer>
       <SidebarContainer
         fullScreenMode={fullScreenMode}
-        className={fullScreenMode ? "fullscreen" : ""}
+        className={fullScreenMode ? "fullscreen" : mediumScreenMode ? "mediumScreen" : ""}
       >
         <SidebarLayout />
       </SidebarContainer>
       <Container fullScreenMode={fullScreenMode}>
         <HeaderContainer
-          className={fullScreenMode ? "fullscreen" : ""}
+          className={fullScreenMode ? "fullscreen" : mediumScreenMode ? "mediumScreen" : ""}
           sizeStatus={sizeStatus}
+          mediumScreenMode={mediumScreenMode}
           fullScreenMode={fullScreenMode}
           backgroundColor={useColorModeValue(
             themeConfig.colors.custom.light.primary,
@@ -66,7 +68,8 @@ const DashboardLayout = observer(() => {
           <HeaderLayout />
         </HeaderContainer>
         <ContentContainer
-          className={fullScreenMode ? "fullscreen" : ""}
+          mediumScreenMode={mediumScreenMode}
+          className={fullScreenMode ? "fullscreen" : mediumScreenMode ? "mediumScreen" : ""}
           fullScreenMode={fullScreenMode}
           sizeStatus={sizeStatus}
         >
@@ -91,6 +94,10 @@ const MainContainer = styled.div`
   &.fullscreen {
     margin-left: -${sidebarWidth};
   }
+
+  &.mediumscreen {
+    margin-left: -${mediumSidebarWidth};
+  }
 `;
 const SidebarContainer = styled.div<{ fullScreenMode: boolean }>`
   height: 100vh;
@@ -106,6 +113,10 @@ const SidebarContainer = styled.div<{ fullScreenMode: boolean }>`
     width: 0;
     transition: width 0.3s ease-in-out;
   }
+  &.mediumscreen {
+    width: 72px;
+    transition: width 0.3s ease-in-out;
+  }
 `;
 
 const Container = styled.div<{ fullScreenMode: boolean }>`
@@ -115,11 +126,15 @@ const Container = styled.div<{ fullScreenMode: boolean }>`
   &.fullscreen {
     margin-left: 0;
   }
+  &.mediumscreen{
+    margin-left: 72px;
+  }
 `;
 
 const HeaderContainer = styled.div<{
   fullScreenMode: boolean;
   sizeStatus: boolean;
+  mediumScreenMode:boolean;
   backgroundColor: any;
 }>`
     height: ${headerHeight};
@@ -129,11 +144,16 @@ const HeaderContainer = styled.div<{
     right: 0;
     background-color:${(props) => props.backgroundColor};
     left: ${(props) =>
-      props.fullScreenMode || props.sizeStatus ? 0 : sidebarWidth};
+      props.fullScreenMode || props.sizeStatus ? 0 : props.mediumScreenMode ? mediumSidebarWidth : sidebarWidth};
     transition: all 0.3s ease-in-out;
 
     &.fullscreen {
       left: 0;
+      width: 100%;
+      transition: left 0.3s ease-in-out;
+    }
+    &.mediumscreen {
+      left: 72;
       width: 100%;
       transition: left 0.3s ease-in-out;
     }
@@ -142,15 +162,16 @@ const HeaderContainer = styled.div<{
 const ContentContainer = styled.div<{
   sizeStatus: boolean;
   fullScreenMode: boolean;
+  mediumScreenMode:boolean
 }>`
   padding: ${({ sizeStatus }) =>
     sizeStatus ? contentSmallBodyPadding : contentLargeBodyPadding};
-  width: ${({ sizeStatus, fullScreenMode }) =>
+  width: ${({ sizeStatus, fullScreenMode, mediumScreenMode }) =>
     sizeStatus
       ? `100vw`
       : fullScreenMode
       ? "100vw"
-      : `calc(100vw - ${sidebarWidth})`};
+      :  mediumScreenMode ? `calc(100vw - ${mediumSidebarWidth})` : `calc(100vw - ${sidebarWidth})`};
   overflow-x: hidden;
   height: calc(100vh - ${headerHeight});
   transition: all 0.3s ease-in-out;
