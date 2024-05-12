@@ -91,7 +91,7 @@ const SidebarElement = observer(({ items }: SidebarElementI) => {
           style={{ textDecoration: "none", color: "inherit" }}
         >
           <Flex alignItems="center">
-            {mediumScreenMode && <AiFillDashboard color="white" fontSize="1.5rem" />}
+            {mediumScreenMode && <AiFillDashboard color="white" fontSize="1.5rem" style={{marginLeft : (!mediumScreenMode || items.submenus) ? '2px' : '8px'}}/>}
             {!mediumScreenMode && <Text ml={2} color="white">{items.label}</Text>}
           </Flex>
         </NavLink>
@@ -107,7 +107,7 @@ const SidebarElement = observer(({ items }: SidebarElementI) => {
           position="fixed"
           top={`${submenuPosition.top}px`}
           left={`${submenuPosition.left}px`}
-          zIndex="1"
+          zIndex="10"
           backgroundColor="#051f3e"
           boxShadow="0px 4px 4px rgba(0, 0, 0, 0.25)"
           minWidth="200px"

@@ -17,7 +17,7 @@ const SidebarLogo = observer(() => {
       justifyContent="center"
       flexDirection="column"
       alignItems="center"
-      height={mediumScreenMode ? "60px" : headerHeight}
+      height={headerHeight}
     >
       <Box cursor="pointer" onClick={() => navigate(dashboard.home)}>
         {mediumScreenMode ? (

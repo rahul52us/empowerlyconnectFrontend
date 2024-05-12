@@ -17,39 +17,41 @@ const HeaderLogo = observer(() => {
   } = store;
   return (
     <Flex alignItems="center" display={"flex"} ml={2}>
-      {isLargerThanXl &&
-        (fullScreenMode ? (
+      {isLargerThanXl && (
+        <Flex alignItems="center">
           <IconButton
-            icon={<BiRightArrowAlt fontSize={25} />}
+            icon={
+              mediumScreenMode ? (
+                <BiRightArrowAlt fontSize={25} />
+              ) : (
+                <BiLeftArrowAlt fontSize={25} />
+              )
+            }
+            aria-label=""
+            variant="ghost"
+            size="lg"
+            style={{ marginRight: "1rem", marginTop: "2px" }}
+            onClick={() => {
+              mediumScreenModeFun(!mediumScreenMode);
+            }}
+          />
+          <IconButton
+            icon={
+              fullScreenMode ? (
+                <BiRightArrowAlt fontSize={25} />
+              ) : (
+                <BiLeftArrowAlt fontSize={25} />
+              )
+            }
             onClick={() => fullScreenModeFun(!fullScreenMode)}
             variant="ghost"
             size="lg"
             style={{ marginRight: "1rem", marginTop: "2px" }}
             aria-label="open the drawer button"
+            display="none"
           />
-        ) : (
-          <Flex alignItems="center">
-            <IconButton
-              icon={<BiLeftArrowAlt fontSize={25} />}
-              aria-label=""
-              variant="ghost"
-              size="lg"
-              style={{ marginRight: "1rem", marginTop: "2px" }}
-              onClick={() => {
-                mediumScreenModeFun(!mediumScreenMode);
-              }}
-            />
-            <IconButton
-              icon={<BiLeftArrowAlt fontSize={25} />}
-              onClick={() => fullScreenModeFun(!fullScreenMode)}
-              variant="ghost"
-              size="lg"
-              style={{ marginRight: "1rem", marginTop: "2px" }}
-              aria-label="open the drawer button"
-              display="none"
-            />
-          </Flex>
-        ))}
+        </Flex>
+      )}
       <Input
         type="text"
         // name="search"

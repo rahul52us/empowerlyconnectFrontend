@@ -1,4 +1,4 @@
-import { Box, Button, Grid, IconButton, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Grid, IconButton, Text } from "@chakra-ui/react";
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 import { FieldArray, Form, Formik } from "formik";
 import CustomInput from "../../../../config/component/CustomInput/CustomInput";
@@ -10,6 +10,7 @@ import store from "../../../../store/store";
 import { getStatusType } from "../../../../config/constant/statusCode";
 import FormModel from "../../../../config/component/common/FormModel/FormModel";
 import { getInitialWorkTimingValues } from "./utils/functions";
+import CustomSubmitBtn from "../../../../config/component/CustomSubmitBtn/CustomSubmitBtn";
 
 const WorkTiming = observer(({ formData, setFormData }: any) => {
   const {
@@ -159,21 +160,19 @@ const WorkTiming = observer(({ formData, setFormData }: any) => {
                       }
                       leftIcon={<AddIcon />}
                       colorScheme="blue"
+                      mt={3}
                     >
                       Add Timing
                     </Button>
                   </>
                 )}
               </FieldArray>
-              <Button
-                type="submit"
-                colorScheme="blue"
-                mt={4}
-                isLoading={isSubmitting}
+              <Flex justifyContent="end">
+              <CustomSubmitBtn
+                loading={isSubmitting}
                 onClick={() => setShowError(true)}
-              >
-                Submit
-              </Button>
+              />
+              </Flex>
             </Form>
           )}
         </Formik>

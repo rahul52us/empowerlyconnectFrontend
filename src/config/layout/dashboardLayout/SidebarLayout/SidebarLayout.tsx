@@ -19,56 +19,124 @@ const SidebarLayout = () => {
       path: "/dashboard",
     },
     {
-      label: "Menu Item 2",
-      path: "/dashboard/quiz",
-      submenus: [
-        {
-          label: "Quiz Part",
-          path: "/dashboard/quiz",
-        },
-        {
-          label: "Course Part",
-          path: "/dashboard/courses",
-        },
-      ],
-    },
-    {
-      label: "Menu Item 3",
+      label: "My Profile",
       path: "/dashboard/class",
       submenus: [
         {
-          label: "Class Part",
+          label: "Personal Info",
           path: "/dashboard/class",
         },
         {
-          label: "Videos Part",
+          label: "Company",
+          path: "/dashboard/videos",
+        },
+        {
+          label: "Family",
+          path: "/dashboard/videos",
+        },
+        {
+          label: "Work Experience",
+          path: "/dashboard/videos",
+        },
+        {
+          label: "Skill & Additional Info",
+          path: "/dashboard/videos",
+        },
+        {
+          label: "Qualification",
+          path: "/dashboard/videos",
+        },
+        {
+          label: "Documents",
+          path: "/dashboard/videos",
+        },
+        {
+          label: "Bank Account Details",
           path: "/dashboard/videos",
         },
       ],
     },
     {
-      label: "Users",
-      path: "/dashboard/teachers",
+      label: "Request",
+      path: "/dashboard/class",
       submenus: [
         {
-          label: "Teachers",
-          path: "/dashboard/teachers",
+          label: "Leave/OD/WFH",
+          path: "/dashboard/class",
         },
         {
-          label: "Staff",
-          path: "/dashboard/staffs",
+          label: "Attendence Regularise",
+          path: "/dashboard/videos",
+        },
+        {
+          label: "Appreciation",
+          path: "/dashboard/videos",
+        },
+        {
+          label: "Help Desk",
+          path: "/dashboard/videos",
         },
       ],
     },
+    {
+      label: "My Attendence",
+      path: "/dashboard/class",
+      submenus: [
+        {
+          label: "Daily",
+          path: "/dashboard/videos",
+        },
+        {
+          label: "Monthly",
+          path: "/dashboard/videos",
+        },
+        {
+          label: "Yearly",
+          path: "/dashboard/class",
+        },
+        {
+          label: "Leave Ledger",
+          path: "/dashboard/videos",
+        },
+      ],
+    },
+    {
+      label: "Corp. Info.",
+      path: "/dashboard/class",
+      submenus: [
+        {
+          label: "Employees Directory",
+          path: "/dashboard/employes",
+        },
+        {
+          label: "Holidays",
+          path: "/dashboard/company/policy/holidays",
+        },
+        {
+          label: "View Policies",
+          path: "/dashboard/company",
+        },
+        {
+          label: "Work Timing",
+          path: "/dashboard/company",
+        },
+      ],
+    }
   ]);
 
   return (
-    <Flex direction="column" h="100vh" bg="#042954">
+    <Flex direction="column" h="100%" bg="#042954">
       <SidebarLogo />
-      <VStack spacing={4} align="stretch">
+      <VStack spacing={4} align="stretch" flex="1">
         {menuItems.map((menuItem: any, index: any) => (
           <SidebarElement items={menuItem} key={index} />
         ))}
+      </VStack>
+      <VStack spacing={4} align="stretch" mb={2}>
+      <SidebarElement items={{
+      label: "Settings",
+      path: "/dashboard",
+    }}/>
       </VStack>
     </Flex>
   );

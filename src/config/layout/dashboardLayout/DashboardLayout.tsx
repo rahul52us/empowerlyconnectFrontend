@@ -114,7 +114,7 @@ const SidebarContainer = styled.div<{ fullScreenMode: boolean }>`
     transition: width 0.3s ease-in-out;
   }
   &.mediumscreen {
-    width: 72px;
+    width: ${sidebarWidth};
     transition: width 0.3s ease-in-out;
   }
 `;
@@ -127,7 +127,7 @@ const Container = styled.div<{ fullScreenMode: boolean }>`
     margin-left: 0;
   }
   &.mediumscreen{
-    margin-left: 72px;
+    margin-left: ${sidebarWidth};
   }
 `;
 
@@ -167,9 +167,7 @@ const ContentContainer = styled.div<{
   padding: ${({ sizeStatus }) =>
     sizeStatus ? contentSmallBodyPadding : contentLargeBodyPadding};
   width: ${({ sizeStatus, fullScreenMode, mediumScreenMode }) =>
-    sizeStatus
-      ? `100vw`
-      : fullScreenMode
+    fullScreenMode || sizeStatus
       ? "100vw"
       :  mediumScreenMode ? `calc(100vw - ${mediumSidebarWidth})` : `calc(100vw - ${sidebarWidth})`};
   overflow-x: hidden;
