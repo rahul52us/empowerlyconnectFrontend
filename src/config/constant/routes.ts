@@ -48,6 +48,10 @@ export const dashboard = {
     index: `/${dashboardName}/company`,
     holidays: `/${dashboardName}/company/policy/holidays`,
   },
+  request : {
+    index : `/${dashboardName}/request`,
+    leave : `/${dashboardName}/request/leave`
+  }
 };
 
 export const main = {

@@ -61,6 +61,17 @@ const companyBreadCrumb = {
   { label: "Policy" },
 ]};
 
+const requestBreadCrumb = {
+  index : [
+  { label: "Home", link: "/" },
+  { label: "Dashboard", link: dashboard.home },
+  { label: "Request" },
+],leave : [
+  { label: "Home", link: "/" },
+  { label: "Request", link: dashboard.request.index },
+  { label: "Leave" },
+]};
+
 export {
   videoBreadCrumb,
   coursesBreadCrumb,
@@ -69,5 +80,6 @@ export {
   tripBreadCrumb,
   employesBreadCrumb,
   departmentsBreadCrumb,
-  companyBreadCrumb
+  companyBreadCrumb,
+  requestBreadCrumb
 };

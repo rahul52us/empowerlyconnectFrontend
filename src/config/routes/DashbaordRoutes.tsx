@@ -87,6 +87,10 @@ const Department = lazy(() => import("../../pages/Dashboard/Department/Departmen
 const CompanyPolicy = lazy(() => import( "../../pages/Dashboard/Company/CompanyPolicy"));
 const Company = lazy(() => import( "../../pages/Dashboard/Company/index"));
 
+// Request
+
+const Request = lazy(() => import("../../pages/Dashboard/Request"));
+const LeaveRequest = lazy(() => import('../../pages/Dashboard/Request/component/LeaveRequest/LeaveRequest'))
 
 export const DashboardRoutes = [
   {
@@ -206,5 +210,17 @@ export const DashboardRoutes = [
     element : <CompanyPolicy />,
     path : dashboard.company.holidays,
     privateRoutes: true
-  }
+  },
+
+  // Request
+  {
+    element : <Request />,
+    path : dashboard.request.index,
+    privateRoutes : true
+  },
+  {
+    element : <LeaveRequest />,
+    path : dashboard.request.leave,
+    privateRoutes : true
+  },
 ];

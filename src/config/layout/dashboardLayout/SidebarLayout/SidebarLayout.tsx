@@ -11,6 +11,7 @@ import SidebarLogo from "./component/SidebarLogo";
 import SidebarElement from "./element/SidebarElement";
 import { observer } from "mobx-react-lite";
 import store from "../../../../store/store";
+import { dashboard } from "../../../constant/routes";
 
 const SidebarLayout = () => {
   const [menuItems] = useState<any>([
@@ -58,11 +59,15 @@ const SidebarLayout = () => {
     },
     {
       label: "Request",
-      path: "/dashboard/class",
+      path: dashboard.request.index,
       submenus: [
         {
+          label: "Request",
+          path: dashboard.request.index,
+        },
+        {
           label: "Leave/OD/WFH",
-          path: "/dashboard/class",
+          path: dashboard.request.leave,
         },
         {
           label: "Attendence Regularise",
@@ -95,7 +100,7 @@ const SidebarLayout = () => {
           path: "/dashboard/class",
         },
         {
-          label: "Leave Ledger",
+          label: "Leave Encashment",
           path: "/dashboard/videos",
         },
       ],

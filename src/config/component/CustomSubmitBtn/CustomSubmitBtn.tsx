@@ -1,4 +1,4 @@
-import { Box, Button } from "@chakra-ui/react";
+import { Button, Flex } from "@chakra-ui/react";
 
 interface CustomBtnI {
   loading: boolean;
@@ -18,7 +18,7 @@ const CustomSubmitBtn = ({
   rest
 }: CustomBtnI) => {
   return (
-    <Box mt={3}>
+    <Flex mt={3} gap={4}>
       {
         cancelFunctionality && cancelFunctionality.show &&
       <Button
@@ -44,7 +44,7 @@ const CustomSubmitBtn = ({
       >
         {buttonText ? buttonText : 'Submit'}
       </Button>
-    </Box>
+    </Flex>
   );
 };
 
