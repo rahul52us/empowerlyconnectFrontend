@@ -8,6 +8,7 @@ import { Suspense, useEffect } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import store from "../../../store/store";
 import Loader from "../../component/Loader/Loader";
+import { authentication } from "../../constant/routes";
 
 const AuthenticateLayout = observer(() => {
   const {pathname} = useLocation()
@@ -22,7 +23,7 @@ const AuthenticateLayout = observer(() => {
     }
   }, [navigate, restoreUser]);
   return (
-    !pathname.includes('/create/company/') ?
+    !pathname.includes(authentication.createOrganisationStep1) ?
     <Grid minH={"100vh"}>
       <Flex
         flexDirection="column"

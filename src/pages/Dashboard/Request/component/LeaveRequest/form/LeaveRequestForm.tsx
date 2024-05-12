@@ -1,4 +1,4 @@
-import { Box, Divider, Flex, Grid } from "@chakra-ui/react";
+import { Box, Divider, Flex, Grid, Text } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import { observer } from "mobx-react-lite";
 import CustomInput from "../../../../../../config/component/CustomInput/CustomInput";
@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import CustomSubmitBtn from "../../../../../../config/component/CustomSubmitBtn/CustomSubmitBtn";
 import { LeaveRequestValidation } from "../utils/validation";
 import { LeaveRequestI } from "../utils/interface";
+import { leavesTypes } from "../utils/constant";
 
 const LeaveRequestForm = observer(
   ({ initialValues, showError, setShowError, close, handleSubmit }: any) => {
@@ -42,18 +43,9 @@ const LeaveRequestForm = observer(
         })
       );
 
-    // const calculateNumberOfDays = (startDate: string, endDate: string) => {
-    //   const start = new Date(startDate);
-    //   const end = new Date(endDate);
-    //   const differenceInTime = end.getTime() - start.getTime();
-    //   const differenceInDays = differenceInTime / (1000 * 3600 * 24);
-    //   setNumberOfDays(Math.floor(differenceInDays)  );
-    // };
-
     const calculateNumberOfDays = (startDate: string, endDate: string) => {
       const start = new Date(startDate);
       const end = new Date(endDate);
-      // Adding 1 to the difference in days to consider the start date as day 1
       const differenceInTime = end.getTime() - start.getTime() + (24 * 60 * 60 * 1000);
       const differenceInDays = differenceInTime / (1000 * 3600 * 24);
       setNumberOfDays(Math.floor(differenceInDays));
@@ -91,7 +83,6 @@ const LeaveRequestForm = observer(
                     options={WorkLocations}
                     showError={showError}
                     required={true}
-                    isMulti={true}
                   />
                   <CustomInput
                     name="managers"
@@ -108,6 +99,21 @@ const LeaveRequestForm = observer(
                     showError={showError}
                     required={true}
                   />
+                  <CustomInput
+                    name="leaveType"
+                    type="select"
+                    placeholder="Select The Leave Type"
+                    label="Leave Type"
+                    value={values.leaveType}
+                    error={errors.leaveType}
+                    onChange={(e) => {
+                      setFieldValue("leaveType", e);
+                    }}
+                    options={leavesTypes}
+                    showError={showError}
+                    required={true}
+                  />
+                  <Box></Box>
                   <CustomInput
                     type="date"
                     name="startDate"
@@ -142,7 +148,9 @@ const LeaveRequestForm = observer(
                     showError={showError}
                   />
                 </Grid>
-                <CustomInput name="noOfDays" disabled={true} readOnly label="No of Days" value={numberOfDays || 0} type="number" onChange={() => {}}/>
+                <Box mt={3} mb={2}>
+                   <Text fontSize="sm" fontWeight="500">No Of Days: {numberOfDays || 0}</Text>
+                </Box>
                 <CustomInput
                   type="textarea"
                   name="reason"

@@ -6,6 +6,7 @@ export const LeaveRequestValidation  = Yup.object().shape({
     .min(Yup.ref('startDate'), 'End Date must be after Start Date')
     .required('End Date is required'),
   reason: Yup.string().required('Reason is required').trim(),
-  workingLocation: Yup.array().min(1, 'Work Location is required'),
-  managers: Yup.array().min(1, 'At least one Manager is required'),
+  workingLocation: Yup.mixed().required('Please Select the Working Location'),
+  leaveType: Yup.mixed().required('Please Select the Leave Type'),
+  managers: Yup.array().min(1, 'Please Select The manager'),
 });
