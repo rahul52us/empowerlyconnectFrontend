@@ -132,7 +132,7 @@ const WorkLocationDetails = observer(() => {
   return (
     <>
       <CustomTable
-        extraProps={{maxH : '60vh', minH : '60vh'}}
+        extraProps={{maxH : '50vh', minH : '50vh'}}
         actions={{
           applyFilter: {
             show: false,

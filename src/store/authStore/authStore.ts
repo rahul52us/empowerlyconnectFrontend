@@ -132,12 +132,14 @@ class AuthStore {
     remember_me: boolean;
     username: string;
     password: string;
+    loginType:string
   }) => {
     try {
       this.isRememberCredential = sendData.remember_me;
       const { data } = await axios.post<{ data: any }>("/auth/login", {
         username: sendData.username,
         password: sendData.password,
+        loginType:sendData.loginType
       });
       const headersToUpdate = {
         Accept: "application/json",

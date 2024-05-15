@@ -50,7 +50,7 @@ const Login = observer(() => {
           }}
           validationSchema={LoginValidation}
           onSubmit={(values, { setSubmitting }) => {
-            login(values)
+            login({...values,loginType : 'username'})
               .then((data: any) => {
                 openNotification({
                   title: "Login Success",

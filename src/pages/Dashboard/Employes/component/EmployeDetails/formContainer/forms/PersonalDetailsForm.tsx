@@ -129,7 +129,7 @@ const PersonalDetails = ({
                     onChange={handleChange}
                     showError={showError}
                     required
-                    readOnly={type === "edit" ? true : false}
+                    // readOnly={type === "edit" ? true : false}
                   />
                   <CustomInput
                     name="designation"

@@ -336,12 +336,12 @@ const CustomTable: React.FC<CustomTableProps> = ({
         <Table
           variant="striped"
           colorScheme="teal"
-          size={isMobile ? "sm" : "md"}
+          size={isMobile ? "sm" : "sm"}
           borderWidth="1px"
           borderRadius="lg"
         >
-          <Thead bg="gray.700" position="sticky" top="0" zIndex="9">
-            <Tr>
+          <Thead bg="gray.700" position="sticky" top="0" zIndex="9" height="50px">
+            <Tr fontSize="xs">
               {serial?.show && (
                 <Th color="white" w={serial?.width || undefined}>
                   {serial?.text || "S.No."}
@@ -362,7 +362,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
           <TableLoader loader={loading} show={data.length}>
             <Tbody overflowY="scroll">
               {data.map((row, rowIndex) => (
-                <Tr key={rowIndex}>
+                <Tr fontSize="xs" key={rowIndex}>
                   {serial?.show && (
                     <Td fontWeight="bold" w={serial?.width || undefined}>
                       {rowIndex + 1}
