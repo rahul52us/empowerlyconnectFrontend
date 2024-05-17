@@ -19,6 +19,7 @@ import TripStore from './tripStore/tripStore';
 import EmployeStore from './employeStore/employeStore';
 import DepartmentStore from "./departmentStore/departmentStore";
 import CompanyStore from "./companyStore/companyStore";
+import RequestStore from "./requestStore/requestStore";
 
 configure({ enforceActions: "never" });
 
@@ -43,7 +44,8 @@ const store = {
   company: new CompanyStore(),
   Student: new StudentStore(),
   Employe: new EmployeStore(),
-  DepartmentStore: new DepartmentStore()
+  DepartmentStore: new DepartmentStore(),
+  requestStore : new RequestStore()
 };
 
 export default store;

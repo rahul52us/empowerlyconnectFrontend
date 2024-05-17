@@ -8,5 +8,5 @@ export const LeaveRequestValidation  = Yup.object().shape({
   reason: Yup.string().required('Reason is required').trim(),
   workingLocation: Yup.mixed().required('Please Select the Working Location'),
   leaveType: Yup.mixed().required('Please Select the Leave Type'),
-  managers: Yup.array().min(1, 'Please Select The manager'),
+  sendTo: Yup.array().min(1, 'Please Select The manager'),
 });

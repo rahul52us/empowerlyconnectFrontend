@@ -4,5 +4,5 @@ export interface LeaveRequestI {
     reason: string;
     leaveType:any;
     workingLocation: any;
-    managers: any[];
+    sendTo: any[];
   }

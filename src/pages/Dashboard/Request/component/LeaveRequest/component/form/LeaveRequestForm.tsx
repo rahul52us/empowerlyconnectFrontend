@@ -1,16 +1,16 @@
 import { Box, Divider, Flex, Grid, Text } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import { observer } from "mobx-react-lite";
-import CustomInput from "../../../../../../config/component/CustomInput/CustomInput";
-import store from "../../../../../../store/store";
+import CustomInput from "../../../../../../../config/component/CustomInput/CustomInput";
+import store from "../../../../../../../store/store";
 import { useEffect, useState } from "react";
-import CustomSubmitBtn from "../../../../../../config/component/CustomSubmitBtn/CustomSubmitBtn";
-import { LeaveRequestValidation } from "../utils/validation";
-import { LeaveRequestI } from "../utils/interface";
-import { leavesTypes } from "../utils/constant";
+import CustomSubmitBtn from "../../../../../../../config/component/CustomSubmitBtn/CustomSubmitBtn";
+import { LeaveRequestValidation } from "../../utils/validation";
+import { LeaveRequestI } from "../../utils/interface";
+import { leavesTypes } from "../../utils/constant";
 
 const LeaveRequestForm = observer(
-  ({ initialValues, showError, setShowError, close, handleSubmit }: any) => {
+  ({ initialValues, showError, setShowError, close, handleSubmit,setRequestType,requestType }: any) => {
     const [numberOfDays, setNumberOfDays] = useState<number | null>(null);
 
     const {
@@ -58,7 +58,8 @@ const LeaveRequestForm = observer(
         <Formik<LeaveRequestI>
           initialValues={initialValues}
           onSubmit={(values, { setSubmitting, resetForm }) => {
-            handleSubmit({ values, setSubmitting, resetForm });
+            let val = {...values,status : requestType}
+            handleSubmit({ values : val, setSubmitting, resetForm });
           }}
           validationSchema={LeaveRequestValidation}
         >
@@ -85,15 +86,15 @@ const LeaveRequestForm = observer(
                     required={true}
                   />
                   <CustomInput
-                    name="managers"
+                    name="sendTo"
                     type="select"
                     placeholder="Select The managers"
                     label="Managers"
-                    value={values.managers}
-                    error={errors.managers}
+                    value={values.sendTo}
+                    error={errors.sendTo}
                     isMulti={true}
                     onChange={(e) => {
-                      setFieldValue("managers", e);
+                      setFieldValue("sendTo", e);
                     }}
                     options={employesOptions}
                     showError={showError}
@@ -170,10 +171,17 @@ const LeaveRequestForm = observer(
                   alignItems="center"
                 >
                   <CustomSubmitBtn
+                    cancelFunctionality={{ show: false, onClick: () => close() }}
+                    loading={isSubmitting}
+                    type="submit"
+                    onClick={() => { setRequestType('pending'); setShowError(true)}}
+                    buttonText="save"
+                  />
+                  <CustomSubmitBtn
                     cancelFunctionality={{ show: true, onClick: () => close() }}
                     loading={isSubmitting}
                     type="submit"
-                    onClick={() => setShowError(true)}
+                    onClick={() => { setRequestType('submit') ; setShowError(true)}}
                   />
                 </Flex>
               </Form>

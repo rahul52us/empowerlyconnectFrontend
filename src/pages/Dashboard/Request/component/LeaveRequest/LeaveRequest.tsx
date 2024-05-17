@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import { requestBreadCrumb } from "../../../utils/breadcrumb.constant";
 import DashPageHeader from "../../../../../config/component/common/DashPageHeader/DashPageHeader";
-import AddRequest from "./component/AddRequest";
+import AddRequest from "./component/form/AddRequest";
 
 const LeaveRequest = observer(() => {
   return (
@@ -14,4 +14,5 @@ const LeaveRequest = observer(() => {
     </>
   );
 });
+
 export default LeaveRequest;

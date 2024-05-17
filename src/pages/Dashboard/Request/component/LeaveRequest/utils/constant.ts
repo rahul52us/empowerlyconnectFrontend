@@ -2,7 +2,7 @@ export const leaveRequestInitialValues = {
   startDate: new Date(),
   endDate: new Date(),
   leaveType: undefined,
-  managers: [],
+  sendTo: [],
   reason: undefined,
   workingLocation:undefined,
   status: "Pending",
