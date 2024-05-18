@@ -51,8 +51,6 @@ const LeaveRequestForm = observer(
       setNumberOfDays(Math.floor(differenceInDays));
   };
 
-
-
     return (
       <Box p={4}>
         <Formik<LeaveRequestI>

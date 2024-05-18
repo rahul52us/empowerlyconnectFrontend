@@ -91,6 +91,7 @@ const Company = lazy(() => import( "../../pages/Dashboard/Company/index"));
 
 const Request = lazy(() => import("../../pages/Dashboard/Request"));
 const LeaveRequest = lazy(() => import('../../pages/Dashboard/Request/component/LeaveRequest/LeaveRequest'))
+const LeaveEditRequest = lazy(() => import('../../pages/Dashboard/Request/component/LeaveRequest/component/form/LeaveEditRequest'))
 
 export const DashboardRoutes = [
   {
@@ -220,7 +221,12 @@ export const DashboardRoutes = [
   },
   {
     element : <LeaveRequest />,
-    path : dashboard.request.leave,
+    path : dashboard.request.leaveAdd,
+    privateRoutes : true
+  },
+  {
+    element : <LeaveEditRequest />,
+    path : dashboard.request.leaveEdit,
     privateRoutes : true
   },
 ];

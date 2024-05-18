@@ -54,6 +54,7 @@ class RequestStore {
       departments:observable,
       resetStudentDetails:action,
       getAllRequest: action,
+      getRequestById:action,
       getPositionCount:action,
       getDepartmentCounts:action,
       getAllDepartment:action,
@@ -84,6 +85,15 @@ class RequestStore {
   createRequest = async (sendData : any) => {
     try {
       const { data } = await axios.post("/request/create",{company : store.auth.getCurrentCompany(), ...sendData});
+      return data
+    } catch (err: any) {
+      return Promise.reject(err?.response || err);
+    }
+  };
+
+  getRequestById = async (sendData : any) => {
+    try {
+      const { data } = await axios.get(`/request/${sendData._id}`,{company : store.auth.getCurrentCompany(), ...sendData});
       return data
     } catch (err: any) {
       return Promise.reject(err?.response || err);

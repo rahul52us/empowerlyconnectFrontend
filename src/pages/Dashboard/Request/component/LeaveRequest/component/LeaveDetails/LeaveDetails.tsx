@@ -81,12 +81,15 @@ const LeaveDetails = ({ selectedCategory }: any) => {
 
   const columns = [
     {
-      headerName: "title",
-      key: "title",
+      headerName: "Leave Type",
+      type: "link",
+      key: "leaveType",
+      function: (e: any) => {
+        navigate(`${dashboard.request.leave}/edit/${e._id}`);
+      },
       props: {
         column: { textAlign: "left" },
         row: {
-          minW: 120,
           textAlign: "left",
           fontWeight: 500,
           textDecoration: "none",
@@ -94,18 +97,54 @@ const LeaveDetails = ({ selectedCategory }: any) => {
       },
     },
     {
-      headerName: "Created At",
+      headerName: "Start Date",
       type: "date",
-      key: "createdAt",
+      key: "startDate",
       props: {
         row : {textAlign : 'center'},
         column: { textAlign: "center" },
       }
     },
     {
+      headerName: "End Date",
+      type: "date",
+      key: "endDate",
+      props: {
+        row : {textAlign : 'center'},
+        column: { textAlign: "center" },
+      }
+    },
+    {
+      headerName: "Status",
+      type: "text",
+      key: "status",
+      props: {
+        row : {textAlign : 'center', fontWeight : '500'},
+        column: { textAlign: "center" },
+      }
+    },
+    // {
+    //   headerName: "Manager",
+    //   type: "text",
+    //   key: "sendTo",
+    //   props: {
+    //     row : {textAlign : 'center'},
+    //     column: { textAlign: "center" },
+    //   }
+    // },
+    {
       headerName : 'Remarks',
       type : 'approvals',
       key : 'approvals',
+      props: {
+        row : {textAlign : 'center'},
+        column: { textAlign: "center" },
+      }
+    },
+    {
+      headerName: "Created At",
+      type: "date",
+      key: "createdAt",
       props: {
         row : {textAlign : 'center'},
         column: { textAlign: "center" },
@@ -127,7 +166,7 @@ const LeaveDetails = ({ selectedCategory }: any) => {
           columns={columns}
           data={data}
           loading={loading}
-          title="Positions"
+          title="Leave Request"
           actions={{
             applyFilter: {
               show: false,
@@ -142,17 +181,13 @@ const LeaveDetails = ({ selectedCategory }: any) => {
               addKey: {
                 showAddButton: true,
                 function: () => {
-                  navigate(dashboard.request.leave)
+                  navigate(dashboard.request.leaveAdd)
                 },
               },
               editKey: {
                 showEditButton: true,
                 function: (dt : any) => {
-                  setOpenModel({
-                    type: "edit",
-                    data: dt,
-                    open: true,
-                  });
+                  navigate(`${dashboard.request.leave}/edit/${dt._id}`)
                 },
               },
               deleteKey: {

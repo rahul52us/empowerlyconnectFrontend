@@ -67,7 +67,7 @@ const SidebarLayout = () => {
         },
         {
           label: "Leave/OD/WFH",
-          path: dashboard.request.leave,
+          path: dashboard.request.leaveAdd,
         },
         {
           label: "Attendence Regularise",

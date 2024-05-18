@@ -50,7 +50,9 @@ export const dashboard = {
   },
   request : {
     index : `/${dashboardName}/request`,
-    leave : `/${dashboardName}/request/leave`
+    leave : `/${dashboardName}/request/leave`,
+    leaveAdd : `/${dashboardName}/request/leave/add`,
+    leaveEdit : `/${dashboardName}/request/leave/edit/:id`
   }
 };
 
