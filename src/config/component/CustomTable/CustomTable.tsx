@@ -327,46 +327,49 @@ const CustomTable: React.FC<CustomTableProps> = ({
 
           {/* Move Reset button into a dropdown menu */}
           {actions?.resetData?.show && (
-            <Menu>
-              <MenuButton
-                as={Button}
-                size="sm"
-                variant="outline"
-                colorScheme="red"
-                rightIcon={<IoChevronDownCircleOutline />}
-                _hover={{ bg: "gray.100" }}
-                _active={{ bg: "gray.200" }}
-              >
-                Actions
-              </MenuButton>
-              <MenuList
-                zIndex={15}
-                bg="white"
-                border="1px solid"
-                borderColor="gray.200"
-                boxShadow="md"
-              >
-                {actions?.actionBtn?.addKey?.showAddButton && (
-                  <MenuItem
-                    onClick={() =>
-                      actions?.actionBtn?.addKey?.function?.("add")
-                    }
-                    icon={<MdAddCircleOutline />}
-                  >
-                    Add
-                  </MenuItem>
-                )}
-                {actions?.resetData?.show && (
-                  <MenuItem
-                    onClick={actions?.resetData?.function}
-                    icon={<MdUndo />}
-                  >
-                    {actions?.resetData?.text || "Reset Data"}
-                  </MenuItem>
-                )}
-              </MenuList>
-            </Menu>
+      <Menu>
+        <MenuButton
+          as={Button}
+          size="sm"
+          variant="solid"
+          colorScheme="red"
+          rightIcon={<IoChevronDownCircleOutline />}
+          _hover={{ bg: 'red.500', color: 'white' }}
+          _active={{ bg: 'red.600', color: 'white' }}
+        >
+          Actions
+        </MenuButton>
+        <MenuList
+          zIndex={15}
+          bg="white"
+          border="1px solid"
+          borderColor="gray.200"
+          boxShadow="lg"
+          rounded="md"
+        >
+          {actions?.actionBtn?.addKey?.showAddButton && (
+            <MenuItem
+              onClick={() => actions?.actionBtn?.addKey?.function?.('add')}
+              icon={<MdAddCircleOutline />}
+              _hover={{ bg: 'gray.100', color: 'black' }}
+              _focus={{ bg: 'gray.200', color: 'black' }}
+            >
+              Add
+            </MenuItem>
           )}
+          {actions?.resetData?.show && (
+            <MenuItem
+              onClick={actions?.resetData?.function}
+              icon={<MdUndo />}
+              _hover={{ bg: 'gray.100', color: 'black' }}
+              _focus={{ bg: 'gray.200', color: 'black' }}
+            >
+              {actions?.resetData?.text || 'Reset Data'}
+            </MenuItem>
+          )}
+        </MenuList>
+      </Menu>
+    )}
         </Flex>
       </Flex>
       <Box
