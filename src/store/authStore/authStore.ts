@@ -94,7 +94,7 @@ class AuthStore {
         this.company = data.data?.companyDetail?.company?._id
         this.user = data.data;
         this.role = this.user?.role
-        localStorage.setItem(
+        sessionStorage.setItem(
           process.env.REACT_APP_AUTHORIZATION_USER_DATA!,
           CryptoJS.AES.encrypt(
             JSON.stringify(this.user),
@@ -115,7 +115,7 @@ class AuthStore {
     localStorage.removeItem(
       process.env.REACT_APP_AUTHORIZATION_TOKEN as string
     );
-    localStorage.removeItem(process.env.REACT_APP_AUTHORIZATION_USER_DATA!);
+    sessionStorage.removeItem(process.env.REACT_APP_AUTHORIZATION_USER_DATA!);
   };
 
   updateUserProfile = async (sendData: any) => {
@@ -178,7 +178,7 @@ class AuthStore {
     try {
       const authorization_token = process.env.REACT_APP_AUTHORIZATION_TOKEN;
       if (authorization_token) {
-        const storedData = localStorage.getItem(process.env.REACT_APP_AUTHORIZATION_USER_DATA!);
+        const storedData = sessionStorage.getItem(process.env.REACT_APP_AUTHORIZATION_USER_DATA!);
         if (storedData) {
           const decryptedBytes = CryptoJS.AES.decrypt(
             storedData,
@@ -218,7 +218,7 @@ class AuthStore {
     try {
       const { data } = await axios.put("/auth", sendData);
       this.user = data.data
-      localStorage.setItem(
+      sessionStorage.setItem(
         process.env.REACT_APP_AUTHORIZATION_USER_DATA!,
         CryptoJS.AES.encrypt(
           JSON.stringify(data.data),
