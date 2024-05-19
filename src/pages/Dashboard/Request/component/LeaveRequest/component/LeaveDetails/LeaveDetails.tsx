@@ -7,12 +7,12 @@ import { dashboard } from "../../../../../../../config/constant/routes";
 
 const LeaveDetails = ({ selectedCategory }: any) => {
    const navigate = useNavigate()
-  const [_, setOpenModel] = useState<any>({
+  const setOpenModel = useState<any>({
     open: false,
     data: null,
     type: "add",
     loading: false,
-  });
+  })[1];
 
   const [currentPage, setCurrentPage] = useState(1);
   const [data, setData] = useState([]);
