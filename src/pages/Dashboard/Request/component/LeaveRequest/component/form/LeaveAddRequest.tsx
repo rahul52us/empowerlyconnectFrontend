@@ -2,15 +2,14 @@ import { Card, Divider, Flex, Heading, IconButton } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useState } from "react";
 import LeaveRequestForm from "./LeaveRequestForm";
-import { leaveRequestInitialValues } from "../../utils/constant";
-import { generateResponse } from "../../utils/function";
+import { generateRequestInitialValues, generateResponse } from "../../utils/function";
 import store from "../../../../../../../store/store";
 import { getStatusType } from "../../../../../../../config/constant/statusCode";
 import { dashboard } from "../../../../../../../config/constant/routes";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
 
-const AddRequest = observer(() => {
+const LeaveAddRequest = observer(() => {
   const navigate = useNavigate()
   const {auth : {openNotification}, requestStore : {createRequest}} = store
   const [requestType, setRequestType] = useState('submit')
@@ -50,7 +49,7 @@ const AddRequest = observer(() => {
       </Flex>
       <Divider color="lightgray" borderWidth={1}/>
       <LeaveRequestForm
-        initialValues={leaveRequestInitialValues}
+        initialValues={generateRequestInitialValues(null)}
         showError={showError}
         setShowError={setShowError}
         close={() => {}}
@@ -62,4 +61,4 @@ const AddRequest = observer(() => {
   );
 });
 
-export default AddRequest;
+export default LeaveAddRequest;

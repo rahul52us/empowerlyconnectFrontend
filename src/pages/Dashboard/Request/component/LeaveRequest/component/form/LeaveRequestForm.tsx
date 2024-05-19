@@ -120,6 +120,7 @@ const LeaveRequestForm = observer(
                     label="Start Date"
                     required={true}
                     onChange={(e) => {
+                      console.log('the e is',e)
                       setFieldValue("startDate", e);
                       if (values.endDate) {
                         calculateNumberOfDays(e, values.endDate);

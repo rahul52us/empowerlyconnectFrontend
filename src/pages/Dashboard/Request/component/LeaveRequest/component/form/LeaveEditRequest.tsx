@@ -1,9 +1,8 @@
-import { Card, Divider, Flex, Heading, IconButton } from "@chakra-ui/react";
+import { Card, Divider, Flex, Heading, IconButton, Spinner } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
 import LeaveRequestForm from "./LeaveRequestForm";
-import { leaveRequestInitialValues } from "../../utils/constant";
-import { generateResponse } from "../../utils/function";
+import { generateRequestInitialValues, generateResponse } from "../../utils/function";
 import store from "../../../../../../../store/store";
 import { getStatusType } from "../../../../../../../config/constant/statusCode";
 import { useNavigate, useParams } from "react-router-dom";
@@ -15,6 +14,10 @@ const LeaveEditRequest = observer(() => {
     auth: { openNotification },
     requestStore: { createRequest, getRequestById },
   } = store;
+  const [formValues, setFormValues] = useState({
+    data : null,
+    loading : false
+  })
   const navigate = useNavigate();
   const [requestType, setRequestType] = useState("submit");
   const [showError, setShowError] = useState(false);
@@ -22,14 +25,18 @@ const LeaveEditRequest = observer(() => {
 
   useEffect(() => {
     if (!id) return;
-
+    setFormValues((previousValues : any) => ({...previousValues,data : null ,loading : true}))
     getRequestById({ _id: id })
-      .then(() => {
+      .then((data : any) => {
+        console.log(data.data)
+        setFormValues((previousValues : any) => ({...previousValues,data : data.data[0] ,loading : false}))
+
         // Handle the data if needed
       })
       .catch((err) => {
+        setFormValues((previousValues : any) => ({...previousValues,data : null ,loading : false}))
         openNotification({
-          title: "Create Failed",
+          title: "Edit Failed",
           message: err?.data?.message,
           type: getStatusType(err.status),
         });
@@ -37,7 +44,7 @@ const LeaveEditRequest = observer(() => {
           navigate(dashboard.request.index);
         }, 2000);
       });
-  }, [id, getRequestById, openNotification, navigate]);
+  }, [id, getRequestById, openNotification, navigate, setFormValues]);
 
   const handleSubmit = ({ values, setSubmitting, resetForm }: any) => {
     generateResponse(values);
@@ -52,7 +59,7 @@ const LeaveEditRequest = observer(() => {
       })
       .catch((err: any) => {
         openNotification({
-          title: "Create Failed",
+          title: "Failed Failed",
           message: err?.data?.message,
           type: getStatusType(err.status),
         });
@@ -77,15 +84,17 @@ const LeaveEditRequest = observer(() => {
         </Heading>
       </Flex>
       <Divider color="lightgray" borderWidth={1} />
+      {
+        !formValues.loading ?
       <LeaveRequestForm
-        initialValues={leaveRequestInitialValues}
+        initialValues={generateRequestInitialValues(formValues.data)}
         showError={showError}
         setShowError={setShowError}
         close={() => {}}
         handleSubmit={handleSubmit}
         setRequestType={setRequestType}
         requestType={requestType}
-      />
+      /> : <Spinner /> }
     </Card>
   );
 });
