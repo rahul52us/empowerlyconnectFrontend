@@ -15,6 +15,13 @@ class EmployeStore {
     hasFetch: false,
   };
 
+  employesRoles = {
+    data: [],
+    loading: false,
+    hasFetch: false,
+    totalPages: 0,
+  }
+
   employes = {
     data: [],
     loading: false,
@@ -45,6 +52,7 @@ class EmployeStore {
       employes: observable,
       designationCount: observable,
       employesCounts: observable,
+      employesRoles:observable,
       resetStudentDetails: action,
       setHandleFormDrawer: action,
       createEmploye: action,
@@ -58,7 +66,8 @@ class EmployeStore {
       updateFamilyDetails: action,
       updateWorkExperience: action,
       updateDocuments: action,
-      updateCompanyDetails:action
+      updateCompanyDetails:action,
+      getAllEmployesRoles:action
     });
   }
 
@@ -76,6 +85,23 @@ class EmployeStore {
       return Promise.reject(err?.response?.data || err);
     } finally {
       this.employes.loading = false;
+    }
+  };
+
+  getAllEmployesRoles = async (sendData: any) => {
+    try {
+      this.employes.loading = true;
+      const { data } = await axios.get("/employe/users/roles", {
+        params: { ...sendData, company: store.auth.company },
+      });
+      this.employesRoles.hasFetch = true;
+      this.employesRoles.data = data?.data?.data || [];
+      this.employesRoles.totalPages = data?.data?.totalPages || 0;
+      return data.data;
+    } catch (err: any) {
+      return Promise.reject(err?.response?.data || err);
+    } finally {
+      this.employesRoles.loading = false;
     }
   };
 

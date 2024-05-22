@@ -19,6 +19,7 @@ const PersonalCompanyDetails = observer(
         getAllDepartment,
         departments,
       },
+      Employe: { getAllEmployesRoles, employesRoles },
     } = store;
     const [showError, setShowError] = useState(false);
 
@@ -55,12 +56,9 @@ const PersonalCompanyDetails = observer(
       }
     }, [fetchDesignations, initialValues.department]);
 
-    const {
-      Employe: { getAllEmployes, employes },
-    } = store;
 
     useEffect(() => {
-      getAllEmployes({ page: 1, limit: 15 })
+      getAllEmployesRoles({ page: 1, limit: 15 })
         .then(() => {})
         .catch((err: any) => {
           openNotification({
@@ -69,7 +67,7 @@ const PersonalCompanyDetails = observer(
             message: err?.message,
           });
         });
-    }, [getAllEmployes, openNotification]);
+    }, [getAllEmployesRoles, openNotification]);
 
     useEffect(() => {
       const eTypes = eTypeOption.filter(
@@ -81,11 +79,11 @@ const PersonalCompanyDetails = observer(
 
       if (initialValues.managers?.length) {
         const tempManagers: any = [];
-        employes.data.forEach((item: any) => {
-          if (updatedInitialValues.managers.includes(item.userData._id)) {
+        employesRoles.data.forEach((item: any) => {
+          if (updatedInitialValues.managers.includes(item._id)) {
             tempManagers.push({
-              label: item.userData.username,
-              value: item.userData._id,
+              label: item.username,
+              value: item._id,
             });
           }
         });
@@ -154,7 +152,7 @@ const PersonalCompanyDetails = observer(
       setFormInitialValues(updatedInitialValues);
     }, [
       initialValues,
-      employes.data,
+      employesRoles.data,
       departments.data,
       departmentCategories?.data,
       user?.companyDetail?.company?.policy?.workTiming,
@@ -211,9 +209,9 @@ const PersonalCompanyDetails = observer(
       value: option._id,
     }));
 
-    const employesOptions = employes.data.map((item: any) => ({
-      value: item.userData?._id,
-      label: item.userData?.username,
+    const employesOptions = employesRoles.data.map((item: any) => ({
+      value: item?._id,
+      label: item?.username,
     }));
 
     return (
