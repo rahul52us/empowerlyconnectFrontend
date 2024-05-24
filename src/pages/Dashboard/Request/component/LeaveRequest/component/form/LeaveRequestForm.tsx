@@ -180,7 +180,7 @@ const LeaveRequestForm = observer(
                     cancelFunctionality={{ show: true, onClick: () => close() }}
                     loading={isSubmitting}
                     type="submit"
-                    onClick={() => { setRequestType('submit') ; setShowError(true)}}
+                    onClick={() => { setRequestType('submitted') ; setShowError(true)}}
                   />
                 </Flex>
               </Form>

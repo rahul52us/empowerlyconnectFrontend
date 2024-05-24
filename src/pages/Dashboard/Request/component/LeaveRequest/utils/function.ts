@@ -10,7 +10,7 @@ export const generateRequestInitialValues = (data : any) => {
         sendTo: data ? data.sendTo.map((item : any) => ({label : item.username , value : item._id})) : [],
         reason: undefined,
         workingLocation:undefined,
-        status: "Pending",
+        status: "pending",
     }
 }
 

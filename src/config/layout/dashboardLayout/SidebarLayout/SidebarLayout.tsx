@@ -13,7 +13,7 @@ import { observer } from "mobx-react-lite";
 import store from "../../../../store/store";
 import { dashboard } from "../../../constant/routes";
 
-const SidebarLayout = () => {
+const SidebarLayout = observer(() => {
   const [menuItems] = useState<any>([
     {
       label: "Dashboard",
@@ -171,7 +171,7 @@ const SidebarLayout = () => {
       </VStack>
     </Flex>
   );
-};
+});
 
 const SidebarMainLayout = observer(() => {
   const {

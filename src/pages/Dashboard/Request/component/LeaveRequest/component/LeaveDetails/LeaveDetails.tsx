@@ -4,9 +4,12 @@ import store from "../../../../../../../store/store";
 import CustomTable from "../../../../../../../config/component/CustomTable/CustomTable";
 import { useNavigate } from "react-router-dom";
 import { dashboard } from "../../../../../../../config/constant/routes";
+import { Box, Flex, Text } from "@chakra-ui/react";
+import RequestButtons from "../../../element/RequestButtons";
 
-const LeaveDetails = ({ selectedCategory }: any) => {
-   const navigate = useNavigate()
+const LeaveDetails = () => {
+  const navigate = useNavigate();
+  const [selectRequestStatus, setSelectRequestStatus] = useState('pending')
   const setOpenModel = useState<any>({
     open: false,
     data: null,
@@ -29,6 +32,7 @@ const LeaveDetails = ({ selectedCategory }: any) => {
     getAllRequest({
       page: 1,
       limit: tablePageLimit,
+      status : selectRequestStatus
     })
       .then((data) => {
         setData(data?.data || []);
@@ -37,24 +41,26 @@ const LeaveDetails = ({ selectedCategory }: any) => {
       .catch((err: any) => {
         openNotification({
           type: "error",
-          title: "Failed to get Departments",
+          title: `Failed to get ${selectRequestStatus} requests`,
           message: err?.message,
         });
       })
       .finally(() => {
         setLoading(false);
       });
-  }, [getAllRequest, openNotification, selectedCategory]);
+  }, [getAllRequest, openNotification, selectRequestStatus]);
 
   // function to get the data from backend on the page, limit, date and others
-  const applyGetAllRecords = ({ page, limit, reset }: any) => {
+  const applyGetAllRecords = ({ page, limit, selectRequestStatus, reset }: any) => {
     const query: any = {};
     if (reset) {
       query["page"] = 1;
       query["limit"] = tablePageLimit;
+      query['status'] = selectRequestStatus || "pending"
     } else {
       query["page"] = page || currentPage;
       query["limit"] = limit || tablePageLimit;
+      query['status'] = selectRequestStatus || "pending"
     }
     setLoading(true);
     getAllRequest(query)
@@ -65,7 +71,7 @@ const LeaveDetails = ({ selectedCategory }: any) => {
       .catch((err: any) => {
         openNotification({
           type: "error",
-          title: "Failed to get Department Categories",
+          title: `Failed to get ${selectRequestStatus} requests`,
           message: err?.message,
         });
       })
@@ -76,7 +82,7 @@ const LeaveDetails = ({ selectedCategory }: any) => {
 
   const handleChangePage = (page: number) => {
     setCurrentPage(page);
-    applyGetAllRecords({ page, limit: tablePageLimit });
+    applyGetAllRecords({ page, limit: tablePageLimit , selectRequestStatus});
   };
 
   const columns = [
@@ -101,27 +107,27 @@ const LeaveDetails = ({ selectedCategory }: any) => {
       type: "date",
       key: "startDate",
       props: {
-        row : {textAlign : 'center'},
+        row: { textAlign: "center" },
         column: { textAlign: "center" },
-      }
+      },
     },
     {
       headerName: "To Date",
       type: "date",
       key: "endDate",
       props: {
-        row : {textAlign : 'center'},
+        row: { textAlign: "center" },
         column: { textAlign: "center" },
-      }
+      },
     },
     {
       headerName: "Status",
       type: "text",
       key: "status",
       props: {
-        row : {textAlign : 'center', fontWeight : '500'},
+        row: { textAlign: "center", fontWeight: "500" },
         column: { textAlign: "center" },
-      }
+      },
     },
     // {
     //   headerName: "Manager",
@@ -133,22 +139,22 @@ const LeaveDetails = ({ selectedCategory }: any) => {
     //   }
     // },
     {
-      headerName : 'Remarks',
-      type : 'approvals',
-      key : 'approvals',
+      headerName: "Remarks",
+      type: "approvals",
+      key: "approvals",
       props: {
-        row : {textAlign : 'center'},
+        row: { textAlign: "center" },
         column: { textAlign: "center" },
-      }
+      },
     },
     {
       headerName: "Applied On",
       type: "date",
       key: "createdAt",
       props: {
-        row : {textAlign : 'center'},
+        row: { textAlign: "center" },
         column: { textAlign: "center" },
-      }
+      },
     },
     {
       headerName: "Actions",
@@ -162,32 +168,37 @@ const LeaveDetails = ({ selectedCategory }: any) => {
 
   return (
     <>
+      <Box border="3px solid" borderColor="gray.300" borderRadius="md">
+        <Flex alignItems="center" justifyContent="space-between" m={3}>
+          <Text>Leave Request</Text>
+          <RequestButtons selectRequestStatus={selectRequestStatus} setSelectRequestStatus={setSelectRequestStatus}/>
+        </Flex>
         <CustomTable
           columns={columns}
           data={data}
           loading={loading}
-          title="Leave Request"
+          // title="Leave Request"
           actions={{
             applyFilter: {
               show: false,
               function: () => {},
             },
             resetData: {
-              show: true,
+              show: false,
               text: "Reset Data",
-              function: () => applyGetAllRecords({reset : true}),
+              function: () => applyGetAllRecords({ reset: true }),
             },
             actionBtn: {
               addKey: {
-                showAddButton: true,
+                showAddButton: false,
                 function: () => {
-                  navigate(dashboard.request.leaveAdd)
+                  navigate(dashboard.request.leaveAdd);
                 },
               },
               editKey: {
                 showEditButton: true,
-                function: (dt : any) => {
-                  navigate(`${dashboard.request.leave}/edit/${dt._id}`)
+                function: (dt: any) => {
+                  navigate(`${dashboard.request.leave}/edit/${dt._id}`);
                 },
               },
               deleteKey: {
@@ -205,10 +216,11 @@ const LeaveDetails = ({ selectedCategory }: any) => {
               show: true,
               onClick: handleChangePage,
               currentPage: currentPage,
-              totalPages:totalPages
+              totalPages: totalPages,
             },
           }}
         />
+      </Box>
     </>
   );
 };
