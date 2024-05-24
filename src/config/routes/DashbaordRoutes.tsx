@@ -1,5 +1,6 @@
 import { lazy } from "react";
 import { dashboard } from "../constant/routes";
+const PageNotFound = lazy(() => import("../component/common/WebPages/PageNotFound"));
 
 const DashboardIndex = lazy(
   () => import("../../pages/Dashboard/DashboardIndex")
@@ -229,4 +230,12 @@ export const DashboardRoutes = [
     path : dashboard.request.leaveEdit,
     privateRoutes : true
   },
+
+  // Not found
+  {
+    element : <PageNotFound />,
+    path : '/dashboard/*',
+    privateRoutes : true
+  },
+
 ];

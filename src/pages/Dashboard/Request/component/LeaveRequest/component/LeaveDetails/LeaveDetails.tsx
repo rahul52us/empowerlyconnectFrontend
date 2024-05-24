@@ -97,7 +97,7 @@ const LeaveDetails = ({ selectedCategory }: any) => {
       },
     },
     {
-      headerName: "Start Date",
+      headerName: "From Date",
       type: "date",
       key: "startDate",
       props: {
@@ -106,7 +106,7 @@ const LeaveDetails = ({ selectedCategory }: any) => {
       }
     },
     {
-      headerName: "End Date",
+      headerName: "To Date",
       type: "date",
       key: "endDate",
       props: {
@@ -142,7 +142,7 @@ const LeaveDetails = ({ selectedCategory }: any) => {
       }
     },
     {
-      headerName: "Created At",
+      headerName: "Applied On",
       type: "date",
       key: "createdAt",
       props: {
@@ -191,7 +191,7 @@ const LeaveDetails = ({ selectedCategory }: any) => {
                 },
               },
               deleteKey: {
-                showDeleteButton: true,
+                showDeleteButton: false,
                 function: (dt: string) => {
                   setOpenModel({
                     type: "delete",

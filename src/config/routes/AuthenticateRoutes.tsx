@@ -18,6 +18,7 @@ const CreateOrganisation2 = lazy(
 const VerifyEmail = lazy(
     () => import("../../pages/Authentication/VerifyEmail/VerifyEmail")
 );
+const PageNotFound = lazy(() => import("../component/common/WebPages/PageNotFound"));
 
 const CreateOrganisationStep1 = lazy(() => import('../../pages/Authentication/CreateOrganisation/CreateOrganisationStep1'))
 
@@ -53,6 +54,12 @@ export const AuthenticateRoutes = [
     {
       element : <CreateOrganisationStep1 />,
       path: authentication.createOrganisationStep1
-    }
+    },
+    {
+      element : <PageNotFound />,
+      path : '/*',
+      privateRoutes : true
+    },
+
   ];
 

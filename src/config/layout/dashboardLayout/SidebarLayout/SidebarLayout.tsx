@@ -84,6 +84,28 @@ const SidebarLayout = () => {
       ],
     },
     {
+      label: "Team Attendence",
+      path: "/dashboard/class",
+      submenus: [
+        {
+          label: "Daily",
+          path: "/dashboard/videos",
+        },
+        {
+          label: "Monthly",
+          path: "/dashboard/videos",
+        },
+        {
+          label: "Yearly",
+          path: "/dashboard/class",
+        },
+        {
+          label: "Leave Encashment",
+          path: "/dashboard/videos",
+        },
+      ],
+    },
+    {
       label: "My Attendence",
       path: "/dashboard/class",
       submenus: [
@@ -104,6 +126,10 @@ const SidebarLayout = () => {
           path: "/dashboard/videos",
         },
       ],
+    },
+    {
+      label: "Team Request",
+      path: dashboard.request.index
     },
     {
       label: "Corp. Info.",
