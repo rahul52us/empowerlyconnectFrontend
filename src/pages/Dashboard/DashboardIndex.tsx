@@ -10,7 +10,7 @@ import { headerHeight } from "../../config/constant/variable";
 import { Box, Grid, GridItem, Text } from "@chakra-ui/react";
 import { dashBreadCrumb } from "./utils/breadcrumb.constant";
 import NormalTable from "../../config/component/Table/NormalTable/NormalTable";
-import { users } from "./utils/constant";
+import { users, usersColumns } from "./utils/constant";
 import ManagerEmployes from "./component/manager/ManagerEmployes";
 
 const DashboardIndex = observer(() => {
@@ -38,7 +38,13 @@ const DashboardIndex = observer(() => {
         </Grid>
         <Grid templateColumns={{ base: "1fr", md: "1fr 1fr" }} columnGap={4}>
           <ManagerEmployes />
-          <NormalTable data={users} />
+          <NormalTable
+            columns={usersColumns}
+            data={users}
+            currentPage={1}
+            totalPages={1}
+            onPageChange={() => {}}
+          />
         </Grid>
         <DeleteModel
           id={store.quiz.openDeleteCategoryModal?.data?._id}

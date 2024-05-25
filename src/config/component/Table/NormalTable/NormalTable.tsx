@@ -14,14 +14,23 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import Pagination from "../../pagination/Pagination";
+import TableLoader from "../../DataTable/TableLoader";
+
+interface Column {
+  header: string;
+  key: string;
+}
 
 interface NormalTableProps {
   data: any[];
   title?: string;
   loading?: boolean;
-  totalPages?:number;
-  onPageChange?:any;
-  currentPage?:number
+  totalPages: number;
+  onPageChange: any;
+  currentPage: number;
+  onSearchChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  searchValue?: string;
+  columns: Column[];
 }
 
 const NormalTable: React.FC<NormalTableProps> = ({
@@ -30,8 +39,11 @@ const NormalTable: React.FC<NormalTableProps> = ({
   loading,
   totalPages,
   currentPage,
-  onPageChange
-}: any) => {
+  onPageChange,
+  onSearchChange,
+  searchValue,
+  columns,
+}) => {
   const columnWidth = useBreakpointValue({
     base: "100%",
     sm: "25%",
@@ -47,9 +59,6 @@ const NormalTable: React.FC<NormalTableProps> = ({
     "1px solid darkgray"
   );
 
-  // Extracting columns from the first object in the data array
-  const columns = data.length > 0 ? Object.keys(data[0]) : [];
-
   return (
     <Box border={borderColor} mt={5} overflowX="auto">
       <Flex
@@ -58,13 +67,18 @@ const NormalTable: React.FC<NormalTableProps> = ({
         borderBottom={borderColor}
         p={2}
         height={50}
-        bg={headerColor} // Header color
+        bg={headerColor}
       >
         <Heading fontSize="md" color={textColor}>
           {title ? title : "Recent Users"}
         </Heading>
         <Box>
-          <Input placeholder="Search" fontSize="sm" />
+          <Input
+            placeholder="Search"
+            fontSize="sm"
+            value={searchValue}
+            onChange={onSearchChange}
+          />
         </Box>
       </Flex>
       <Box p={3} height={{ sm: "320px" }} overflowY="auto" maxWidth="100%">
@@ -79,41 +93,43 @@ const NormalTable: React.FC<NormalTableProps> = ({
                   border={borderColor}
                   textAlign="center"
                 >
-                  {column}
+                  {column.header}
                 </Th>
               ))}
             </Tr>
           </Thead>
-          <Tbody>
-            {loading ? (
-              <Tr>
-                <Td colSpan={columns.length} textAlign="center">
-                  <Spinner />
-                </Td>
-              </Tr>
-            ) : (
-              data.map((row: any, rowIndex: number) => (
-                <Tr
-                  key={rowIndex}
-                  bg={rowIndex % 2 === 0 ? bgColor : "white"}
-                  height={cellHeight}
-                >
-                  {columns.map((column, colIndex) => (
-                    <Td
-                      key={colIndex}
-                      width={columnWidth}
-                      color={textColor}
-                      border={borderColor}
-                      textAlign="center"
-                      minW={110}
-                    >
-                      {row[column]}
-                    </Td>
-                  ))}
+          <TableLoader show={data.length} loader={loading || false}>
+            <Tbody>
+              {loading ? (
+                <Tr>
+                  <Td colSpan={columns.length} textAlign="center">
+                    <Spinner />
+                  </Td>
                 </Tr>
-              ))
-            )}
-          </Tbody>
+              ) : (
+                data.map((row: any, rowIndex: number) => (
+                  <Tr
+                    key={rowIndex}
+                    bg={rowIndex % 2 === 0 ? bgColor : "white"}
+                    height={cellHeight}
+                  >
+                    {columns.map((column, colIndex) => (
+                      <Td
+                        key={colIndex}
+                        width={columnWidth}
+                        color={textColor}
+                        border={borderColor}
+                        textAlign="center"
+                        minW={110}
+                      >
+                        {row[column.key]}
+                      </Td>
+                    ))}
+                  </Tr>
+                ))
+              )}
+            </Tbody>
+          </TableLoader>
         </Table>
       </Box>
       <Flex
@@ -122,12 +138,16 @@ const NormalTable: React.FC<NormalTableProps> = ({
         p={2}
         height={cellHeight}
         borderTop={borderColor}
-        bg={headerColor} // Footer color
+        bg={headerColor}
       >
         <Heading fontSize="md" color={textColor}>
           Footer
         </Heading>
-        <Pagination currentPage={currentPage} onPageChange={onPageChange} totalPages={totalPages}/>
+        <Pagination
+          currentPage={currentPage}
+          onPageChange={onPageChange}
+          totalPages={totalPages}
+        />
       </Flex>
     </Box>
   );
