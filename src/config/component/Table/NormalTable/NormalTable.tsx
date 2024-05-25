@@ -1,10 +1,12 @@
-import { Box, Flex, Heading, Input, Table, Tbody, Td, Th, Thead, Tr, useBreakpointValue, useColorModeValue } from "@chakra-ui/react";
+import { Box, Flex, Heading, Input, Spinner, Table, Tbody, Td, Th, Thead, Tr, useBreakpointValue, useColorModeValue } from "@chakra-ui/react";
 
 interface NormalTableProps {
-  data: any[]
+  data: any[];
+  title?: string;
+  loading?: boolean;
 }
 
-const NormalTable: React.FC<NormalTableProps> = ({ data } : any) => {
+const NormalTable: React.FC<NormalTableProps> = ({ data, title, loading }: any) => {
   const columnWidth = useBreakpointValue({ base: "100%", sm: "25%", md: "15%", lg: "12.5%" });
   const cellHeight = "40px";
   const bgColor = useColorModeValue("gray.100", "gray.700");
@@ -25,12 +27,14 @@ const NormalTable: React.FC<NormalTableProps> = ({ data } : any) => {
         height={50}
         bg={headerColor} // Header color
       >
-        <Heading fontSize="md" color={textColor}>Recent Users</Heading>
+        <Heading fontSize="md" color={textColor}>
+          {title ? title : 'Recent Users'}
+        </Heading>
         <Box>
           <Input placeholder="Search" fontSize="sm" />
         </Box>
       </Flex>
-      <Box p={3} height="265px" overflowY="auto" maxWidth="100%">
+      <Box p={3} height={{sm : "320px"}} overflowY="auto" maxWidth="100%">
         <Table variant="simple" width="100%" border={borderColor} size="sm">
           <Thead>
             <Tr bg={headerColor} height={cellHeight}>
@@ -42,15 +46,23 @@ const NormalTable: React.FC<NormalTableProps> = ({ data } : any) => {
             </Tr>
           </Thead>
           <Tbody>
-            {data.map((row : any, rowIndex : number) => (
-              <Tr key={rowIndex} bg={rowIndex % 2 === 0 ? bgColor : "white"} height={cellHeight}>
-                {columns.map((column, colIndex) => (
-                  <Td key={colIndex} width={columnWidth} color={textColor} border={borderColor} textAlign="center">
-                    {row[column]}
-                  </Td>
-                ))}
+            {loading ? (
+              <Tr>
+                <Td colSpan={columns.length} textAlign="center">
+                  <Spinner />
+                </Td>
               </Tr>
-            ))}
+            ) : (
+              data.map((row: any, rowIndex: number) => (
+                <Tr key={rowIndex} bg={rowIndex % 2 === 0 ? bgColor : "white"} height={cellHeight}>
+                  {columns.map((column, colIndex) => (
+                    <Td key={colIndex} width={columnWidth} color={textColor} border={borderColor} textAlign="center" minW={110}>
+                      {row[column]}
+                    </Td>
+                  ))}
+                </Tr>
+              ))
+            )}
           </Tbody>
         </Table>
       </Box>

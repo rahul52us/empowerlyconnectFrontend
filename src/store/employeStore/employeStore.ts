@@ -29,6 +29,13 @@ class EmployeStore {
     totalPages: 0,
   };
 
+  managerEmployes = {
+    data: [],
+    loading: false,
+    hasFetch: false,
+    totalPages: 0,
+  };
+
   designationCount = {
     data: [],
     loading: false,
@@ -53,8 +60,10 @@ class EmployeStore {
       designationCount: observable,
       employesCounts: observable,
       employesRoles:observable,
+      managerEmployes:observable,
       resetStudentDetails: action,
       setHandleFormDrawer: action,
+      getAllManagerEmployes:action,
       createEmploye: action,
       getStudentById: action,
       getAllEmployes: action,
@@ -85,6 +94,23 @@ class EmployeStore {
       return Promise.reject(err?.response?.data || err);
     } finally {
       this.employes.loading = false;
+    }
+  };
+
+  getAllManagerEmployes = async (sendData: any) => {
+    try {
+      this.managerEmployes.loading = true;
+      const { data } = await axios.get(`/employe/managers/${sendData.managerId}`, {
+        params: { ...sendData, company: store.auth.company },
+      });
+      this.managerEmployes.hasFetch = true;
+      this.managerEmployes.data = data?.data?.data || [];
+      this.managerEmployes.totalPages = data?.data?.totalPages || 0;
+      return data.data;
+    } catch (err: any) {
+      return Promise.reject(err?.response?.data || err);
+    } finally {
+      this.managerEmployes.loading = false;
     }
   };
 
@@ -154,7 +180,7 @@ class EmployeStore {
       const { data } = await axios.post("employe/create", {...sendData, company: store.auth.company});
       return data;
     } catch (err: any) {
-      return Promise.reject(err?.response?.data || err);
+      return Promise.reject(err?.response || err);
     }
   };
 

@@ -6,10 +6,16 @@ import { useNavigate } from "react-router-dom";
 import { dashboard } from "../../../../../../../config/constant/routes";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import RequestButtons from "../../../element/RequestButtons";
+import { observer } from "mobx-react-lite";
+import CustomInput from "../../../../../../../config/component/CustomInput/CustomInput";
 
-const LeaveDetails = () => {
+const LeaveDetails = observer(() => {
+  const {
+    requestStore: { getAllRequest },
+    auth: { openNotification, user },
+  } = store;
   const navigate = useNavigate();
-  const [selectRequestStatus, setSelectRequestStatus] = useState('pending')
+  const [selectRequestStatus, setSelectRequestStatus] = useState("pending");
   const setOpenModel = useState<any>({
     open: false,
     data: null,
@@ -22,18 +28,17 @@ const LeaveDetails = () => {
   const [loading, setLoading] = useState(true);
   const [totalPages, setTotalPages] = useState(1);
 
-  const {
-    requestStore: { getAllRequest },
-    auth: { openNotification },
-  } = store;
-
   useEffect(() => {
     setLoading(true);
-    getAllRequest({
+    let query: any = {
       page: 1,
       limit: tablePageLimit,
-      status : selectRequestStatus
-    })
+      status: selectRequestStatus,
+    };
+    if (user.role === "manager") {
+      query = { ...query, userType: "manager" };
+    }
+    getAllRequest(query)
       .then((data) => {
         setData(data?.data || []);
         setTotalPages(data.totalPages);
@@ -48,19 +53,27 @@ const LeaveDetails = () => {
       .finally(() => {
         setLoading(false);
       });
-  }, [getAllRequest, openNotification, selectRequestStatus]);
+  }, [getAllRequest, openNotification, selectRequestStatus, user]);
 
   // function to get the data from backend on the page, limit, date and others
-  const applyGetAllRecords = ({ page, limit, selectRequestStatus, reset }: any) => {
-    const query: any = {};
+  const applyGetAllRecords = ({
+    page,
+    limit,
+    selectRequestStatus,
+    reset,
+  }: any) => {
+    let query: any = {};
     if (reset) {
       query["page"] = 1;
       query["limit"] = tablePageLimit;
-      query['status'] = selectRequestStatus || "pending"
+      query["status"] = selectRequestStatus || "pending";
     } else {
       query["page"] = page || currentPage;
       query["limit"] = limit || tablePageLimit;
-      query['status'] = selectRequestStatus || "pending"
+      query["status"] = selectRequestStatus || "pending";
+    }
+    if (user.role === "manager") {
+      query = { ...query, userType: "manager" };
     }
     setLoading(true);
     getAllRequest(query)
@@ -82,7 +95,7 @@ const LeaveDetails = () => {
 
   const handleChangePage = (page: number) => {
     setCurrentPage(page);
-    applyGetAllRecords({ page, limit: tablePageLimit , selectRequestStatus});
+    applyGetAllRecords({ page, limit: tablePageLimit, selectRequestStatus });
   };
 
   const columns = [
@@ -171,7 +184,21 @@ const LeaveDetails = () => {
       <Box border="3px solid" borderColor="gray.300" borderRadius="md">
         <Flex alignItems="center" justifyContent="space-between" m={3}>
           <Text>Leave Request</Text>
-          <RequestButtons selectRequestStatus={selectRequestStatus} setSelectRequestStatus={setSelectRequestStatus}/>
+          <Flex>
+            <CustomInput
+              type="select"
+              name="employes"
+              options={[
+                { label: "Rahul", value: "rahul" },
+                { label: "New", value: "new" },
+              ]}
+              isSearchable
+            />
+            <RequestButtons
+              selectRequestStatus={selectRequestStatus}
+              setSelectRequestStatus={setSelectRequestStatus}
+            />
+          </Flex>
         </Flex>
         <CustomTable
           columns={columns}
@@ -223,6 +250,6 @@ const LeaveDetails = () => {
       </Box>
     </>
   );
-};
+});
 
 export default LeaveDetails;

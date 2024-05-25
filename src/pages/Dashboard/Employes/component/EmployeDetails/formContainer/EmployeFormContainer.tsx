@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import { dashboard } from "../../../../../../config/constant/routes";
 import Loader from "../../../../../../config/component/Loader/Loader";
 import { readFileAsBase64 } from "../../../../../../config/constant/function";
+import { getStatusType } from "../../../../../../config/constant/statusCode";
 
 const EmployeFormContainer = observer(() => {
   const {auth : {user}} = store
@@ -317,9 +318,9 @@ const EmployeFormContainer = observer(() => {
           })
           .catch((err) => {
             openNotification({
-              type: "error",
-              message: err?.message,
-              title: "Failed to Create",
+              title: "Create Failed",
+              message: err?.data?.message,
+              type: getStatusType(err.status),
             });
           })
           .finally(() => {

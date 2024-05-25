@@ -1,23 +1,42 @@
-import { Button, Flex, Box, Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
-import { CheckCircleIcon, CloseIcon, RepeatIcon, TimeIcon, WarningIcon, ViewIcon } from "@chakra-ui/icons";
+import {
+  Button,
+  Flex,
+  Box,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+} from "@chakra-ui/react";
+import {
+  CheckCircleIcon,
+  CloseIcon,
+  RepeatIcon,
+  TimeIcon,
+  WarningIcon,
+  ViewIcon,
+} from "@chakra-ui/icons";
 
-const RequestButtons = ({ setSelectRequestStatus} : any ) => {
+const RequestButtons = ({ setSelectRequestStatus }: any) => {
   const handleSelectStatus = (status: string) => {
     setSelectRequestStatus(status);
   };
 
   return (
     <Flex justify="space-around" align="center">
-      <Box display={{ base: "none", md: "flex" }} justifyContent="space-around" alignItems="center">
+      <Box
+        display={{ base: "none", md: "flex" }}
+        justifyContent="space-around"
+        alignItems="center"
+      >
         <Button
           size="sm"
           colorScheme="blue"
           variant="solid"
           leftIcon={<TimeIcon />}
           mr={2}
-          onClick={() => handleSelectStatus('pending')}
+          onClick={() => handleSelectStatus("pending")}
         >
-          Pending
+          Pending to Submit
         </Button>
         <Button
           size="sm"
@@ -25,7 +44,7 @@ const RequestButtons = ({ setSelectRequestStatus} : any ) => {
           variant="solid"
           leftIcon={<CheckCircleIcon />}
           mr={2}
-          onClick={() => handleSelectStatus('approved')}
+          onClick={() => handleSelectStatus("approved")}
         >
           Approved
         </Button>
@@ -35,7 +54,7 @@ const RequestButtons = ({ setSelectRequestStatus} : any ) => {
           variant="solid"
           leftIcon={<RepeatIcon />}
           mr={2}
-          onClick={() => handleSelectStatus('submitted')}
+          onClick={() => handleSelectStatus("submitted")}
         >
           Submitted
         </Button>
@@ -45,7 +64,7 @@ const RequestButtons = ({ setSelectRequestStatus} : any ) => {
           variant="solid"
           leftIcon={<CloseIcon />}
           mr={2}
-          onClick={() => handleSelectStatus('rejected')}
+          onClick={() => handleSelectStatus("rejected")}
         >
           Rejected
         </Button>
@@ -55,7 +74,7 @@ const RequestButtons = ({ setSelectRequestStatus} : any ) => {
           variant="solid"
           leftIcon={<WarningIcon />}
           mr={2}
-          onClick={() => handleSelectStatus('cancelled')}
+          onClick={() => handleSelectStatus("cancelled")}
         >
           Cancelled
         </Button>
@@ -65,7 +84,7 @@ const RequestButtons = ({ setSelectRequestStatus} : any ) => {
           variant="solid"
           leftIcon={<ViewIcon />}
           mr={2}
-          onClick={() => handleSelectStatus('all')}
+          onClick={() => handleSelectStatus("all")}
         >
           All
         </Button>
@@ -74,21 +93,47 @@ const RequestButtons = ({ setSelectRequestStatus} : any ) => {
       {/* Menu displayed on smaller screens */}
       <Box display={{ base: "block", md: "none" }} zIndex={99999}>
         <Menu>
-          <MenuButton
-            as={Button}
-            size="sm"
-            colorScheme="blue"
-            variant="solid"
-          >
+          <MenuButton as={Button} size="sm" colorScheme="blue" variant="solid">
             More
           </MenuButton>
           <MenuList>
-            <MenuItem icon={<TimeIcon />} onClick={() => handleSelectStatus('pending')}>Pending</MenuItem>
-            <MenuItem icon={<CheckCircleIcon />} onClick={() => handleSelectStatus('approved')}>Approved</MenuItem>
-            <MenuItem icon={<RepeatIcon />} onClick={() => handleSelectStatus('submitted')}>Submitted</MenuItem>
-            <MenuItem icon={<CloseIcon />} onClick={() => handleSelectStatus('rejected')}>Rejected</MenuItem>
-            <MenuItem icon={<WarningIcon />} onClick={() => handleSelectStatus('cancelled')}>Cancelled</MenuItem>
-            <MenuItem icon={<ViewIcon />} onClick={() => handleSelectStatus('all')}>All</MenuItem>
+            <MenuItem
+              icon={<TimeIcon />}
+              onClick={() => handleSelectStatus("pending")}
+            >
+              {" "}
+              Pending to Submit
+            </MenuItem>
+            <MenuItem
+              icon={<CheckCircleIcon />}
+              onClick={() => handleSelectStatus("approved")}
+            >
+              Approved
+            </MenuItem>
+            <MenuItem
+              icon={<RepeatIcon />}
+              onClick={() => handleSelectStatus("submitted")}
+            >
+              Submitted
+            </MenuItem>
+            <MenuItem
+              icon={<CloseIcon />}
+              onClick={() => handleSelectStatus("rejected")}
+            >
+              Rejected
+            </MenuItem>
+            <MenuItem
+              icon={<WarningIcon />}
+              onClick={() => handleSelectStatus("cancelled")}
+            >
+              Cancelled
+            </MenuItem>
+            <MenuItem
+              icon={<ViewIcon />}
+              onClick={() => handleSelectStatus("all")}
+            >
+              All
+            </MenuItem>
           </MenuList>
         </Menu>
       </Box>
