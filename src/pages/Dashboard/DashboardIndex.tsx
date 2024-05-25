@@ -6,35 +6,17 @@ import DeleteModel from "../../config/component/common/DeleteModel/DeleteModel";
 import { deleteCategoryFunction } from "./quiz/component/Forms/utils/function";
 import DashChartContainer from "./component/DashChartContainer";
 import DashPageHeader from "../../config/component/common/DashPageHeader/DashPageHeader";
-import { headerHeight, tablePageLimit } from "../../config/constant/variable";
+import { headerHeight } from "../../config/constant/variable";
 import { Box, Grid, GridItem, Text } from "@chakra-ui/react";
 import { dashBreadCrumb } from "./utils/breadcrumb.constant";
 import NormalTable from "../../config/component/Table/NormalTable/NormalTable";
 import { users } from "./utils/constant";
-import { useEffect } from "react";
-import { generateManagerData } from "./utils/commonFunction";
+import ManagerEmployes from "./component/manager/ManagerEmployes";
 
 const DashboardIndex = observer(() => {
   const {
     quiz: { setDeleteCategoryModal },
-    Employe: { getAllManagerEmployes, managerEmployes },
-    auth: { openNotification, user },
   } = store;
-
-  useEffect(() => {
-    if (user.role === "manager") {
-      getAllManagerEmployes({ page: 1, limit: tablePageLimit, managerId : user._id })
-        .then(() => {})
-        .catch((err: any) => {
-          openNotification({
-            type: "error",
-            title: "Failed to get users",
-            message: err?.message,
-          });
-        });
-    }
-  }, [getAllManagerEmployes, openNotification, user]);
-
 
   return (
     <>
@@ -55,7 +37,7 @@ const DashboardIndex = observer(() => {
           {/* <MyCoursesTable /> */}
         </Grid>
         <Grid templateColumns={{ base: "1fr", md: "1fr 1fr" }} columnGap={4}>
-          <NormalTable title="Team Members" data={generateManagerData(managerEmployes.data)} loading={managerEmployes.loading} />
+          <ManagerEmployes />
           <NormalTable data={users} />
         </Grid>
         <DeleteModel
