@@ -4,7 +4,7 @@ import { observer } from "mobx-react-lite";
 import store from "../../../store/store";
 import { useEffect } from "react";
 import { makeChartResponse } from "./utils/common";
-import LineGraph from "../../../config/component/charts/LineChart";
+import PieChart from "../../../config/component/charts/PieChart";
 
 const DashChartContainer = observer(() => {
   const {
@@ -57,7 +57,7 @@ const DashChartContainer = observer(() => {
         />
       </Card>
       <Card width={"100%"} minH={350} p={{ base: 0, sm: 2 }}>
-        <LineGraph
+        <PieChart
           data={coursesChartData?.data}
           options={coursesChartData?.options}
           loading={managersEmployesCount.loading}
