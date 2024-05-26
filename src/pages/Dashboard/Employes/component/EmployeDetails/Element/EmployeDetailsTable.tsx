@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import store from "../../../../../../store/store";
 import { observer } from "mobx-react-lite";
 import CustomTable from "../../../../../../config/component/CustomTable/CustomTable";
@@ -6,14 +6,16 @@ import { useNavigate } from "react-router-dom";
 import { dashboard } from "../../../../../../config/constant/routes";
 import { employDropdownData, generateTableData } from "../utils/constant";
 import { tablePageLimit } from "../../../../../../config/constant/variable";
+import useDebounce from "../../../../../../config/component/customHooks/useDebounce";
 
 const EmployeDetailsTable = observer(() => {
   const navigate = useNavigate();
-  const [searchValue, setSearchValue] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const dropdowns = useState(employDropdownData)[0];
   const [selectedOptions, setSelectedOptions] = useState({});
   const [pageLimit, setPageLimit] = useState(tablePageLimit);
+  const [searchQuery, setSearchQuery] = useState("");
+  const debouncedSearchQuery = useDebounce(searchQuery, 1000);
   const [date, setDate] = useState<any>({
     startDate: new Date(),
     endDate: new Date(),
@@ -24,43 +26,40 @@ const EmployeDetailsTable = observer(() => {
     auth: { openNotification },
   } = store;
 
-  useEffect(() => {
-    getAllEmployes({ page: 1, limit: tablePageLimit })
-      .then(() => {})
-      .catch((err: any) => {
-        openNotification({
-          type: "error",
-          title: "Failed to get users",
-          message: err?.message,
-        });
-      });
-  }, [getAllEmployes, openNotification]);
 
-  // function to get the data from backend on the page, limit, date and others
-  const applyGetAllEmployes = ({ page, limit, reset }: any) => {
-    const query: any = {};
-    if (reset) {
-      query["page"] = 1;
-      query["limit"] = tablePageLimit;
-    } else {
-      if (searchValue?.length > 0 && searchValue?.trim()) {
-        query["search"] = searchValue;
+  const applyGetAllEmployes = useCallback(
+    ({ page, limit, reset } : any) => {
+      const query : any = {};
+      if (reset) {
+        query["page"] = 1;
+        query["limit"] = tablePageLimit;
+      } else {
+        if (debouncedSearchQuery.trim()) {
+          query["search"] = debouncedSearchQuery;
+        }
+        query["page"] = page || currentPage;
+        query["limit"] = limit || pageLimit;
+        query["startDate"] = date.startDate;
+        query["endDate"] = date.endDate;
       }
-      query["page"] = page || currentPage;
-      query["limit"] = limit || pageLimit;
-      query["startDate"] = date?.startDate ? date?.startDate : undefined;
-      query["endDate"] = date?.endDate ? date?.endDate : undefined;
-    }
-    getAllEmployes(query)
-      .then(() => {})
-      .catch((err: any) => {
-        openNotification({
-          type: "error",
-          title: "Failed to get users",
-          message: err?.message,
+      getAllEmployes(query)
+        .then(() => {})
+        .catch((err) => {
+          openNotification({
+            type: "error",
+            title: "Failed to get users",
+            message: err?.message,
+          });
         });
-      });
-  };
+    },
+    [debouncedSearchQuery, currentPage, pageLimit, date, getAllEmployes, openNotification]
+  );
+
+
+  useEffect(() => {
+      applyGetAllEmployes({ page: currentPage, limit: tablePageLimit ,search: debouncedSearchQuery });
+  }, [currentPage, debouncedSearchQuery, applyGetAllEmployes]);
+
 
   const onDateChange = (e: any, type: string) => {
     setDate((prev: any) => ({ ...prev, [type]: e }));
@@ -68,7 +67,6 @@ const EmployeDetailsTable = observer(() => {
 
   const handleChangePage = (page: number) => {
     setCurrentPage(page);
-    applyGetAllEmployes({ page, limit: pageLimit });
   };
 
   const resetTableData = () => {
@@ -79,7 +77,7 @@ const EmployeDetailsTable = observer(() => {
       endDate: new Date(),
     });
     setSelectedOptions({});
-    setSearchValue("");
+    setSearchQuery("");
     applyGetAllEmployes({ reset: true });
   };
 
@@ -222,10 +220,10 @@ const EmployeDetailsTable = observer(() => {
           title: "Apply Filters",
           placeholder: "Apply Filters",
           search: {
-            searchValue: "",
-            visible: true,
+            searchValue : searchQuery,
+            visible: false,
             placeholder: "Search Value here",
-            onSearchChange: (e: string) => setSearchValue(e),
+            // onSearchChange: (e: any) => setSearchQuery(e),
           },
           dropdowns: dropdowns,
           onApply: () => applyGetAllEmployes({}),
@@ -234,6 +232,11 @@ const EmployeDetailsTable = observer(() => {
             setSelectedOptions((prev: any) => ({ ...prev, [label]: value }));
           },
         },
+      }}
+      search={{
+        show : true,
+        searchValue : searchQuery,
+        onSearchChange: (e: any) => setSearchQuery(e.target.value),
       }}
       title="Employes Details"
       data={generateTableData(employes.data)}

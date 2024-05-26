@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Drawer,
   DrawerBody,
@@ -13,8 +12,8 @@ import { observer } from "mobx-react-lite";
 import store from "../../../../store/store";
 import { dashboard } from "../../../constant/routes";
 
-const SidebarLayout = observer(() => {
-  const [menuItems] = useState<any>([
+const generateMenuItems = (userRole : string) => {
+  const commonMenuItems = [
     {
       label: "Dashboard",
       path: "/dashboard",
@@ -84,28 +83,6 @@ const SidebarLayout = observer(() => {
       ],
     },
     {
-      label: "Team Attendence",
-      path: "/dashboard/class",
-      submenus: [
-        {
-          label: "Daily",
-          path: "/dashboard/videos",
-        },
-        {
-          label: "Monthly",
-          path: "/dashboard/videos",
-        },
-        {
-          label: "Yearly",
-          path: "/dashboard/class",
-        },
-        {
-          label: "Leave Encashment",
-          path: "/dashboard/videos",
-        },
-      ],
-    },
-    {
       label: "My Attendence",
       path: "/dashboard/class",
       submenus: [
@@ -126,12 +103,46 @@ const SidebarLayout = observer(() => {
           path: "/dashboard/videos",
         },
       ],
-    },
-    {
-      label: "Team Request",
-      path: dashboard.request.index
-    },
-    {
+    }
+  ];
+
+  if (userRole === 'manager') {
+    const managerMenuItems = [
+      {
+        label: "Team Attendence",
+        path: "/dashboard/class",
+        submenus: [
+          {
+            label: "Daily",
+            path: "/dashboard/videos",
+          },
+          {
+            label: "Monthly",
+            path: "/dashboard/videos",
+          },
+          {
+            label: "Yearly",
+            path: "/dashboard/class",
+          },
+          {
+            label: "Leave Encashment",
+            path: "/dashboard/videos",
+          },
+        ],
+      },
+      {
+        label: "Team Request",
+        path: dashboard.request.index
+      }
+    ];
+
+    // Insert manager-specific menu items at desired positions
+    commonMenuItems.splice(3, 0, managerMenuItems[0]);
+    commonMenuItems.splice(4, 0, managerMenuItems[1]);
+  }
+
+  if (userRole === "admin" || userRole === "superadmin") {
+    commonMenuItems.push({
       label: "Corp. Info.",
       path: "/dashboard/class",
       submenus: [
@@ -152,22 +163,29 @@ const SidebarLayout = observer(() => {
           path: "/dashboard/company",
         },
       ],
-    }
-  ]);
+    })
+  }
+
+  return commonMenuItems;
+};
+
+const SidebarLayout = observer(() => {
+  const { auth: { user } } = store;
+  const menuItems = generateMenuItems(user.role);
 
   return (
     <Flex direction="column" h="100%" bg="#042954">
       <SidebarLogo />
       <VStack spacing={4} align="stretch" flex="1">
-        {menuItems.map((menuItem: any, index: any) => (
+        {menuItems.map((menuItem, index) => (
           <SidebarElement items={menuItem} key={index} />
         ))}
       </VStack>
       <VStack spacing={4} align="stretch" mb={2}>
-      <SidebarElement items={{
-      label: "Settings",
-      path: "/dashboard",
-    }}/>
+        <SidebarElement items={{
+          label: "Settings",
+          path: "/dashboard",
+        }} />
       </VStack>
     </Flex>
   );

@@ -17,6 +17,7 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
+  Input,
 } from "@chakra-ui/react";
 import TableLoader from "./TableLoader";
 import { formatDate } from "../../constant/dateUtils";
@@ -25,7 +26,7 @@ import { MdAddCircleOutline, MdEdit, MdUndo } from "react-icons/md";
 import { FiTrash } from "react-icons/fi";
 import CustomDateRange from "../CustomDateRange/CustomDateRange";
 import MultiDropdown from "../multiDropdown/MultiDropdown";
-import {  BiComment, BiInfoSquare, BiSearch } from "react-icons/bi";
+import { BiComment, BiInfoSquare, BiSearch } from "react-icons/bi";
 import { IoChevronDownCircleOutline } from "react-icons/io5";
 import { FaEye } from "react-icons/fa";
 
@@ -42,6 +43,12 @@ interface RowData {
   [key: string]: any;
 }
 
+interface searchProps {
+  show: boolean;
+  searchValue: any;
+  onSearchChange: any;
+}
+
 interface CustomTableProps {
   title?: string;
   columns: Column[];
@@ -51,6 +58,7 @@ interface CustomTableProps {
   totalPages?: number;
   actions?: any;
   extraProps?: any;
+  search?: searchProps;
 }
 
 interface TableActionsProps {
@@ -63,27 +71,27 @@ const Approvals = ({ row, column }: TableActionsProps) => {
   return (
     <Td>
       <Flex justify="center">
-      {Array.isArray(row[column.key]) ? (
-        <Tooltip
-          label={(
-            <>
-              {row[column.key].map((item: any, index: number) => (
-                <Box key={index}>
-                  {item.reason}
-                </Box>
-              ))}
-            </>
-          )}
-        >
-          <IconButton aria-label="Comments" borderRadius={"50%"}><BiComment /></IconButton>
-        </Tooltip>
-      ) : (
-        <Tooltip
-          label={'No Remarks Found'}
-        >
-          <IconButton aria-label="Comments" borderRadius={"50%"}><BiComment /></IconButton>
-        </Tooltip>
-      )}
+        {Array.isArray(row[column.key]) ? (
+          <Tooltip
+            label={
+              <>
+                {row[column.key].map((item: any, index: number) => (
+                  <Box key={index}>{item.reason}</Box>
+                ))}
+              </>
+            }
+          >
+            <IconButton aria-label="Comments" borderRadius={"50%"}>
+              <BiComment />
+            </IconButton>
+          </Tooltip>
+        ) : (
+          <Tooltip label={"No Remarks Found"}>
+            <IconButton aria-label="Comments" borderRadius={"50%"}>
+              <BiComment />
+            </IconButton>
+          </Tooltip>
+        )}
       </Flex>
     </Td>
   );
@@ -101,7 +109,7 @@ const TableActions: React.FC<TableActionsProps> = ({
   return (
     <Td {...column?.props?.row}>
       <Flex columnGap={2} justifyContent="center">
-      {actionBtn?.viewKey?.showViewButton && (
+        {actionBtn?.viewKey?.showViewButton && (
           <IconButton
             // size="sm"
             // p={0}
@@ -265,6 +273,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
   serial,
   loading,
   actions,
+  search,
   extraProps,
 }) => {
   const isMobile = useBreakpointValue({ base: true, md: false });
@@ -298,6 +307,16 @@ const CustomTable: React.FC<CustomTableProps> = ({
               />
             </Box>
           )}
+          {search?.show && (
+            <Box>
+              <Input
+                placeholder="Search"
+                fontSize="sm"
+                value={search.searchValue}
+                onChange={search.onSearchChange}
+              />
+            </Box>
+          )}
           {actions?.multidropdown?.show && (
             <Box display={isMobile ? "none" : undefined}>
               <MultiDropdown
@@ -327,49 +346,51 @@ const CustomTable: React.FC<CustomTableProps> = ({
 
           {/* Move Reset button into a dropdown menu */}
           {actions?.resetData?.show && (
-      <Menu>
-        <MenuButton
-          as={Button}
-          size="sm"
-          variant="solid"
-          colorScheme="red"
-          rightIcon={<IoChevronDownCircleOutline />}
-          _hover={{ bg: 'red.500', color: 'white' }}
-          _active={{ bg: 'red.600', color: 'white' }}
-        >
-          Actions
-        </MenuButton>
-        <MenuList
-          zIndex={15}
-          bg="white"
-          border="1px solid"
-          borderColor="gray.200"
-          boxShadow="lg"
-          rounded="md"
-        >
-          {actions?.actionBtn?.addKey?.showAddButton && (
-            <MenuItem
-              onClick={() => actions?.actionBtn?.addKey?.function?.('add')}
-              icon={<MdAddCircleOutline />}
-              _hover={{ bg: 'gray.100', color: 'black' }}
-              _focus={{ bg: 'gray.200', color: 'black' }}
-            >
-              Add
-            </MenuItem>
+            <Menu>
+              <MenuButton
+                as={Button}
+                size="sm"
+                variant="solid"
+                colorScheme="red"
+                rightIcon={<IoChevronDownCircleOutline />}
+                _hover={{ bg: "red.500", color: "white" }}
+                _active={{ bg: "red.600", color: "white" }}
+              >
+                Actions
+              </MenuButton>
+              <MenuList
+                zIndex={15}
+                bg="white"
+                border="1px solid"
+                borderColor="gray.200"
+                boxShadow="lg"
+                rounded="md"
+              >
+                {actions?.actionBtn?.addKey?.showAddButton && (
+                  <MenuItem
+                    onClick={() =>
+                      actions?.actionBtn?.addKey?.function?.("add")
+                    }
+                    icon={<MdAddCircleOutline />}
+                    _hover={{ bg: "gray.100", color: "black" }}
+                    _focus={{ bg: "gray.200", color: "black" }}
+                  >
+                    Add
+                  </MenuItem>
+                )}
+                {actions?.resetData?.show && (
+                  <MenuItem
+                    onClick={actions?.resetData?.function}
+                    icon={<MdUndo />}
+                    _hover={{ bg: "gray.100", color: "black" }}
+                    _focus={{ bg: "gray.200", color: "black" }}
+                  >
+                    {actions?.resetData?.text || "Reset Data"}
+                  </MenuItem>
+                )}
+              </MenuList>
+            </Menu>
           )}
-          {actions?.resetData?.show && (
-            <MenuItem
-              onClick={actions?.resetData?.function}
-              icon={<MdUndo />}
-              _hover={{ bg: 'gray.100', color: 'black' }}
-              _focus={{ bg: 'gray.200', color: 'black' }}
-            >
-              {actions?.resetData?.text || 'Reset Data'}
-            </MenuItem>
-          )}
-        </MenuList>
-      </Menu>
-    )}
         </Flex>
       </Flex>
       <Box

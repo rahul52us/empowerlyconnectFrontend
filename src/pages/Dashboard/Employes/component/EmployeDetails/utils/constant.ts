@@ -29,12 +29,13 @@ export const titles: any = [
 ];
 
 export const eTypeOption = [
+  { label: "Staff", value: "staff" },
   {
     label: "Manager",
     value: "manager",
   },
-  { label: "Staff", value: "staff" },
-]
+  { label: "admin", value: "admin" },
+];
 
 export const employeInitialValues = (type: string, data: any) => {
   if (type === "profile-details") {
@@ -148,61 +149,77 @@ export const employeInitialValues = (type: string, data: any) => {
       workExperience: workExperience,
     };
   } else if (type === "documents") {
-    let docs : any = {}
+    let docs: any = {};
     let documents = { ...data?.documents[0] };
-    if(documents.documents){
-      const documentFields = Object.keys(documents.documents)
+    if (documents.documents) {
+      const documentFields = Object.keys(documents.documents);
       for (const fieldName of documentFields) {
-        docs[fieldName] = {file : [{...documents.documents[fieldName], file : documents.documents[fieldName].url}]}
+        docs[fieldName] = {
+          file: [
+            {
+              ...documents.documents[fieldName],
+              file: documents.documents[fieldName].url,
+            },
+          ],
+        };
       }
     }
 
     return {
-      documents: Object.keys(docs).length ? docs : {
-        class10: {
-          file:null,
-          isDeleted: 0,
-          isAdd: 0,
-          validTill: "",
-          effectiveForm: "",
-        },
-        class12: {
-          file:null,
-          isDeleted: 0,
-          isAdd: 0,
-          validTill: "",
-          effectiveForm: "",
-        },
-        games: {
-          file:null,
-          isDeleted: 0,
-          isAdd: 0,
-          validTill: "",
-          effectiveForm: "",
-        },
+      documents: Object.keys(docs).length
+        ? docs
+        : {
+            class10: {
+              file: null,
+              isDeleted: 0,
+              isAdd: 0,
+              validTill: "",
+              effectiveForm: "",
+            },
+            class12: {
+              file: null,
+              isDeleted: 0,
+              isAdd: 0,
+              validTill: "",
+              effectiveForm: "",
+            },
+            games: {
+              file: null,
+              isDeleted: 0,
+              isAdd: 0,
+              validTill: "",
+              effectiveForm: "",
+            },
+          },
+    };
+  } else if (type === "company-details") {
+    let details: any = {};
+    if (data) {
+      details = data?.companyDetail?.length
+        ? data.companyDetail[0].details?.length
+          ? data.companyDetail[0].details[
+              data.companyDetail[0].details?.length - 1
+            ]
+          : {}
+        : {};
+    }
+    return {
+      companyDetails: {
+        department: undefined,
+        designation: undefined,
+        managers: undefined,
+        workTiming: undefined,
+        workingLocation: undefined,
+        eType: eTypeOption[0],
+        description: "",
+        ...details,
+        doj: details.doj ? new Date(details.doj) : new Date(),
+        confirmationDate: details.confirmationDate
+          ? new Date(details.confirmationDate)
+          : new Date(),
       },
     };
-  }
-  else if (type === "company-details"){
-    console.log(data)
-    let details : any = {}
-    if(data){
-     details = data?.companyDetail?.length ? data.companyDetail[0].details?.length ? data.companyDetail[0].details[data.companyDetail[0].details?.length - 1] : {} : {}
-    }
-    return {companyDetails : {
-      department : undefined,
-      designation : undefined,
-      managers:undefined,
-      workTiming:undefined,
-      workingLocation:undefined,
-      eType:[],
-      description:"",
-      ...details,
-      doj:details.doj ? new Date(details.doj) : new Date(),
-      confirmationDate:details.confirmationDate ? new Date(details.confirmationDate) : new Date(),
-    }}
-  }
-  else {
+  } else {
     return { profileDetails: {} };
   }
 };
@@ -228,6 +245,6 @@ export const generateTableData = (data: any[]) => {
   return data.map((item: any) => ({
     ...item,
     ...item.profileDetails[0],
-    ...item.userData
+    ...item.userData,
   }));
 };
