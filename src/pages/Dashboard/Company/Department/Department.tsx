@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import DepartmentCategories from "./CategoriesDetails/CategoriesDetails";
-import DashPageHeader from "../../../config/component/common/DashPageHeader/DashPageHeader";
-import { departmentsBreadCrumb } from "../utils/breadcrumb.constant";
+import DashPageHeader from "../../../../config/component/common/DashPageHeader/DashPageHeader";
+import { departmentsBreadCrumb } from "../../utils/breadcrumb.constant";
 
 const Department = observer(() => {
   return (

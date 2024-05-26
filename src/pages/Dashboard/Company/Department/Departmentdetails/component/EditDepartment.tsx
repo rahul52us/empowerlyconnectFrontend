@@ -1,14 +1,14 @@
 import { observer } from "mobx-react-lite";
-import CategoryForm from "./form/CategoryForm";
+import CategoryForm from "./form/DepartmentForm";
 import { useState } from "react";
 import store from "../../../../../../store/store";
-import { getStatusType } from "../../../../../../config/constant/statusCode";
 import FormModel from "../../../../../../config/component/common/FormModel/FormModel";
+import { getStatusType } from "../../../../../../config/constant/statusCode";
 
-const EditCategory = observer(
-  ({ openModel, setOpenModel, getAllRecords }: any) => {
+const EditDepartment = observer(
+  ({ openModel, setOpenModel, getAllRecords, selectedCategory }: any) => {
     const {
-      DepartmentStore: { updateDepartmentCategory },
+      DepartmentStore: { updateDepartment },
       auth: { openNotification },
     } = store;
     const [showError, setShowError] = useState(false);
@@ -19,10 +19,11 @@ const EditCategory = observer(
     };
 
     const handleSubmit = ({ values, setSubmitting, resetForm }: any) => {
-      updateDepartmentCategory(openModel?.data?._id,{
+      updateDepartment(openModel?.data?._id,{
         ...values,
         title: values?.title?.trim(),
-        code: values?.code?.trim()
+        code: values?.code?.trim(),
+        category:selectedCategory.id
       })
         .then((data: any) => {
           openNotification({
@@ -54,6 +55,7 @@ const EditCategory = observer(
         title={`${openModel?.data?.title} (${openModel?.data?.code})`}
         footer={false}
         close={closeModel}
+        size="xl"
       >
         <CategoryForm
           initialValues={{
@@ -70,4 +72,4 @@ const EditCategory = observer(
   }
 );
 
-export default EditCategory;
+export default EditDepartment;

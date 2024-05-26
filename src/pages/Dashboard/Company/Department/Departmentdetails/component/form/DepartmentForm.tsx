@@ -1,10 +1,10 @@
 import { Box, Button, Divider, Flex } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import { observer } from "mobx-react-lite";
+import { departmentValidation } from "../../utils/functions";
 import CustomInput from "../../../../../../../config/component/CustomInput/CustomInput";
-import { departmentCategoryValidation } from "../../../utils/validation";
 
-interface CategoryDepartmentI {
+interface DepartmentI {
   title: string;
   code: string;
 }
@@ -13,12 +13,12 @@ const CategoryForm = observer(
   ({ initialValues, showError, setShowError, close, handleSubmit }: any) => {
     return (
       <Box p={4}>
-        <Formik<CategoryDepartmentI>
+        <Formik<DepartmentI>
           initialValues={initialValues}
           onSubmit={(values, { setSubmitting, resetForm }) => {
             handleSubmit({ values, setSubmitting, resetForm });
           }}
-          validationSchema={departmentCategoryValidation}
+          validationSchema={departmentValidation}
         >
           {({ handleChange, values, errors, isSubmitting }) => {
             return (

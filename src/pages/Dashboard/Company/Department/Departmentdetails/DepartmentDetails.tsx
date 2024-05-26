@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import CustomTable from "../../../../config/component/CustomTable/CustomTable";
-import FormModel from "../../../../config/component/common/FormModel/FormModel";
-import store from "../../../../store/store";
-import { tablePageLimit } from "../../../../config/constant/variable";
 import DeleteDepartment from "./component/DeleteCategory";
 import AddDepartment from "./component/AddDepartment";
 import EditDepartment from "./component/EditDepartment";
+import store from "../../../../../store/store";
+import { tablePageLimit } from "../../../../../config/constant/variable";
+import FormModel from "../../../../../config/component/common/FormModel/FormModel";
+import CustomTable from "../../../../../config/component/CustomTable/CustomTable";
 
 const DepartmentDetails = ({ selectedCategory, setSelectedCategory }: any) => {
   const [openModel, setOpenModel] = useState<any>({

@@ -81,7 +81,7 @@ const EmployeCreate = lazy(
 );
 
 
-const Department = lazy(() => import("../../pages/Dashboard/Department/Department"))
+const Department = lazy(() => import("../../pages/Dashboard/Company/Department/Department"))
 
 // Company
 

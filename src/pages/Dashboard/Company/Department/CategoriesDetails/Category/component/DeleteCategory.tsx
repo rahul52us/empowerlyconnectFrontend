@@ -1,5 +1,5 @@
 import { Box, Text, useColorMode } from "@chakra-ui/react";
-import DeleteModel from "../../../../../../config/component/common/DeleteModel/DeleteModel";
+import DeleteModel from "../../../../../../../config/component/common/DeleteModel/DeleteModel";
 
 const DeleteCategory = ({openModel, setOpenModel, deleteRecord} : any) => {
    const {colorMode} =  useColorMode()

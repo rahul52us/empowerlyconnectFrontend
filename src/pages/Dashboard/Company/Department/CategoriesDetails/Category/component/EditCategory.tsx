@@ -1,14 +1,14 @@
 import { observer } from "mobx-react-lite";
-import CategoryForm from "./form/DepartmentForm";
+import CategoryForm from "./form/CategoryForm";
 import { useState } from "react";
-import store from "../../../../../store/store";
-import { getStatusType } from "../../../../../config/constant/statusCode";
-import FormModel from "../../../../../config/component/common/FormModel/FormModel";
+import store from "../../../../../../../store/store";
+import { getStatusType } from "../../../../../../../config/constant/statusCode";
+import FormModel from "../../../../../../../config/component/common/FormModel/FormModel";
 
-const EditDepartment = observer(
-  ({ openModel, setOpenModel, getAllRecords, selectedCategory }: any) => {
+const EditCategory = observer(
+  ({ openModel, setOpenModel, getAllRecords }: any) => {
     const {
-      DepartmentStore: { updateDepartment },
+      DepartmentStore: { updateDepartmentCategory },
       auth: { openNotification },
     } = store;
     const [showError, setShowError] = useState(false);
@@ -19,11 +19,10 @@ const EditDepartment = observer(
     };
 
     const handleSubmit = ({ values, setSubmitting, resetForm }: any) => {
-      updateDepartment(openModel?.data?._id,{
+      updateDepartmentCategory(openModel?.data?._id,{
         ...values,
         title: values?.title?.trim(),
-        code: values?.code?.trim(),
-        category:selectedCategory.id
+        code: values?.code?.trim()
       })
         .then((data: any) => {
           openNotification({
@@ -55,7 +54,6 @@ const EditDepartment = observer(
         title={`${openModel?.data?.title} (${openModel?.data?.code})`}
         footer={false}
         close={closeModel}
-        size="xl"
       >
         <CategoryForm
           initialValues={{
@@ -72,4 +70,4 @@ const EditDepartment = observer(
   }
 );
 
-export default EditDepartment;
+export default EditCategory;
