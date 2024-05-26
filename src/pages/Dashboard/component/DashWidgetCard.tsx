@@ -11,8 +11,7 @@ const DashWidgetCard = observer(() => {
   const {
     auth: { openNotification },
     tripStore: { getTripCounts, tripCount },
-    Employe: { getEmployesCount, employesCounts },
-    DepartmentStore : {getDepartmentCounts, departmentCounts}
+    Employe: { getEmployesCount, employesCounts }
   } = store;
 
   const fetchData = (getDataFn: any) =>
@@ -21,7 +20,7 @@ const DashWidgetCard = observer(() => {
     });
 
   useEffect(() => {
-    Promise.all([fetchData(getTripCounts), fetchData(getEmployesCount), fetchData(getDepartmentCounts)])
+    Promise.all([fetchData(getTripCounts), fetchData(getEmployesCount)])
       .then(() => {})
       .catch((error: any) => {
         openNotification({
@@ -30,11 +29,11 @@ const DashWidgetCard = observer(() => {
           title: "Failed to get dashboard data",
         });
       });
-  }, [getTripCounts, getEmployesCount,getDepartmentCounts, openNotification]);
+  }, [getTripCounts, getEmployesCount, openNotification]);
 
   return (
     <Grid
-      templateColumns={{ base: "repeat(1, 1fr)", sm: "repeat(2, 1fr)", md: "repeat(4, 1fr)", lg: "repeat(5, 1fr)" }}
+      templateColumns={{ base: "repeat(1, 1fr)", sm: "repeat(2, 1fr)", md: "repeat(4, 1fr)", lg: "repeat(4, 1fr)" }}
       gap={4}
       marginX="auto"
     >
@@ -62,13 +61,7 @@ const DashWidgetCard = observer(() => {
           title: "Calender",
           link: dashboard.calender,
           loading: tripCount.loading,
-        },
-        {
-          count: departmentCounts.data,
-          title: "Departments",
-          link: dashboard.department.index,
-          loading: departmentCounts.loading,
-        },
+        }
       ].map((item, key) => (
         <GridItem key={key}>
           <WidgetCard

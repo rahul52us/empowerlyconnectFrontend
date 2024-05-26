@@ -8,13 +8,18 @@ import WorkTiming from "./WorkTiming/WorkTiming";
 import WorkLocationDetails from "./workLocation/WorkLocation";
 import HolidaysDetailTable from "./Holidays/Holidays";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import store from "../../../store/store";
 
 const Company = observer(() => {
+  const {
+    DepartmentStore: { getDepartmentCounts, departmentCounts },
+    auth: { openNotification },
+  } = store;
   const navigate = useNavigate();
   const [workTimingForm, setworkTimingForm] = useState({
-    open : false
-  })
+    open: false,
+  });
 
   const cards: any = [
     {
@@ -26,16 +31,34 @@ const Company = observer(() => {
     {
       totalCount: 14,
       title: "Work Timing",
-      onclick: () => setworkTimingForm({open : true}),
+      onclick: () => setworkTimingForm({ open: true }),
       loading: false,
     },
     {
-      totalCount: 14,
-      title: "Holidays",
-      link: "",
-      loading: false,
+      totalCount: departmentCounts.data,
+      title: "Departments",
+      link: dashboard.department.index,
+      loading: departmentCounts.loading,
     },
   ];
+
+  const fetchData = (getDataFn: any) =>
+    new Promise((resolve, reject) => {
+      getDataFn().then(resolve).catch(reject);
+    });
+
+  useEffect(() => {
+    Promise.all([fetchData(getDepartmentCounts)])
+      .then(() => {})
+      .catch((error: any) => {
+        openNotification({
+          type: "error",
+          message: error.message,
+          title: "Failed to get dashboard data",
+        });
+      });
+  }, [getDepartmentCounts, openNotification]);
+
   return (
     <div>
       <DashPageHeader title="Company" breadcrumb={companyBreadCrumb.index} />
@@ -57,11 +80,11 @@ const Company = observer(() => {
                 totalCount={item.totalCount}
                 title={item.title}
                 handleClick={() => {
-                  if(item.link){
+                  if (item.link) {
                     navigate(item.link);
                   }
-                  if(item.onclick){
-                    item.onclick()
+                  if (item.onclick) {
+                    item.onclick();
                   }
                 }}
                 loading={item.loading}
@@ -78,7 +101,7 @@ const Company = observer(() => {
           <WorkLocationDetails />
         </GridItem>
       </Grid>
-      <WorkTiming formData={workTimingForm} setFormData={setworkTimingForm}/>
+      <WorkTiming formData={workTimingForm} setFormData={setworkTimingForm} />
     </div>
   );
 });

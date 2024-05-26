@@ -46,7 +46,7 @@ const tripBreadCrumb = [
 
 const departmentsBreadCrumb = [
   { label: "Home", link: "/" },
-  { label: "Dashboard", link: dashboard.home },
+  { label: "Company", link: dashboard.company.index },
   { label: "Departments" },
 ];
 
