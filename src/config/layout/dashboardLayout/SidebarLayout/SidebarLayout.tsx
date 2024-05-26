@@ -157,11 +157,7 @@ const generateMenuItems = (userRole : string) => {
         {
           label: "View Policies",
           path: "/dashboard/company",
-        },
-        {
-          label: "Work Timing",
-          path: "/dashboard/company",
-        },
+        }
       ],
     })
   }

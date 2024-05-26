@@ -22,6 +22,11 @@ class EmployeStore {
     totalPages: 0,
   }
 
+  managersEmployesCount = {
+    data : [],
+    loading : false
+  }
+
   employes = {
     data: [],
     loading: false,
@@ -61,6 +66,7 @@ class EmployeStore {
       employesCounts: observable,
       employesRoles:observable,
       managerEmployes:observable,
+      managersEmployesCount:observable,
       resetStudentDetails: action,
       setHandleFormDrawer: action,
       getAllManagerEmployes:action,
@@ -76,7 +82,8 @@ class EmployeStore {
       updateWorkExperience: action,
       updateDocuments: action,
       updateCompanyDetails:action,
-      getAllEmployesRoles:action
+      getAllEmployesRoles:action,
+      getManagersEmployesCount:action
     });
   }
 
@@ -128,6 +135,21 @@ class EmployeStore {
       return Promise.reject(err?.response?.data || err);
     } finally {
       this.employesRoles.loading = false;
+    }
+  };
+
+  getManagersEmployesCount = async (sendData: any) => {
+    try {
+      this.managersEmployesCount.loading = true;
+      const { data } = await axios.get("/employe/managers/employes/count", {
+        params: { ...sendData, company: store.auth.company },
+      });
+      this.managersEmployesCount.data = data?.data || [];
+      return data.data;
+    } catch (err: any) {
+      return Promise.reject(err?.response?.data || err);
+    } finally {
+      this.managersEmployesCount.loading = false;
     }
   };
 

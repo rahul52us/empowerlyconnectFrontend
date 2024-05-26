@@ -8,8 +8,7 @@ import LineGraph from "../../../config/component/charts/LineChart";
 
 const DashChartContainer = observer(() => {
   const {
-    VideoStore: { getCategoryVideoCount, categoryVideosCount },
-    notesStore: { getCategoryCoursesCount, categoryCoursesCount },
+    Employe: { getManagersEmployesCount, managersEmployesCount },
   } = store;
 
   const fetchData = (getDataFn: any) =>
@@ -19,29 +18,28 @@ const DashChartContainer = observer(() => {
 
   useEffect(() => {
     Promise.all([
-      fetchData(getCategoryCoursesCount),
-      fetchData(getCategoryVideoCount),
+      fetchData(getManagersEmployesCount)
     ])
       .then(() => {})
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
-  }, [getCategoryVideoCount, getCategoryCoursesCount]);
+  }, [getManagersEmployesCount]);
 
-  const videosChartData = makeChartResponse(
-    categoryVideosCount.data,
-    "Videos Data",
-    "title",
-    "count",
-    ["#FF5733", "#33FF57", "#3366FF", "#FF33A1", "#FFD700"]
-  );
+  // const videosChartData = makeChartResponse(
+  //   managersEmployesCount.data,
+  //   "Videos Data",
+  //   "title",
+  //   "count",
+  //   ["#FF5733", "#33FF57", "#3366FF", "#FF33A1", "#FFD700"]
+  // );
 
   const coursesChartData = makeChartResponse(
-    categoryCoursesCount.data,
-    "Courses Data",
+    managersEmployesCount.data,
+    "Member Counts",
     "title",
-    "total Category",
-    ["#FF5733", "#33FF57", "#3366FF", "#FF33A1", "#FFD700"]
+    "count",
+    ["#FFB399", "#99FFCC", "#99CCFF", "#FF99CC", "#FFE680"]
   );
 
   return (
@@ -53,16 +51,16 @@ const DashChartContainer = observer(() => {
     >
       <Card width={"100%"} minH={350} p={{ base: 0, sm: 2 }}>
         <BarChart
-          data={null}
+          data={coursesChartData?.data}
           options={coursesChartData?.options}
-          loading={categoryCoursesCount.loading}
+          loading={managersEmployesCount.loading}
         />
       </Card>
       <Card width={"100%"} minH={350} p={{ base: 0, sm: 2 }}>
         <LineGraph
-          data={videosChartData?.data}
-          options={videosChartData?.options}
-          loading={categoryVideosCount.loading}
+          data={coursesChartData?.data}
+          options={coursesChartData?.options}
+          loading={managersEmployesCount.loading}
         />
       </Card>
     </Grid>
