@@ -37,6 +37,7 @@ export const dashboard = {
     details: `/${dashboardName}/employes/details`,
     new: `/${dashboardName}/employes/details/new`,
     edit: `/${dashboardName}/employes/details/edit/:id`,
+    personalDetails:`/${dashboardName}/employes/personal-details`
   },
   department: {
     index: `/${dashboardName}/department`,

@@ -162,6 +162,19 @@ const generateMenuItems = (userRole : string) => {
     })
   }
 
+  if (userRole !== "admin" && userRole !== "superadmin") {
+    commonMenuItems.push({
+      label: "Corp. Info.",
+      path: "/dashboard/class",
+      submenus: [
+        {
+          label: "Employees Directory",
+          path: dashboard.employes.personalDetails,
+        }
+      ],
+    })
+  }
+
   return commonMenuItems;
 };
 

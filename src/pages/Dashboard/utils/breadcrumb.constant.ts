@@ -35,7 +35,12 @@ const employesBreadCrumb = {
     { label: "Home", link: "/" },
   { label: "employes", link: dashboard.employes.details },
   { label: "New" },
-  ]
+  ],
+  personalDetails: [
+    { label: "Home", link: "/" },
+    { label: "Dashboard", link: dashboard.home },
+    { label: "Details" },
+  ],
 };
 
 const tripBreadCrumb = [

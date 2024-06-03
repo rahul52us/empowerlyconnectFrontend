@@ -103,6 +103,9 @@ const EmployeFormContainer = observer(() => {
       }
       else if(tab === "company-details"){
         let data : any = {}
+
+        console.log('the values are', values)
+
         data['workTiming'] = values.workTiming.map((item : any) => item.value)
         data['workingLocation'] = values.workingLocation.map((item : any) => item.value)
         data['managers'] = values.managers.map((item : any) => item.value)
@@ -354,6 +357,9 @@ const EmployeFormContainer = observer(() => {
       }
       else if(tab === "company-details"){
         let data : any = {}
+
+        console.log('the values are',values)
+
         data['workTiming'] = values.workTiming.map((item : any) => item.value)
         data['workingLocation'] = values.workingLocation.map((item : any) => item.value)
         data['managers'] = values.managers.map((item : any) => item.value)

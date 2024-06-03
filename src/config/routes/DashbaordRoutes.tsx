@@ -1,5 +1,6 @@
 import { lazy } from "react";
 import { dashboard } from "../constant/routes";
+import PersonalDetails from "../../pages/Dashboard/Employes/PersonalDetails";
 const PageNotFound = lazy(() => import("../component/common/WebPages/PageNotFound"));
 
 const DashboardIndex = lazy(
@@ -11,6 +12,7 @@ const QuizDashIndex = lazy(
 
 // task
 const TaskIndex = lazy(() => import("../../pages/Dashboard/Task/Task"));
+const CustomDragForm = lazy(() => import("../../pages/Dashboard/CustomDragForm/CustomFragForm"))
 
 // project
 const ProjectIndex = lazy(
@@ -126,6 +128,11 @@ export const DashboardRoutes = [
     privateRoutes: true,
   },
   {
+    element: <CustomDragForm />,
+    path: "/dashboard/formbuilder",
+    privateRoutes: true,
+  },
+  {
     element: <Testimonial />,
     path: dashboard.testimonial,
   },
@@ -200,6 +207,14 @@ export const DashboardRoutes = [
     element : <Department />,
     path:dashboard.department.index,
     privateRoutes:true
+  },
+
+  // employes personal details
+
+  {
+    element : <PersonalDetails />,
+    path : dashboard.employes.personalDetails,
+    privateRoutes : true
   },
 
   // Company
