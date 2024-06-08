@@ -84,15 +84,15 @@ class EmployeStore {
       updateCompanyDetails:action,
       getAllEmployesRoles:action,
       getManagersEmployesCount:action,
-      getEmployesPersonalDetails:action
+      getEmployesSubOrdinateDetails:action
     });
   }
 
-  getEmployesPersonalDetails = async (sendData: any) => {
+  getEmployesSubOrdinateDetails = async (sendData: any) => {
     try {
       const { data } = await axios.post("/employe/info/Subordinate", { ...sendData, company: store.auth.company },
       );
-      return data.data;
+      return data;
     } catch (err: any) {
       return Promise.reject(err?.response || err);
     } finally {

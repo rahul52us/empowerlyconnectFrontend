@@ -6,7 +6,7 @@ import { dashboard } from "../../../../../config/constant/routes";
 import CustomTable from "../../../../../config/component/CustomTable/CustomTable";
 import store from "../../../../../store/store";
 
-const PersonalDetailTable = observer(() => {
+const PersonalDetailTable = observer(({ data, loading }: any) => {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const [pageLimit] = useState(tablePageLimit);
@@ -70,13 +70,13 @@ const PersonalDetailTable = observer(() => {
       },
     },
     {
-        headerName: "Employe Name",
-        key: "name",
-        props: {
-          row: { minW: 160, textAlign: "left" },
-          column: { textAlign: "left" },
-        },
+      headerName: "Employe Name",
+      key: "name",
+      props: {
+        row: { minW: 160, textAlign: "left" },
+        column: { textAlign: "left" },
       },
+    },
     {
       headerName: "E-Code",
       key: "code",
@@ -91,37 +91,29 @@ const PersonalDetailTable = observer(() => {
       },
     },
     {
-        headerName: "Designation",
-        key: "designation",
-        props: {
-          row: { minW: 160, textAlign: "left" },
-          column: { textAlign: "left" },
-        },
+      headerName: "Designation",
+      key: "designation",
+      props: {
+        row: { minW: 160, textAlign: "left" },
+        column: { textAlign: "left" },
+      },
     },
     {
-        headerName: "Department",
-        key: "department",
-        props: {
-          row: { minW: 160, textAlign: "left" },
-          column: { textAlign: "left" },
-        },
+      headerName: "Department",
+      key: "department",
+      props: {
+        row: { minW: 160, textAlign: "left" },
+        column: { textAlign: "left" },
+      },
     },
     {
-        headerName: "Location",
-        key: "location",
-        props: {
-          row: { minW: 160, textAlign: "left" },
-          column: { textAlign: "left" },
-        },
+      headerName: "Blood Group",
+      key: "bloodGroup",
+      props: {
+        row: { minW: 160, textAlign: "left" },
+        column: { textAlign: "left" },
+      },
     },
-    {
-        headerName: "Blood Group",
-        key: "bloodGroup",
-        props: {
-          row: { minW: 160, textAlign: "left" },
-          column: { textAlign: "left" },
-        },
-    }
   ];
 
   return (
@@ -134,9 +126,9 @@ const PersonalDetailTable = observer(() => {
           totalPages: employes.totalPages,
         },
       }}
-      data={[]}
+      data={data}
       columns={employeTableColumns}
-      loading={employes.loading}
+      loading={loading}
       serial={{ show: true, text: "S.No.", width: "10px" }}
     />
   );
