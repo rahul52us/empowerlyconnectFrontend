@@ -56,7 +56,7 @@ const PersonalDetailTable = observer(({ data, loading }: any) => {
       type: "link",
       function: (e: any) => {
         navigate(
-          `${dashboard.employes.details}/edit/${e?._id}?tab=profile-details`
+          `${dashboard.employes.personalDetails}/${e?._id}`
         );
       },
       props: {

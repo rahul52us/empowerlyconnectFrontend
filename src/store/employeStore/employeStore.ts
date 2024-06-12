@@ -84,13 +84,25 @@ class EmployeStore {
       updateCompanyDetails:action,
       getAllEmployesRoles:action,
       getManagersEmployesCount:action,
-      getEmployesSubOrdinateDetails:action
+      getEmployesSubOrdinateDetails:action,
+      getEmployesSubOrdinateActionsDetails:action
     });
   }
 
   getEmployesSubOrdinateDetails = async (sendData: any) => {
     try {
       const { data } = await axios.post("/employe/info/Subordinate", { ...sendData, company: store.auth.company },
+      );
+      return data;
+    } catch (err: any) {
+      return Promise.reject(err?.response || err);
+    } finally {
+    }
+  };
+
+  getEmployesSubOrdinateActionsDetails = async (sendData: any) => {
+    try {
+      const { data } = await axios.get(`/employe/info/Subordinate/${sendData.id}?company=${store.auth.company}`,
       );
       return data;
     } catch (err: any) {

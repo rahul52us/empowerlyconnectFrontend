@@ -10,7 +10,12 @@ import { Search2Icon } from "@chakra-ui/icons";
 import CustomInput from "../../../../../config/component/CustomInput/CustomInput";
 import { bloodGroups } from "../utils/constant";
 
-const PersonalDetailFilter = ({ setValues, values, fetchData, loading }: any) => {
+const PersonalDetailFilter = ({
+  setValues,
+  values,
+  fetchData,
+  loading,
+}: any) => {
   const { isOpen, onToggle } = useDisclosure();
 
   return (
@@ -28,7 +33,7 @@ const PersonalDetailFilter = ({ setValues, values, fetchData, loading }: any) =>
             label="Username"
             value={values.username}
             onChange={(e: any) => {
-              setValues({ ...values, username: e.target.value })
+              setValues({ ...values, username: e.target.value });
             }}
           />
           <CustomInput
@@ -48,7 +53,12 @@ const PersonalDetailFilter = ({ setValues, values, fetchData, loading }: any) =>
           >
             <FiFilter />
           </IconButton>
-          <IconButton isLoading={loading} aria-label="Search Record" title="Search Record" onClick={() => fetchData()}>
+          <IconButton
+            isLoading={loading}
+            aria-label="Search Record"
+            title="Search Record"
+            onClick={() => fetchData()}
+          >
             <Search2Icon />
           </IconButton>
         </Flex>

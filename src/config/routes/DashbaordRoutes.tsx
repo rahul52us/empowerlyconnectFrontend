@@ -1,6 +1,8 @@
 import { lazy } from "react";
 import { dashboard } from "../constant/routes";
-import PersonalDetails from "../../pages/Dashboard/Employes/PersonalDetails";
+
+const PersonalDetails = lazy(() => import("../../pages/Dashboard/Employes/PersonalDetails"))
+const PersonalDetailUsersChart =  lazy(() => import("../../pages/Dashboard/Employes/PersonalDetails/component/PersonalDetailChart"))
 const PageNotFound = lazy(() => import("../component/common/WebPages/PageNotFound"));
 
 const DashboardIndex = lazy(
@@ -216,7 +218,11 @@ export const DashboardRoutes = [
     path : dashboard.employes.personalDetails,
     privateRoutes : true
   },
-
+  {
+    element : <PersonalDetailUsersChart />,
+    path : dashboard.employes.personalDetailsUserChart,
+    privateRoutes : true
+  },
   // Company
   {
     element : <Company />,
