@@ -11,6 +11,7 @@ import {
   TagLabel,
   TagLeftIcon,
   Text,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { FaRegCirclePlay } from "react-icons/fa6";
@@ -29,19 +30,26 @@ export default function CourseModules() {
     setExpandedModuleIndex(newIndexes);
   };
 
+  const moduleBg = useColorModeValue("gray.100", "gray.700");
+
   return (
     <>
       <Box>
-        <Heading fontSize={"1.4rem"} mb={4}>
-          Course Modules
-        </Heading>
+        <Flex align={"center"} justify={"space-between"}>
+          <Heading fontSize={"1.4rem"} mb={4}>
+            Course Modules
+          </Heading>
+          <Text color={"gray"} fontSize={"sm"}>
+            5 Sections / 17 Lectures / 5 hrs
+          </Text>
+        </Flex>
         {modules.map((module, index) => (
           <Accordion
             key={module.id}
             allowMultiple
             shadow="inset rgb(0 0 0 / 15%) 0px 0px 6px"
             rounded={12}
-            bg={"gray.100"}
+            bg={moduleBg}
             p={1}
             mb={4}
           >

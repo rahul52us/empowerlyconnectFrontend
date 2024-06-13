@@ -13,7 +13,7 @@ import {
 import { StarIcon } from "@chakra-ui/icons";
 import { PiCertificate } from "react-icons/pi";
 
-export default function CourseCard({ course }: any) {
+export default function CourseCard({ course ,onClick}: any) {
   return (
     <Card
       shadow={"rgb(0 0 0 / 20%) 0px 0px 11px"}
@@ -21,6 +21,7 @@ export default function CourseCard({ course }: any) {
       _hover={{ transform: "scale(1.025)", cursor: "pointer" }}
       transition="transform 0.3s ease-in-out"
       width="100%"
+      onClick={onClick}
     >
       <CardBody p={2}>
         <Image

@@ -194,4 +194,32 @@ export const modules = [
         },
       ],
     },
+    {
+      id: 3,
+      title: " Redux",
+      topics: [
+        {
+          title: "Redux Introduction",
+          duration: "25 Min",
+        },
+        {
+          title: "Redux with React",
+          duration: "20 Min",
+        },
+      ],
+    },
+    {
+      id: 3,
+      title: "Custom Component",
+      topics: [
+        {
+          title: "Redux Introduction",
+          duration: "25 Min",
+        },
+        {
+          title: "Redux with React",
+          duration: "20 Min",
+        },
+      ],
+    },
   ];
