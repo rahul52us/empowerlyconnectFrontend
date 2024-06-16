@@ -39,7 +39,8 @@ const EmployeFormContainer = observer(() => {
       updateFamilyDetails,
       updateWorkExperience,
       updateDocuments,
-      updateCompanyDetails
+      updateCompanyDetails,
+      updatePermissions
     },
     auth: { openNotification },
   } = store;
@@ -307,8 +308,27 @@ const EmployeFormContainer = observer(() => {
           });
       }
       else if(tab === "permissions"){
-        console.log(values)
-        setSubmitting(false)
+        updatePermissions(id, values)
+        .then(() => {
+          setShowError(false);
+          setErrors({});
+          openNotification({
+            type: "success",
+            message: "Update Permissions Successfully",
+            title: "Updated Successfully",
+          });
+          setHaveApiCall(false);
+        })
+        .catch((err) => {
+          openNotification({
+            type: "error",
+            message: err?.message,
+            title: "Failed to Update Permissions Details",
+          });
+        })
+        .finally(() => {
+          setSubmitting(false);
+        });
       }
     } else {
       if (tab === "profile-details") {

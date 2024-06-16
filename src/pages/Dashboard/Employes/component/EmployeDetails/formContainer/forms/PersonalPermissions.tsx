@@ -20,9 +20,8 @@ const PersonalPermissions = ({
     <Formik
       initialValues={initialValues}
       onSubmit={(values, { setSubmitting, resetForm, setErrors }) => {
-        setSubmitting(false);
         handleSubmitProfile({
-          values: transformPermissionsForDB(values.permissions),
+          values: {permissions : transformPermissionsForDB(values.permissions)},
           setSubmitting,
           resetForm,
           setErrors,

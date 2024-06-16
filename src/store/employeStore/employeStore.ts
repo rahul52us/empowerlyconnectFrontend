@@ -82,6 +82,7 @@ class EmployeStore {
       updateWorkExperience: action,
       updateDocuments: action,
       updateCompanyDetails:action,
+      updatePermissions:action,
       getAllEmployesRoles:action,
       getManagersEmployesCount:action,
       getEmployesSubOrdinateDetails:action,
@@ -241,6 +242,19 @@ class EmployeStore {
       return Promise.reject(err?.response?.data || err);
     }
   };
+
+  updatePermissions = async (id: any, sendData: any) => {
+    try {
+      const { data } = await axios.put(
+        `employe/permissions/${id}`,
+        sendData
+      );
+      return data;
+    } catch (err: any) {
+      return Promise.reject(err?.response?.data || err);
+    }
+  };
+
   updateEmployeProfile = async (id: any, sendData: any) => {
     try {
       const { data } = await axios.put(`employe/profile/${id}`, sendData);
