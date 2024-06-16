@@ -211,7 +211,7 @@ const EmployeContainer = observer(
               type={type}
               profileData={profileData}
               handleSubmitProfile={handleSubmitProfile}
-              initialValues={initialValues?.companyDetails}
+              initialValues={initialValues?.permissions}
               validations={validations}
             />
           );

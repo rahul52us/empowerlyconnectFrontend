@@ -232,7 +232,7 @@ export const employeInitialValues = (type: string, data: any) => {
   } else if (type === "permissions") {
     return {
       permissions: {
-        permissions: transformPermissionsForForm(data?.permissions || {}),
+        permissions: data ? transformPermissionsForForm(data?.permissions || defaultPermissions) : defaultPermissions,
       },
     };
   } else {
