@@ -34,6 +34,7 @@ const LeaveDetails = observer(() => {
       page: 1,
       limit: tablePageLimit,
       status: selectRequestStatus,
+      user : user._id
     };
     if (user.role === "manager") {
       query = { ...query, userType: "manager" };

@@ -306,6 +306,10 @@ const EmployeFormContainer = observer(() => {
             setSubmitting(false);
           });
       }
+      else if(tab === "permissions"){
+        console.log(values)
+        setSubmitting(false)
+      }
     } else {
       if (tab === "profile-details") {
         createEmploye({ ...generateSubmitResponse(values),company : user?.companyDetail?.company })
@@ -387,6 +391,10 @@ const EmployeFormContainer = observer(() => {
           .finally(() => {
             setSubmitting(false);
           });
+      }
+      else if (tab === "permissions"){
+        console.log('the values are', values)
+        setSubmitting(true)
       }
     }
   };
