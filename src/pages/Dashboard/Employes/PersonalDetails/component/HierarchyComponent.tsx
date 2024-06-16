@@ -41,8 +41,6 @@ const UserHierarchy: React.FC<UserHierarchyProps> = ({ data }) => {
   const manager = user?.managerDetails?.[0];
   const subordinates = data.users || [];
 
-  console.log('user',user.code)
-
   console.log(manager)
   console.log(subordinates)
 
