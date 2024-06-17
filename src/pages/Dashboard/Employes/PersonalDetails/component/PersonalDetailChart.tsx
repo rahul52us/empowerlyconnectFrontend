@@ -15,7 +15,7 @@ const PersonalDetailUsersChart = observer(() => {
   } = store;
   const [treeData, setTreeData] = useState<any[]>([]);
 
-  const [data, setData] = useState<any>({}); 
+  const [data, setData] = useState<any>({});
 
   const transformDataToTree = (data: any) => {
     const userMap: Record<string, any> = {};
@@ -37,10 +37,10 @@ const PersonalDetailUsersChart = observer(() => {
     mergedUsers.forEach((user: any) => {
       userMap[user._id] = {
         id: user._id,
-        name: user.userDetails.name,
-        title: user.userDetails.title,
-        username: user.userDetails.username,
-        code: user.userDetails.code,
+        name: user.userDetails?.name,
+        title: user.userDetails?.title,
+        username: user.userDetails?.username,
+        code: user.userDetails?.code,
         subordinates: [],
       };
     });

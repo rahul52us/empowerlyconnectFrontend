@@ -82,10 +82,12 @@ class EmployeStore {
       updateWorkExperience: action,
       updateDocuments: action,
       updateCompanyDetails:action,
+      updatePermissions:action,
       getAllEmployesRoles:action,
       getManagersEmployesCount:action,
       getEmployesSubOrdinateDetails:action,
-      getEmployesSubOrdinateActionsDetails:action
+      getEmployesSubOrdinateActionsDetails:action,
+      getManagersOfUsers:action
     });
   }
 
@@ -120,6 +122,20 @@ class EmployeStore {
       this.employes.hasFetch = true;
       this.employes.data = data?.data?.data || [];
       this.employes.totalPages = data?.data?.totalPages || 0;
+      return data.data;
+    } catch (err: any) {
+      return Promise.reject(err?.response?.data || err);
+    } finally {
+      this.employes.loading = false;
+    }
+  };
+
+  getManagersOfUsers = async (sendData: any) => {
+    try {
+      this.employes.loading = true;
+      const { data } = await axios.get(`/employe/getManagers/${sendData.user}`, {
+        params: { ...sendData, company: store.auth.company },
+      });
       return data.data;
     } catch (err: any) {
       return Promise.reject(err?.response?.data || err);
@@ -241,6 +257,19 @@ class EmployeStore {
       return Promise.reject(err?.response?.data || err);
     }
   };
+
+  updatePermissions = async (id: any, sendData: any) => {
+    try {
+      const { data } = await axios.put(
+        `employe/permissions/${id}`,
+        sendData
+      );
+      return data;
+    } catch (err: any) {
+      return Promise.reject(err?.response?.data || err);
+    }
+  };
+
   updateEmployeProfile = async (id: any, sendData: any) => {
     try {
       const { data } = await axios.put(`employe/profile/${id}`, sendData);

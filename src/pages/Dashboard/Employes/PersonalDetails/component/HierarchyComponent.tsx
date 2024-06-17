@@ -46,6 +46,18 @@ const UserHierarchy: React.FC<UserHierarchyProps> = ({ data }) => {
   const manager = user?.managerDetails?.[0];
   const subordinates = data.users || [];
 
+  console.log(manager)
+  console.log(subordinates)
+
+ return(
+    <>
+    {/* {manager} */}
+
+    asdliad
+    {/* {subordinates} */}
+    </>
+ )
+
   return (
     <Box p={4}>
       <Heading as="h2" size="md" mb={4}>

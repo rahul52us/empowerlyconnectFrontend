@@ -39,15 +39,27 @@ const EmployeFormContainer = observer(() => {
       updateFamilyDetails,
       updateWorkExperience,
       updateDocuments,
-      updateCompanyDetails
+      updateCompanyDetails,
+      updatePermissions
     },
     auth: { openNotification },
   } = store;
   const [userData, setUserData] = useState<any>(null);
+  const [userId, setUserId] = useState<any>(null)
   const { id } = useParams();
-  const type = useState<any>(
+  const [type,setType] = useState<any>(
     location.pathname?.split("/")[4] === "edit" && id
-  )[0];
+  );
+
+  useEffect(() => {
+    setType(location.pathname?.split("/")[4] === "edit" && id);
+  }, [location.pathname, id,setType]);
+
+  useEffect(() => {
+    if (id) {
+      setUserId(id);
+    }
+  }, [id]);
 
   useEffect(() => {
     if (
@@ -71,6 +83,11 @@ const EmployeFormContainer = observer(() => {
     }
   }, [userData]);
 
+  const navigateUser = (id : any) => {
+    navigate(
+      `${dashboard.employes.details}/edit/${id}?tab=company-details`
+    )
+  }
   const handleSubmitProfile = async ({
     values,
     setSubmitting,
@@ -79,7 +96,7 @@ const EmployeFormContainer = observer(() => {
   } : any) => {
     if (type) {
       if (tab === "profile-details") {
-        updateEmployeProfile(id, { ...generateSubmitResponse(values), company : user?.companyDetail?.company })
+        updateEmployeProfile(userId, { ...generateSubmitResponse(values), company : user?.companyDetail?.company })
           .then(() => {
             setShowError(false);
             setErrors({});
@@ -112,7 +129,7 @@ const EmployeFormContainer = observer(() => {
         data['eType'] = values.eType?.value
         data['department'] = values.department?.value
         data['designation'] = values.designation?.value
-        updateCompanyDetails(id, {details : {...values, ...data}})
+        updateCompanyDetails(userId, {details : {...values, ...data}})
           .then(() => {
             setShowError(false);
             setErrors({});
@@ -161,7 +178,7 @@ const EmployeFormContainer = observer(() => {
             },
           };
         }
-        updateEmployeBankDetails(id, bankDetails)
+        updateEmployeBankDetails(userId, bankDetails)
           .then(() => {
             setShowError(false);
             setErrors({});
@@ -183,7 +200,7 @@ const EmployeFormContainer = observer(() => {
             setSubmitting(false);
           });
       } else if (tab === "family-details") {
-        updateFamilyDetails(id, values)
+        updateFamilyDetails(userId, values)
           .then(() => {
             setShowError(false);
             setErrors({});
@@ -241,7 +258,7 @@ const EmployeFormContainer = observer(() => {
             }
           })
         );
-        updateWorkExperience(id, { experienceDetails: dt })
+        updateWorkExperience(userId, { experienceDetails: dt })
           .then(() => {
             setShowError(false);
             setErrors({});
@@ -284,7 +301,7 @@ const EmployeFormContainer = observer(() => {
           })
         );
         dt = Object.fromEntries(dt);
-        updateDocuments(id, { documents: dt })
+        updateDocuments(userId, { documents: dt })
           .then(() => {
             setShowError(false);
             setErrors({});
@@ -306,10 +323,33 @@ const EmployeFormContainer = observer(() => {
             setSubmitting(false);
           });
       }
+      else if(tab === "permissions"){
+        updatePermissions(userId, values)
+        .then(() => {
+          setShowError(false);
+          setErrors({});
+          openNotification({
+            type: "success",
+            message: "Update Permissions Successfully",
+            title: "Updated Successfully",
+          });
+          setHaveApiCall(false);
+        })
+        .catch((err) => {
+          openNotification({
+            type: "error",
+            message: err?.message,
+            title: "Failed to Update Permissions Details",
+          });
+        })
+        .finally(() => {
+          setSubmitting(false);
+        });
+      }
     } else {
       if (tab === "profile-details") {
         createEmploye({ ...generateSubmitResponse(values),company : user?.companyDetail?.company })
-          .then(() => {
+          .then((data : any) => {
             setShowError(false);
             setErrors({});
             openNotification({
@@ -318,6 +358,7 @@ const EmployeFormContainer = observer(() => {
               title: "Create Successfully",
             });
             setHaveApiCall(false);
+            navigateUser(data?.data?._id)
           })
           .catch((err) => {
             openNotification({
@@ -329,65 +370,15 @@ const EmployeFormContainer = observer(() => {
           .finally(() => {
             setSubmitting(false);
           });
-      } else if (tab === "bank-details") {
-        setSubmitting(false);
-      } else if (tab === "work-experience") {
-        updateWorkExperience(id, values)
-          .then(() => {
-            setShowError(false);
-            setErrors({});
-            openNotification({
-              type: "success",
-              message: "Create Work Experience Successfully",
-              title: "Updated Successfully",
-            });
-            setHaveApiCall(false);
-          })
-          .catch((err) => {
-            openNotification({
-              type: "error",
-              message: err?.message,
-              title: "Failed to Create Work Experience",
-            });
-          })
-          .finally(() => {
-            setSubmitting(false);
-          });
-      } else if (tab === "documents") {
       }
-      else if(tab === "company-details"){
-        let data : any = {}
-
-        console.log('the values are',values)
-
-        data['workTiming'] = values.workTiming.map((item : any) => item.value)
-        data['workingLocation'] = values.workingLocation.map((item : any) => item.value)
-        data['managers'] = values.managers.map((item : any) => item.value)
-        data['eType'] = values.eType?.value
-        data['department'] = values.department?.value
-        data['designation'] = values.designation?.value
-        updateCompanyDetails(id, {details : {...values, ...data}})
-          .then(() => {
-            setShowError(false);
-            setErrors({});
-            openNotification({
-              type: "success",
-              message: "Update Company Details Successfully",
-              title: "Updated Successfully",
-            });
-            setHaveApiCall(false);
-          })
-          .catch((err) => {
-            openNotification({
-              type: "error",
-              message: err?.message,
-              title: "Failed to Update",
-            });
-          })
-          .finally(() => {
-            setSubmitting(false);
-          });
-      }
+    else{
+      openNotification({
+        title: `${tab} Tab Inaccessible`,
+        message: 'This tab is accessible only after completing the profile details.',
+        type: 'info',
+      });
+      setSubmitting(false);
+    }
     }
   };
 
@@ -431,6 +422,7 @@ const EmployeFormContainer = observer(() => {
   };
 
   const isDataLoaded = type && userData;
+
   return (
     <Box>
       <DashPageHeader

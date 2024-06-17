@@ -10,6 +10,7 @@ import FamilyDetails from "./forms/PersonalFamilyDetails";
 import PersonalDetailsChangePassword from "./forms/PersonalDetailsChangePassword";
 import PersonalWorkExperience from "./forms/PersonalWorkExperience";
 import PersonalDocuments from "./forms/PersonalDocuments";
+import PersonalPermissions from "./forms/PersonalPermissions";
 
 const EmployeContainer = observer(
   ({
@@ -107,6 +108,16 @@ const EmployeContainer = observer(
               setFiles={setFiles}
             />
           );
+        case "permissions":
+          return (
+            <PersonalPermissions
+              type={type}
+              profileData={profileData}
+              handleSubmitProfile={handleSubmitProfile}
+              initialValues={initialValues?.permissions}
+              validations={validations}
+            />
+          );
         default:
           return (
             <Button
@@ -192,6 +203,16 @@ const EmployeContainer = observer(
               validations={validations}
               files={files}
               setFiles={setFiles}
+            />
+          );
+        case "permissions":
+          return (
+            <PersonalPermissions
+              type={type}
+              profileData={profileData}
+              handleSubmitProfile={handleSubmitProfile}
+              initialValues={initialValues?.permissions}
+              validations={validations}
             />
           );
         default:

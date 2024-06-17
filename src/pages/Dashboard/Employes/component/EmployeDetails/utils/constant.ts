@@ -1,5 +1,15 @@
 // import { manipulateDateWithMonth } from "../../../../../../config/constant/dateUtils";
 
+import { transformPermissionsForForm } from "./function";
+
+export const defaultPermissions: any = {
+  user: { add: false, edit: false, delete: false, view: false },
+  trip: { add: false, edit: false, view: false, delete: false },
+  course: { add: false, edit: false, view: false, delete: false },
+  videos: { add: false, edit: false, view: false, delete: false },
+  dashboard: { view: false },
+};
+
 export const employDropdownData: any = [
   {
     label: "BSE",
@@ -217,6 +227,12 @@ export const employeInitialValues = (type: string, data: any) => {
         confirmationDate: details.confirmationDate
           ? new Date(details.confirmationDate)
           : new Date(),
+      },
+    };
+  } else if (type === "permissions") {
+    return {
+      permissions: {
+        permissions: data ? transformPermissionsForForm(data?.permissions || defaultPermissions) : defaultPermissions,
       },
     };
   } else {

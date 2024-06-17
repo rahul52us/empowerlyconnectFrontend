@@ -10,17 +10,31 @@ import { LeaveRequestI } from "../../utils/interface";
 import { leavesTypes } from "../../utils/constant";
 
 const LeaveRequestForm = observer(
-  ({ initialValues, showError, setShowError, close, handleSubmit,setRequestType,requestType }: any) => {
+  ({
+    initialValues,
+    showError,
+    setShowError,
+    close,
+    handleSubmit,
+    setRequestType,
+    requestType,
+  }: any) => {
     const [numberOfDays, setNumberOfDays] = useState<number | null>(null);
-
+    const [managers, setManagers] = useState<any>({ loading: false, data: [] });
     const {
       auth: { user, openNotification },
-      Employe: { getAllEmployes, employes },
+      Employe: { getManagersOfUsers },
     } = store;
 
     useEffect(() => {
-      getAllEmployes({ page: 1, limit: 15 })
-        .then(() => {})
+      getManagersOfUsers({
+        page: 1,
+        limit: 15,
+        user: user._id,
+      })
+        .then((data: any) => {
+          setManagers({ data: data[0]?.managers });
+        })
         .catch((err: any) => {
           openNotification({
             type: "error",
@@ -28,11 +42,11 @@ const LeaveRequestForm = observer(
             message: err?.message,
           });
         });
-    }, [getAllEmployes, openNotification]);
+    }, [getManagersOfUsers, openNotification, user]);
 
-    const employesOptions = employes.data.map((item: any) => ({
-      value: item.userData?._id,
-      label: item.userData?.username,
+    const employesOptions = managers.data.map((item: any) => ({
+      value: item?._id,
+      label: item?.username,
     }));
 
     const WorkLocations =
@@ -46,18 +60,19 @@ const LeaveRequestForm = observer(
     const calculateNumberOfDays = (startDate: string, endDate: string) => {
       const start = new Date(startDate);
       const end = new Date(endDate);
-      const differenceInTime = end.getTime() - start.getTime() + (24 * 60 * 60 * 1000);
+      const differenceInTime =
+        end.getTime() - start.getTime() + 24 * 60 * 60 * 1000;
       const differenceInDays = differenceInTime / (1000 * 3600 * 24);
       setNumberOfDays(Math.floor(differenceInDays));
-  };
+    };
 
     return (
       <Box p={4}>
         <Formik<LeaveRequestI>
           initialValues={initialValues}
           onSubmit={(values, { setSubmitting, resetForm }) => {
-            let val = {...values,status : requestType}
-            handleSubmit({ values : val, setSubmitting, resetForm });
+            let val = { ...values, status: requestType };
+            handleSubmit({ values: val, setSubmitting, resetForm });
           }}
           validationSchema={LeaveRequestValidation}
         >
@@ -120,7 +135,7 @@ const LeaveRequestForm = observer(
                     label="Start Date"
                     required={true}
                     onChange={(e) => {
-                      console.log('the e is',e)
+                      console.log("the e is", e);
                       setFieldValue("startDate", e);
                       if (values.endDate) {
                         calculateNumberOfDays(e, values.endDate);
@@ -140,7 +155,7 @@ const LeaveRequestForm = observer(
                     onChange={(e) => {
                       setFieldValue("endDate", e);
                       if (values.startDate) {
-                        calculateNumberOfDays(values.startDate,e);
+                        calculateNumberOfDays(values.startDate, e);
                       }
                     }}
                     value={values.endDate}
@@ -149,7 +164,9 @@ const LeaveRequestForm = observer(
                   />
                 </Grid>
                 <Box mt={3} mb={2}>
-                   <Text fontSize="sm" fontWeight="500">No Of Days: {numberOfDays || 0}</Text>
+                  <Text fontSize="sm" fontWeight="500">
+                    No Of Days: {numberOfDays || 0}
+                  </Text>
                 </Box>
                 <CustomInput
                   type="textarea"
@@ -170,17 +187,26 @@ const LeaveRequestForm = observer(
                   alignItems="center"
                 >
                   <CustomSubmitBtn
-                    cancelFunctionality={{ show: false, onClick: () => close() }}
+                    cancelFunctionality={{
+                      show: false,
+                      onClick: () => close(),
+                    }}
                     loading={isSubmitting}
                     type="submit"
-                    onClick={() => { setRequestType('pending'); setShowError(true)}}
+                    onClick={() => {
+                      setRequestType("pending");
+                      setShowError(true);
+                    }}
                     buttonText="save"
                   />
                   <CustomSubmitBtn
                     cancelFunctionality={{ show: true, onClick: () => close() }}
                     loading={isSubmitting}
                     type="submit"
-                    onClick={() => { setRequestType('submitted') ; setShowError(true)}}
+                    onClick={() => {
+                      setRequestType("submitted");
+                      setShowError(true);
+                    }}
                   />
                 </Flex>
               </Form>
