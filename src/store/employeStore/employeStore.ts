@@ -86,7 +86,8 @@ class EmployeStore {
       getAllEmployesRoles:action,
       getManagersEmployesCount:action,
       getEmployesSubOrdinateDetails:action,
-      getEmployesSubOrdinateActionsDetails:action
+      getEmployesSubOrdinateActionsDetails:action,
+      getManagersOfUsers:action
     });
   }
 
@@ -121,6 +122,20 @@ class EmployeStore {
       this.employes.hasFetch = true;
       this.employes.data = data?.data?.data || [];
       this.employes.totalPages = data?.data?.totalPages || 0;
+      return data.data;
+    } catch (err: any) {
+      return Promise.reject(err?.response?.data || err);
+    } finally {
+      this.employes.loading = false;
+    }
+  };
+
+  getManagersOfUsers = async (sendData: any) => {
+    try {
+      this.employes.loading = true;
+      const { data } = await axios.get(`/employe/getManagers/${sendData.user}`, {
+        params: { ...sendData, company: store.auth.company },
+      });
       return data.data;
     } catch (err: any) {
       return Promise.reject(err?.response?.data || err);

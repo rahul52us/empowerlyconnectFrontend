@@ -11,13 +11,13 @@ import { useNavigate } from "react-router-dom";
 
 const LeaveAddRequest = observer(() => {
   const navigate = useNavigate()
-  const {auth : {openNotification}, requestStore : {createRequest}} = store
+  const {auth : {openNotification, user}, requestStore : {createRequest}} = store
   const [requestType, setRequestType] = useState('submit')
   const [showError, setShowError] = useState(false);
 
   const handleSubmit = ({ values, setSubmitting, resetForm }: any) => {
     generateResponse(values)
-    createRequest(generateResponse(values))
+    createRequest(generateResponse({...values, user : user._id}))
       .then((data: any) => {
         openNotification({
           title: "Create Successfully",
