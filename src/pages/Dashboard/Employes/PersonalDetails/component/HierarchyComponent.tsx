@@ -1,10 +1,14 @@
 import React from "react";
+import { Box, Grid, Heading } from "@chakra-ui/react";
+import UserProfileCard from "./UserProfileCard";
 
 interface User {
   _id: string;
   username: string;
   name: string;
   code: string;
+  title: string;
+  userDetails:any;
 }
 
 interface UserDetails extends User {
@@ -36,24 +40,44 @@ interface UserHierarchyProps {
     users: User[];
   };
 }
+
 const UserHierarchy: React.FC<UserHierarchyProps> = ({ data }) => {
   const user = data.userDetails?.[0];
   const manager = user?.managerDetails?.[0];
   const subordinates = data.users || [];
 
-  console.log('user',user.code)
+  return (
+    <Box p={4}>
+      <Heading as="h2" size="md" mb={4}>
+        User Hierarchy
+      </Heading>
 
-  console.log(manager)
-  console.log(subordinates)
+      <Box mb={4}>
+        <Heading as="h3" size="sm" mb={2}>
+          Manager
+        </Heading>
+        {manager && <UserProfileCard userData={manager} />}
+      </Box>
 
- return(
-    <>
-    {/* {manager} */}
+      <Box mb={4}>
+        <Heading as="h3" size="sm" mb={2}>
+          Current User
+        </Heading>
+        {user && <UserProfileCard userData={user} />}
+      </Box>
 
-    asdliad
-    {/* {subordinates} */}
-    </>
- )
+      <Box>
+        <Heading as="h3" size="sm" mb={2}>
+          Subordinates
+        </Heading>
+        <Grid templateColumns="repeat(auto-fill, minmax(250px, 1fr))" gap={4}>
+          {subordinates.map((subordinate: User, index) => (
+            <UserProfileCard key={index} userData={subordinate.userDetails} />
+          ))}
+        </Grid>
+      </Box>
+    </Box>
+  );
 };
 
 export default UserHierarchy;
