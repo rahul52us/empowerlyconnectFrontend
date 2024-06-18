@@ -97,6 +97,8 @@ const Company = lazy(() => import( "../../pages/Dashboard/Company/index"));
 const Request = lazy(() => import("../../pages/Dashboard/Request"));
 const LeaveRequest = lazy(() => import('../../pages/Dashboard/Request/component/LeaveRequest/LeaveRequest'))
 const LeaveEditRequest = lazy(() => import('../../pages/Dashboard/Request/component/LeaveRequest/component/form/LeaveEditRequest'))
+// Manager Request
+const ManagerRequest = lazy(() => import("../../pages/Dashboard/Request/ManagerRequest/index"))
 
 export const DashboardRoutes = [
   {
@@ -251,7 +253,21 @@ export const DashboardRoutes = [
     path : dashboard.request.leaveEdit,
     privateRoutes : true
   },
-
+  {
+    element : <ManagerRequest />,
+    path : dashboard.request.userList,
+    privateRoutes : true
+  },
+  {
+    element : <Request />,
+    path : dashboard.request.uniqueUser,
+    privateRoutes : true
+  },
+  {
+    element : <LeaveEditRequest />,
+    path : dashboard.request.uniqueEdit,
+    privateRoutes : true
+  },
   // Not found
   {
     element : <PageNotFound />,

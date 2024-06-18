@@ -120,7 +120,7 @@ const NormalTable: React.FC<NormalTableProps> = ({
                         color={textColor}
                         border={borderColor}
                         textAlign="center"
-                        minW={110}
+                        minW={115}
                       >
                         {row[column.key]}
                       </Td>

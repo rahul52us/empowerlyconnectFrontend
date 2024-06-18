@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { tablePageLimit } from "../../../../../../../config/constant/variable";
 import store from "../../../../../../../store/store";
 import CustomTable from "../../../../../../../config/component/CustomTable/CustomTable";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { dashboard } from "../../../../../../../config/constant/routes";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import RequestButtons from "../../../element/RequestButtons";
@@ -23,6 +23,7 @@ const LeaveDetails = observer(() => {
     loading: false,
   })[1];
 
+  const { userId } = useParams();
   const [currentPage, setCurrentPage] = useState(1);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -34,7 +35,7 @@ const LeaveDetails = observer(() => {
       page: 1,
       limit: tablePageLimit,
       status: selectRequestStatus,
-      user : user._id
+      user: userId ? userId : user._id,
     };
     if (user.role === "manager") {
       query = { ...query, userType: "manager" };
@@ -54,7 +55,7 @@ const LeaveDetails = observer(() => {
       .finally(() => {
         setLoading(false);
       });
-  }, [getAllRequest, openNotification, selectRequestStatus, user]);
+  }, [getAllRequest, openNotification, selectRequestStatus, user, userId]);
 
   // function to get the data from backend on the page, limit, date and others
   const applyGetAllRecords = ({
@@ -68,12 +69,14 @@ const LeaveDetails = observer(() => {
       query["page"] = 1;
       query["limit"] = tablePageLimit;
       query["status"] = selectRequestStatus || "pending";
+      query["user"] = userId ? userId : user._id;
     } else {
       query["page"] = page || currentPage;
       query["limit"] = limit || tablePageLimit;
       query["status"] = selectRequestStatus || "pending";
+      query["user"] = userId ? userId : user._id;
     }
-    if (user.role === "manager") {
+    if (user.role === "manager" && userId) {
       query = { ...query, userType: "manager" };
     }
     setLoading(true);
@@ -105,7 +108,12 @@ const LeaveDetails = observer(() => {
       type: "link",
       key: "leaveType",
       function: (e: any) => {
-        navigate(`${dashboard.request.leave}/edit/${e._id}`);
+        if(userId){
+          navigate(`${dashboard.request.userList}/${userId}/leave/edit/${e._id}`);
+        }
+        else {
+          navigate(`${dashboard.request.leave}/edit/${e._id}`);
+        }
       },
       props: {
         column: { textAlign: "left" },
@@ -225,8 +233,13 @@ const LeaveDetails = observer(() => {
               },
               editKey: {
                 showEditButton: true,
-                function: (dt: any) => {
-                  navigate(`${dashboard.request.leave}/edit/${dt._id}`);
+                function: (e: any) => {
+                  if(userId){
+                    navigate(`${dashboard.request.userList}/${userId}/leave/edit/${e._id}`);
+                  }
+                  else {
+                    navigate(`${dashboard.request.leave}/edit/${e._id}`);
+                  }
                 },
               },
               deleteKey: {

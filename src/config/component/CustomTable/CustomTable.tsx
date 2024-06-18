@@ -115,7 +115,7 @@ const TableActions: React.FC<TableActionsProps> = ({
             // p={0}
             borderRadius={"50%"}
             onClick={() => {
-              if (actionBtn?.addKey?.function) actionBtn?.viewKey.function(row);
+              if (actionBtn?.viewKey?.function) actionBtn?.viewKey.function(row);
             }}
             aria-label=""
             title={
@@ -152,7 +152,7 @@ const TableActions: React.FC<TableActionsProps> = ({
             // p={0}
             borderRadius={"50%"}
             onClick={() => {
-              if (actionBtn?.addKey?.function)
+              if (actionBtn?.deleteKey?.function)
                 actionBtn?.deleteKey.function(row);
             }}
             aria-label=""

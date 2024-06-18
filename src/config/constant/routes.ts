@@ -54,7 +54,10 @@ export const dashboard = {
     index : `/${dashboardName}/request`,
     leave : `/${dashboardName}/request/leave`,
     leaveAdd : `/${dashboardName}/request/leave/add`,
-    leaveEdit : `/${dashboardName}/request/leave/edit/:id`
+    leaveEdit : `/${dashboardName}/request/leave/edit/:requestId`,
+    userList : `/${dashboardName}/request/users`,
+    uniqueUser : `/${dashboardName}/request/users/:userId`,
+    uniqueEdit : `/${dashboardName}/request/users/:userId/leave/edit/:requestId`,
   }
 };
 

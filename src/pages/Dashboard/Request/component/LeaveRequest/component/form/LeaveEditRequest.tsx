@@ -32,16 +32,16 @@ const LeaveEditRequest = observer(() => {
   const navigate = useNavigate();
   const [requestType, setRequestType] = useState("submit");
   const [showError, setShowError] = useState(false);
-  const { id } = useParams();
+  const { requestId } = useParams();
 
   useEffect(() => {
-    if (!id) return;
+    if (!requestId) return;
     setFormValues((previousValues: any) => ({
       ...previousValues,
       data: null,
       loading: true,
     }));
-    getRequestById({ _id: id })
+    getRequestById({ _id: requestId })
       .then((data: any) => {
         console.log(data.data);
         setFormValues((previousValues: any) => ({
@@ -67,7 +67,7 @@ const LeaveEditRequest = observer(() => {
           navigate(dashboard.request.index);
         }, 2000);
       });
-  }, [id, getRequestById, openNotification, navigate, setFormValues]);
+  }, [requestId, getRequestById, openNotification, navigate, setFormValues]);
 
   const handleSubmit = ({ values, setSubmitting, resetForm }: any) => {
     generateResponse(values);
@@ -98,7 +98,7 @@ const LeaveEditRequest = observer(() => {
       <Flex p={3} alignItems="center">
         <IconButton
           aria-label=""
-          onClick={() => navigate(dashboard.request.index)}
+          onClick={() => navigate(-1)}
         >
           <ArrowBackIcon fontSize="xl" />
         </IconButton>
