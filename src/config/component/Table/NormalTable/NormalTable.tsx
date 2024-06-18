@@ -33,7 +33,7 @@ interface NormalTableProps {
   columns: Column[];
 }
 
-const NormalTable: React.FC<NormalTableProps> = ({
+const NormalTable = ({
   data,
   title,
   loading,
@@ -43,7 +43,7 @@ const NormalTable: React.FC<NormalTableProps> = ({
   onSearchChange,
   searchValue,
   columns,
-}) => {
+} : NormalTableProps) => {
   const columnWidth = useBreakpointValue({
     base: "100%",
     sm: "25%",

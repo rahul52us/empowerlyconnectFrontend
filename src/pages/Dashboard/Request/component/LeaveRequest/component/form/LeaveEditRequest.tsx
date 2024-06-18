@@ -70,7 +70,6 @@ const LeaveEditRequest = observer(() => {
   }, [requestId, getRequestById, openNotification, navigate, setFormValues]);
 
   const handleSubmit = ({ values, setSubmitting, resetForm }: any) => {
-    generateResponse(values);
     createRequest(generateResponse(values))
       .then((data: any) => {
         openNotification({

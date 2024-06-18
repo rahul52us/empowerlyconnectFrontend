@@ -1,95 +1,127 @@
-import React from "react";
-import { Box, Center, Grid, Heading, VStack } from "@chakra-ui/react";
+import React, { useState } from "react";
+import {
+  Box,
+  Center,
+  Grid,
+  Heading,
+  VStack,
+  Button,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalBody,
+  ModalFooter,
+} from "@chakra-ui/react";
 import UserProfileCard from "./UserProfileCard";
-import { FaAnglesDown } from "react-icons/fa6";
+import { FaAngleDown } from "react-icons/fa6";
 import CurrentUser from "./CurrentUser/CurrentUser";
-
 import { ApiResponse } from "./utils/constant";
-
-// interface User {
-//   _id: string;
-//   username: string;
-//   name: string;
-//   code: string;
-//   title: string;
-//   userDetails: any;
-
-// }
-
-// interface UserDetails extends User {
-//   profiledetails: {
-//     aadharNo: string;
-//     bloodGroup: string;
-//     dob: string;
-//     emergencyNo: string;
-//     healthCardNo: string;
-//     insuranceCardNo: string;
-//     maritalStatus: string;
-//     medicalCertificationDetails: string;
-//     mobileNo: string;
-//     nickName: string;
-//     panNo: string;
-//     personalEmail: string;
-//     pfUanNo: string;
-//     refferedBy: string;
-//     weddingDate: string;
-//   };
-//   designation: { title: string }[];
-//   department: { title: string }[];
-//   managerDetails: User[];
-// }
-
-// interface UserHierarchyProps {
-//   data: {
-//     userDetails: UserDetails[];
-//     users: User[];
-//   };
-// }
+import NormalTable from "../../../../../config/component/Table/NormalTable/NormalTable";
 
 const UserHierarchy: React.FC<ApiResponse> = ({ data }) => {
+  const [showAllSubordinates, setShowAllSubordinates] = useState(false);
+
   const user = data.userDetails?.[0];
   const manager = user?.managerDetails?.[0];
   const subordinates: any = data.users || [];
 
-  // console.log(
-  //   "subordinates",
-  //   subordinates[0].companydetail.designation[0].title
-  // );
+  const toggleShowAllSubordinates = () => {
+    setShowAllSubordinates(!showAllSubordinates);
+  };
 
   return (
-    <VStack align={"stretch"} spacing={6}>
+    <VStack align="stretch" spacing={2} alignItems="center">
       <Center>
         <Box>
           <Heading as="h3" size="sm" mb={2}>
             My Manager
           </Heading>
           {manager && <UserProfileCard userData={manager} />}
-          <Center mt={2}>
-            <FaAnglesDown fontSize={"24px"} />
+          <Center mt={5} mb={3}>
+            <FaAngleDown fontSize={"24px"} />
           </Center>
         </Box>
       </Center>
       <Center>
         <CurrentUser userData={user} />
       </Center>
-
       <Box>
         <Heading as="h3" size="sm" mb={2}>
           My Subordinates
         </Heading>
         <Grid
-          templateColumns={{ md: "repeat(4,1fr)", lg: "repeat(5, 1fr)" }}
-          gap={4}
+          templateColumns={{ lg: "repeat(2,1fr)", xl: "repeat(3, 1fr)" }}
+          gap={5}
+          justifyContent="space-around"
         >
-          {subordinates.map((subordinate: any, index: number) => (
-            <UserProfileCard
-              key={index}
-              userData={subordinate.userDetails}
-              designation={subordinate?.companydetail?.designation[0]?.title}
-            />
+          {subordinates.slice(0, 5).map((subordinate: any, index: number) => (
+            <Box key={index} cursor="pointer">
+              <UserProfileCard
+                userData={subordinate.userDetails}
+                designation={subordinate?.companydetail?.designation[0]?.title}
+              />
+            </Box>
           ))}
+          {subordinates.length > 5 && (
+            <Box key={6} onClick={toggleShowAllSubordinates} cursor="pointer">
+              <Center>
+                <Button size="sm">
+                  {showAllSubordinates ? "Show Less" : "Show More"}
+                </Button>
+              </Center>
+            </Box>
+          )}
         </Grid>
       </Box>
+
+      <Modal
+        isOpen={showAllSubordinates}
+        onClose={toggleShowAllSubordinates}
+        size="6xl"
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalBody>
+            <NormalTable
+              title="All Subordinates"
+              columns={[
+                { header: "Name", key: "name" },
+                { header: "Code", key: "code" },
+                { header: "Username", key: "username" },
+                { header: "Department", key: "department" },
+                { header: "Designation", key: "designation" },
+              ]}
+              data={
+                subordinates?.length > 0
+                  ? subordinates.map((subordinate: any) => {
+                      console.log("the subordinates are", subordinate);
+                      const designation =
+                        subordinate.companydetail?.designation[0]?.title;
+                      const department =
+                        subordinate.companydetail?.department[0]?.title;
+                      return {
+                        name: subordinate.userDetails?.name,
+                        username: subordinate.userDetails?.username,
+                        designation: designation,
+                        department: department,
+                        code: subordinate.userDetails?.code,
+                      };
+                    })
+                  : []
+              }
+              loading={false}
+              totalPages={1}
+              currentPage={1}
+              onPageChange={() => {}}
+            />
+          </ModalBody>
+          <ModalFooter m={-2}>
+            <Button colorScheme="blue" onClick={toggleShowAllSubordinates}>
+              Close
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </VStack>
   );
 };
