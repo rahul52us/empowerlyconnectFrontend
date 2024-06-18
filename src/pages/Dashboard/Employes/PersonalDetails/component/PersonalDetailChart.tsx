@@ -90,7 +90,7 @@ const PersonalDetailUsersChart = observer(() => {
 
   return (
     <>
-      <VStack align="start" spacing={4}>
+      <VStack align="start" spacing={4} display={'none'}>
         {treeData.map((manager) => (
           <TreeNode key={manager.id} node={manager} />
         ))}

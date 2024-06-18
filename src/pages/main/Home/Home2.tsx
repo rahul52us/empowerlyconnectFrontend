@@ -13,6 +13,7 @@ import InstructorCard from "./component/InstructorCard/InstructorCard";
 import HeroSection2 from "./component/HeroSection2/HeroSection2";
 import SliderCard1 from "./component/Card1/SliderCard1";
 import { main } from "../../../config/constant/routes";
+import ProfileCard from "./component/ProfileCard/ProfileCard";
 
 // const cardData = [
 //   {
@@ -84,19 +85,19 @@ const cards = [
     image:
       "https://img.freepik.com/free-vector/woman-thinking-isoalted-design-illustration_18591-83949.jpg?t=st=1712074549~exp=1712078149~hmac=8701df5ed01458315f895f4ec71052571f98651a538d5c911fdcdc4c75a7860b&w=740",
     button: "FAQ",
-    link : main.faq
+    link: main.faq,
   },
   {
     image:
       "https://img.freepik.com/free-vector/woman-thinking-isoalted-design-illustration_18591-83949.jpg?t=st=1712074549~exp=1712078149~hmac=8701df5ed01458315f895f4ec71052571f98651a538d5c911fdcdc4c75a7860b&w=740",
     button: "About",
-    link:main.about
+    link: main.about,
   },
   {
     image:
       "https://img.freepik.com/free-vector/woman-thinking-isoalted-design-illustration_18591-83949.jpg?t=st=1712074549~exp=1712078149~hmac=8701df5ed01458315f895f4ec71052571f98651a538d5c911fdcdc4c75a7860b&w=740",
     button: "Contact Us",
-    link: main.contact
+    link: main.contact,
   },
 ];
 
@@ -304,6 +305,10 @@ const Home2 = () => {
   return (
     <Box>
       <HeroSection2 />
+      <Box m={2}>
+
+      <ProfileCard />
+      </Box>
       <Box>
         <Text mt={"4rem"} textAlign={"center"} color={"gray"}>
           POPULAR COURSES
@@ -324,6 +329,7 @@ const Home2 = () => {
           ))}
         </Grid>
       </Box>
+
 
       <WhyUs cards={cardData1} whyus={whyus} />
 
