@@ -11,6 +11,8 @@ import {
   ModalContent,
   ModalBody,
   ModalFooter,
+  Text,
+  Flex,
 } from "@chakra-ui/react";
 import UserProfileCard from "./UserProfileCard";
 import { FaAngleDown } from "react-icons/fa6";
@@ -33,7 +35,7 @@ const UserHierarchy: React.FC<ApiResponse> = ({ data }) => {
     <VStack align="stretch" spacing={2} alignItems="center">
       <Center>
         <Box>
-          <Heading as="h3" size="sm" mb={2}>
+          <Heading as="h3" size="sm" mb={5} mt={2} textAlign="center">
             My Manager
           </Heading>
           {manager && <UserProfileCard userData={manager} />}
@@ -46,9 +48,19 @@ const UserHierarchy: React.FC<ApiResponse> = ({ data }) => {
         <CurrentUser userData={user} />
       </Center>
       <Box>
-        <Heading as="h3" size="sm" mb={2}>
-          My Subordinates
-        </Heading>
+        <Center mt={2} mb={5}>
+          <Flex direction="column" alignItems="center">
+            <Heading as="h3" size="sm" mb={2} mt={2} alignItems="center">
+              My Subordinates
+            </Heading>
+            {subordinates.length === 0 && (
+              <>
+                <FaAngleDown fontSize={"24px"} />
+                <Text>No Subordinates Available</Text>
+              </>
+            )}
+          </Flex>
+        </Center>
         <Grid
           templateColumns={{ lg: "repeat(2,1fr)", xl: "repeat(3, 1fr)" }}
           gap={5}
