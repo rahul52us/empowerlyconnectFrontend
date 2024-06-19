@@ -19,6 +19,7 @@ import { FaAngleDown } from "react-icons/fa6";
 import CurrentUser from "./CurrentUser/CurrentUser";
 import { ApiResponse } from "./utils/constant";
 import NormalTable from "../../../../../config/component/Table/NormalTable/NormalTable";
+import ProfileCard from "../../../../main/Home/component/ProfileCard/ProfileCard";
 
 const UserHierarchy: React.FC<ApiResponse> = ({ data }) => {
   const [showAllSubordinates, setShowAllSubordinates] = useState(false);
@@ -33,6 +34,9 @@ const UserHierarchy: React.FC<ApiResponse> = ({ data }) => {
 
   return (
     <VStack align="stretch" spacing={2} alignItems="center">
+      <Flex justify={'end'}>
+        <ProfileCard user={user} />
+      </Flex>
       <Center>
         <Box>
           <Heading as="h3" size="sm" mb={5} mt={2} textAlign="center">
