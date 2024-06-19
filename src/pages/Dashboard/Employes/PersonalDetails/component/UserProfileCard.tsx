@@ -17,7 +17,7 @@ interface User {
 }
 const UserProfileCard = ({ userData, designation }: { userData: User; designation?: string }) => {
 
-  console.log('designation',designation)
+  // console.log('designation',designation)
 
   return (
     <Box

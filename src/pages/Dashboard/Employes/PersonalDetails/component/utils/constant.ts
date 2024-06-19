@@ -83,3 +83,12 @@ export interface ApiResponse {
     limit: number;
   };
 }
+
+export const formatDate = (dateString: string): string => {
+  const options:any = { day: 'numeric', month: 'short', year: 'numeric' };
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-US', options);
+};
+
+
+
