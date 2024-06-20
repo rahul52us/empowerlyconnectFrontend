@@ -290,15 +290,15 @@ class AuthStore {
     this.notification = null;
   };
 
-  checkPermission = (check: { key: string; value: string }) => {
-    if (this.user?.role === "superadmin") {
+  checkPermission = (key : string , value : string) => {
+    if (this.user?.role === "superadmin" || this.user?.role === "admin") {
       return true;
     } else {
       if (this.user?.permissions) {
         var status = false;
         Object.entries(this.user.permissions).forEach((item: any) => {
-          if (item[0] === check?.key) {
-            if (item[1][check.value]) {
+          if (item[0] === key) {
+            if (item[1][value]) {
               status = true;
             } else {
               status = false;

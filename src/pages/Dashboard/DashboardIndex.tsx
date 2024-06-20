@@ -9,13 +9,12 @@ import DashPageHeader from "../../config/component/common/DashPageHeader/DashPag
 import { headerHeight } from "../../config/constant/variable";
 import { Box, Grid, GridItem, Text } from "@chakra-ui/react";
 import { dashBreadCrumb } from "./utils/breadcrumb.constant";
-import NormalTable from "../../config/component/Table/NormalTable/NormalTable";
-import { users, usersColumns } from "./utils/constant";
 import ManagerEmployes from "./component/manager/ManagerEmployes";
 
 const DashboardIndex = observer(() => {
   const {
     quiz: { setDeleteCategoryModal },
+    auth: { checkPermission },
   } = store;
 
   return (
@@ -24,27 +23,22 @@ const DashboardIndex = observer(() => {
         <DashPageHeader title="Dashboard" breadcrumb={dashBreadCrumb} />
         <Grid templateColumns={{ base: "1fr", md: "1fr" }} columnGap={3}>
           <GridItem>
-            <Box>
-              <DashboardBanner />
-            </Box>
+            <DashboardBanner />
+          </GridItem>
+          <GridItem>
             <DashWidgetCard />
-            {/* <SkeletanCategoryCard/> */}
+          </GridItem>
+          <GridItem>
             <DashChartContainer />
           </GridItem>
-          {/* <GridItem>
-          <DashboardRight />
-        </GridItem> */}
-          {/* <MyCoursesTable /> */}
         </Grid>
-        <Grid templateColumns={{ base: "1fr", md: "1fr 1fr" }} columnGap={4}>
+        <Grid
+          display={checkPermission("dashboard", "view") ? undefined : "none"}
+          templateColumns={{ base: "1fr", md: "1fr 1fr" }}
+          columnGap={4}
+        >
           <ManagerEmployes />
-          <NormalTable
-            columns={usersColumns}
-            data={users}
-            currentPage={1}
-            totalPages={1}
-            onPageChange={() => {}}
-          />
+          <ManagerEmployes />
         </Grid>
         <DeleteModel
           id={store.quiz.openDeleteCategoryModal?.data?._id}
