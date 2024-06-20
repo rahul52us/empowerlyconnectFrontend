@@ -1,37 +1,27 @@
 import {
+  Badge,
+  Box,
   Grid,
-  //   IconButton,
   Image,
   Text,
-  FormControl,
-  FormLabel,
   useColorModeValue,
 } from "@chakra-ui/react";
 
+import { formatDate } from "../../../../Dashboard/Employes/PersonalDetails/component/utils/constant";
+
 type ProfileCardI = {
-  src?: string;
+  user?: any;
 };
 
-function ProfileCard({ src }: ProfileCardI) {
+function ProfileCard({ user }: ProfileCardI) {
   const bgColor = useColorModeValue("gray.50", "gray.700");
-  //   const iconBgColor = useColorModeValue("gray.100", "gray.600");
   const boxShadow = useColorModeValue(
     "0px 0px 11px rgba(0, 0, 0, 0.2)",
     "0px 0px 11px rgba(255, 255, 255, 0.1)"
   );
-
-  const profileData = [
-    { label: "Name", value: "Greg Gonzalez" },
-    { label: "Gender", value: "Male" },
-    { label: "DOB", value: "18/1/2008" },
-    { label: "Admission Id", value: "chippi-chippi-chappa" },
-    { label: "Admission Date", value: "18/3/2008" },
-    { label: "Class", value: "10" },
-    { label: "Section", value: "A" },
-  ];
-
+  // console.log("user-----------", user);
   return (
-    <Grid templateColumns={{ md: "2fr 1.25fr 1fr" }}>
+    <Box>
       <Grid p={4} rounded={12} bg={bgColor} boxShadow={boxShadow}>
         <Grid templateColumns={{ base: "1fr", md: "2fr 3fr" }} gap={2}>
           <Grid
@@ -41,40 +31,67 @@ function ProfileCard({ src }: ProfileCardI) {
           >
             <Image
               rounded={12}
-              boxSize={{ base: "295px", md: "220px" }}
+              boxSize={{ base: "295px", md: "200px" }}
               objectFit={"cover"}
               src={
-                src ||
                 "https://upload.wikimedia.org/wikipedia/commons/4/40/POS17_%40Kristsll-197_%2835166607974%29.jpg"
               }
               alt="Id Photo"
             />
-            <Text textAlign={"center"} fontSize={"2xl"} fontWeight={700}>
-              Greg Gonzalez
+            <Text
+              textAlign={"center"}
+              fontSize={"2xl"}
+              fontWeight={700}
+              textTransform={"capitalize"}
+            >
+              {user?.name}
             </Text>
           </Grid>
 
-          <FormControl>
-            {profileData.map(({ label, value }) => (
-              <Grid
-                templateColumns={{ base: "1fr 1fr", md: "2fr 3fr" }}
-                gap={2}
-                mb={2}
-                key={label}
-              >
-                <FormLabel>{label}:</FormLabel>
-                <Text>{value}</Text>
-              </Grid>
-            ))}
-          </FormControl>
+          <Grid
+            templateColumns={{ base: "1fr 1fr", md: "1fr 1.25fr" }}
+            columnGap={2}
+          >
+            <Text fontWeight={500}>Code:</Text>
+            <Badge
+              w={"fit-content"}
+              size={"lg"}
+              h={"fit-content"}
+              colorScheme={"telegram"}
+            >
+              {user?.code}
+            </Badge>
+
+            <Text fontWeight={500}>DOJ:</Text>
+            <Text>23 june</Text>
+
+            <Text fontWeight={500}>Department:</Text>
+            <Text>{user?.department[0]?.title}</Text>
+
+            <Text fontWeight={500}>Designation:</Text>
+            <Text textTransform={"capitalize"}>
+              {user?.designation[0]?.title}
+            </Text>
+
+            <Text fontWeight={500}>City:</Text>
+            <Text>{user?.profiledetails[0]?.addressInfo[0]?.city}</Text>
+
+            {/* <Text fontWeight={500}>Blood Group:</Text>
+            <Text>23 june</Text> */}
+
+            <Text fontWeight={500}>DOB:</Text>
+            <Text>{formatDate(user?.profiledetails[0]?.dob)}</Text>
+
+            <Text fontWeight={500}>Personal Email:</Text>
+            <Text>{user?.profiledetails[0]?.personalEmail}</Text>
+
+            <Text fontWeight={500}>Mobile:</Text>
+            <Text>{user?.profiledetails[0]?.mobileNo}</Text>
+          </Grid>
         </Grid>
       </Grid>
-    </Grid>
+    </Box>
   );
 }
-
-ProfileCard.defaultProps = {
-  title: "My Children_01",
-};
 
 export default ProfileCard;
