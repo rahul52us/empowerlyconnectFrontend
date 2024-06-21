@@ -8,6 +8,7 @@ import { Box, Flex, Text } from "@chakra-ui/react";
 import RequestButtons from "../../../element/RequestButtons";
 import { observer } from "mobx-react-lite";
 import CustomInput from "../../../../../../../config/component/CustomInput/CustomInput";
+import { generateTableRequestData } from "../../utils/function";
 
 const LeaveDetails = observer(() => {
   const {
@@ -15,7 +16,7 @@ const LeaveDetails = observer(() => {
     auth: { openNotification, user },
   } = store;
   const navigate = useNavigate();
-  const [selectRequestStatus, setSelectRequestStatus] = useState("pending");
+  const [selectRequestStatus, setSelectRequestStatus] = useState("all");
   const setOpenModel = useState<any>({
     open: false,
     data: null,
@@ -37,12 +38,12 @@ const LeaveDetails = observer(() => {
       status: selectRequestStatus,
       user: userId ? userId : user._id,
     };
-    if (user.role === "manager") {
+    if (user.role === "manager" && user.role === "admin" && user.role === "superadmin") {
       query = { ...query, userType: "manager" };
     }
     getAllRequest(query)
       .then((data) => {
-        setData(data?.data || []);
+        setData(generateTableRequestData(data?.data || [], userId));
         setTotalPages(data.totalPages);
       })
       .catch((err: any) => {
@@ -82,7 +83,8 @@ const LeaveDetails = observer(() => {
     setLoading(true);
     getAllRequest(query)
       .then((data) => {
-        setData(data?.data || []);
+        console.log('the response are', generateTableRequestData(data?.data, userId))
+        setData(generateTableRequestData(data?.data || [], userId));
         setTotalPages(data.totalPages);
       })
       .catch((err: any) => {
@@ -108,10 +110,11 @@ const LeaveDetails = observer(() => {
       type: "link",
       key: "leaveType",
       function: (e: any) => {
-        if(userId){
-          navigate(`${dashboard.request.userList}/${userId}/leave/edit/${e._id}`);
-        }
-        else {
+        if (userId) {
+          navigate(
+            `${dashboard.request.userList}/${userId}/leave/edit/${e._id}`
+          );
+        } else {
           navigate(`${dashboard.request.leave}/edit/${e._id}`);
         }
       },
@@ -234,10 +237,11 @@ const LeaveDetails = observer(() => {
               editKey: {
                 showEditButton: true,
                 function: (e: any) => {
-                  if(userId){
-                    navigate(`${dashboard.request.userList}/${userId}/leave/edit/${e._id}`);
-                  }
-                  else {
+                  if (userId) {
+                    navigate(
+                      `${dashboard.request.userList}/${userId}/leave/edit/${e._id}`
+                    );
+                  } else {
                     navigate(`${dashboard.request.leave}/edit/${e._id}`);
                   }
                 },

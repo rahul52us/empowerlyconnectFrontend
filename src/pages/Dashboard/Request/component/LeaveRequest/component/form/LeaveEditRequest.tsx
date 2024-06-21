@@ -32,10 +32,11 @@ const LeaveEditRequest = observer(() => {
   const navigate = useNavigate();
   const [requestType, setRequestType] = useState("submit");
   const [showError, setShowError] = useState(false);
-  const { requestId } = useParams();
+  const { requestId, userId } = useParams();
+
+  console.log('the user Id are', userId)
 
   useEffect(() => {
-    if (!requestId) return;
     setFormValues((previousValues: any) => ({
       ...previousValues,
       data: null,

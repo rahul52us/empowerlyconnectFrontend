@@ -27,7 +27,7 @@ const UserTable = observer(() => {
     auth: { openNotification, user },
   } = store;
 
-  const applyGetAllEmployes = useCallback(
+  const applyGetAllRecords = useCallback(
     ({ page, limit, reset }: any) => {
       const query: any = {
         managerId: user._id,
@@ -66,12 +66,12 @@ const UserTable = observer(() => {
   );
 
   useEffect(() => {
-    applyGetAllEmployes({
+    applyGetAllRecords({
       page: currentPage,
       limit: tablePageLimit,
       search: debouncedSearchQuery,
     });
-  }, [currentPage, debouncedSearchQuery, applyGetAllEmployes]);
+  }, [currentPage, debouncedSearchQuery, applyGetAllRecords]);
 
   const onDateChange = (e: any, type: string) => {
     setDate((prev: any) => ({ ...prev, [type]: e }));
@@ -90,7 +90,7 @@ const UserTable = observer(() => {
     });
     setSelectedOptions({});
     setSearchQuery("");
-    applyGetAllEmployes({ reset: true });
+    applyGetAllRecords({ reset: true });
   };
 
   const employeTableColumns = [
@@ -159,7 +159,7 @@ const UserTable = observer(() => {
       actions={{
         applyFilter: {
           show: true,
-          function: () => applyGetAllEmployes({ page: currentPage }),
+          function: () => applyGetAllRecords({ page: currentPage }),
         },
         resetData: {
           show: true,
@@ -202,7 +202,7 @@ const UserTable = observer(() => {
             // onSearchChange: (e: any) => setSearchQuery(e),
           },
           dropdowns: dropdowns,
-          onApply: () => applyGetAllEmployes({}),
+          onApply: () => applyGetAllRecords({}),
           selectedOptions: selectedOptions,
           onDropdownChange: (value: any, label: string) => {
             setSelectedOptions((prev: any) => ({ ...prev, [label]: value }));
