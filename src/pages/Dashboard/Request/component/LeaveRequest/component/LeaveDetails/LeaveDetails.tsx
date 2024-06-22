@@ -9,12 +9,15 @@ import RequestButtons from "../../../element/RequestButtons";
 import { observer } from "mobx-react-lite";
 import CustomInput from "../../../../../../../config/component/CustomInput/CustomInput";
 import { generateTableRequestData } from "../../utils/function";
+import FormModel from "../../../../../../../config/component/common/FormModel/FormModel";
+import ReviewStatusForm from "../common/ReviewStatusForm";
 
 const LeaveDetails = observer(() => {
   const {
     requestStore: { getAllRequest },
     auth: { openNotification, user },
   } = store;
+  const [reviewModel, setReviewModel] = useState({ open: false, data: null });
   const navigate = useNavigate();
   const [selectRequestStatus, setSelectRequestStatus] = useState("all");
   const setOpenModel = useState<any>({
@@ -38,8 +41,13 @@ const LeaveDetails = observer(() => {
       status: selectRequestStatus,
       user: userId ? userId : user._id,
     };
-    if (user.role === "manager" && user.role === "admin" && user.role === "superadmin") {
-      query = { ...query, userType: "manager" };
+    if (
+      (user.role === "manager" ||
+        user.role === "admin" ||
+        user.role === "superadmin") &&
+      userId
+    ) {
+      query = { ...query, userType: "manager", managerId: user._id };
     }
     getAllRequest(query)
       .then((data) => {
@@ -78,12 +86,15 @@ const LeaveDetails = observer(() => {
       query["user"] = userId ? userId : user._id;
     }
     if (user.role === "manager" && userId) {
-      query = { ...query, userType: "manager" };
+      query = { ...query, userType: "manager", managerId: user._id };
     }
     setLoading(true);
     getAllRequest(query)
       .then((data) => {
-        console.log('the response are', generateTableRequestData(data?.data, userId))
+        console.log(
+          "the response are",
+          generateTableRequestData(data?.data, userId)
+        );
         setData(generateTableRequestData(data?.data || [], userId));
         setTotalPages(data.totalPages);
       })
@@ -147,11 +158,23 @@ const LeaveDetails = observer(() => {
     },
     {
       headerName: "Status",
-      type: "text",
+      type: "link",
       key: "status",
       props: {
-        row: { textAlign: "center", fontWeight: "500" },
+        row: { textAlign: "center", fontWeight: "500", textDecoration: "none" },
         column: { textAlign: "center" },
+      },
+      function: (e: any) => {
+        if (userId) {
+          setReviewModel({
+            data: { ...e, userId: userId, userType: "manager" },
+            open: true,
+          });
+        } else {
+          if(e.status === "pending"){
+            setReviewModel({ data: { ...e , userId : user._id,  userType : 'user' }, open: true });
+          }
+        }
       },
     },
     // {
@@ -266,6 +289,15 @@ const LeaveDetails = observer(() => {
           }}
         />
       </Box>
+      <FormModel
+        open={reviewModel.open}
+        close={() => setReviewModel({ open: false, data: null })}
+      >
+        <ReviewStatusForm
+          data={reviewModel.data}
+          onClose={() => setReviewModel({ open: false, data: null })}
+        />
+      </FormModel>
     </>
   );
 });

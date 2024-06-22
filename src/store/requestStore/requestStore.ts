@@ -63,7 +63,8 @@ class RequestStore {
       createRequest:action,
       updateDepartmentCategory:action,
       addDepartment:action,
-      updateDepartment:action
+      updateDepartment:action,
+      updateRequest:action
     });
   }
 
@@ -90,6 +91,16 @@ class RequestStore {
       return Promise.reject(err?.response || err);
     }
   };
+
+  updateRequest = async (sendData : any) => {
+    try {
+      const { data } = await axios.put(`/request/${sendData._id}`,{company : store.auth.getCurrentCompany(), ...sendData});
+      return data
+    } catch (err: any) {
+      return Promise.reject(err?.response || err);
+    }
+  };
+
 
   getRequestById = async (sendData : any) => {
     try {

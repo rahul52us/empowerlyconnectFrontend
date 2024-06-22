@@ -277,7 +277,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
                 <div className="chakra-select__dropdown-indicator" />
               ),
             }}
-            menuPosition="fixed"
+            // menuPosition="fixed"
           />
         );
       case "date":

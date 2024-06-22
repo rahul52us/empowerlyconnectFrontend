@@ -132,7 +132,7 @@ const generateMenuItems = (userRole : string) => {
       },
       {
         label: "Team Request",
-        path: dashboard.request.index
+        path: dashboard.request.userList,
       }
     ];
 
