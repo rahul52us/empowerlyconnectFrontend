@@ -7,7 +7,6 @@ import { dashboard } from "../../../../../../../config/constant/routes";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import RequestButtons from "../../../element/RequestButtons";
 import { observer } from "mobx-react-lite";
-import CustomInput from "../../../../../../../config/component/CustomInput/CustomInput";
 import { generateTableRequestData } from "../../utils/function";
 import FormModel from "../../../../../../../config/component/common/FormModel/FormModel";
 import ReviewStatusForm from "../common/ReviewStatusForm";
@@ -171,8 +170,11 @@ const LeaveDetails = observer(() => {
             open: true,
           });
         } else {
-          if(e.status === "pending"){
-            setReviewModel({ data: { ...e , userId : user._id,  userType : 'user' }, open: true });
+          if (e.status === "pending") {
+            setReviewModel({
+              data: { ...e, userId: user._id, userType: "user" },
+              open: true,
+            });
           }
         }
       },
@@ -220,15 +222,6 @@ const LeaveDetails = observer(() => {
         <Flex alignItems="center" justifyContent="space-between" m={3}>
           <Text>Leave Request</Text>
           <Flex>
-            <CustomInput
-              type="select"
-              name="employes"
-              options={[
-                { label: "Rahul", value: "rahul" },
-                { label: "New", value: "new" },
-              ]}
-              isSearchable
-            />
             <RequestButtons
               selectRequestStatus={selectRequestStatus}
               setSelectRequestStatus={setSelectRequestStatus}

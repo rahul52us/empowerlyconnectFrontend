@@ -16,12 +16,12 @@ class AuthStore {
   user: any | null = null;
   company: any | null = null;
   openSearch: any = false;
-  loginModel : Boolean = false;
+  loginModel: Boolean = false;
   notification: Notification | null = null;
   isRememberCredential = true;
   companyUsers = [];
-  role : any = 'user'
-  webLoader : boolean = false
+  role: any = "user";
+  webLoader: boolean = false;
 
   constructor() {
     this.initiatAppOptions();
@@ -30,15 +30,15 @@ class AuthStore {
       notification: observable,
       companyUsers: observable,
       openSearch: observable,
-      loginModel:observable,
-      company : observable,
-      role:observable,
-      webLoader:observable,
-      openLoginModel:action,
+      loginModel: observable,
+      company: observable,
+      role: observable,
+      webLoader: observable,
+      openLoginModel: action,
       login: action,
       register: action,
       doLogout: action,
-      updateProfile:action,
+      updateProfile: action,
       closeSearchBar: action,
       openNotification: action,
       closeNotication: action,
@@ -53,7 +53,7 @@ class AuthStore {
       verifyEmail: action,
       createOrganisation: action,
       getCompanyUsers: action,
-      getCurrentCompany:action
+      getCurrentCompany: action,
     });
   }
 
@@ -87,13 +87,13 @@ class AuthStore {
   };
 
   setUserOptions = () => {
-    this.webLoader = true
+    this.webLoader = true;
     axios
       .post("/auth/me")
       .then(({ data }: AxiosResponse<{ data: any }>) => {
-        this.company = data.data?.companyDetail?.company?._id
+        this.company = data.data?.companyDetail?.company?._id;
         this.user = data.data;
-        this.role = this.user?.role
+        this.role = this.user?.role;
         sessionStorage.setItem(
           process.env.REACT_APP_AUTHORIZATION_USER_DATA!,
           CryptoJS.AES.encrypt(
@@ -106,8 +106,9 @@ class AuthStore {
         this.loading = false;
         this.clearLocalStorage();
         this.initiatAppOptions();
-      }).finally(() => {
-        this.webLoader = false
+      })
+      .finally(() => {
+        this.webLoader = false;
       });
   };
 
@@ -132,14 +133,14 @@ class AuthStore {
     remember_me: boolean;
     username: string;
     password: string;
-    loginType:string
+    loginType: string;
   }) => {
     try {
       this.isRememberCredential = sendData.remember_me;
       const { data } = await axios.post<{ data: any }>("/auth/login", {
         username: sendData.username,
         password: sendData.password,
-        loginType:sendData.loginType
+        loginType: sendData.loginType,
       });
       const headersToUpdate = {
         Accept: "application/json",
@@ -154,7 +155,7 @@ class AuthStore {
         process.env.REACT_APP_AUTHORIZATION_TOKEN as string,
         data.data.authorization_token
       );
-      this.setUserOptions()
+      this.setUserOptions();
       return data;
     } catch (err: any) {
       return Promise.reject(err?.response?.data || err.message);
@@ -163,7 +164,7 @@ class AuthStore {
 
   createOrganisation = async (value: any) => {
     try {
-      const { token , ...sendData } = value;
+      const { token, ...sendData } = value;
       const { data } = await axios.post(
         `/company/create?token=${token}`,
         sendData
@@ -178,7 +179,9 @@ class AuthStore {
     try {
       const authorization_token = process.env.REACT_APP_AUTHORIZATION_TOKEN;
       if (authorization_token) {
-        const storedData = sessionStorage.getItem(process.env.REACT_APP_AUTHORIZATION_USER_DATA!);
+        const storedData = sessionStorage.getItem(
+          process.env.REACT_APP_AUTHORIZATION_USER_DATA!
+        );
         if (storedData) {
           const decryptedBytes = CryptoJS.AES.decrypt(
             storedData,
@@ -207,17 +210,17 @@ class AuthStore {
   };
 
   register = () => {
-    return this.user
+    return this.user;
   };
 
   getCurrentCompany = () => {
-    return this.company
-  }
+    return this.company;
+  };
 
   updateProfile = async (sendData: any) => {
     try {
       const { data } = await axios.put("/auth", sendData);
-      this.user = data.data
+      this.user = data.data;
       sessionStorage.setItem(
         process.env.REACT_APP_AUTHORIZATION_USER_DATA!,
         CryptoJS.AES.encrypt(
@@ -253,7 +256,7 @@ class AuthStore {
     try {
       const { data } = await axios.post("/auth/change-password", {
         oldPassword: value.oldPassword,
-        newPassword: value.newPassword
+        newPassword: value.newPassword,
       });
       return data.data;
     } catch (err: any) {
@@ -290,7 +293,7 @@ class AuthStore {
     this.notification = null;
   };
 
-  checkPermission = (key : string , value : string) => {
+  checkPermission = (key: string, value: string) => {
     if (this.user?.role === "superadmin" || this.user?.role === "admin") {
       return true;
     } else {
@@ -347,8 +350,8 @@ class AuthStore {
   };
 
   openLoginModel = async () => {
-    this.loginModel = !this.loginModel ? true : false
-  }
+    this.loginModel = !this.loginModel ? true : false;
+  };
 }
 
 export default AuthStore;

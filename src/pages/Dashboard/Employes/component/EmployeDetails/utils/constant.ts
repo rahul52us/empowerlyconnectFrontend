@@ -7,7 +7,7 @@ export const defaultPermissions: any = {
   trip: { add: false, edit: false, view: false, delete: false },
   course: { add: false, edit: false, view: false, delete: false },
   videos: { add: false, edit: false, view: false, delete: false },
-  managers: { list: true },
+  managers: { view: false },
   dashboard: { view: false },
 };
 
