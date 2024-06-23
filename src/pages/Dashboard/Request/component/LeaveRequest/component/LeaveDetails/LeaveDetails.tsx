@@ -296,6 +296,8 @@ const LeaveDetails = observer(() => {
         <ReviewStatusForm
           data={reviewModel.data}
           onClose={() => setReviewModel({ open: false, data: null })}
+          applyGetAllRecords={applyGetAllRecords}
+          selectRequestStatus={selectRequestStatus}
         />
       </FormModel>
     </>

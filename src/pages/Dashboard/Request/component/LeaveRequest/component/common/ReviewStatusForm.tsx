@@ -15,52 +15,74 @@ import { useState } from "react";
 import store from "../../../../../../../store/store";
 import { getStatusType } from "../../../../../../../config/constant/statusCode";
 
-// Helper function to calculate total days of leave
-const calculateTotalDays = (startDate: string, endDate: string) => {
-  const start = new Date(startDate);
-  const end = new Date(endDate);
-  const timeDiff = Math.abs(end.getTime() - start.getTime());
-  return Math.ceil(timeDiff / (1000 * 3600 * 24)) + 1;
-};
-
-const ReviewStatusForm = ({ data, onClose }: any) => {
+const ReviewStatusForm = ({
+  data,
+  onClose,
+  applyGetAllRecords,
+  selectRequestStatus,
+}: any) => {
   const {
-    requestStore: { updateRequest },
+    requestStore: { updateRequest, deleteRequest },
     auth: { openNotification },
   } = store;
+
   const [loading, setLoading] = useState(false);
   const [comment, setComment] = useState("");
   const bgColor = useColorModeValue("gray.50", "gray.800");
   const textColor = useColorModeValue("gray.600", "gray.300");
+
+  const capitalizeFirstLetter = (str: string) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  };
+
+  // Calculate total days of leave
+  const calculateTotalDays = (startDate: string, endDate: string) => {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    const timeDiff = Math.abs(end.getTime() - start.getTime());
+    return Math.ceil(timeDiff / (1000 * 3600 * 24)) + 1;
+  };
+
   const totalDays = calculateTotalDays(data.startDate, data.endDate);
 
   // Function to handle status update
   const updateStatus = async (action: string) => {
     setLoading(true);
-    updateRequest({
-      _id: data._id,
-      status: action,
-      reason: comment,
-      user: data.userId,
-    })
-      .then((data: any) => {
-        openNotification({
-          title: "Create Successfully",
-          message: data?.message,
-          type: "success",
-        });
-        onClose();
-      })
-      .catch((err: any) => {
-        openNotification({
-          title: "Update Failed",
-          message: err?.data?.message,
-          type: getStatusType(err.status),
-        });
-      })
-      .finally(() => {
-        setLoading(false);
+    try {
+      let requestData;
+      if (action === "delete") {
+        requestData = { _id: data._id };
+      } else {
+        requestData = {
+          _id: data._id,
+          status: action,
+          reason: comment,
+          user: data.userId,
+        };
+      }
+
+      const requestPromise =
+        action === "delete" ? deleteRequest(requestData) : updateRequest(requestData);
+
+      const { data: responseData } = await requestPromise;
+
+      openNotification({
+        title: `${capitalizeFirstLetter(action)} Successful`,
+        message: responseData?.message || "Request updated successfully.",
+        type: "success",
       });
+
+      applyGetAllRecords({ selectRequestStatus });
+      onClose();
+    } catch (err : any) {
+      openNotification({
+        title: `${capitalizeFirstLetter(action)} Failed`,
+        message: err?.data?.message || "Something went wrong.",
+        type: getStatusType(err.status),
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -97,7 +119,7 @@ const ReviewStatusForm = ({ data, onClose }: any) => {
       <Text mb={2}>
         <strong>Total Days:</strong> {totalDays}
       </Text>
-      <Flex justifyContent="space-between" mb={4}>
+      <Flex justifyContent="space-between" mb={4} alignItems="center">
         <Text>
           <strong>Status:</strong> {data.status}
         </Text>
@@ -110,55 +132,64 @@ const ReviewStatusForm = ({ data, onClose }: any) => {
         isDisabled={loading}
         mb={4}
       />
-      {data.userType !== "user" && (
-        <Stack direction={["column", "row"]} spacing={4}>
-          <Button
-            colorScheme="green"
-            leftIcon={<CheckIcon />}
-            onClick={() => updateStatus("approved")}
-            isLoading={loading}
-            isDisabled={loading}
-            flex="1"
-          >
-            Approve
-          </Button>
-          <Button
-            colorScheme="red"
-            leftIcon={<CloseIcon />}
-            onClick={() => updateStatus("rejected")}
-            isLoading={loading}
-            isDisabled={loading}
-            flex="1"
-          >
-            Reject
-          </Button>
-          <Button
-            colorScheme="yellow"
-            leftIcon={<WarningIcon />}
-            onClick={() => updateStatus("cancelled")}
-            isLoading={loading}
-            isDisabled={loading}
-            flex="1"
-          >
-            Cancel
-          </Button>
-        </Stack>
-      )}
-      <Stack
-        direction={["column", "row"]}
-        spacing={4}
-        display={data.userType === "user" ? undefined : "none"}
-      >
-        <Button
-          colorScheme="green"
-          leftIcon={<CheckIcon />}
-          onClick={() => updateStatus("submitted")}
-          isLoading={loading}
-          isDisabled={loading}
-          flex="1"
-        >
-          Submitted
-        </Button>
+      <Stack direction={["column", "row"]} spacing={4}>
+        {data.userType !== "user" ? (
+          <>
+            <Button
+              colorScheme="green"
+              leftIcon={<CheckIcon />}
+              onClick={() => updateStatus("approved")}
+              isLoading={loading}
+              isDisabled={loading}
+              flex="1"
+            >
+              Approve
+            </Button>
+            <Button
+              colorScheme="red"
+              leftIcon={<CloseIcon />}
+              onClick={() => updateStatus("rejected")}
+              isLoading={loading}
+              isDisabled={loading}
+              flex="1"
+            >
+              Reject
+            </Button>
+            <Button
+              colorScheme="yellow"
+              leftIcon={<WarningIcon />}
+              onClick={() => updateStatus("cancelled")}
+              isLoading={loading}
+              isDisabled={loading}
+              flex="1"
+            >
+              Cancel
+            </Button>
+          </>
+        ) : (
+          <>
+            <Button
+              colorScheme="green"
+              leftIcon={<CheckIcon />}
+              onClick={() => updateStatus("submitted")}
+              isLoading={loading}
+              isDisabled={loading}
+              flex="1"
+            >
+              Submitted
+            </Button>
+            <Button
+              colorScheme="red"
+              leftIcon={<CloseIcon />}
+              onClick={() => updateStatus("delete")}
+              isLoading={loading}
+              isDisabled={loading}
+              flex="1"
+            >
+              Delete
+            </Button>
+          </>
+        )}
       </Stack>
       <Button
         mt={4}
