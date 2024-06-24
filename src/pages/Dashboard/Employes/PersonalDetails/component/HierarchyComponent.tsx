@@ -39,7 +39,7 @@ const UserHierarchy: React.FC<ApiResponse> = ({ data }) => {
       </Flex>
       <Center>
         <Box>
-          <Heading as="h3" size="sm" mb={5} mt={2} textAlign="center">
+          <Heading as="h3" size="sm" mb={5} mt={2} textAlign="center"> 
             My Manager
           </Heading>
           {manager && <UserProfileCard userData={manager} />}

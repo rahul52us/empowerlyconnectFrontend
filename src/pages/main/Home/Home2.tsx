@@ -13,7 +13,9 @@ import InstructorCard from "./component/InstructorCard/InstructorCard";
 import HeroSection2 from "./component/HeroSection2/HeroSection2";
 import SliderCard1 from "./component/Card1/SliderCard1";
 import { main } from "../../../config/constant/routes";
-import ProfileCard from "./component/ProfileCard/ProfileCard";
+import CourseForm from "../courses/CourseForm/CourseForm";
+import { useState } from "react";
+// import ProfileCard from "./component/ProfileCard/ProfileCard";
 
 // const cardData = [
 //   {
@@ -302,12 +304,46 @@ const instructorsData = [
 ];
 
 const Home2 = () => {
+  const [showError, setShowError] = useState(false);
+
+  const initialValues = {
+    title: "",
+    benefits: [""],
+    description: "",
+    category: "",
+    level: "",
+    price: "",
+    prerequisites: "",
+    short_desc: "",
+    language: "",
+  };
+
+  const handleSubmit = (values: any, { setSubmitting, resetForm }: any) => {
+    console.log("---------", values);
+    setSubmitting(false);
+    resetForm();
+  };
   return (
     <Box>
       <HeroSection2 />
       <Box m={2}>
+        <Box
+          maxW={"80%"}
+          // bg={"gray.50"}
+          mx={"auto"}
+          p={6}
+          rounded={10}
+          shadow="rgb(0 0 0 / 15%) 0px 0px 12px"
+        >
+          <CourseForm
+            initialValues={initialValues}
+            showError={showError}
+            setShowError={setShowError} // Ensure this is a function
+            handleSubmit={handleSubmit}
+          />
+        </Box>
 
-      <ProfileCard />
+        {/* <ProfileCard /> */}
       </Box>
       <Box>
         <Text mt={"4rem"} textAlign={"center"} color={"gray"}>
@@ -329,7 +365,6 @@ const Home2 = () => {
           ))}
         </Grid>
       </Box>
-
 
       <WhyUs cards={cardData1} whyus={whyus} />
 
