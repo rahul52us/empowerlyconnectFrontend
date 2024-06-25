@@ -15,6 +15,7 @@ import {
   InputRightElement,
   InputGroup,
   useColorMode,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { RiCloseFill, RiEyeLine, RiEyeOffLine } from "react-icons/ri";
 import { useState } from "react";
@@ -62,12 +63,12 @@ interface CustomInputProps {
   showError?: boolean;
   style?: any;
   phone?: string;
-  accept?:any;
+  accept?: any;
   // Callback for file drop
   onFileDrop?: (files: FileList) => void;
-  readOnly?:boolean;
+  readOnly?: boolean;
   rest?: any;
-  labelcolor?:any
+  labelcolor?: any;
 }
 
 const CustomInput: React.FC<CustomInputProps> = ({
@@ -101,7 +102,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
   ...rest
 }) => {
   const theme = useTheme();
-  const {colorMode} = useColorMode()
+  const { colorMode } = useColorMode();
   const [showPassword, setShowPassword] = useState(false);
 
   const handleTogglePassword = () => {
@@ -119,31 +120,40 @@ const CustomInput: React.FC<CustomInputProps> = ({
     [onFileDrop]
   );
 
+  const inputBg = useColorModeValue("transparent", "gray.700");
+
   const renderInputComponent = () => {
     switch (type) {
       case "password":
         return (
           <InputGroup>
-          <Input
-            type={showPassword ? "text" : "password"}
-            pr="4.5rem"
-            position="relative"
-            placeholder={placeholder}
-            value={value}
-            onChange={onChange}
-            name={name}
-            isRequired={required}
-            disabled={disabled}
-            fontSize="sm"
-            {...rest}
-          />
-          <InputRightElement cursor="pointer" onClick={()=> {if (handleTogglePassword) {handleTogglePassword()}}}>
-          {showPassword ? (
-              <RiEyeOffLine size={18} />
-            ) : (
-              <RiEyeLine size={18} />
-            )}
-          </InputRightElement>
+            <Input
+              type={showPassword ? "text" : "password"}
+              pr="4.5rem"
+              position="relative"
+              placeholder={placeholder}
+              value={value}
+              onChange={onChange}
+              name={name}
+              isRequired={required}
+              disabled={disabled}
+              fontSize="sm"
+              {...rest}
+            />
+            <InputRightElement
+              cursor="pointer"
+              onClick={() => {
+                if (handleTogglePassword) {
+                  handleTogglePassword();
+                }
+              }}
+            >
+              {showPassword ? (
+                <RiEyeOffLine size={18} />
+              ) : (
+                <RiEyeLine size={18} />
+              )}
+            </InputRightElement>
           </InputGroup>
         );
       case "number":
@@ -151,6 +161,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
           <Input
             type="text"
             style={style}
+            bg={inputBg}
             value={value}
             onKeyDown={(e: any) => {
               const regex = /^[0-9]*$/;
@@ -166,9 +177,10 @@ const CustomInput: React.FC<CustomInputProps> = ({
                 e.key === "Home" ||
                 e.key === "End"
               ) {
-                const newValue = e.key.startsWith("Arrow") ? e.target.value : e.target.value + e.key;
-                onChange &&
-                  onChange({ target: { name, value: newValue } });
+                const newValue = e.key.startsWith("Arrow")
+                  ? e.target.value
+                  : e.target.value + e.key;
+                onChange && onChange({ target: { name, value: newValue } });
               } else {
                 e.preventDefault();
               }
@@ -187,6 +199,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
             placeholder={placeholder}
             style={style}
             value={value}
+            bg={inputBg}
             onChange={onChange}
             name={name}
             disabled={disabled}
@@ -201,6 +214,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
             style={style}
             rows={rows || 3}
             placeholder={placeholder}
+            bg={inputBg}
             value={value}
             onChange={onChange}
             name={name}
@@ -262,14 +276,19 @@ const CustomInput: React.FC<CustomInputProps> = ({
             styles={{
               control: (baseStyles, state) => ({
                 ...baseStyles,
-                borderColor: state.isFocused ? 'gray.200' : 'gray.300',
-                backgroundColor:colorMode === "light" ? 'white' : 'transparent',
-                fontSize:'14px',
+                borderColor: state.isFocused ? "gray.200" : "gray.300",
+                backgroundColor: colorMode === "light" ? "white" : "#2D3748",
+                fontSize: "14px",
               }),
-              option: (styles,{isSelected}) => ({
-               ...styles,
-               backgroundColor:colorMode === "light" ? isSelected ? 'blue' : 'white' : '#2D3748',
-              })
+              option: (styles, { isSelected }) => ({
+                ...styles,
+                backgroundColor:
+                  colorMode === "light"
+                    ? isSelected
+                      ? "blue"
+                      : "white"
+                    : "#2D3748",
+              }),
             }}
             components={{
               IndicatorSeparator: null,
@@ -311,7 +330,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
                 },
                 inputProps: {
                   size: "md",
-                  fontSize:'14px',
+                  fontSize: "14px",
                   placeholder: placeholder,
                 },
               }}
@@ -349,15 +368,17 @@ const CustomInput: React.FC<CustomInputProps> = ({
             onChange={onChange}
             placeholder={placeholder}
             inputStyle={{
-              backgroundColor:colorMode === "light" ? 'transparent' : 'transparent',
-              borderColor:'gray.400'
+              backgroundColor:
+                colorMode === "light" ? "transparent" : "transparent",
+              borderColor: "gray.400",
             }}
-            dropdownStyle	= {{
-              backgroundColor:colorMode === "light" ? 'white' : '#2D3748',
-              color:colorMode === "light" ? 'black' : "gray.300",
+            dropdownStyle={{
+              backgroundColor: colorMode === "light" ? "white" : "#2D3748",
+              color: colorMode === "light" ? "black" : "gray.300",
             }}
             buttonStyle={{
-              backgroundColor:colorMode === "light" ? 'transparent' : 'transparent'
+              backgroundColor:
+                colorMode === "light" ? "transparent" : "transparent",
             }}
           />
         );
@@ -414,7 +435,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
             </Button>
           </div>
         );
-      case 'url':
+      case "url":
         return (
           <Input
             readOnly={readOnly}
@@ -434,6 +455,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
           <Input
             readOnly={readOnly}
             style={style}
+            bg={inputBg}
             type="text"
             placeholder={placeholder}
             value={value}

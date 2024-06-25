@@ -1,4 +1,4 @@
-import { Box, Grid, Heading, Text } from "@chakra-ui/react";
+import { Box, Grid, Heading, Text, useColorModeValue } from "@chakra-ui/react";
 // import FlipCard from "./component/FlipCard/Flipcard";
 import Card2 from "./component/Card2/Card2";
 import MultiCardComponent from "./component/MultiCardComponent/MultiCardComponent";
@@ -316,24 +316,37 @@ const Home2 = () => {
     prerequisites: "",
     short_desc: "",
     language: "",
+    tags: [""],
+    duration: {
+      hrs: "",
+      min: "",
+    },
+    additional: "",
   };
 
   const handleSubmit = (values: any, { setSubmitting, resetForm }: any) => {
     console.log("---------", values);
     setSubmitting(false);
     resetForm();
+    // setShowError(false)
   };
+
+  const insetShadow = useColorModeValue(
+    "rgb(0 0 0 / 15%) 0px 0px 12px", // No shadow in light mode
+    "0 0 10px rgba(255, 255, 255, 0.2)" // White shadow in dark mode
+  );
   return (
     <Box>
       <HeroSection2 />
       <Box m={2}>
         <Box
-          maxW={"80%"}
-          // bg={"gray.50"}
+          maxW={"75%"}
+          bg={useColorModeValue("gray.50", "blackAlpha.300")}
           mx={"auto"}
-          p={6}
+          p={8}
           rounded={10}
-          shadow="rgb(0 0 0 / 15%) 0px 0px 12px"
+          shadow={insetShadow}
+          // shadow="rgb(0 0 0 / 15%) 0px 0px 12px"
         >
           <CourseForm
             initialValues={initialValues}
