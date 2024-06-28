@@ -25,7 +25,7 @@ const DashWidgetCard = observer(() => {
       .catch((error: any) => {
         openNotification({
           type: "error",
-          message: error.message,
+          message: error?.message || "Something went wrong",
           title: "Failed to get dashboard data",
         });
       });
