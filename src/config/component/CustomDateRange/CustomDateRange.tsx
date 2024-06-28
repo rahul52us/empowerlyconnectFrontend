@@ -1,9 +1,10 @@
 import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css"; // theme css file
-import "./CustomDateRangeMobile.css";
-import "./CustomDateRangePicker.css";
+// import "./CustomDateRangeMobile.css";
+// import "./CustomDateRangePicker.css";
 import { DateRange, DateRangePicker } from "react-date-range";
 import format from "date-fns/format";
+import { IoMdCalendar } from "react-icons/io";
 import {
   Input,
   Popover,
@@ -11,8 +12,8 @@ import {
   PopoverContent,
   PopoverBody,
   useBreakpointValue,
-  FormLabel,
-  Flex,
+  Text,
+  Box,
 } from "@chakra-ui/react";
 
 interface CustomDateRangeProps {
@@ -22,7 +23,6 @@ interface CustomDateRangeProps {
   onEndDateChange: (endDate: Date) => void;
   isMobile?: boolean;
   months?: number;
-  label?:string
 }
 
 export default function CustomDateRange({
@@ -32,26 +32,46 @@ export default function CustomDateRange({
   onEndDateChange,
   isMobile = false,
   months = 2,
-  label
 }: CustomDateRangeProps): JSX.Element {
-
   const LargerThanMd = useBreakpointValue({ md: true });
+  const formattedStartDate = format(startDate, "d MMM yyyy");
+  const formattedEndDate = format(endDate, "d MMM yyyy");
 
-  return (isMobile || !LargerThanMd ) ? (
+  return isMobile || !LargerThanMd ? (
     <Popover placement="auto-end">
       <PopoverTrigger>
-        <Flex flexDirection="column">
-        {label && <FormLabel fontSize={"small"} mt={2}>{label}</FormLabel>}
-        <Input
+        {/* <Input
           name="datePicker"
-          value={`${format(startDate, "dd/MM/yyyy")} to ${format(
+          value={`${format(startDate, "d MMM yyyy")} to ${format(
             endDate,
-            "dd/MM/yyyy"
+            "d MMM yyyy"
           )}`}
           width={{ base: "14rem", lg: "14rem" }}
           textAlign="center"
-        />
-        </Flex>
+        /> */}
+        <Box position="relative" width={{ base: "14.5rem", lg: "14.5rem" }}>
+          <Input
+            name="datePicker"
+            value=""
+            // width={{ base: "14rem", lg: "14rem" }}
+            textAlign="center"
+          />
+          <Box
+            position="absolute"
+            top="0"
+            left="0"
+            right="0"
+            bottom="0"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+          >
+            <Text as="span" fontWeight="600" color={"gray.700"}>{formattedStartDate}</Text>
+            <Text as="span" fontWeight="500" color={"gray.500"} mx={1}>to</Text>
+            <Text as="span" fontWeight="600" color={"gray.700"} mr={1}>{formattedEndDate}</Text>
+            <IoMdCalendar fontSize={"20px"} color={"gray"}/>
+          </Box>
+        </Box>
       </PopoverTrigger>
       <PopoverContent width="auto">
         <PopoverBody>
@@ -63,7 +83,6 @@ export default function CustomDateRange({
             showPreview={true}
             editableDateInputs={true}
             moveRangeOnFirstSelection={false}
-            date={startDate}
             ranges={[
               {
                 startDate: startDate,
@@ -84,13 +103,12 @@ export default function CustomDateRange({
       <PopoverTrigger>
         <Input
           name="datePicker"
-          value={`${format(startDate, "dd/MM/yyyy")} to ${format(
+          value={`${format(startDate, "d MMM yyyy")} to ${format(
             endDate,
-            "dd/MM/yyyy"
+            "d MMM yyyy"
           )}`}
           width={{ lg: "18rem" }}
           textAlign="center"
-          minWidth="100%"
         />
       </PopoverTrigger>
       <PopoverContent width="auto">
@@ -103,14 +121,13 @@ export default function CustomDateRange({
             editableDateInputs={true}
             moveRangeOnFirstSelection={false}
             showPreview={true}
-            date={startDate}
-            // ranges={[
-            //   {
-            //     startDate: startDate,
-            //     endDate: endDate,
-            //     key: "selection",
-            //   },
-            // ]}
+            ranges={[
+              {
+                startDate: startDate,
+                endDate: endDate,
+                key: "selection",
+              },
+            ]}
             months={months}
             direction="horizontal"
             className="calendarElement"

@@ -152,6 +152,7 @@ const EmployeDetailsTable = observer(() => {
       key: "table-actions",
       type: "table-actions",
       props: {
+        // isSticky: true,
         row: { minW: 180, textAlign: "center" },
         column: { textAlign: "center" },
       },
@@ -160,7 +161,13 @@ const EmployeDetailsTable = observer(() => {
 
   return (
     <CustomTable
+      // cells={true}
       actions={{
+        search:{
+          show: true,
+          searchValue: searchQuery,
+          onSearchChange: (e: any) => setSearchQuery(e.target.value),
+        },
         applyFilter: {
           show: true,
           function: () => applyGetAllEmployes({ page: currentPage }),
@@ -233,12 +240,7 @@ const EmployeDetailsTable = observer(() => {
           },
         },
       }}
-      search={{
-        show : true,
-        searchValue : searchQuery,
-        onSearchChange: (e: any) => setSearchQuery(e.target.value),
-      }}
-      title="Employes Details"
+      // title="Employes Details"
       data={generateTableData(employes.data)}
       columns={employeTableColumns}
       loading={employes.loading}

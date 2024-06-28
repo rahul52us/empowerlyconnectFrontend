@@ -157,6 +157,11 @@ const UserTable = observer(() => {
   return (
     <CustomTable
       actions={{
+        search:{
+          show: true,
+          searchValue: searchQuery,
+          onSearchChange: (e: any) => setSearchQuery(e.target.value),
+        },
         applyFilter: {
           show: true,
           function: () => applyGetAllRecords({ page: currentPage }),
@@ -209,11 +214,7 @@ const UserTable = observer(() => {
           },
         },
       }}
-      search={{
-        show: true,
-        searchValue: searchQuery,
-        onSearchChange: (e: any) => setSearchQuery(e.target.value),
-      }}
+
       title="Employes Details"
       data={generateTableData(managerEmployes.data)}
       columns={employeTableColumns}

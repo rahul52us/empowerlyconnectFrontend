@@ -22,31 +22,28 @@ import {
 import TableLoader from "./TableLoader";
 import { formatDate } from "../../constant/dateUtils";
 import Pagination from "../pagination/Pagination";
-import { MdAddCircleOutline, MdEdit, MdUndo } from "react-icons/md";
-import { FiTrash } from "react-icons/fi";
+import { FiDelete } from "react-icons/fi";
 import CustomDateRange from "../CustomDateRange/CustomDateRange";
 import MultiDropdown from "../multiDropdown/MultiDropdown";
-import { BiComment, BiInfoSquare, BiSearch } from "react-icons/bi";
-import { IoChevronDownCircleOutline } from "react-icons/io5";
-import { FaEye } from "react-icons/fa";
+import { FaEdit, FaEye } from "react-icons/fa";
+import { IoMdAdd, IoMdInformationCircle } from "react-icons/io";
 
 interface Column {
-  headerName: string;
-  key: string;
+  headerName?: string;
+  key?: string;
   type?: string;
   function?: any;
   addkey?: any;
   props?: any;
+  actions?: any;
+  metaData?: {
+    component?: (row: RowData) => JSX.Element;
+    function?: (row: RowData) => void;
+  };
 }
 
 interface RowData {
   [key: string]: any;
-}
-
-interface searchProps {
-  show: boolean;
-  searchValue: any;
-  onSearchChange: any;
 }
 
 interface CustomTableProps {
@@ -57,81 +54,44 @@ interface CustomTableProps {
   loading: boolean;
   totalPages?: number;
   actions?: any;
-  extraProps?: any;
-  search?: searchProps;
+  cells?: boolean;
 }
 
 interface TableActionsProps {
   actions: any;
   column: any;
   row: any;
+  cells: boolean;
 }
-
-const Approvals = ({ row, column }: TableActionsProps) => {
-  return (
-    <Td>
-      <Flex justify="center">
-        {Array.isArray(row[column.key]) ? (
-          <Tooltip
-            label={
-              <>
-                {row[column.key].map((item: any, index: number) => (
-                  <Box key={index}>{item.reason}</Box>
-                ))}
-              </>
-            }
-          >
-            <IconButton aria-label="Comments" borderRadius={"50%"}>
-              <BiComment />
-            </IconButton>
-          </Tooltip>
-        ) : (
-          <Tooltip label={"No Remarks Found"}>
-            <IconButton aria-label="Comments" borderRadius={"50%"}>
-              <BiComment />
-            </IconButton>
-          </Tooltip>
-        )}
-      </Flex>
-    </Td>
-  );
-};
 
 const TableActions: React.FC<TableActionsProps> = ({
   actions,
   column,
   row,
+  cells,
 }) => {
   if (!actions) {
     actions = {};
   }
   const { actionBtn } = actions;
+  const cellProps = cells ? { border: "1px solid gray" } : {};
+
   return (
-    <Td {...column?.props?.row}>
-      <Flex columnGap={2} justifyContent="center">
-        {actionBtn?.viewKey?.showViewButton && (
-          <IconButton
-            // size="sm"
-            // p={0}
-            borderRadius={"50%"}
-            onClick={() => {
-              if (actionBtn?.viewKey?.function) actionBtn?.viewKey.function(row);
-            }}
-            aria-label=""
-            title={
-              actionBtn?.viewKey?.title
-                ? actionBtn?.viewKey?.title
-                : "View Data"
-            }
-          >
-            <FaEye />
-          </IconButton>
-        )}
+    <Td
+      // position="sticky" right={0} bg="white" zIndex={9999}
+      {...column?.props?.row}
+      {...cellProps}
+      position={column?.props?.isSticky ? "sticky" : "relative"}
+      right={column?.props?.isSticky ? "0" : undefined}
+      zIndex={column?.props?.isSticky ? "5" : undefined}
+      bgColor={column?.props?.isSticky ? "white" : undefined}
+    >
+      <Flex columnGap={0}>
         {actionBtn?.editKey?.showEditButton && (
           <IconButton
-            // size="sm"
-            // p={0}
-            borderRadius={"50%"}
+            size="lg"
+            bgColor={"transparent"}
+            color={"gray.700"}
             onClick={() => {
               if (actionBtn?.editKey?.function)
                 actionBtn?.editKey.function(row);
@@ -143,14 +103,32 @@ const TableActions: React.FC<TableActionsProps> = ({
                 : "Edit Data"
             }
           >
-            <MdEdit />
+            <FaEdit />
+          </IconButton>
+        )}
+        {actionBtn?.viewKey?.showViewButton && (
+          <IconButton
+            size="lg"
+            bgColor={"transparent"}
+            color={"gray.700"}
+            onClick={() => {
+              if (actionBtn?.addKey?.function) actionBtn?.viewKey.function(row);
+            }}
+            aria-label=""
+            title={
+              actionBtn?.viewKey?.title
+                ? actionBtn?.viewKey?.title
+                : "View Data"
+            }
+          >
+            <FaEye />
           </IconButton>
         )}
         {actionBtn?.deleteKey?.showDeleteButton && (
           <IconButton
-            // size="sm"
-            // p={0}
-            borderRadius={"50%"}
+            size="lg"
+            bgColor={"transparent"}
+            color={"red"}
             onClick={() => {
               if (actionBtn?.deleteKey?.function)
                 actionBtn?.deleteKey.function(row);
@@ -162,7 +140,7 @@ const TableActions: React.FC<TableActionsProps> = ({
                 : "Delete Data"
             }
           >
-            <FiTrash />
+            <FiDelete />
           </IconButton>
         )}
       </Flex>
@@ -174,7 +152,9 @@ const GenerateRows: React.FC<{
   column: Column;
   row: RowData;
   action: any;
-}> = ({ column, row, action }) => {
+  cells: boolean;
+}> = ({ column, row, action, cells }: any) => {
+  const cellProps = cells ? { border: "1px solid gray" } : {};
   switch (column.type) {
     case "date":
       return (
@@ -183,6 +163,7 @@ const GenerateRows: React.FC<{
           cursor="pointer"
           fontSize="sm"
           {...column?.props?.row}
+          {...cellProps}
         >
           {row[column.key] ? formatDate(row[column.key]) : "--"}
         </Td>
@@ -196,6 +177,7 @@ const GenerateRows: React.FC<{
           color="blue.400"
           textDecoration="underline"
           {...column?.props?.row}
+          {...cellProps}
           onClick={() => {
             if (column?.function) {
               column?.function(row);
@@ -212,6 +194,7 @@ const GenerateRows: React.FC<{
           cursor="pointer"
           fontSize="sm"
           {...column?.props?.row}
+          {...cellProps}
         >
           <Tooltip label={row[column.key]}>
             {typeof row[column.key] === "string"
@@ -227,18 +210,29 @@ const GenerateRows: React.FC<{
           cursor="pointer"
           fontSize="sm"
           {...column?.props?.row}
+          {...cellProps}
         >
           <Tooltip label={JSON.stringify(row[column.key])}>
-            <IconButton aria-label="" borderRadius={"50%"} fontSize="sm">
-              <BiInfoSquare />
+            <IconButton
+              aria-label=""
+              size="lg"
+              bgColor={"transparent"}
+              color={"gray.700"}
+            >
+              <IoMdInformationCircle />
             </IconButton>
           </Tooltip>
         </Td>
       );
     case "table-actions":
-      return <TableActions actions={action} column={column} row={row} />;
-    case "approvals":
-      return <Approvals actions={action} column={column} row={row} />;
+      return (
+        <TableActions
+          actions={action}
+          column={column}
+          row={row}
+          cells={cells}
+        />
+      );
     case "combineKey":
       return (
         <Td
@@ -246,9 +240,22 @@ const GenerateRows: React.FC<{
           cursor="pointer"
           fontSize="sm"
           {...column?.props?.row}
+          {...cellProps}
           isTruncated={true}
         >
           {row[column.key] || "--"}
+        </Td>
+      );
+    case "component":
+      return (
+        <Td
+          whiteSpace="normal"
+          cursor="pointer"
+          fontSize="sm"
+          {...column?.props?.row}
+          {...cellProps}
+        >
+          {column.metaData?.component ? column.metaData.component(row) : null}
         </Td>
       );
     default:
@@ -258,6 +265,7 @@ const GenerateRows: React.FC<{
           cursor="pointer"
           fontSize="sm"
           {...column?.props?.row}
+          {...cellProps}
           isTruncated={true}
         >
           {row[column.key] || "--"}
@@ -273,21 +281,47 @@ const CustomTable: React.FC<CustomTableProps> = ({
   serial,
   loading,
   actions,
-  search,
-  extraProps,
+  cells = false,
+  // isActions = false,
 }) => {
   const isMobile = useBreakpointValue({ base: true, md: false });
+  const cellProps = cells ? { border: "1px solid gray" } : {};
+
+
+  console.log(actions)
+
   return (
-    <Box border="3px solid lightgray" borderRadius={5} pb={2} shadow="lg">
+    <Box rounded={8} pb={2} boxShadow="rgb(0 0 0 / 20%) 0px 0px 8px">
+      {actions?.search && actions?.search?.show ? (
+        <Heading
+          p={title ? "20px 18px 0 18px" : "10px 9px 0 9px"}
+          fontSize={isMobile ? "sm" : "xl"}
+        >
+          {title || ""}
+        </Heading>
+      ) : null}
       <Flex
         justifyContent="space-between"
         alignItems="center"
-        p={title ? 4 : 0}
+        p={title ? 4 : 2}
         borderRadius="md"
         columnGap={2}
       >
-        <Heading fontSize={isMobile ? "sm" : "xl"}>{title || ""}</Heading>
-        <Flex alignItems="center" columnGap={2}>
+        {actions?.search && actions?.search?.show ? (
+          <Input
+            placeholder={actions?.search?.placeholder || "Search"}
+            value={actions?.search?.searchValue}
+            onChange={actions?.search?.onSearchChange}
+            borderRadius="5rem"
+            bg="white"
+            borderColor="gray.300"
+            _focus={{ borderColor: "blue.500", boxShadow: "outline" }}
+            maxW="25rem"
+          />
+        ) : (
+          <Heading fontSize={isMobile ? "sm" : "2xl"}>{title || ""}</Heading>
+        )}
+        <Flex alignItems="center" columnGap={2} ml="auto">
           {actions?.datePicker?.show && actions?.datePicker?.date && (
             <Box display={isMobile ? "none" : undefined}>
               <CustomDateRange
@@ -307,18 +341,8 @@ const CustomTable: React.FC<CustomTableProps> = ({
               />
             </Box>
           )}
-          {search?.show && (
-            <Box>
-              <Input
-                placeholder="Search"
-                fontSize="sm"
-                value={search.searchValue}
-                onChange={search.onSearchChange}
-              />
-            </Box>
-          )}
           {actions?.multidropdown?.show && (
-            <Box display={isMobile ? "none" : undefined}>
+            <Box display={isMobile ? "block" : undefined}>
               <MultiDropdown
                 title={actions?.multidropdown?.title}
                 dropdowns={actions?.multidropdown?.dropdowns || []}
@@ -332,29 +356,18 @@ const CustomTable: React.FC<CustomTableProps> = ({
                   onSearchChange:
                     actions?.multidropdown?.search?.onSearchChange,
                 }}
+                actions={actions}
               />
             </Box>
           )}
-          {actions?.applyFilter?.show && (
-            <IconButton
-              aria-label="Apply Filter"
-              onClick={() => actions?.applyFilter?.function?.()}
-            >
-              <BiSearch />
-            </IconButton>
-          )}
-
-          {/* Move Reset button into a dropdown menu */}
           {actions?.resetData?.show && (
             <Menu>
               <MenuButton
                 as={Button}
-                size="sm"
-                variant="solid"
+                size="md"
+                variant="outline"
                 colorScheme="red"
-                rightIcon={<IoChevronDownCircleOutline />}
-                _hover={{ bg: "red.500", color: "white" }}
-                _active={{ bg: "red.600", color: "white" }}
+                w={"6rem"}
               >
                 Actions
               </MenuButton>
@@ -363,17 +376,18 @@ const CustomTable: React.FC<CustomTableProps> = ({
                 bg="white"
                 border="1px solid"
                 borderColor="gray.200"
-                boxShadow="lg"
-                rounded="md"
+                boxShadow="md"
+                minW={"10rem"}
+                py={0}
               >
                 {actions?.actionBtn?.addKey?.showAddButton && (
                   <MenuItem
                     onClick={() =>
                       actions?.actionBtn?.addKey?.function?.("add")
                     }
-                    icon={<MdAddCircleOutline />}
-                    _hover={{ bg: "gray.100", color: "black" }}
-                    _focus={{ bg: "gray.200", color: "black" }}
+                    _hover={{ bg: "blue.100" }}
+                    icon={<IoMdAdd fontSize={"20px"} />}
+                    p={"0.7rem"}
                   >
                     Add
                   </MenuItem>
@@ -381,9 +395,9 @@ const CustomTable: React.FC<CustomTableProps> = ({
                 {actions?.resetData?.show && (
                   <MenuItem
                     onClick={actions?.resetData?.function}
-                    icon={<MdUndo />}
-                    _hover={{ bg: "gray.100", color: "black" }}
-                    _focus={{ bg: "gray.200", color: "black" }}
+                    icon={<IoMdAdd fontSize={"20px"} />}
+                    _hover={{ bg: "blue.100" }}
+                    p={"0.7rem"}
                   >
                     {actions?.resetData?.text || "Reset Data"}
                   </MenuItem>
@@ -393,16 +407,9 @@ const CustomTable: React.FC<CustomTableProps> = ({
           )}
         </Flex>
       </Flex>
-      <Box
-        overflowX="auto"
-        minH={"65vh"}
-        maxH={"65vh"}
-        overflowY={"auto"}
-        {...extraProps}
-      >
+
+      <Box overflow="auto" className="customScrollBar" maxH={"65vh"}>
         <Table
-          variant="striped"
-          colorScheme="teal"
           size={isMobile ? "sm" : "sm"}
           borderWidth="1px"
           borderRadius="lg"
@@ -412,9 +419,8 @@ const CustomTable: React.FC<CustomTableProps> = ({
             position="sticky"
             top="0"
             zIndex="9"
-            height="50px"
-          >
-            <Tr fontSize="xs">
+            height="50px">
+            <Tr>
               {serial?.show && (
                 <Th color="white" w={serial?.width || undefined}>
                   {serial?.text || "S.No."}
@@ -424,20 +430,38 @@ const CustomTable: React.FC<CustomTableProps> = ({
                 <Th
                   key={colIndex}
                   textAlign="center"
-                  color="white"
                   {...column?.props?.column}
+                  position={column?.props?.isSticky ? "sticky" : "relative"}
+                  right={column?.props?.isSticky ? "0" : undefined}
+                  bgColor={column?.props?.isSticky ? "black" : undefined}
+                  {...cellProps}
                 >
                   {column.headerName}
                 </Th>
               ))}
+              {/* {isActions && (
+                <Th
+                  color="white"
+                  position="sticky"
+                  right={0}
+                  zIndex="10"
+                  bg="blue.900"
+                >
+                  Actions
+                </Th>
+              )} */}
             </Tr>
           </Thead>
           <TableLoader loader={loading} show={data.length}>
-            <Tbody overflowY="scroll">
+            <Tbody overflowY="auto">
               {data.map((row, rowIndex) => (
-                <Tr fontSize="xs" key={rowIndex}>
+                <Tr key={rowIndex}>
                   {serial?.show && (
-                    <Td fontWeight="bold" w={serial?.width || undefined}>
+                    <Td
+                      fontWeight="bold"
+                      w={serial?.width || undefined}
+                      border={cells ? "1px solid gray" : undefined}
+                    >
                       {rowIndex + 1}
                     </Td>
                   )}
@@ -445,10 +469,14 @@ const CustomTable: React.FC<CustomTableProps> = ({
                     <GenerateRows
                       key={colIndex}
                       column={column}
-                      row={row || {}}
+                      row={row}
                       action={actions}
+                      cells={cells}
                     />
                   ))}
+                  {/* {isActions && (
+                    <TableActions actions={actions} column={{}} row={row} cells={cells} />
+                  )} */}
                 </Tr>
               ))}
             </Tbody>

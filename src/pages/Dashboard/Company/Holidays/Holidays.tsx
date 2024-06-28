@@ -150,7 +150,7 @@ const HolidaysDetailTable = observer(() => {
   return (
     <>
       <CustomTable
-        extraProps={{maxH : '50vh', minH : '50vh'}}
+        // extraProps={{maxH : '50vh', minH : '50vh'}}
         actions={{
           applyFilter: {
             show: false,
