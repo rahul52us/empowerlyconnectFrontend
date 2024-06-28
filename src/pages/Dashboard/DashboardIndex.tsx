@@ -10,6 +10,7 @@ import { headerHeight } from "../../config/constant/variable";
 import { Box, Grid, GridItem, Text } from "@chakra-ui/react";
 import { dashBreadCrumb } from "./utils/breadcrumb.constant";
 import ManagerEmployes from "./component/manager/ManagerEmployes";
+import PunchAttendence from "./PunchAttendence/PunchAttendence";
 
 const DashboardIndex = observer(() => {
   const {
@@ -38,7 +39,7 @@ const DashboardIndex = observer(() => {
           columnGap={4}
         >
           <ManagerEmployes />
-          <ManagerEmployes />
+          <PunchAttendence />
         </Grid>
         <DeleteModel
           id={store.quiz.openDeleteCategoryModal?.data?._id}

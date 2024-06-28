@@ -60,7 +60,7 @@ const PersonalDetailTable = observer(({ data, loading }: any) => {
         );
       },
       props: {
-        column: { textAlign: "left" },
+        column: { textAlign: "right" },
         row: {
           minW: 120,
           textAlign: "left",
