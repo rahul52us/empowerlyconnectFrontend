@@ -104,10 +104,10 @@ const UserTable = observer(() => {
         );
       },
       props: {
-        column: { textAlign: "left" },
+        column: { textAlign: "center" },
         row: {
           minW: 120,
-          textAlign: "left",
+          textAlign: "center",
           fontWeight: 500,
           textDecoration: "none",
         },
@@ -122,8 +122,8 @@ const UserTable = observer(() => {
       headerName: "UserName",
       key: "username",
       props: {
-        row: { minW: 160, textAlign: "left" },
-        column: { textAlign: "left" },
+        row: { minW: 160, textAlign: "center" },
+        column: { textAlign: "center" },
       },
     },
     {

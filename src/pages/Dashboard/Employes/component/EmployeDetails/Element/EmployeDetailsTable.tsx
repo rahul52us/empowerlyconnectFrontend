@@ -7,6 +7,7 @@ import { dashboard } from "../../../../../../config/constant/routes";
 import { employDropdownData, generateTableData } from "../utils/constant";
 import { tablePageLimit } from "../../../../../../config/constant/variable";
 import useDebounce from "../../../../../../config/component/customHooks/useDebounce";
+import { Avatar, Box, Tooltip } from "@chakra-ui/react";
 
 const EmployeDetailsTable = observer(() => {
   const navigate = useNavigate();
@@ -92,13 +93,27 @@ const EmployeDetailsTable = observer(() => {
         );
       },
       props: {
-        column: { textAlign: "left" },
+        column: { textAlign: "center" },
         row: {
-          minW: 120,
-          textAlign: "left",
+          minW: 140,
+          textAlign: "center",
           fontWeight: 500,
           textDecoration: "none",
         },
+      },
+    },
+    {
+      headerName: "Pic",
+      key: "designation",
+      type:'component',
+      metaData: {
+        component: () => (
+          <Box m={1}><Avatar src="" /></Box>
+        ),
+      },
+      props: {
+        row: { minW: 120, textAlign: "center" },
+        column: { textAlign: "center" },
       },
     },
     {
@@ -110,8 +125,8 @@ const EmployeDetailsTable = observer(() => {
       headerName: "UserName",
       key: "username",
       props: {
-        row: { minW: 160, textAlign: "left" },
-        column: { textAlign: "left" },
+        row: { minW: 160, textAlign: "center" },
+        column: { textAlign: "center" },
       },
     },
     {
@@ -135,7 +150,12 @@ const EmployeDetailsTable = observer(() => {
     {
       headerName: "Designation",
       key: "designation",
-      type:'array',
+      type:'component',
+      metaData: {
+        component: (e : any) => (
+          <Tooltip label={e?.designation}>Comments</Tooltip>
+        ),
+      },
       props: {
         row: { minW: 120, textAlign: "center" },
         column: { textAlign: "center" },
@@ -161,7 +181,7 @@ const EmployeDetailsTable = observer(() => {
 
   return (
     <CustomTable
-      // cells={true}
+      cells={true}
       actions={{
         search:{
           show: true,
@@ -240,7 +260,7 @@ const EmployeDetailsTable = observer(() => {
           },
         },
       }}
-      // title="Employes Details"
+      title="Employes Details"
       data={generateTableData(employes.data)}
       columns={employeTableColumns}
       loading={employes.loading}

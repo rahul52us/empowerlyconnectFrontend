@@ -22,11 +22,12 @@ import {
 import TableLoader from "./TableLoader";
 import { formatDate } from "../../constant/dateUtils";
 import Pagination from "../pagination/Pagination";
-import { FiDelete } from "react-icons/fi";
 import CustomDateRange from "../CustomDateRange/CustomDateRange";
 import MultiDropdown from "../multiDropdown/MultiDropdown";
 import { FaEdit, FaEye } from "react-icons/fa";
 import { IoMdAdd, IoMdInformationCircle } from "react-icons/io";
+import { MdDelete } from "react-icons/md";
+import { FcClearFilters } from "react-icons/fc";
 
 interface Column {
   headerName?: string;
@@ -86,7 +87,7 @@ const TableActions: React.FC<TableActionsProps> = ({
       zIndex={column?.props?.isSticky ? "5" : undefined}
       bgColor={column?.props?.isSticky ? "white" : undefined}
     >
-      <Flex columnGap={0}>
+      <Flex columnGap={0} justifyContent={"center"}>
         {actionBtn?.editKey?.showEditButton && (
           <IconButton
             size="lg"
@@ -140,7 +141,7 @@ const TableActions: React.FC<TableActionsProps> = ({
                 : "Delete Data"
             }
           >
-            <FiDelete />
+            <MdDelete />
           </IconButton>
         )}
       </Flex>
@@ -287,41 +288,34 @@ const CustomTable: React.FC<CustomTableProps> = ({
   const isMobile = useBreakpointValue({ base: true, md: false });
   const cellProps = cells ? { border: "1px solid gray" } : {};
 
-
-  console.log(actions)
-
   return (
     <Box rounded={8} pb={2} boxShadow="rgb(0 0 0 / 20%) 0px 0px 8px">
-      {actions?.search && actions?.search?.show ? (
-        <Heading
-          p={title ? "20px 18px 0 18px" : "10px 9px 0 9px"}
-          fontSize={isMobile ? "sm" : "xl"}
-        >
-          {title || ""}
-        </Heading>
-      ) : null}
       <Flex
         justifyContent="space-between"
         alignItems="center"
-        p={title ? 4 : 2}
+        p={title ? 3 : 2}
         borderRadius="md"
-        columnGap={2}
+        // columnGap={2}
       >
         {actions?.search && actions?.search?.show ? (
-          <Input
-            placeholder={actions?.search?.placeholder || "Search"}
-            value={actions?.search?.searchValue}
-            onChange={actions?.search?.onSearchChange}
-            borderRadius="5rem"
-            bg="white"
-            borderColor="gray.300"
-            _focus={{ borderColor: "blue.500", boxShadow: "outline" }}
-            maxW="25rem"
-          />
-        ) : (
-          <Heading fontSize={isMobile ? "sm" : "2xl"}>{title || ""}</Heading>
-        )}
+          <Heading fontSize={isMobile ? "sm" : "xl"}>{title || ""}</Heading>
+        ) : null}
+
         <Flex alignItems="center" columnGap={2} ml="auto">
+          {actions?.search && actions?.search?.show ? (
+            <Input
+              placeholder={actions?.search?.placeholder || "Search"}
+              value={actions?.search?.searchValue}
+              onChange={actions?.search?.onSearchChange}
+              borderRadius="5rem"
+              bg="white"
+              borderColor="gray.300"
+              _focus={{ borderColor: "blue.500", boxShadow: "outline" }}
+              maxW="25rem"
+            />
+          ) : (
+            <Heading fontSize={isMobile ? "sm" : "2xl"}>{title || ""}</Heading>
+          )}
           {actions?.datePicker?.show && actions?.datePicker?.date && (
             <Box display={isMobile ? "none" : undefined}>
               <CustomDateRange
@@ -367,7 +361,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
                 size="md"
                 variant="outline"
                 colorScheme="red"
-                w={"6rem"}
+                w={"12rem"}
               >
                 Actions
               </MenuButton>
@@ -395,11 +389,11 @@ const CustomTable: React.FC<CustomTableProps> = ({
                 {actions?.resetData?.show && (
                   <MenuItem
                     onClick={actions?.resetData?.function}
-                    icon={<IoMdAdd fontSize={"20px"} />}
+                    icon={<FcClearFilters fontSize={"20px"} />}
                     _hover={{ bg: "blue.100" }}
                     p={"0.7rem"}
                   >
-                    {actions?.resetData?.text || "Reset Data"}
+                    {actions?.resetData?.text || "Reset"}
                   </MenuItem>
                 )}
               </MenuList>
@@ -410,7 +404,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
 
       <Box overflow="auto" className="customScrollBar" maxH={"65vh"}>
         <Table
-          size={isMobile ? "sm" : "sm"}
+          size={isMobile ? "xs" : "xs"}
           borderWidth="1px"
           borderRadius="lg"
         >
@@ -419,7 +413,8 @@ const CustomTable: React.FC<CustomTableProps> = ({
             position="sticky"
             top="0"
             zIndex="9"
-            height="50px">
+            height="50px"
+          >
             <Tr>
               {serial?.show && (
                 <Th color="white" w={serial?.width || undefined}>
@@ -434,22 +429,12 @@ const CustomTable: React.FC<CustomTableProps> = ({
                   position={column?.props?.isSticky ? "sticky" : "relative"}
                   right={column?.props?.isSticky ? "0" : undefined}
                   bgColor={column?.props?.isSticky ? "black" : undefined}
+                  fontSize="xs"
                   {...cellProps}
                 >
                   {column.headerName}
                 </Th>
               ))}
-              {/* {isActions && (
-                <Th
-                  color="white"
-                  position="sticky"
-                  right={0}
-                  zIndex="10"
-                  bg="blue.900"
-                >
-                  Actions
-                </Th>
-              )} */}
             </Tr>
           </Thead>
           <TableLoader loader={loading} show={data.length}>

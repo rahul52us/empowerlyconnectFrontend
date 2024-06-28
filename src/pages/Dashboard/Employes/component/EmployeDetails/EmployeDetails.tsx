@@ -4,7 +4,7 @@ import { employesBreadCrumb } from "../../../utils/breadcrumb.constant";
 import EmployeDetailsTable from "./Element/EmployeDetailsTable";
 
 const EmployeDetails = observer(() => {
-return (
+  return (
     <div>
       <DashPageHeader
         title="Employes > Details"
