@@ -156,6 +156,7 @@ const UserTable = observer(() => {
 
   return (
     <CustomTable
+      cells={true}
       actions={{
         search:{
           show: true,

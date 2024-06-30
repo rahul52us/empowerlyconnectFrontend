@@ -401,7 +401,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
         </Flex>
       </Flex>
 
-      <Box overflow="auto" className="customScrollBar" maxH={"65vh"}>
+      <Box overflow="auto" className="customScrollBar" minH={'65vh'} maxH={"65vh"}>
         <Table
           size={isMobile ? "xs" : "xs"}
           borderWidth="1px"
