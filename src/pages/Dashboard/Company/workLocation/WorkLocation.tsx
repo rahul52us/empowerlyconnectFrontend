@@ -104,10 +104,10 @@ const WorkLocationDetails = observer(() => {
         setFormValues(() => ({...formValues, type : 'edit', data : e, open : true }))
       },
       props: {
-        column: { textAlign: "left" },
+        column: { textAlign: "center" },
         row: {
           minW: 120,
-          textAlign: "left",
+          textAlign: "center",
           fontWeight: 500,
           textDecoration: "none",
         },
@@ -132,7 +132,7 @@ const WorkLocationDetails = observer(() => {
   return (
     <>
       <CustomTable
-        // extraProps={{maxH : '50vh', minH : '50vh'}}
+        cells={true}
         actions={{
           applyFilter: {
             show: false,

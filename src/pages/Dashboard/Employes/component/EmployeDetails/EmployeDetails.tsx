@@ -3,6 +3,7 @@ import DashPageHeader from "../../../../../config/component/common/DashPageHeade
 import { employesBreadCrumb } from "../../../utils/breadcrumb.constant";
 import EmployeDetailsTable from "./Element/EmployeDetailsTable";
 
+// This is the main employe details file
 const EmployeDetails = observer(() => {
   return (
     <div>

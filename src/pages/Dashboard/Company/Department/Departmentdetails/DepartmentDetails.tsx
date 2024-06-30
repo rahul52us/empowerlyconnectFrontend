@@ -109,10 +109,10 @@ const DepartmentDetails = ({ selectedCategory, setSelectedCategory }: any) => {
       headerName: "title",
       key: "title",
       props: {
-        column: { textAlign: "left" },
+        column: { textAlign: "center" },
         row: {
           minW: 120,
-          textAlign: "left",
+          textAlign: "center",
           fontWeight: 500,
           textDecoration: "none",
         },
@@ -132,8 +132,8 @@ const DepartmentDetails = ({ selectedCategory, setSelectedCategory }: any) => {
       key: "table-actions",
       type: "table-actions",
       props: {
-        row: { minW: 180, textAlign: "left" },
-        column: { textAlign: "left" },
+        row: { minW: 180, textAlign: "center" },
+        column: { textAlign: "center" },
       },
     },
   ];
@@ -147,6 +147,7 @@ const DepartmentDetails = ({ selectedCategory, setSelectedCategory }: any) => {
         close={() => setSelectedCategory({ open: false, data: null, id: null })}
       >
         <CustomTable
+                  cells={true}
           columns={columns}
           data={data}
           loading={loading}

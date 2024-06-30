@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
-import {
-  employDropdownData,
-} from "../../Employes/component/EmployeDetails/utils/constant";
+import { employDropdownData } from "../../Employes/component/EmployeDetails/utils/constant";
 import store from "../../../../store/store";
 import CustomTable from "../../../../config/component/CustomTable/CustomTable";
 import AddHoliday from "./component/AddHoliday";
@@ -21,8 +19,8 @@ const HolidaysDetailTable = observer(() => {
   const [formValues, setFormValues] = useState<any>({
     open: false,
     loading: false,
-    type : 'add',
-    data : null
+    type: "add",
+    data: null,
   });
 
   const {
@@ -73,17 +71,23 @@ const HolidaysDetailTable = observer(() => {
     applyGetAllRecords();
   };
 
-  const deleteRecord = (data : any) => {
-    setFormValues(() => ({...formValues, loading : true}))
-    updateHoliday({ title : data.title?.trim(), delete : 1 })
+  const deleteRecord = (data: any) => {
+    setFormValues(() => ({ ...formValues, loading: true }));
+    updateHoliday({ title: data.title?.trim(), delete: 1 })
       .then((data: any) => {
         openNotification({
           title: "Deleted Successfully",
           message: data?.message,
           type: "success",
         });
-        applyGetAllRecords()
-        setFormValues(() => ({...formValues, loading : false , data : null, type : 'add', open : false}))
+        applyGetAllRecords();
+        setFormValues(() => ({
+          ...formValues,
+          loading: false,
+          data: null,
+          type: "add",
+          open: false,
+        }));
       })
       .catch((err: any) => {
         openNotification({
@@ -91,9 +95,9 @@ const HolidaysDetailTable = observer(() => {
           message: err?.data?.message,
           type: getStatusType(err.status),
         });
-        setFormValues(() => ({...formValues, loading : false}))
-      })
-  }
+        setFormValues(() => ({ ...formValues, loading: false }));
+      });
+  };
 
   const employeTableColumns = [
     {
@@ -101,13 +105,18 @@ const HolidaysDetailTable = observer(() => {
       key: "title",
       type: "tooltip",
       function: (e: any) => {
-        setFormValues(() => ({...formValues, type : 'edit', data : e, open : true }))
+        setFormValues(() => ({
+          ...formValues,
+          type: "edit",
+          data: e,
+          open: true,
+        }));
       },
       props: {
-        column: { textAlign: "left" },
+        column: { textAlign: "center" },
         row: {
           minW: 120,
-          textAlign: "left",
+          textAlign: "center",
           fontWeight: 500,
           textDecoration: "none",
         },
@@ -116,24 +125,24 @@ const HolidaysDetailTable = observer(() => {
     {
       headerName: "Date",
       key: "date",
-      type:"date",
+      type: "date",
       props: { row: { minW: 100, textAlign: "center" } },
     },
     {
       headerName: "Day",
       key: "day",
       props: {
-        row: { minW: 120, textAlign: "left" },
-        column: { textAlign: "left" },
+        row: { minW: 120, textAlign: "center" },
+        column: { textAlign: "center" },
       },
     },
     {
       headerName: "Description",
       key: "description",
-      type:"tooltip",
+      type: "tooltip",
       props: {
-        row: { minW: 160, textAlign: "left" },
-        column: { textAlign: "left" },
+        row: { minW: 160, textAlign: "center" },
+        column: { textAlign: "center" },
       },
     },
     {
@@ -141,8 +150,8 @@ const HolidaysDetailTable = observer(() => {
       key: "table-actions",
       type: "table-actions",
       props: {
-        row: {maxW:60, textAlign: "center" },
-        column: { maxW : 60, textAlign: "center" },
+        row: { maxW: 60, textAlign: "center" },
+        column: { maxW: 60, textAlign: "center" },
       },
     },
   ];
@@ -150,8 +159,14 @@ const HolidaysDetailTable = observer(() => {
   return (
     <>
       <CustomTable
-        // extraProps={{maxH : '50vh', minH : '50vh'}}
+        cells={true}
         actions={{
+          search:{
+            show: true,
+            placeholder:'Search by code and username',
+            searchValue: '',
+            onSearchChange:() => {},
+          },
           applyFilter: {
             show: false,
             function: () => applyGetAllRecords(),
@@ -165,13 +180,22 @@ const HolidaysDetailTable = observer(() => {
             addKey: {
               showAddButton: true,
               function: () => {
-                setFormValues(() => ({...formValues,open : true, type : 'add'}))
+                setFormValues(() => ({
+                  ...formValues,
+                  open: true,
+                  type: "add",
+                }));
               },
             },
             editKey: {
               showEditButton: true,
               function: (e: any) => {
-                setFormValues(() => ({...formValues, type : 'edit', data : e, open : true }))
+                setFormValues(() => ({
+                  ...formValues,
+                  type: "edit",
+                  data: e,
+                  open: true,
+                }));
               },
             },
             viewKey: {
@@ -183,7 +207,12 @@ const HolidaysDetailTable = observer(() => {
             deleteKey: {
               showDeleteButton: true,
               function: (dt: string) => {
-                setFormValues(() => ({...formValues, data : dt, open : true, type : 'delete'}))
+                setFormValues(() => ({
+                  ...formValues,
+                  data: dt,
+                  open: true,
+                  type: "delete",
+                }));
               },
             },
           },
@@ -226,9 +255,21 @@ const HolidaysDetailTable = observer(() => {
         loading={holidays.loading}
         serial={{ show: false, text: "S.No.", width: "10px" }}
       />
-      <AddHoliday formValues={formValues} setFormValues={setFormValues} getAllRecords={applyGetAllRecords}/>
-      <EditHoliday formValues={formValues} setFormValues={setFormValues} getAllRecords={applyGetAllRecords}/>
-      <DeleteHoliday formValues={formValues} setFormValues={setFormValues} deleteRecord={deleteRecord} />
+      <AddHoliday
+        formValues={formValues}
+        setFormValues={setFormValues}
+        getAllRecords={applyGetAllRecords}
+      />
+      <EditHoliday
+        formValues={formValues}
+        setFormValues={setFormValues}
+        getAllRecords={applyGetAllRecords}
+      />
+      <DeleteHoliday
+        formValues={formValues}
+        setFormValues={setFormValues}
+        deleteRecord={deleteRecord}
+      />
     </>
   );
 });

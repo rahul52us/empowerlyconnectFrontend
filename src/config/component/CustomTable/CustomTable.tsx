@@ -297,12 +297,12 @@ const CustomTable: React.FC<CustomTableProps> = ({
         borderRadius="md"
         // columnGap={2}
       >
-        {actions?.search && actions?.search?.show ? (
+        {title ? (
           <Heading fontSize={isMobile ? "sm" : "xl"}>{title || ""}</Heading>
         ) : null}
 
         <Flex alignItems="center" columnGap={2} ml="auto">
-          {actions?.search && actions?.search?.show ? (
+          {!isMobile && actions?.search && actions?.search?.show && (
             <Input
               placeholder={actions?.search?.placeholder || "Search"}
               value={actions?.search?.searchValue}
@@ -313,8 +313,6 @@ const CustomTable: React.FC<CustomTableProps> = ({
               _focus={{ borderColor: "blue.500", boxShadow: "outline" }}
               maxW="25rem"
             />
-          ) : (
-            <Heading fontSize={isMobile ? "sm" : "2xl"}>{title || ""}</Heading>
           )}
           {actions?.datePicker?.show && actions?.datePicker?.date && (
             <Box display={isMobile ? "none" : undefined}>
@@ -361,7 +359,8 @@ const CustomTable: React.FC<CustomTableProps> = ({
                 size="md"
                 variant="outline"
                 colorScheme="red"
-                w={"12rem"}
+                w={{base : "6rem", md : '11rem'}}
+                textAlign={'center'}
               >
                 Actions
               </MenuButton>

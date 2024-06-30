@@ -9,6 +9,7 @@ import { tablePageLimit } from "../../../../../../config/constant/variable";
 import useDebounce from "../../../../../../config/component/customHooks/useDebounce";
 import { Avatar, Box, Tooltip } from "@chakra-ui/react";
 
+// Employe Table
 const EmployeDetailsTable = observer(() => {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
@@ -185,6 +186,7 @@ const EmployeDetailsTable = observer(() => {
       actions={{
         search:{
           show: true,
+          placeholder:'Search by code and username',
           searchValue: searchQuery,
           onSearchChange: (e: any) => setSearchQuery(e.target.value),
         },
@@ -248,9 +250,9 @@ const EmployeDetailsTable = observer(() => {
           placeholder: "Apply Filters",
           search: {
             searchValue : searchQuery,
-            visible: false,
+            visible: true,
             placeholder: "Search Value here",
-            // onSearchChange: (e: any) => setSearchQuery(e),
+            onSearchChange: (e: any) => setSearchQuery(e),
           },
           dropdowns: dropdowns,
           onApply: () => applyGetAllEmployes({}),
