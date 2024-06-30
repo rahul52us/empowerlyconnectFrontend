@@ -6,7 +6,7 @@ const PersonalDetailUsersChart =  lazy(() => import("../../pages/Dashboard/Emplo
 const PageNotFound = lazy(() => import("../component/common/WebPages/PageNotFound"));
 
 const DashboardIndex = lazy(
-  () => import("../../pages/Dashboard/DashboardIndex")
+  () => import("../../pages/NewDash/NewDash")
 );
 const QuizDashIndex = lazy(
   () => import("../../pages/Dashboard/quiz/QuizIndex")
