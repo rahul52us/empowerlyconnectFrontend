@@ -7,11 +7,11 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const DashWidgetCard = observer(() => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const {
     auth: { openNotification },
     tripStore: { getTripCounts, tripCount },
-    Employe: { getEmployesCount, employesCounts }
+    Employe: { getEmployesCount, employesCounts },
   } = store;
 
   const fetchData = (getDataFn: any) =>
@@ -33,7 +33,12 @@ const DashWidgetCard = observer(() => {
 
   return (
     <Grid
-      templateColumns={{ base: "repeat(1, 1fr)", sm: "repeat(2, 1fr)", md: "repeat(4, 1fr)", lg: "repeat(4, 1fr)" }}
+      templateColumns={{
+        base: "repeat(1, 1fr)",
+        sm: "repeat(2, 1fr)",
+        md: "repeat(4, 1fr)",
+        lg: "repeat(5, 1fr)",
+      }}
       gap={4}
       marginX="auto"
     >
@@ -61,7 +66,13 @@ const DashWidgetCard = observer(() => {
           title: "Calender",
           link: dashboard.calender,
           loading: tripCount.loading,
-        }
+        },
+        {
+          count: 2000,
+          title: "Quiz",
+          link: dashboard.quiz,
+          loading: tripCount.loading,
+        },
       ].map((item, key) => (
         <GridItem key={key}>
           <WidgetCard
