@@ -8,6 +8,8 @@ import QuizScoresChart from "./Charts/QuizScoreChart";
 // import UserActivityFeed from "./UserActivityFeed";
 // import TodayActivityCalendar from "./Cards/UserProfileCard";
 import UserActivityFeed from "./UserActivityFeed";
+// import DynamicCalendar from "./Timeline";
+import CalendarApp from "./Timeline";
 
 const coursesData = [
   {
@@ -31,14 +33,15 @@ const quizcore = [
 export default function NewDash() {
   return (
     <Box>
-      <Grid templateColumns={"1fr 1fr"} gap={8}>
+      <Grid templateColumns={"2fr 1fr"} gap={8}>
         {coursesData.map((course, index) => (
           <MyCoursesCard key={index} course={course} />
         ))}
         <StudentActivityChart />
         {/* <TodayActivityCalendar activities={activities} /> */}
         <UserActivityFeed/>
-
+        <CalendarApp />
+        {/* <DynamicCalendar /> */}
       </Grid>
       <SimpleGrid columns={2}>
         <NewDashboardCard
