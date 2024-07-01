@@ -26,6 +26,7 @@ export const NewDashboardCard = ({
   return (
     <Box
       p={5}
+      h={'fit-content'}
       rounded="14"
       shadow={"rgba(0, 0, 0, 0.15) 0px 5px 15px 0px"}
       bg={cardBg}
