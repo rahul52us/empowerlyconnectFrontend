@@ -129,9 +129,9 @@ const LeaveDetails = observer(() => {
         }
       },
       props: {
-        column: { textAlign: "left" },
+        column: { textAlign: "center" },
         row: {
-          textAlign: "left",
+          textAlign: "center",
           fontWeight: 500,
           textDecoration: "none",
         },

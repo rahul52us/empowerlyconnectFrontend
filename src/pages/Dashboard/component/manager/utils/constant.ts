@@ -1,6 +1,22 @@
 export const managerEmployeColumns = [
-  { header: "E-code", key: "code" },
-  { header: "Name", key: "name" },
-  { header: "Username", key: "username" },
-  { header: "Designation", key: "designation" },
+  {
+    headerName: "E-code",
+    key: "code",
+    props: { row: { textAlign: "center" }, column: { textAlign: "center" } },
+  },
+  {
+    headerName: "Name",
+    key: "name",
+    props: { row: { textAlign: "center" }, column: { textAlign: "center" } },
+  },
+  {
+    headerName: "Username",
+    key: "username",
+    props: { row: { textAlign: "center" }, column: { textAlign: "center" } },
+  },
+  {
+    headerName: "Designation",
+    key: "designation",
+    props: { row: { textAlign: "center" }, column: { textAlign: "center" } },
+  },
 ];

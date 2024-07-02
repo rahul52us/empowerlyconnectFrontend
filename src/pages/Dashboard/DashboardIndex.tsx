@@ -7,7 +7,7 @@ import { deleteCategoryFunction } from "./quiz/component/Forms/utils/function";
 import DashChartContainer from "./component/DashChartContainer";
 import DashPageHeader from "../../config/component/common/DashPageHeader/DashPageHeader";
 import { headerHeight } from "../../config/constant/variable";
-import { Box, Grid, GridItem, Text } from "@chakra-ui/react";
+import { Box, Grid, GridItem, Text, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon } from "@chakra-ui/react";
 import { dashBreadCrumb } from "./utils/breadcrumb.constant";
 import ManagerEmployes from "./component/manager/ManagerEmployes";
 import PunchAttendence from "./PunchAttendence/PunchAttendence";
@@ -38,8 +38,40 @@ const DashboardIndex = observer(() => {
           templateColumns={{ base: "1fr", md: "1fr 1fr" }}
           columnGap={4}
         >
-          <ManagerEmployes />
-          <PunchAttendence />
+          <GridItem colSpan={{ base: 1, md: 1 }}>
+            <Accordion defaultIndex={[0]} allowMultiple>
+              <AccordionItem>
+                <h2>
+                  <AccordionButton>
+                    <Box flex="1" textAlign="left">
+                      Manager Employees
+                    </Box>
+                    <AccordionIcon />
+                  </AccordionButton>
+                </h2>
+                <AccordionPanel pb={4}>
+                  <ManagerEmployes />
+                </AccordionPanel>
+              </AccordionItem>
+            </Accordion>
+          </GridItem>
+          <GridItem colSpan={{ base: 1, md: 1 }}>
+            <Accordion defaultIndex={[0]} allowMultiple>
+              <AccordionItem>
+                <h2>
+                  <AccordionButton>
+                    <Box flex="1" textAlign="left">
+                      Punch Attendance
+                    </Box>
+                    <AccordionIcon />
+                  </AccordionButton>
+                </h2>
+                <AccordionPanel pb={4}>
+                  <PunchAttendence />
+                </AccordionPanel>
+              </AccordionItem>
+            </Accordion>
+          </GridItem>
         </Grid>
         <DeleteModel
           id={store.quiz.openDeleteCategoryModal?.data?._id}

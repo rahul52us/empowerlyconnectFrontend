@@ -56,6 +56,7 @@ interface CustomTableProps {
   totalPages?: number;
   actions?: any;
   cells?: boolean;
+  tableProps?:any
 }
 
 interface TableActionsProps {
@@ -283,17 +284,18 @@ const CustomTable: React.FC<CustomTableProps> = ({
   loading,
   actions,
   cells = false,
+  tableProps = {}
   // isActions = false,
 }) => {
   const isMobile = useBreakpointValue({ base: true, md: false });
   const cellProps = cells ? { border: "1px solid gray" } : {};
 
   return (
-    <Box rounded={8} pb={2} boxShadow="rgb(0 0 0 / 20%) 0px 0px 8px">
+    <Box rounded={8} pb={2} boxShadow="rgb(0 0 0 / 20%) 0px 0px 8px" border={'1px solid lightgray'}>
       <Flex
         justifyContent="space-between"
         alignItems="center"
-        p={title ? 3 : 2}
+        p={title ? 3 : 0}
         borderRadius="md"
         // columnGap={2}
       >
@@ -401,11 +403,12 @@ const CustomTable: React.FC<CustomTableProps> = ({
         </Flex>
       </Flex>
 
-      <Box overflow="auto" className="customScrollBar" minH={'65vh'} maxH={"65vh"}>
+      <Box overflow="auto" className="customScrollBar" minH={'65vh'} maxH={"65vh"} {...tableProps.tableBox}>
         <Table
           size={isMobile ? "xs" : "xs"}
           borderWidth="1px"
           borderRadius="lg"
+          {...tableProps.table}
         >
           <Thead
             bg="gray.700"
