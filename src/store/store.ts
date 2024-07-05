@@ -13,13 +13,14 @@ import ThemeStore from "./themeStore/themeStore";
 import NotesStore from "./notesStore/NotesStore";
 import ClassStore from "./classStore/ClassStore";
 import ExamStore from "./examStore/examStore";
-import BlogStore from './blogStore/blogStore'
+import BlogStore from "./blogStore/blogStore";
 import StudentStore from "./userTypes/StudentStore";
-import TripStore from './tripStore/tripStore';
-import EmployeStore from './employeStore/employeStore';
+import TripStore from "./tripStore/tripStore";
+import EmployeStore from "./employeStore/employeStore";
 import DepartmentStore from "./departmentStore/departmentStore";
 import CompanyStore from "./companyStore/companyStore";
 import RequestStore from "./requestStore/requestStore";
+import AttendencePunchStore from "./attendenceStore/attendencePunchStore";
 
 configure({ enforceActions: "never" });
 
@@ -45,7 +46,8 @@ const store = {
   Student: new StudentStore(),
   Employe: new EmployeStore(),
   DepartmentStore: new DepartmentStore(),
-  requestStore : new RequestStore()
+  requestStore: new RequestStore(),
+  AttendencePunch: new AttendencePunchStore(),
 };
 
 export default store;

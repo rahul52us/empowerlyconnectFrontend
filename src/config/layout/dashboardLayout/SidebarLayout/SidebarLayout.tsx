@@ -84,11 +84,11 @@ const generateMenuItems = (userRole : string) => {
     },
     {
       label: "My Attendence",
-      path: "/dashboard/class",
+      path: dashboard.attendence.index,
       submenus: [
         {
           label: "Daily",
-          path: "/dashboard/videos",
+          path: dashboard.attendence.index,
         },
         {
           label: "Monthly",

@@ -50,13 +50,21 @@ const DashboardLayout = observer(() => {
     <MainContainer>
       <SidebarContainer
         fullScreenMode={fullScreenMode}
-        className={fullScreenMode ? "fullscreen" : mediumScreenMode ? "mediumScreen" : ""}
+        className={
+          fullScreenMode ? "fullscreen" : mediumScreenMode ? "mediumScreen" : ""
+        }
       >
         <SidebarLayout />
       </SidebarContainer>
       <Container fullScreenMode={fullScreenMode}>
         <HeaderContainer
-          className={fullScreenMode ? "fullscreen" : mediumScreenMode ? "mediumScreen" : ""}
+          className={
+            fullScreenMode
+              ? "fullscreen"
+              : mediumScreenMode
+              ? "mediumScreen"
+              : ""
+          }
           sizeStatus={sizeStatus}
           mediumScreenMode={mediumScreenMode}
           fullScreenMode={fullScreenMode}
@@ -69,7 +77,13 @@ const DashboardLayout = observer(() => {
         </HeaderContainer>
         <ContentContainer
           mediumScreenMode={mediumScreenMode}
-          className={fullScreenMode ? "fullscreen" : mediumScreenMode ? "mediumScreen" : ""}
+          className={
+            fullScreenMode
+              ? "fullscreen"
+              : mediumScreenMode
+              ? "mediumScreen"
+              : ""
+          }
           fullScreenMode={fullScreenMode}
           sizeStatus={sizeStatus}
         >
@@ -126,7 +140,7 @@ const Container = styled.div<{ fullScreenMode: boolean }>`
   &.fullscreen {
     margin-left: 0;
   }
-  &.mediumscreen{
+  &.mediumscreen {
     margin-left: ${sidebarWidth};
   }
 `;
@@ -134,7 +148,7 @@ const Container = styled.div<{ fullScreenMode: boolean }>`
 const HeaderContainer = styled.div<{
   fullScreenMode: boolean;
   sizeStatus: boolean;
-  mediumScreenMode:boolean;
+  mediumScreenMode: boolean;
   backgroundColor: any;
 }>`
     height: ${headerHeight};
@@ -144,7 +158,11 @@ const HeaderContainer = styled.div<{
     right: 0;
     background-color:${(props) => props.backgroundColor};
     left: ${(props) =>
-      props.fullScreenMode || props.sizeStatus ? 0 : props.mediumScreenMode ? mediumSidebarWidth : sidebarWidth};
+      props.fullScreenMode || props.sizeStatus
+        ? 0
+        : props.mediumScreenMode
+        ? mediumSidebarWidth
+        : sidebarWidth};
     transition: all 0.3s ease-in-out;
 
     &.fullscreen {
@@ -162,14 +180,16 @@ const HeaderContainer = styled.div<{
 const ContentContainer = styled.div<{
   sizeStatus: boolean;
   fullScreenMode: boolean;
-  mediumScreenMode:boolean
+  mediumScreenMode: boolean;
 }>`
   padding: ${({ sizeStatus }) =>
     sizeStatus ? contentSmallBodyPadding : contentLargeBodyPadding};
   width: ${({ sizeStatus, fullScreenMode, mediumScreenMode }) =>
     fullScreenMode || sizeStatus
       ? "100vw"
-      :  mediumScreenMode ? `calc(100vw - ${mediumSidebarWidth})` : `calc(100vw - ${sidebarWidth})`};
+      : mediumScreenMode
+      ? `calc(100vw - ${mediumSidebarWidth})`
+      : `calc(100vw - ${sidebarWidth})`};
   overflow-x: hidden;
   height: calc(100vh - ${headerHeight});
   transition: all 0.3s ease-in-out;

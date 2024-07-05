@@ -100,6 +100,9 @@ const LeaveEditRequest = lazy(() => import('../../pages/Dashboard/Request/compon
 // Manager Request
 const ManagerRequest = lazy(() => import("../../pages/Dashboard/Request/ManagerRequest/index"))
 
+// Attendence Request
+const Attendence = lazy(() => import("../../pages/Dashboard/Attendence"))
+
 export const DashboardRoutes = [
   {
     element: <DashboardIndex />,
@@ -267,6 +270,12 @@ export const DashboardRoutes = [
     element : <LeaveEditRequest />,
     path : dashboard.request.uniqueEdit,
     privateRoutes : true
+  },
+
+  // Attendence
+  {
+    element : <Attendence />,
+    path : dashboard.attendence.index
   },
   // Not found
   {

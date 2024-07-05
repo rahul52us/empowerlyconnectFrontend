@@ -17,7 +17,7 @@ import Pagination from "../../pagination/Pagination";
 import TableLoader from "../../DataTable/TableLoader";
 
 interface Column {
-  header: string;
+  headerName: string;
   key: string;
 }
 
@@ -93,7 +93,7 @@ const NormalTable = ({
                   border={borderColor}
                   textAlign="center"
                 >
-                  {column.header}
+                  {column.headerName}
                 </Th>
               ))}
             </Tr>

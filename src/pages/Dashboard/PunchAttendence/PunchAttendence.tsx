@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { observer } from "mobx-react-lite";
 import CustomTable from "../../../config/component/CustomTable/CustomTable";
+import store from "../../../store/store";
+import { toJS } from "mobx";
+import { format } from "date-fns"; // Importing format function from date-fns
 
 interface GeolocationPosition {
   coords: {
@@ -11,6 +14,9 @@ interface GeolocationPosition {
 }
 
 const PunchAttendance: React.FC = observer(() => {
+  const {
+    AttendencePunch: { getRecentPunch, recentPunch },
+  } = store;
   const [userId, setUserId] = useState<string>("");
   const [location, setLocation] = useState<string>("");
   const [remarks, setRemarks] = useState<string>(""); // State for remarks
@@ -55,6 +61,22 @@ const PunchAttendance: React.FC = observer(() => {
     } catch {}
   };
 
+  useEffect(() => {
+    const today = new Date();
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const formatDate = (date: any) => format(date, "yyyy-MM-dd");
+    getRecentPunch({
+      startDate: formatDate(today),
+      endDate: formatDate(tomorrow),
+    })
+      .then(() => {})
+      .catch(() => {})
+      .finally(() => {});
+  }, [getRecentPunch]);
+
+  console.log("the recent punch are", toJS(recentPunch));
+
   // Punch-out function
   const handlePunchOut = async () => {
     try {
@@ -94,7 +116,7 @@ const PunchAttendance: React.FC = observer(() => {
     },
     {
       headerName: "In",
-      key: "inTime",
+      key: "punchInTime",
       props: {
         row: { textAlign: "center" },
         column: { textAlign: "center" },
@@ -102,7 +124,7 @@ const PunchAttendance: React.FC = observer(() => {
     },
     {
       headerName: "Out",
-      key: "outTime",
+      key: "punchOutTime",
       props: {
         row: { textAlign: "center" },
         column: { textAlign: "center" },
@@ -126,7 +148,7 @@ const PunchAttendance: React.FC = observer(() => {
     },
     {
       headerName: "Late Coming",
-      key: "lateComing",
+      key: "lateComingMinutes",
       props: {
         row: { textAlign: "center" },
         column: { textAlign: "center" },
@@ -134,7 +156,7 @@ const PunchAttendance: React.FC = observer(() => {
     },
     {
       headerName: "Early Going",
-      key: "earlyGoing",
+      key: "earlyGoingMinutes",
       props: {
         row: { textAlign: "center" },
         column: { textAlign: "center" },
@@ -142,39 +164,23 @@ const PunchAttendance: React.FC = observer(() => {
     },
   ];
 
-  const fakeData: any = [
-    {
-      date: "2024-07-01",
-      inTime: "09:35",
-      outTime: "18:00",
-      workingHours: "8:25",
-      status: "Present",
-      lateComing: "5 mins",
-      earlyGoing: "0 mins",
-    },
-    {
-      date: "2024-06-30",
-      inTime: "09:30",
-      outTime: "18:00",
-      workingHours: "8:30",
-      status: "Present",
-      lateComing: "0 mins",
-      earlyGoing: "0 mins",
-    }
-  ];
+  console.log(toJS(recentPunch))
 
   return (
     <React.Fragment>
       <CustomTable
         cells={true}
         title="Punch Attendence"
-        data={fakeData}
+        data={recentPunch.data}
         columns={columns}
         actions={{}}
-        loading={false}
-        tableProps={{tableBox : {size : 'md', minH : '35vh', maxH : '35vh'}, table : {size : 'md'}}}
+        loading={recentPunch.loading}
+        tableProps={{
+          tableBox: { size: "md", minH: "35vh", maxH: "35vh" },
+          table: { size: "md" },
+        }}
       />
-      <div style={{display : 'none'}}>
+      <div style={{ display: "none" }}>
         <h1>PunchAttendance System</h1>
         <input
           type="text"

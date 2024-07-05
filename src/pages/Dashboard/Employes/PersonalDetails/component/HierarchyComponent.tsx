@@ -39,7 +39,7 @@ const UserHierarchy: React.FC<ApiResponse> = ({ data }) => {
       </Flex>
       <Center>
         <Box>
-          <Heading as="h3" size="sm" mb={5} mt={2} textAlign="center"> 
+          <Heading as="h3" size="sm" mb={5} mt={2} textAlign="center">
             My Manager
           </Heading>
           {manager && <UserProfileCard userData={manager} />}
@@ -101,11 +101,11 @@ const UserHierarchy: React.FC<ApiResponse> = ({ data }) => {
             <NormalTable
               title="All Subordinates"
               columns={[
-                { header: "Name", key: "name" },
-                { header: "Code", key: "code" },
-                { header: "Username", key: "username" },
-                { header: "Department", key: "department" },
-                { header: "Designation", key: "designation" },
+                { headerName: "Name", key: "name" },
+                { headerName: "Code", key: "code" },
+                { headerName: "Username", key: "username" },
+                { headerName: "Department", key: "department" },
+                { headerName: "Designation", key: "designation" },
               ]}
               data={
                 subordinates?.length > 0
