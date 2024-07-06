@@ -10,11 +10,11 @@ interface ShowDataProps {
 const ShowData: FC<ShowDataProps> = ({ label, value, type = "single" }) => {
   return (
     <Box>
-      <Text color={"gray"} fontSize={"sm"}>
+      <Text color={"gray"} fontSize={"sm"}> 
         {label}
       </Text>
       {type === "single" ? (
-        <Text textTransform={"capitalize"} fontWeight={"semibold"}>
+        <Text  fontWeight={"semibold"}>
           {value}
         </Text>
       ) : (

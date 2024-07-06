@@ -16,4 +16,4 @@ const EmployeDetails = observer(() => {
   );
 });
 
-export default EmployeDetails;
+export default EmployeDetails; 
