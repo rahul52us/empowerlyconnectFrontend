@@ -43,7 +43,7 @@ const NormalTable = ({
   onSearchChange,
   searchValue,
   columns,
-} : NormalTableProps) => {
+}: NormalTableProps) => {
   const columnWidth = useBreakpointValue({
     base: "100%",
     sm: "25%",
@@ -81,7 +81,7 @@ const NormalTable = ({
           />
         </Box>
       </Flex>
-      <Box p={3} height={{ sm: "320px" }} overflowY="auto" maxWidth="100%">
+      <Box p={3} height={{ sm: "325px" }} overflowY="auto" maxWidth="100%">
         <Table variant="simple" width="100%" border={borderColor} size="sm">
           <Thead>
             <Tr bg={headerColor} height={cellHeight}>
@@ -136,18 +136,20 @@ const NormalTable = ({
         justifyContent="space-between"
         alignItems="center"
         p={2}
-        height={cellHeight}
+        // height={cellHeight}
         borderTop={borderColor}
         bg={headerColor}
       >
         <Heading fontSize="md" color={textColor}>
           Footer
         </Heading>
-        <Pagination
-          currentPage={currentPage}
-          onPageChange={onPageChange}
-          totalPages={totalPages}
-        />
+        <Box>
+          <Pagination
+            currentPage={currentPage}
+            onPageChange={onPageChange}
+            totalPages={totalPages}
+          />
+        </Box>
       </Flex>
     </Box>
   );

@@ -5,7 +5,7 @@ import { miniTablePageLimit } from "../../../../config/constant/variable";
 import { generateManagerData } from "./utils/function";
 import useDebounce from "../../../../config/component/customHooks/useDebounce";
 import { managerEmployeColumns } from "./utils/constant";
-import CustomTable from "../../../../config/component/CustomTable/CustomTable";
+import NormalTable from "../../../../config/component/Table/NormalTable/NormalTable";
 
 const ManagerEmployes = observer(() => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -53,26 +53,15 @@ const ManagerEmployes = observer(() => {
   };
 
   return (
-    <CustomTable
-      cells={true}
-      tableProps={{tableBox : { minH : '35vh', maxH : '35vh'}, table : {size : 'md'}}}
+    <NormalTable
       title="Team Members"
       data={generateManagerData(managerEmployes.data)}
       loading={managerEmployes.loading}
-      actions={{
-        search:{
-          show: true,
-          placeholder:'Search by code and username',
-          searchValue: searchQuery,
-          onSearchChange: (e: any) => setSearchQuery(e.target.value),
-        },
-        pagination: {
-          show: true,
-          onClick: handleChangePage,
-          currentPage: currentPage,
-          totalPages: managerEmployes.totalPages,
-        },
-      }}
+      searchValue={searchQuery}
+      onSearchChange={(e: any) => setSearchQuery(e.target.value)}
+      currentPage={currentPage}
+      totalPages={managerEmployes.totalPages || 1}
+      onPageChange={handleChangePage}
       columns={managerEmployeColumns}
     />
   );

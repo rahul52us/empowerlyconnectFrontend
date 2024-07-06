@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 import CustomInput from "../../../../../config/component/CustomInput/CustomInput";
 import { useEffect, useState } from "react";
 import store from "../../../../../store/store";
-import { format } from "date-fns";
+import { format, addDays } from "date-fns";
 import NormalTable from "../../../../../config/component/Table/NormalTable/NormalTable";
 
 const DailyAttendance = observer(() => {
@@ -15,9 +15,11 @@ const DailyAttendance = observer(() => {
 
   useEffect(() => {
     const formatDate = (date : any) => format(date, "yyyy-MM-dd");
+    const selectedDatePlusOne = addDays(selectedDate, 1);
+
     getRecentPunch({
       startDate: formatDate(selectedDate),
-      endDate: formatDate(selectedDate), // Using the same date for both start and end
+      endDate: formatDate(selectedDatePlusOne), // Using the next day for the end date
     })
       .then(() => {})
       .catch(() => {})

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { observer } from "mobx-react-lite";
-import CustomTable from "../../../config/component/CustomTable/CustomTable";
 import store from "../../../store/store";
 import { toJS } from "mobx";
 import { format } from "date-fns"; // Importing format function from date-fns
+import NormalTable from "../../../config/component/Table/NormalTable/NormalTable";
 
 interface GeolocationPosition {
   coords: {
@@ -168,17 +168,15 @@ const PunchAttendance: React.FC = observer(() => {
 
   return (
     <React.Fragment>
-      <CustomTable
-        cells={true}
+      <NormalTable
         title="Punch Attendence"
         data={recentPunch.data}
         columns={columns}
-        actions={{}}
         loading={recentPunch.loading}
-        tableProps={{
-          tableBox: { size: "md", minH: "35vh", maxH: "35vh" },
-          table: { size: "md" },
-        }}
+        currentPage={0}
+        onPageChange={() => {}}
+        onSearchChange={() => {}}
+        totalPages={1}
       />
       <div style={{ display: "none" }}>
         <h1>PunchAttendance System</h1>

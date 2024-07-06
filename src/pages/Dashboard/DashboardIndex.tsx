@@ -34,17 +34,12 @@ const DashboardIndex = observer(() => {
           </GridItem>
         </Grid>
         <Grid
-          display={checkPermission("dashboard", "view") ? undefined : "none"}
-          templateColumns="auto"
-          gridTemplateColumns={"1fr 1fr"}
+          display={checkPermission("dashboard", "view") ? "grid" : "none"}
+          templateColumns="1fr 1fr"
           columnGap={4}
         >
-          <GridItem>
-            <ManagerEmployes />
-          </GridItem>
-          <GridItem>
-            <PunchAttendence />
-          </GridItem>
+          <ManagerEmployes />
+          <PunchAttendence />
         </Grid>
 
         <DeleteModel

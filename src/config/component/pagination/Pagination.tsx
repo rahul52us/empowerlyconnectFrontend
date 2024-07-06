@@ -25,7 +25,7 @@ const Pagination = ({
       display="flex"
       alignItems="center"
       justifyContent="center"
-      marginTop="0.1rem"
+      // marginTop="0.1rem"
       {...props}
     >
       <Flex alignItems="center" gridColumnGap="5px">
