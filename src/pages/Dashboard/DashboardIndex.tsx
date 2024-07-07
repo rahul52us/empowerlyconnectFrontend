@@ -35,7 +35,7 @@ const DashboardIndex = observer(() => {
         </Grid>
         <Grid
           display={checkPermission("dashboard", "view") ? "grid" : "none"}
-          templateColumns="1fr 1fr"
+          gridTemplateColumns={{base :"1fr", md :"1fr 1fr"}}
           columnGap={4}
         >
           <ManagerEmployes />

@@ -19,6 +19,7 @@ import { useLocation } from "react-router-dom";
 import LoginModel from "./pages/Authentication/LoginModel/LoginModel";
 import store from "./store/store";
 import WebLoader from "./config/component/Loader/WebLoader";
+import ChatboxPopup from "./config/component/ChatBoxPopUp/ChatBoxPopUp";
 
 const App = observer(() => {
   const {auth : {webLoader}} = store
@@ -50,6 +51,7 @@ const App = observer(() => {
         <LoginModel />
         <DashSearchBar />
         <ThemeChangeContainer />
+        <ChatboxPopup />
         <ScrollToTopButton />
       </ErrorBoundary>
     </ChakraProvider>
