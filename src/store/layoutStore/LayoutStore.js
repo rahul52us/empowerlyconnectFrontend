@@ -1,20 +1,28 @@
-import { action, makeObservable, observable } from 'mobx';
+import { action, makeObservable, observable } from "mobx";
 
 class LayoutStore {
-  isCallapse = true
-  openMobileSideDrawer=true
-  selectMenu = localStorage.getItem('selected_menu') ? JSON.parse(localStorage.getItem('selected_menu')) : null
-  themeMode = localStorage.getItem('theme_mode') === 'dark' ? 'dark' : 'light';
-  headerSettingDrawer = localStorage.getItem('headerSettingDrawer') === 'true' ? true : false;
-  mediumScreenMode = localStorage.getItem('mediumScreenMode') === 'true' ? true : false;
-  fullScreenMode = localStorage.getItem('fullScreenMode') === 'true' ? true : false;
-  MobileSidebar = localStorage.getItem('MobileSidebar') === 'true' ? true : false;
-  SearchDialog = localStorage.getItem('SearchDialog') === 'true' ? true : false;
-  showDashboardNote = localStorage.getItem('showDashboardNote') === 'true' ? true : false;
-  openNotification = localStorage.getItem('OpenNotification') === 'true' ? true : false;
+  isCallapse = true;
+  openMobileSideDrawer = false;
+  selectMenu = localStorage.getItem("selected_menu")
+    ? JSON.parse(localStorage.getItem("selected_menu"))
+    : null;
+  themeMode = localStorage.getItem("theme_mode") === "dark" ? "dark" : "light";
+  headerSettingDrawer =
+    localStorage.getItem("headerSettingDrawer") === "true" ? true : false;
+  mediumScreenMode =
+    localStorage.getItem("mediumScreenMode") === "true" ? true : false;
+  fullScreenMode =
+    localStorage.getItem("fullScreenMode") === "true" ? true : false;
+  MobileSidebar =
+    localStorage.getItem("MobileSidebar") === "true" ? true : false;
+  SearchDialog = localStorage.getItem("SearchDialog") === "true" ? true : false;
+  showDashboardNote =
+    localStorage.getItem("showDashboardNote") === "true" ? true : false;
+  openNotification =
+    localStorage.getItem("OpenNotification") === "true" ? true : false;
   constructor() {
     makeObservable(this, {
-      selectMenu:observable,
+      selectMenu: observable,
       headerSettingDrawer: observable,
       fullScreenMode: observable,
       MobileSidebar: observable,
@@ -22,85 +30,85 @@ class LayoutStore {
       showDashboardNote: observable,
       themeMode: observable,
       openNotification: observable,
-      mediumScreenMode:observable,
-      isCallapse:observable,
-      openMobileSideDrawer:observable,
-      setSelectedMenu:action,
+      mediumScreenMode: observable,
+      isCallapse: observable,
+      openMobileSideDrawer: observable,
+      setSelectedMenu: action,
       setShowDashboardNode: action,
       headerSettingDrawerFun: action,
       fullScreenModeFun: action,
-      mediumScreenModeFun:action,
+      mediumScreenModeFun: action,
       MobileSidebarFun: action,
       SearchDialogFun: action,
       changeThemeMode: action,
       setOpenNotification: action,
       resetLayout: action,
-      openDashSidebarFun:action
+      openDashSidebarFun: action,
     });
   }
 
   setSelectedMenu = (status) => {
-    localStorage.setItem('selected_menu',JSON.stringify(status))
-    this.selectMenu = status
-  }
+    localStorage.setItem("selected_menu", JSON.stringify(status));
+    this.selectMenu = status;
+  };
 
   openDashSidebarFun = (status) => {
-    this.isCallapse = status
-    console.log('the status are', status)
-  }
+    this.isCallapse = status;
+    console.log("the status are", status);
+  };
 
   setOpenMobileSideDrawer = (status) => {
-    this.openMobileSideDrawer = status
-  }
+    this.openMobileSideDrawer = status;
+  };
 
   headerSettingDrawerFun = (status) => {
     this.headerSettingDrawer = status;
-    localStorage.setItem('headerSettingDrawer', status);
+    localStorage.setItem("headerSettingDrawer", status);
   };
 
   fullScreenModeFun = (status) => {
     this.fullScreenMode = status;
-    localStorage.setItem('fullScreenMode', status);
+    localStorage.setItem("fullScreenMode", status);
   };
 
   mediumScreenModeFun = (status) => {
     this.mediumScreenMode = status;
-    localStorage.setItem('mediumScreenMode', status);
+    localStorage.setItem("mediumScreenMode", status);
   };
 
   MobileSidebarFun = (status) => {
     this.MobileSidebar = status;
-    localStorage.setItem('MobileSidebar', status);
+    localStorage.setItem("MobileSidebar", status);
   };
 
   SearchDialogFun = (status) => {
     this.SearchDialog = status;
-    localStorage.setItem('SearchDialog', status);
+    localStorage.setItem("SearchDialog", status);
   };
 
   setShowDashboardNode = (status) => {
     this.showDashboardNote = status;
-    localStorage.setItem('showDashboardNote', status);
+    localStorage.setItem("showDashboardNote", status);
   };
 
   changeThemeMode = (status) => {
     this.themeMode = status;
-    localStorage.setItem('theme_mode', status);
+    localStorage.setItem("theme_mode", status);
   };
 
   setOpenNotification = (status) => {
     this.openNotification = status;
-    localStorage.setItem('OpenNotification', status);
+    localStorage.setItem("OpenNotification", status);
   };
 
   resetLayout = () => {
-    localStorage.setItem('headerSettingDrawer', false);
-    localStorage.setItem('fullScreenMode', false);
-    localStorage.setItem('MobileSidebar', false);
-    localStorage.setItem('SearchDialog', false);
-    localStorage.setItem('showDashboardNote', false);
-    localStorage.setItem('theme_mode', 'light');
-    localStorage.setItem('OpenNotification', false);
+    localStorage.setItem("headerSettingDrawer", false);
+    localStorage.setItem("fullScreenMode", false);
+    localStorage.setItem("MobileSidebar", false);
+    localStorage.setItem("SearchDialog", false);
+    localStorage.setItem("showDashboardNote", false);
+    localStorage.setItem("theme_mode", "light");
+    localStorage.setItem("OpenNotification", false);
   };
 }
 

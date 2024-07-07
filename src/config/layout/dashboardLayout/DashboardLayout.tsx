@@ -87,7 +87,7 @@ const DashboardLayout = observer(() => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isCallapse]);
+  }, [isCallapse,openDashSidebarFun]);
 
   console.log("the isCollapse are", isCallapse);
   return user ? (

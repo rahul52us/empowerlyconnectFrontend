@@ -179,6 +179,7 @@ const NotificationComponent: React.FC = () => {
       px={{base:4, md:5}}
       borderBottom={"1px solid"}
       borderColor={"gray.200"}
+      zIndex={999999}
     >
       <Avatar src={notification.userAvatar} size="md" mr={3} />
       <Box>
@@ -210,6 +211,7 @@ const NotificationComponent: React.FC = () => {
       justifyContent="center"
       alignItems="center"
       mr={1}
+      zIndex={9999999999}
     >
       <Menu isOpen={dropdownOpen} onClose={handleModalClose}>
         <MenuButton
