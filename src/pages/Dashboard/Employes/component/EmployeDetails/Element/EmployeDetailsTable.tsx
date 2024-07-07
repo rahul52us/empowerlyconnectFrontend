@@ -303,8 +303,8 @@ const EmployeDetailsTable = observer(() => {
           <DrawerCloseButton />
           {/* <DrawerHeader>Create your account</DrawerHeader> */}
 
-          <DrawerBody p={0}>
-            {isOpen && employeeId && (
+          <DrawerBody>
+              {isOpen && employeeId && (
               // <IndividualEmployeeDetails
               //   employeeId={employeeId}
 

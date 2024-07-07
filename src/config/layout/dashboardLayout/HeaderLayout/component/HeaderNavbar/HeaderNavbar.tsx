@@ -9,7 +9,9 @@ import HeaderChatMessage from "./HeaderChatMessage/HeaderChatMessage";
 import store from "../../../../../../store/store";
 
 const HeaderNavbar = observer(() => {
-  const {layout : {MobileSidebarFun}} = store
+  const {
+    layout: { MobileSidebarFun },
+  } = store;
   const [isLargerThan1020] = useMediaQuery("(min-width: 1020px)");
 
   return (

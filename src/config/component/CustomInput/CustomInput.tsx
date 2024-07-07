@@ -311,6 +311,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
               disabled={disabled}
               disabledDates={disabledDates}
               usePortal={false}
+
               configs={{
                 dateFormat: "dd-MM-yyyy",
               }}

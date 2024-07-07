@@ -81,11 +81,20 @@ const requestBreadCrumb = {
   { label: "Home", link: "/" },
   { label: "Dashboard", link: dashboard.home },
   { label: "Request" },
-],leave : [
+],
+leave : [
   { label: "Home", link: "/" },
   { label: "Request", link: dashboard.request.index },
   { label: "Leave" },
 ]};
+
+const attendenceBreadCrumb = {
+  attendence : [
+    { label: "Home", link: "/" },
+    { label: "Dashboard", link: dashboard.home },
+    { label: "Attendence" },
+  ]
+}
 
 export {
   videoBreadCrumb,
@@ -96,5 +105,6 @@ export {
   employesBreadCrumb,
   departmentsBreadCrumb,
   companyBreadCrumb,
-  requestBreadCrumb
+  requestBreadCrumb,
+  attendenceBreadCrumb
 };

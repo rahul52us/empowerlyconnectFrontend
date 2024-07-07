@@ -1,10 +1,11 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Text, useColorModeValue } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import CustomInput from "../../../../../config/component/CustomInput/CustomInput";
-import { useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import store from "../../../../../store/store";
 import { format, addDays } from "date-fns";
 import NormalTable from "../../../../../config/component/Table/NormalTable/NormalTable";
+import { SearchIcon } from "@chakra-ui/icons";
 
 const DailyAttendance = observer(() => {
   const {
@@ -13,18 +14,25 @@ const DailyAttendance = observer(() => {
 
   const [selectedDate, setSelectedDate] = useState(new Date());
 
-  useEffect(() => {
-    const formatDate = (date : any) => format(date, "yyyy-MM-dd");
+  const formatDate = (date: Date) => format(date, "yyyy-MM-dd");
+
+  const fetchRecordsData = useCallback(() => {
     const selectedDatePlusOne = addDays(selectedDate, 1);
 
     getRecentPunch({
       startDate: formatDate(selectedDate),
-      endDate: formatDate(selectedDatePlusOne), // Using the next day for the end date
+      endDate: formatDate(selectedDatePlusOne),
     })
       .then(() => {})
       .catch(() => {})
       .finally(() => {});
-  }, [getRecentPunch, selectedDate]);
+  }, [selectedDate, getRecentPunch]);
+
+  const handleDateChange = (date: Date) => {
+    if (date) {
+      setSelectedDate(date);
+    }
+  };
 
   const columns = [
     { headerName: "Date", key: "date" },
@@ -36,15 +44,20 @@ const DailyAttendance = observer(() => {
     { headerName: "Early Going", key: "earlyGoingMinutes" },
   ];
 
-  const handleDateChange = (date : any) => {
-    if (date) {
-      setSelectedDate(date);
-    }
-  };
+  const bgColor = useColorModeValue("gray.50", "gray.800");
+  const borderColor = useColorModeValue("gray.200", "gray.600");
+  const boxShadow = useColorModeValue("md", "dark-lg");
 
   return (
-    <Box borderWidth="1px" borderColor="gray.200" borderRadius="md" p={5}>
-      <Flex align="center" mb={5}>
+    <Box
+      borderWidth="1px"
+      borderColor={borderColor}
+      borderRadius="md"
+      p={3}
+      boxShadow={boxShadow}
+      bg={bgColor}
+    >
+      <Flex align="center" mb={6}>
         <Text fontWeight="bold" mr={2}>
           Date:
         </Text>
@@ -55,8 +68,17 @@ const DailyAttendance = observer(() => {
           value={selectedDate}
           placeholder="Select Date"
         />
+        <Button
+          ml={{ base: 0, md: 4 }}
+          mt={{ base: 4, md: 0 }}
+          colorScheme="teal"
+          onClick={fetchRecordsData}
+          leftIcon={<SearchIcon />}
+        >
+          Search
+        </Button>
       </Flex>
-      <Flex justify="space-between" align="center" mb={4}>
+      <Flex justify="space-between" align="center" mb={6}>
         <Flex align="center" flex="1">
           <Text fontWeight="bold" mr={2}>
             Employee:
@@ -70,7 +92,14 @@ const DailyAttendance = observer(() => {
           <Text>SS-298</Text>
         </Flex>
       </Flex>
-      <Box overflowX="auto">
+      <Box
+        overflowX="auto"
+        borderWidth="1px"
+        borderColor={borderColor}
+        borderRadius="md"
+        p={3}
+        bg={useColorModeValue("white", "gray.700")}
+      >
         <NormalTable
           columns={columns}
           data={recentPunch.data}
@@ -78,6 +107,7 @@ const DailyAttendance = observer(() => {
           currentPage={0}
           totalPages={0}
           onPageChange={() => {}}
+          title="Daily Punch"
         />
       </Box>
     </Box>

@@ -12,7 +12,7 @@ import { observer } from "mobx-react-lite";
 import store from "../../../../store/store";
 import { dashboard } from "../../../constant/routes";
 
-const generateMenuItems = (userRole : string) => {
+const generateMenuItems = (userRole: string) => {
   const commonMenuItems = [
     {
       label: "Dashboard",
@@ -84,29 +84,29 @@ const generateMenuItems = (userRole : string) => {
     },
     {
       label: "My Attendence",
-      path: dashboard.attendence.index,
+      path: `${dashboard.attendence.index}?tab=daily`,
       submenus: [
         {
           label: "Daily",
-          path: dashboard.attendence.index,
+          path: `${dashboard.attendence.index}?tab=daily`,
         },
         {
           label: "Monthly",
-          path: "/dashboard/videos",
+          path: `${dashboard.attendence.index}?tab=monthly`,
         },
         {
           label: "Yearly",
-          path: "/dashboard/class",
+          path: `${dashboard.attendence.index}?tab=yearly`,
         },
         {
           label: "Leave Encashment",
-          path: "/dashboard/videos",
+          path: `${dashboard.attendence.index}?tab=leave-ledger`,
         },
       ],
-    }
+    },
   ];
 
-  if (userRole === 'manager') {
+  if (userRole === "manager") {
     const managerMenuItems = [
       {
         label: "Team Attendence",
@@ -133,7 +133,7 @@ const generateMenuItems = (userRole : string) => {
       {
         label: "Team Request",
         path: dashboard.request.userList,
-      }
+      },
     ];
 
     // Insert manager-specific menu items at desired positions
@@ -157,9 +157,9 @@ const generateMenuItems = (userRole : string) => {
         {
           label: "View Policies",
           path: "/dashboard/company",
-        }
+        },
       ],
-    })
+    });
   }
 
   if (userRole !== "admin" && userRole !== "superadmin") {
@@ -170,16 +170,18 @@ const generateMenuItems = (userRole : string) => {
         {
           label: "Employees Directory",
           path: dashboard.employes.personalDetails,
-        }
+        },
       ],
-    })
+    });
   }
 
   return commonMenuItems;
 };
 
 const SidebarLayout = observer(() => {
-  const { auth: { user } } = store;
+  const {
+    auth: { user },
+  } = store;
   const menuItems = generateMenuItems(user.role);
 
   return (
@@ -191,10 +193,12 @@ const SidebarLayout = observer(() => {
         ))}
       </VStack>
       <VStack spacing={4} align="stretch" mb={2}>
-        <SidebarElement items={{
-          label: "Settings",
-          path: "/dashboard",
-        }} />
+        <SidebarElement
+          items={{
+            label: "Settings",
+            path: "/dashboard",
+          }}
+        />
       </VStack>
     </Flex>
   );

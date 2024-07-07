@@ -1,189 +1,306 @@
-import React from "react";
+import { useState } from "react";
 import {
-  Badge,
   Box,
-  Divider,
   Flex,
   IconButton,
-  Image,
+  Avatar,
+  Text,
   Menu,
   MenuButton,
   MenuList,
-  Text,
-  useDisclosure,
+  MenuItem,
+  Badge,
+  Tabs,
+  TabList,
+  Tab,
+  TabPanels,
+  TabIndicator,
+  TabPanel,
+  Image,
 } from "@chakra-ui/react";
-import styles from './blinking.module.css';
-import { FiBell } from "react-icons/fi";
-import { useState } from "react";
-import { BiTime } from "react-icons/bi";
-
+import { BellIcon, CheckIcon, ChevronDownIcon } from "@chakra-ui/icons";
+import HandLike from '../../../../../../assets/icon_images/no-notifications.png'
 interface Notification {
   id: number;
-  type: "message" | "deadline" | "update";
-  text: string;
+  userName: string;
+  userAvatar: string;
+  action: string;
+  target: string;
   time: string;
-  image?: string;
+  designation: string;
+  read: boolean;
+  type: string;
 }
 
-const HeaderNotification: React.FC = () => {
-  const [notifications] = useState<Notification[]>([
-    {
-      id: 1,
-      type: "message",
-      text: "New message received",
-      time: "10 min",
-      image:
-        "https://res.cloudinary.com/dsckn1jjj/image/upload/v1711637410/taskManager/modified.jpg",
-    },
-    {
-      id: 2,
-      type: "deadline",
-      text: "Task deadline approaching",
-      time: "1 hour",
-      image:
-        "https://res.cloudinary.com/dsckn1jjj/image/upload/v1711674003/taskManager/334843157_977901480284799_1399147790687063389_n%20%281%29.jpg", // Placeholder image URL
-    },
-    {
-      id: 3,
-      type: "update",
-      text: "New update available",
-      time: "2 days",
-      image:
-        "https://res.cloudinary.com/dsckn1jjj/image/upload/v1711651813/taskManager/WhatsApp%20Image%202024-03-29%20at%2000.13.36_33e5c4ea.jpg",
-    },
-    {
-      id: 4,
-      type: "update",
-      text: "New update available",
-      time: "2 days",
-      image:
-        "https://res.cloudinary.com/dsckn1jjj/image/upload/v1711635563/taskManager/WhatsApp%20Image%202024-03-20%20at%2017.54.37_3199f02c_magicstudio_2h8r6rwgi0g.png",
-    },
-    { id: 5, type: "update", text: "New update available", time: "2 days" },
-  ]);
+const notifications: Notification[] = [
+  {
+    id: 1,
+    userName: "Sara Salah",
+    userAvatar:
+      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80",
+    action: "raised issue on the",
+    target: "Purchase Order No:PR-0003",
+    time: "2m",
+    designation: "Software Engineer",
+    read: false,
+    type: "inbox",
+  },
+  {
+    id: 3,
+    userName: "Jane Doe",
+    userAvatar:
+      "https://images.unsplash.com/photo-1450297350677-623de575f31c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80",
+    action: "Liked your reply on",
+    target: "Test with TDD",
+    time: "1h",
+    designation: "QA Engineer",
+    read: false,
+    type: "inbox",
+  },
+  {
+    id: 4,
+    userName: "Abigail Bennett",
+    userAvatar:
+      "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=398&q=80",
+    action: "placed new Purchase Order",
+    target: "",
+    time: "3h",
+    designation: "Designer",
+    read: true,
+    type: "team",
+  },
+  // {
+  //   id: 5,
+  //   userName: "John Smith",
+  //   userAvatar:
+  //     "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80",
+  //   action: "raised issue on the",
+  //   target: "Purchase Order No:PR-0004",
+  //   time: "5m",
+  //   designation: "Software Engineer",
+  //   read: false,
+  //   type: "team",
+  // },
+  {
+    id: 6,
+    userName: "Emily Johnson",
+    userAvatar:
+      "https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80",
+    action: "placed new Purchase Order",
+    target: "",
+    time: "1h",
+    designation: "Product Manager",
+    read: true,
+    type: "inbox",
+  },
+  {
+    id: 7,
+    userName: "Jessica Williams",
+    userAvatar:
+      "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=398&q=80",
+    action: "placed new Purchase Order",
+    target: "",
+    time: "4h",
+    designation: "Designer",
+    read: true,
+    type: "inbox",
+  },
+  {
+    id: 8,
+    userName: "David Jones",
+    userAvatar:
+      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80",
+    action: "raised issue on the",
+    target: "Purchase Order No:PR-0005",
+    time: "10m",
+    designation: "Software Engineer",
+    read: false,
+    type: "inbox",
+  },
+  {
+    id: 9,
+    userName: "Patricia Miller",
+    userAvatar:
+      "https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80",
+    action: "placed new Purchase Order",
+    target: "",
+    time: "5h",
+    designation: "Product Manager",
+    read: true,
+    type: "inbox",
+  },
+  {
+    id: 10,
+    userName: "Anna Davis",
+    userAvatar:
+      "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=398&q=80",
+    action: "placed new Purchase Order",
+    target: "",
+    time: "7h",
+    designation: "Designer",
+    read: true,
+    type: "team",
+  },
+];
 
-  const unreadCount = notifications.length;
+const NotificationComponent: React.FC = () => {
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState("All");
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const MessageContainer = ({ item }: any) => {
-    return (
-      <Flex flexDirection="column" cursor="pointer">
-        <Flex
-          p={4}
-          borderBottom="2px solid lightgray"
-          justifyContent="space-between"
-        >
-          <Flex alignItems="center">
-            <Image
-              src={item.image}
-              borderRadius="full"
-              boxSize="45px"
-              objectFit="cover"
-              title={item.type}
-            />
-            <Flex flexDirection="column" ml={3}>
-              <Text fontWeight="bold">{item.type}</Text>
-              <Text fontSize="sm" color="gray.600" maxWidth="300px">
-                {item.text}
-              </Text>
-            </Flex>
-          </Flex>
-          <Flex alignItems="center">
-            <BiTime fontSize="xs" />
-            <Text fontSize="xs" ml={2}>
-              {item.time}
-            </Text>
-          </Flex>
-        </Flex>
-      </Flex>
-    );
+  const filterNotifications = (notifications: Notification[], type: string) => {
+    if (selectedItem === "Unread") {
+      return notifications.filter(notification => !notification.read && notification.type === type);
+    } else if (selectedItem === "Read") {
+      return notifications.filter(notification => notification.read && notification.type === type);
+    } else {
+      return notifications.filter(notification => notification.type === type);
+    }
   };
 
+
+  const filteredInboxNotifications = filterNotifications(notifications, "inbox");
+  const filteredTeamNotifications = filterNotifications(notifications, "teams");
+
+  const inboxCount = filteredInboxNotifications.length;
+  const teamCount = filteredTeamNotifications.length;
+
+  const handleModalClose = () => {
+    setDropdownOpen(false);
+    setSelectedItem('All');
+  }
+
+
+  const renderNotificationItem = (notification: Notification, index: number) => (
+    <MenuItem
+      key={index}
+      display="flex"
+      alignItems="center"
+      py={3}
+      px={{base:4, md:5}}
+      borderBottom={"1px solid"}
+      borderColor={"gray.200"}
+    >
+      <Avatar src={notification.userAvatar} size="md" mr={3} />
+      <Box>
+        <Text fontSize="sm">
+          <Text as="span" fontWeight="bold" color="gray.700">
+            {notification.userName}
+          </Text>{" "}
+          {notification.action}{" "}
+          {notification.target && (
+            <Text as="span" fontWeight="bold" color="gray.700">
+              {notification.target}
+            </Text>
+          )}
+          .
+        </Text>
+        <Text fontSize="sm" color={"gray.500"}>
+          {notification.time}{"  "} &#8226;
+          <Text as="span" ml={2}>
+            {notification.designation}
+          </Text>
+        </Text>
+      </Box>
+    </MenuItem>
+  );
+
   return (
-    <Flex position="relative" align="center">
-      <Menu isOpen={isOpen} onClose={onClose} closeOnSelect={false}>
+    <Flex
+      position="relative"
+      justifyContent="center"
+      alignItems="center"
+      mr={1}
+    >
+      <Menu isOpen={dropdownOpen} onClose={handleModalClose}>
         <MenuButton
           as={IconButton}
-          icon={<FiBell />}
-          variant="ghost"
-          aria-label="Notifications"
-          fontSize="xl"
-          onClick={onOpen}
-          mr={2}
+          icon={<BellIcon />}
+          isRound={true}
+          position="relative"
+          bg="transparent"
+          fontSize={"25px"}
+          _focus={{ boxShadow: "outline" }}
+          onClick={() => setDropdownOpen(!dropdownOpen)}
         />
-        <MenuList minWidth="350px" p={0} borderRight={10} mt={1.5} zIndex={9999999}>
-          <Flex
-            m={0}
-            p={3}
-            pb={3.5}
-            bgColor="#3b4650"
-            justifyContent="space-between"
-            alignItems="center"
-            textColor="white"
-            borderRadius={5}
-            borderBottomRightRadius={0}
-            borderBottomLeftRadius={0}
-          >
-            <Box>
-              <Text>Notifications</Text>
-            </Box>
-            <Flex columnGap={4}>
-              <Text textDecoration="underline" cursor="pointer">
-                mark as read
-              </Text>
-              <Text textDecoration="underline" cursor="pointer">
-                clear
-              </Text>
-            </Flex>
-          </Flex>
-          <Box maxHeight="300px" overflowY="auto">
-            {notifications.map((item: any, index: number) => {
-              return <MessageContainer item={item} key={index} />;
-            })}
-          </Box>
-          {notifications.length === 0 && (
-            <Flex h="120px" justifyContent="center" flexDirection="column">
-              <Box>
-                <Text fontSize="sm" cursor="pointer" textAlign="center">
-                  No notifications Are found
+        <Badge
+          colorScheme="red"
+          borderRadius="full"
+          position="absolute"
+          top="-1px"
+          right="-1px"
+          px={1.5}
+        >
+          {notifications.length}
+        </Badge>
+        <MenuList py={0} borderRadius={"10px"} mx={1} width={{base:"22rem", md:"24rem"}}>
+          <Flex p={2} gap="4" align={"center"} justify={"space-between"} borderBottom={"1px solid"} borderColor={"gray.200"}>
+            <Text fontSize={"20px"} fontWeight="600" px={2}>Notifications</Text>
+            <Menu placement="bottom-end">
+              <MenuButton>
+                <Text fontSize="16px">
+                  {selectedItem} <ChevronDownIcon />{" "}
                 </Text>
-              </Box>
-            </Flex>
-          )}
-          <Divider />
-          <Flex justifyContent="center" p={3} bgColor="#f6f7fb">
-            <Text
-              textDecoration="underline"
-              fontSize="sm"
-              cursor="pointer"
-              fontWeight="bold"
-            >
-              Show All
-            </Text>
+              </MenuButton>
+              <MenuList minW={"8rem"} fontSize="sm">
+                <MenuItem justifyContent={"space-between"} onClick={() => setSelectedItem("All")} gap={6}>
+                  All{selectedItem === "All" && <CheckIcon />}{" "}
+                </MenuItem>
+                <MenuItem justifyContent={"space-between"} onClick={() => setSelectedItem("Unread")} gap={6}>
+                  Unread{selectedItem === "Unread" && <CheckIcon />}
+                </MenuItem>
+                <MenuItem justifyContent={"space-between"} onClick={() => setSelectedItem("Read")} gap={6}>
+                  Read{selectedItem === "Read" && <CheckIcon />}
+                </MenuItem>
+              </MenuList>
+            </Menu>
           </Flex>
+          <Tabs pos={"relative"} variant='unstyled' py={3}>
+            <TabList px={2} >
+              <Tab gap={2}>
+                <Text>Inbox</Text>
+                <Text px={1.5} bg={"teal.100"} borderRadius={"8px"} >{inboxCount}</Text>
+              </Tab>
+              <Tab gap={2}>
+                <Text>Team</Text>
+                <Text px={1.5} bg={"teal.100"} borderRadius={"5px"}>{teamCount}</Text>
+              </Tab>
+            </TabList>
+            <TabIndicator height='4px' bg='teal.500' borderTopRadius='10px' />
+            <TabPanels mt={1} borderTop={"1px solid"} borderColor={"gray.200"} h={"18rem"} overflowY={"auto"} className="customScrollBar">
+              <TabPanel py={2} px={0}>
+                {inboxCount > 0 ? (
+                  filteredInboxNotifications.map((notification, index) =>
+                    renderNotificationItem(notification, index)
+                  )
+                ) : (
+                  <Flex flexDirection="column" alignItems="center">
+                    <Image src={HandLike} w="300px" />
+                    <Text fontSize="lg" fontWeight="700">
+                      No Notifications
+                    </Text>
+                  </Flex>
+                )}
+              </TabPanel>
+              <TabPanel py={2} px={0}>
+                {teamCount > 0 ? (
+                  filteredTeamNotifications.map((notification, index) =>
+                    renderNotificationItem(notification, index)
+                  )
+                ) : (
+                  <Flex flexDirection="column" alignItems="center">
+                    <Image src={HandLike} w="220px" />
+                    <Text fontSize="lg" fontWeight="700">
+                      No Notifications
+                    </Text>
+                  </Flex>
+                )}
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
         </MenuList>
       </Menu>
-      <>
-      {unreadCount > 0 && (
-        <Badge
-          className={styles.blink}
-          position="absolute"
-          top="-2px"
-          right="-3px"
-          borderRadius="full"
-          variant="solid"
-          colorScheme="red"
-          fontSize="0.8em"
-          px={2}
-          py={1}
-        >
-          {unreadCount}
-        </Badge>
-      )}
-    </>
     </Flex>
   );
 };
 
-export default HeaderNotification;
+export default NotificationComponent;
