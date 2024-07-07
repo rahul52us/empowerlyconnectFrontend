@@ -11,6 +11,7 @@ import {
   Thead,
   Tr,
   useBreakpointValue,
+  useColorMode,
   useColorModeValue,
 } from "@chakra-ui/react";
 import Pagination from "../../pagination/Pagination";
@@ -44,6 +45,7 @@ const NormalTable = ({
   searchValue,
   columns,
 }: NormalTableProps) => {
+  const {colorMode} = useColorMode()
   const columnWidth = useBreakpointValue({
     base: "100%",
     sm: "25%",
@@ -110,7 +112,7 @@ const NormalTable = ({
                 data.map((row: any, rowIndex: number) => (
                   <Tr
                     key={rowIndex}
-                    bg={rowIndex % 2 === 0 ? bgColor : "white"}
+                    bg={rowIndex % 2 === 0 ? bgColor : colorMode === "light" ? "white" : "gray.800"}
                     height={cellHeight}
                   >
                     {columns.map((column, colIndex) => (
@@ -133,16 +135,13 @@ const NormalTable = ({
         </Table>
       </Box>
       <Flex
-        justifyContent="space-between"
+        justifyContent="end"
         alignItems="center"
         p={2}
         // height={cellHeight}
         borderTop={borderColor}
         bg={headerColor}
       >
-        <Heading fontSize="md" color={textColor}>
-          Footer
-        </Heading>
         <Box>
           <Pagination
             currentPage={currentPage}

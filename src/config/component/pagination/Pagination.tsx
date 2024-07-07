@@ -1,5 +1,5 @@
 import ReactPaginate from "react-paginate";
-import { Box, Flex, IconButton } from "@chakra-ui/react";
+import { Box, Flex, IconButton, useColorMode } from "@chakra-ui/react";
 import { MdFirstPage, MdLastPage, MdNavigateBefore, MdNavigateNext } from "react-icons/md";
 import "./pagination.css";
 
@@ -16,6 +16,8 @@ const Pagination = ({
   onPageChange,
   props,
 }: PaginationProps) => {
+  const { colorMode } = useColorMode();
+
   const handlePageChange = (selectedItem: { selected: number }) => {
     onPageChange(selectedItem.selected + 1);
   };
@@ -25,7 +27,6 @@ const Pagination = ({
       display="flex"
       alignItems="center"
       justifyContent="center"
-      // marginTop="0.1rem"
       {...props}
     >
       <Flex alignItems="center" gridColumnGap="5px">
@@ -34,14 +35,13 @@ const Pagination = ({
           icon={<MdFirstPage />}
           onClick={() => onPageChange(1)}
           isDisabled={currentPage === 1}
-          color="gray.700"
-          _disabled={{ color: 'gray.700' }}
+          color={colorMode === "light" ? "gray.700" : "whiteAlpha.700"}
+          _disabled={{ color: colorMode === "light" ? "gray.700" : "whiteAlpha.700" }}
         />
         <ReactPaginate
           previousLabel={<MdNavigateBefore />}
           nextLabel={<MdNavigateNext />}
           breakLabel="..."
-          // pageCount={5}
           pageCount={totalPages}
           forcePage={currentPage - 1}
           onPageChange={handlePageChange}
@@ -60,8 +60,8 @@ const Pagination = ({
           icon={<MdLastPage />}
           onClick={() => onPageChange(totalPages)}
           isDisabled={currentPage === totalPages}
-          color="gray.700"
-          _disabled={{ color: 'gray.700' }}
+          color={colorMode === "light" ? "gray.700" : "whiteAlpha.700"}
+          _disabled={{ color: colorMode === "light" ? "gray.700" : "whiteAlpha.700" }}
         />
       </Flex>
     </Box>

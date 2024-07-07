@@ -11,6 +11,7 @@ import { Box, Grid, GridItem, Text } from "@chakra-ui/react";
 import { dashBreadCrumb } from "./utils/breadcrumb.constant";
 import ManagerEmployes from "./component/manager/ManagerEmployes";
 import PunchAttendence from "./PunchAttendence/PunchAttendence";
+import NewDash from "../NewDash/NewDash";
 
 const DashboardIndex = observer(() => {
   const {
@@ -35,13 +36,12 @@ const DashboardIndex = observer(() => {
         </Grid>
         <Grid
           display={checkPermission("dashboard", "view") ? "grid" : "none"}
-          gridTemplateColumns={{base :"1fr", md :"1fr 1fr"}}
+          gridTemplateColumns={{ base: "1fr", lg: "1fr 1fr" }}
           columnGap={4}
         >
           <ManagerEmployes />
           <PunchAttendence />
         </Grid>
-
         <DeleteModel
           id={store.quiz.openDeleteCategoryModal?.data?._id}
           open={store.quiz.openDeleteCategoryModal?.open}
@@ -54,6 +54,7 @@ const DashboardIndex = observer(() => {
           </Box>
         </DeleteModel>
       </Box>
+      <NewDash />
       {/* <ProfileCard title="title" /> */}
     </>
   );

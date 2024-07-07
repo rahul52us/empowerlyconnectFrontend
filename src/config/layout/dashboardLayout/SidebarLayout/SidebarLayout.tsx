@@ -11,6 +11,7 @@ import SidebarElement from "./element/SidebarElement";
 import { observer } from "mobx-react-lite";
 import store from "../../../../store/store";
 import { dashboard } from "../../../constant/routes";
+import Sidebar1 from "../Sidebar/Sidebar1";
 
 const generateMenuItems = (userRole: string) => {
   const commonMenuItems = [
@@ -204,28 +205,42 @@ const SidebarLayout = observer(() => {
   );
 });
 
-const SidebarMainLayout = observer(() => {
-  const {
-    layout: { MobileSidebar, MobileSidebarFun },
-  } = store;
-  const [isLargerThan1020] = useMediaQuery("(min-width: 1020px)");
+const SidebarMainLayout = observer(
+  ({
+    isCollapsed,
+    onItemClick,
+    onLeafItemClick,
+    openMobileSideDrawer,
+    setOpenMobileSideDrawer,
+  }: any) => {
+    const {
+      layout: { MobileSidebar, MobileSidebarFun },
+    } = store;
+    const [isLargerThan1020] = useMediaQuery("(min-width: 1020px)");
 
-  return isLargerThan1020 ? (
-    <SidebarLayout />
-  ) : (
-    <Drawer
-      isOpen={MobileSidebar}
-      onClose={() => {
-        MobileSidebarFun(false);
-      }}
-    >
-      <DrawerContent p={0} m={0}>
-        <DrawerBody p={0} m={0}>
-          <SidebarLayout />
-        </DrawerBody>
-      </DrawerContent>
-    </Drawer>
-  );
-});
+    return isLargerThan1020 ? (
+      <SidebarLayout />
+    ) : (
+      <Drawer
+        isOpen={MobileSidebar}
+        onClose={() => {
+          MobileSidebarFun(false);
+        }}
+      >
+        <DrawerContent p={0} m={0}>
+          <DrawerBody p={0} m={0}>
+            <Sidebar1
+              isCollapsed={isCollapsed}
+              onItemClick={onItemClick}
+              onLeafItemClick={onLeafItemClick}
+              openMobileSideDrawer={openMobileSideDrawer}
+              setOpenMobileSideDrawer={setOpenMobileSideDrawer}
+            />
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
+    );
+  }
+);
 
 export default SidebarMainLayout;

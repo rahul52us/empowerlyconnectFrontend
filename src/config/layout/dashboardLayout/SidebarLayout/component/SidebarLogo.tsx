@@ -7,12 +7,11 @@ import { headerHeight } from "../../../../constant/variable";
 
 const SidebarLogo = observer(() => {
   const {
-    layout: { mediumScreenMode },
+    layout: { isCallapse },
   } = store;
   const navigate = useNavigate();
   return (
     <Flex
-      mb={3}
       bgGradient="linear-gradient(to right, #ff9d01, #ffaa01)"
       justifyContent="center"
       flexDirection="column"
@@ -20,7 +19,7 @@ const SidebarLogo = observer(() => {
       height={headerHeight}
     >
       <Box cursor="pointer" onClick={() => navigate(dashboard.home)}>
-        {mediumScreenMode ? (
+        {isCallapse ? (
           <Text fontWeight={600}>TF</Text>
         ) : (
           <Image

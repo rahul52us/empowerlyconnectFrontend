@@ -9,8 +9,8 @@ interface CitySelectProps {
   onChange: (value: any) => void;
   name: string;
   label?: string;
-  showError?:boolean;
-  error?:any
+  showError?: boolean;
+  error?: any;
 }
 
 const CitySelect: React.FC<CitySelectProps> = ({
@@ -21,19 +21,17 @@ const CitySelect: React.FC<CitySelectProps> = ({
   name,
   label,
   showError,
-  error
+  error,
 }) => {
   const [cities, setCities] = useState<any[]>([]);
-
 
   useEffect(() => {
     const fetchCities = async () => {
       if (country && state) {
         const stateCities = await City.getCitiesOfState(country, state);
         setCities(stateCities || []);
-      }
-      else{
-        setCities([])
+      } else {
+        setCities([]);
       }
     };
 
@@ -43,8 +41,8 @@ const CitySelect: React.FC<CitySelectProps> = ({
   const handleCityChange = (selectedOption: any) => {
     if (selectedOption?.isoCode) {
       onChange(selectedOption.isoCode);
-    }else{
-      onChange('')
+    } else {
+      onChange("");
     }
   };
   const getStateNameByCode = (code: string) => {
@@ -53,7 +51,7 @@ const CitySelect: React.FC<CitySelectProps> = ({
       return { label: selectedState.name, isoCode: selectedState.name };
     }
     return null;
-  }
+  };
 
   return (
     <CustomInput

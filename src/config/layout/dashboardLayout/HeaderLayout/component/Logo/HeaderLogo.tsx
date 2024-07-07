@@ -8,10 +8,9 @@ const HeaderLogo = observer(() => {
 
   const {
     layout: {
-      fullScreenModeFun,
-      mediumScreenModeFun,
       fullScreenMode,
-      mediumScreenMode,
+      openDashSidebarFun,
+      isCallapse
     },
     auth: { closeSearchBar },
   } = store;
@@ -21,7 +20,7 @@ const HeaderLogo = observer(() => {
         <Flex alignItems="center">
           <IconButton
             icon={
-              mediumScreenMode ? (
+              isCallapse ? (
                 <BiRightArrowAlt fontSize={25} />
               ) : (
                 <BiLeftArrowAlt fontSize={25} />
@@ -32,7 +31,8 @@ const HeaderLogo = observer(() => {
             size="lg"
             style={{ marginRight: "1rem", marginTop: "2px" }}
             onClick={() => {
-              mediumScreenModeFun(!mediumScreenMode);
+              openDashSidebarFun()
+              // mediumScreenModeFun(!mediumScreenMode);
             }}
           />
           <IconButton
@@ -43,7 +43,7 @@ const HeaderLogo = observer(() => {
                 <BiLeftArrowAlt fontSize={25} />
               )
             }
-            onClick={() => fullScreenModeFun(!fullScreenMode)}
+            onClick={() => openDashSidebarFun()}
             variant="ghost"
             size="lg"
             style={{ marginRight: "1rem", marginTop: "2px" }}

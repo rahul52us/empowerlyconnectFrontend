@@ -1,6 +1,8 @@
 import { action, makeObservable, observable } from 'mobx';
 
 class LayoutStore {
+  isCallapse = true
+  openMobileSideDrawer=true
   selectMenu = localStorage.getItem('selected_menu') ? JSON.parse(localStorage.getItem('selected_menu')) : null
   themeMode = localStorage.getItem('theme_mode') === 'dark' ? 'dark' : 'light';
   headerSettingDrawer = localStorage.getItem('headerSettingDrawer') === 'true' ? true : false;
@@ -21,6 +23,8 @@ class LayoutStore {
       themeMode: observable,
       openNotification: observable,
       mediumScreenMode:observable,
+      isCallapse:observable,
+      openMobileSideDrawer:observable,
       setSelectedMenu:action,
       setShowDashboardNode: action,
       headerSettingDrawerFun: action,
@@ -31,12 +35,22 @@ class LayoutStore {
       changeThemeMode: action,
       setOpenNotification: action,
       resetLayout: action,
+      openDashSidebarFun:action
     });
   }
 
   setSelectedMenu = (status) => {
     localStorage.setItem('selected_menu',JSON.stringify(status))
     this.selectMenu = status
+  }
+
+  openDashSidebarFun = (status) => {
+    this.isCallapse = status
+    console.log('the status are', status)
+  }
+
+  setOpenMobileSideDrawer = (status) => {
+    this.openMobileSideDrawer = status
   }
 
   headerSettingDrawerFun = (status) => {

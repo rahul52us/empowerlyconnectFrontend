@@ -1,104 +1,106 @@
-import { CalendarIcon, ChatIcon, EmailIcon } from "@chakra-ui/icons";
-import {
-  FaBuilding,
-  FaChartPie,
-  FaCog,
-  FaHandHoldingUsd,
-  FaUsers,
-} from "react-icons/fa";
-import { SidebarItem } from "./Sidebar1";
+import { FaChartPie, FaUsers, FaHandHoldingUsd, FaBuilding, FaCog } from "react-icons/fa";
+import { CalendarIcon } from "@chakra-ui/icons";
+import { dashboard } from "../../../constant/routes";
 
-export const sidebarData: SidebarItem[] = [
+
+export const sidebarData: any = [
   {
     id: 1,
-    name: "Dashboards",
+    name: "Dashboard",
     icon: <FaChartPie />,
-    url: "#",
+    url: "/dashboard",
   },
   {
     id: 2,
-    name: "Apps",
+    name: "My Profile",
     icon: <FaUsers />,
-    // url: "#",
+    url: "/dashboard/class",
     children: [
-      { id: 3, name: "Calendar", icon: <CalendarIcon />, url: "#" },
-      {
-        id: 4,
-        name: "Chat",
-        icon: <ChatIcon />,
-        // url: "#",
-        children: [
-          { id: 5, name: "Inbox", icon: <CalendarIcon />, url: "#" },
-          {
-            id: 6,
-            name: "Sent",
-            icon: <ChatIcon />,
-            // url: "#",
-            children: [
-              {
-                id: 7,
-                name: "Chat",
-                icon: <ChatIcon />,
-                url: "#",
-              },
-              { id: 12, name: "Inbox", icon: <CalendarIcon />, url: "#" },
-              { id: 13, name: "Sent", icon: <ChatIcon />, url: "#" },
-            ],
-          },
-        ],
-      },
-      {
-        id: 14,
-        name: "Email",
-        icon: <EmailIcon />,
-        // url: "#",
-        children: [
-          { id: 15, name: "Inbox", icon: <CalendarIcon />, url: "#" },
-          {
-            id: 16,
-            name: "Sent",
-            icon: <ChatIcon />,
-            // url: "#",
-            children: [
-              { id: 17, name: "Inbox", icon: <CalendarIcon />, url: "#" },
-              { id: 18, name: "Sent", icon: <ChatIcon />, url: "#" },
-            ],
-          },
-        ],
-      },
-      { id: 19, name: "Ecommerce", icon: <FaHandHoldingUsd />, url: "#" },
+      { id: 3, name: "Personal Info", icon: <CalendarIcon />, url: "/dashboard/class" },
+      { id: 4, name: "Company", icon: <FaBuilding />, url: "/dashboard/videos" },
+      { id: 5, name: "Family", icon: <FaUsers />, url: "/dashboard/videos" },
+      { id: 6, name: "Work Experience", icon: <FaUsers />, url: "/dashboard/videos" },
+      { id: 7, name: "Skill & Additional Info", icon: <FaUsers />, url: "/dashboard/videos" },
+      { id: 8, name: "Qualification", icon: <FaUsers />, url: "/dashboard/videos" },
+      { id: 9, name: "Documents", icon: <FaUsers />, url: "/dashboard/videos" },
+      { id: 10, name: "Bank Account Details", icon: <FaUsers />, url: "/dashboard/videos" },
     ],
   },
   {
-    id: 20,
-    name: "CRM",
-    icon: <FaBuilding />,
-    // url: "#",
+    id: 11,
+    name: "Request",
+    icon: <FaHandHoldingUsd />,
+    url: dashboard.request.index,
     children: [
-      { id: 21, name: "Contacts", icon: <FaUsers />, url: "#" },
-      { id: 22, name: "Companies", icon: <FaBuilding />, url: "#" },
-      { id: 23, name: "Deals", icon: <FaHandHoldingUsd />, url: "#" },
+      { id: 12, name: "Request", icon: <FaHandHoldingUsd />, url: dashboard.request.index },
+      { id: 13, name: "Leave/OD/WFH", icon: <FaHandHoldingUsd />, url: dashboard.request.leaveAdd },
+      { id: 14, name: "Attendence Regularise", icon: <FaHandHoldingUsd />, url: "/dashboard/videos" },
+      { id: 15, name: "Appreciation", icon: <FaHandHoldingUsd />, url: "/dashboard/videos" },
+      { id: 16, name: "Help Desk", icon: <FaHandHoldingUsd />, url: "/dashboard/videos" },
     ],
+  },
+  {
+    id: 17,
+    name: "My Attendence",
+    icon: <FaUsers />,
+    url: `${dashboard.attendence.index}?tab=daily`,
+    children: [
+      { id: 18, name: "Daily", icon: <CalendarIcon />, url: `${dashboard.attendence.index}?tab=daily`,
+     },
+      { id: 19, name: "Monthly", icon: <CalendarIcon />, url: `${dashboard.attendence.index}?tab=monthly` },
+      { id: 20, name: "Yearly", icon: <CalendarIcon />, url: `${dashboard.attendence.index}?tab=yearly` },
+      { id: 21, name: "Leave Encashment", icon: <CalendarIcon />, url: `${dashboard.attendence.index}?tab=leave-ledger` },
+    ],
+  },
+  {
+    id: 22,
+    name: "Team Attendence",
+    icon: <FaUsers />,
+    url: "/dashboard/class",
+    children: [
+      { id: 23, name: "Daily", icon: <CalendarIcon />, url: "/dashboard/videos" },
+      { id: 24, name: "Monthly", icon: <CalendarIcon />, url: "/dashboard/videos" },
+      { id: 25, name: "Yearly", icon: <CalendarIcon />, url: "/dashboard/class" },
+      { id: 26, name: "Leave Encashment", icon: <CalendarIcon />, url: "/dashboard/videos" },
+    ],
+    role: "manager",
+  },
+  {
+    id: 27,
+    name: "Team Request",
+    icon: <FaUsers />,
+    url: dashboard.request.userList,
+    role: "manager",
+  },
+  {
+    id: 28,
+    name: "Corp. Info.",
+    icon: <FaBuilding />,
+    url: "/dashboard/class",
+    children: [
+      { id: 29, name: "Employees Directory", icon: <FaUsers />, url: "/dashboard/employes" },
+      { id: 30, name: "Holidays", icon: <CalendarIcon />, url: "/dashboard/company/policy/holidays" },
+      { id: 31, name: "View Policies", icon: <CalendarIcon />, url: "/dashboard/company" },
+    ],
+    role: ["admin", "superadmin"],
+  },
+  {
+    id: 32,
+    name: "Corp. Info.",
+    icon: <FaBuilding />,
+    url: "/dashboard/class",
+    children: [
+      { id: 33, name: "Employees Directory", icon: <FaUsers />, url: dashboard.employes.personalDetails },
+    ],
+    role: ["user"],
   },
 ];
 
-export const sidebarFooterData: SidebarItem[] = [
+export const sidebarFooterData: any = [
   {
-    id: 24,
+    id: 34,
     name: "Settings",
     icon: <FaCog />,
-    url: "#",
+    url: "/dashboard",
   },
-  // {
-  //   id: 25,
-  //   name: "Logout",
-  //   icon: <FaSignOutAlt />,
-  //   url: "#",
-  // },
-  // {
-  //   id: 26,
-  //   name: "Logout",
-  //   icon: <FaSignOutAlt />,
-  //   url: "#",
-  // },
 ];
