@@ -19,24 +19,23 @@ import {
   Tabs,
   Tag,
   Text,
+  useColorModeValue,
   VStack,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { FaFileAlt } from "react-icons/fa";
 import store from "../../../../../../store/store";
 import ShowData from "../component/ShowData";
-import userData from "./dummyEmployeeData.json";
+// import userData from "./dummyEmployeeData.json";
 import CompanyDetails from "./component/CompanyDetails";
 
 const UserProfile: React.FC<any> = ({ employeeId }) => {
   const [employeeData, setEmployeeData] = useState<any>();
-
-  const user = userData;
-
-  console.log(employeeData);
+  const user = employeeData;
+  // console.log(employeeData);
 
   const [tabIndex, setTabIndex] = useState(0);
-  console.log(employeeData);
+  // console.log(employeeData);
 
   const {
     Employe: { getEmployesDetailsById },
@@ -66,12 +65,14 @@ const UserProfile: React.FC<any> = ({ employeeId }) => {
     profession: "Full Stack Developer",
   };
 
+  const borderColor = useColorModeValue("gray.200", "gray.600");
+
   return (
     <Box>
       <Box
         p={4}
         mb={3}
-        bg={"gray.100"}
+        bg={useColorModeValue("gray.100", "gray.800")}
         borderTopLeftRadius={"xl"}
         position={"sticky"}
         top={"0"}
@@ -118,10 +119,10 @@ const UserProfile: React.FC<any> = ({ employeeId }) => {
                 p={5}
                 borderWidth={1}
                 borderRadius={"md"}
-                borderColor="gray.200"
+                borderColor={borderColor}
               >
                 <Text fontWeight={"bold"}>Basic Information</Text>
-                <Divider my={2} borderColor="gray.300" />
+                <Divider my={2} borderColor={borderColor} />
                 <Grid templateColumns={"1fr 1.5fr"} gap={4}>
                   <ShowData label="Name" value={user?.name} />
                   <ShowData label="Email" value={user?.username} />
@@ -152,10 +153,10 @@ const UserProfile: React.FC<any> = ({ employeeId }) => {
                 p={4}
                 borderWidth={1}
                 borderRadius={"md"}
-                borderColor="gray.200"
+                borderColor={borderColor}
               >
                 <Text fontWeight={"bold"}>Professional Details</Text>
-                <Divider my={2} borderColor="gray.300" />
+                <Divider my={2} borderColor={borderColor} />
                 <Grid templateColumns={"2fr 3fr"} gap={4}>
                   <ShowData label="Profile" value={employee?.profession} />
                   <ShowData label="Experience" value={employee?.experience} />
@@ -182,16 +183,17 @@ const UserProfile: React.FC<any> = ({ employeeId }) => {
               </Box>
             </TabPanel>
             <TabPanel p={2}>
-              <Box 
-               p={5}
-               borderWidth={1}
-               borderRadius={"md"}
-               borderColor="gray.200">
+              <Box
+                p={5}
+                borderWidth={1}
+                borderRadius={"md"}
+                borderColor={borderColor}
+              >
                 <Text fontWeight={"bold"}>Personal Information</Text>
-                <Divider my={2} borderColor="gray.300" />
+                <Divider my={2} borderColor={borderColor} />
                 <Grid templateColumns={"2fr 3fr"} gap={4}>
                   {" "}
-                  {user?.profileDetails?.map((detail) => (
+                  {user?.profileDetails?.map((detail:any) => (
                     <React.Fragment key={detail?._id}>
                       <ShowData label="Nickname" value={detail?.nickName} />
                       <ShowData
@@ -249,10 +251,10 @@ const UserProfile: React.FC<any> = ({ employeeId }) => {
                   <Heading size="sm" mb={2}>
                     Address Info
                   </Heading>
-                  <Divider my={2} borderColor="gray.300" />
+                  <Divider my={2} borderColor={borderColor} />
 
                   <Grid templateColumns={"2fr 3fr"} gap={4}>
-                    {user.profileDetails[0]?.addressInfo.map((address) => (
+                    {user?.profileDetails[0]?.addressInfo?.map((address:any) => (
                       <React.Fragment key={address?._id}>
                         <ShowData label="Address" value={address?.address} />
                         <ShowData label="Country" value={address?.country} />
@@ -272,8 +274,8 @@ const UserProfile: React.FC<any> = ({ employeeId }) => {
                     rounded={16}
                     boxShadow="0 0 10px rgba(0,0,0,0.06)"
                     borderWidth={1}
-                    borderColor={"gray.200"}
-                    bg={"gray.50"}
+                    borderColor={borderColor}
+                    bg={useColorModeValue("gray.50", "gray.800")}
                   >
                     <CardHeader pb={0}>
                       <Heading size="md" color={"blue.600"}>
@@ -281,7 +283,7 @@ const UserProfile: React.FC<any> = ({ employeeId }) => {
                       </Heading>
                     </CardHeader>
                     <CardBody pt={2}>
-                      {user.bankDetails.map((bank) => (
+                      {user?.bankDetails?.map((bank:any) => (
                         <Grid
                           key={bank._id}
                           gap={4}
@@ -289,19 +291,19 @@ const UserProfile: React.FC<any> = ({ employeeId }) => {
                         >
                           <Box>
                             <Text fontWeight="bold">Account Number:</Text>
-                            <Text>{bank.accountNumber}</Text>
+                            <Text>{bank?.accountNumber}</Text>
                           </Box>
                           <Box>
                             <Text fontWeight="bold">Bank Name:</Text>
-                            <Text>{bank.bankName}</Text>
+                            <Text>{bank?.bankName}</Text>
                           </Box>
                           <Box>
                             <Text fontWeight="bold">Branch:</Text>
-                            <Text>{bank.branch}</Text>
+                            <Text>{bank?.branch}</Text>
                           </Box>
                           <Box>
                             <Text fontWeight="bold">IFSC Code:</Text>
-                            <Text>{bank.ifscCode}</Text>
+                            <Text>{bank?.ifscCode}</Text>
                           </Box>
                         </Grid>
                       ))}
@@ -313,26 +315,28 @@ const UserProfile: React.FC<any> = ({ employeeId }) => {
                     rounded={16}
                     boxShadow="0 0 10px rgba(0,0,0,0.06)"
                     borderWidth={1}
-                    borderColor={"gray.200"}
-                    bg={"gray.50"}
+                    borderColor={borderColor}
+                    bg={useColorModeValue("gray.50", "gray.800")}
                   >
-                    <CardHeader  pb={0}>
-                        <Heading color={"blue.600"} size="md">Documents</Heading>
+                    <CardHeader pb={0}>
+                      <Heading color={"blue.600"} size="md">
+                        Documents
+                      </Heading>
                     </CardHeader>
                     <CardBody pt={2}>
-                      {user.documents.map((doc) => (
+                      {user?.documents.map((doc:any) => (
                         <HStack
-                          key={doc._id}
+                          key={doc?._id}
                           spacing={4}
                           alignItems="center"
                           borderBottom="1px"
-                          borderColor="gray.200"
+                          borderColor={borderColor}
                           py={2}
                         >
                           <Icon as={FaFileAlt} boxSize={6} color="blue.500" />
                           <VStack align="start" spacing={0}>
-                            <Text fontWeight="bold">{doc.documentType}</Text>
-                            <Text>{doc.documentNumber}</Text>
+                            <Text fontWeight="bold">{doc?.documentType}</Text>
+                            <Text>{doc?.documentNumber}</Text>
                           </VStack>
                         </HStack>
                       ))}
@@ -342,9 +346,7 @@ const UserProfile: React.FC<any> = ({ employeeId }) => {
               </Box>
             </TabPanel>
             <TabPanel>
-
-              <CompanyDetails data={user.companyDetail} />
-             
+              <CompanyDetails data={user?.companyDetail[0]} />
             </TabPanel>
           </TabPanels>
         </Tabs>

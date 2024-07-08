@@ -1,4 +1,4 @@
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Text, useColorModeValue } from "@chakra-ui/react";
 import { FC } from "react";
 
 interface ShowDataProps {
@@ -8,13 +8,15 @@ interface ShowDataProps {
 }
 
 const ShowData: FC<ShowDataProps> = ({ label, value, type = "single" }) => {
+  const labelColor = useColorModeValue("gray", "gray.400");
+  const textColor = useColorModeValue("black", "gray.200");
   return (
     <Box>
-      <Text color={"gray"} fontSize={"sm"}> 
+      <Text color={labelColor} fontSize={"sm"}>
         {label}
       </Text>
       {type === "single" ? (
-        <Text  fontWeight={"semibold"}>
+        <Text fontWeight={"semibold"} color={textColor}>
           {value}
         </Text>
       ) : (
@@ -24,7 +26,7 @@ const ShowData: FC<ShowDataProps> = ({ label, value, type = "single" }) => {
             key={index}
             textTransform={"capitalize"}
             fontWeight={"semibold"}
-            >
+          >
             {item}
           </Text>
         ))
