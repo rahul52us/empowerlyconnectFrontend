@@ -89,7 +89,6 @@ const DashboardLayout = observer(() => {
     };
   }, [isCallapse,openDashSidebarFun]);
 
-  console.log("the isCollapse are", isCallapse);
   return user ? (
     <MainContainer isMobile={isMobile}>
       <Box ref={sidebarRef}>

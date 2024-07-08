@@ -126,6 +126,18 @@ const SidebarPopover: React.FC<{
     }
   };
 
+  const isActive = (item: SidebarItem, activeItemId: number | null): boolean => {
+    if (item.id === activeItemId) {
+      return true;
+    }
+    if (item.children) {
+      return item.children.some(child => isActive(child, activeItemId));
+    }
+    return false;
+  }
+
+  const itemIsActive = isActive(item, activeItemId);
+
   return (
     <Popover
       isOpen={isPopoverOpen}
@@ -148,8 +160,8 @@ const SidebarPopover: React.FC<{
             width={"100%"}
             cursor="pointer"
             py={depth === 0 ? 3 : 1}
-            color={activeItemId === item.id ? "teal.400" : "inherit"}
-            fontWeight={activeItemId === item.id ? "600" : "inherit"}
+            color={itemIsActive ? "teal.400" : "inherit"}
+            fontWeight={itemIsActive ? "600" : "inherit"}
             _hover={{ color: "teal.400" }}
           >
             {renderIcon(depth, item.icon)}
@@ -222,6 +234,7 @@ const SidebarPopover: React.FC<{
   );
 };
 
+
 const SidebarAccordion: React.FC<{
   items: SidebarItem[];
   depth?: number;
@@ -241,6 +254,20 @@ const SidebarAccordion: React.FC<{
   const expandedIndex =
     expandedPath.length > depth ? expandedPath[depth] : null;
 
+  console.log('the activeItemId are', activeItemId)
+
+  console.log('expanded path are', expandedPath)
+
+  const isActive = (item: SidebarItem): boolean => {
+    if (item.id === activeItemId) {
+      return true;
+    }
+    if (item.children) {
+      return item.children.some(isActive);
+    }
+    return false;
+  }
+
   return (
     <Accordion
       width={"100%"}
@@ -249,17 +276,18 @@ const SidebarAccordion: React.FC<{
       defaultIndex={expandedIndex !== null ? [expandedIndex] : []}
     >
       {items.map((item) => {
+        const itemIsActive = isActive(item);
         return (
           <AccordionItem key={item.id} border="none" width={"100%"}>
-            {({ isExpanded }) => (
+            {() => (
               <>
                 <AccordionButton
                   my={1.5}
                   px={1}
                   borderRadius={"10px"}
-                  bg={isExpanded ? "blue.50" : "transparent"}
-                  color={isExpanded ? "teal.700" : "inherit"}
-                  fontWeight={isExpanded ? "600" : "inherit"}
+                  bg={itemIsActive ? "blue.50" : "transparent"}
+                  color={itemIsActive ? "teal.700" : "inherit"}
+                  fontWeight={itemIsActive ? "600" : "inherit"}
                   _hover={{
                     bg: "blue.50",
                     color: "teal.700",
@@ -267,7 +295,7 @@ const SidebarAccordion: React.FC<{
                     boxShadow: "rgb(0 0 0 / 10%) 0px 0px 5px",
                   }}
                   onClick={(e) => {
-                    e.stopPropagation(); // Prevent the accordion from closing the sidebar
+                    e.stopPropagation();
                     if (!item.children) {
                       onLeafClick(item);
                     } else {
