@@ -1,6 +1,6 @@
 import { FaChartPie, FaUsers, FaHandHoldingUsd, FaBuilding, FaCog } from "react-icons/fa";
 import { CalendarIcon } from "@chakra-ui/icons";
-import { dashboard } from "../../../constant/routes";
+import { dashboard } from "../../../../constant/routes";
 
 
 export const sidebarData: any = [

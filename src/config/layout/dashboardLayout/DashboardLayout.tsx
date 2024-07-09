@@ -12,7 +12,7 @@ import Loader from "../../component/Loader/Loader";
 import { observer } from "mobx-react-lite";
 import store from "../../../store/store";
 import styled from "styled-components";
-// import SidebarLayout from "./SidebarLayout/SidebarLayout";
+import SidebarLayout from "./SidebarLayout/SidebarLayout";
 import {
   Box,
   useBreakpointValue,
@@ -20,7 +20,6 @@ import {
   useMediaQuery,
   useTheme,
 } from "@chakra-ui/react";
-import Sidebar1 from "./Sidebar/Sidebar1";
 
 const RedirectComponent = observer(() => {
   const navigate = useNavigate();
@@ -87,12 +86,12 @@ const DashboardLayout = observer(() => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isCallapse,openDashSidebarFun]);
+  }, [isCallapse, openDashSidebarFun]);
 
   return user ? (
     <MainContainer isMobile={isMobile}>
       <Box ref={sidebarRef}>
-        <Sidebar1
+        <SidebarLayout
           onItemClick={handleSidebarItemClick}
           isCollapsed={isCallapse}
           onLeafItemClick={handleSidebarItemClick}
@@ -143,7 +142,7 @@ const MainContainer = styled.div<{ isMobile: boolean }>`
   display: flex;
   transition: all 0.3s ease-in-out;
   overflow: hidden;
-  margin-left: ${(props) => (props.isMobile ? '0px' : mediumSidebarWidth)};
+  margin-left: ${(props) => (props.isMobile ? "0px" : mediumSidebarWidth)};
 `;
 
 const Container = styled.div<{ fullScreenMode: boolean }>`
@@ -159,13 +158,13 @@ const HeaderContainer = styled.div<{
   backgroundColor: any;
   isMobile: boolean;
 }>`
-  zIndex:9999;
+  zindex: 9999;
   height: ${headerHeight};
   position: fixed;
   top: 0;
   right: 0;
   background-color: ${(props) => props.backgroundColor};
-  left: ${(props) => (props.isMobile ? '0px' : mediumSidebarWidth)};
+  left: ${(props) => (props.isMobile ? "0px" : mediumSidebarWidth)};
   transition: all 0.3s ease-in-out;
 `;
 
@@ -175,10 +174,12 @@ const ContentContainer = styled.div<{
   mediumScreenMode: boolean;
   isMobile: boolean;
 }>`
-  padding: ${({ isMobile }) => (isMobile ? `${contentSmallBodyPadding}` : `${contentLargeBodyPadding}`)};
-  width: ${({ isMobile }) => (isMobile ? '100vw' : `calc(100vw - ${mediumSidebarWidth})`)};
+  padding: ${({ isMobile }) =>
+    isMobile ? `${contentSmallBodyPadding}` : `${contentLargeBodyPadding}`};
+  width: ${({ isMobile }) =>
+    isMobile ? "100vw" : `calc(100vw - ${mediumSidebarWidth})`};
   overflow-x: hidden;
   height: calc(100vh - ${headerHeight});
   transition: all 0.3s ease-in-out;
-  margin-top:${headerHeight}
+  margin-top: ${headerHeight};
 `;
