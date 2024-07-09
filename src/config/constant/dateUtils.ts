@@ -11,6 +11,26 @@ export enum DateTimeOrder {
   TimeFirst = "TimeFirst",
 }
 
+export const convertToReadableIST = (isoDate : string) => {
+  if (!isoDate) {
+    return null;
+  }
+
+  const date = new Date(isoDate);
+  if (isNaN(date.getTime())) {
+    return null;
+  }
+
+  // Convert to IST (UTC+5:30)
+  const istOffset = 5.5 * 60 * 60 * 1000; // IST is 5 hours and 30 minutes ahead of UTC
+  const istDate = new Date(date.getTime() + istOffset);
+
+  // Formatting the date and time in IST
+  const formattedDate = istDate.toISOString().replace('T', ' ').split('.')[0];
+
+  return formattedDate;
+};
+
 export function formatDate(date: Date, format?: string): string {
   return moment(date).format(format || DDMMYYYY_FORMAT);
 }

@@ -4,6 +4,7 @@ import store from "../../../store/store";
 import { toJS } from "mobx";
 import { format } from "date-fns"; // Importing format function from date-fns
 import NormalTable from "../../../config/component/Table/NormalTable/NormalTable";
+import { generateResponse } from "./utils/function";
 
 const PunchAttendance: React.FC = observer(() => {
   const {
@@ -89,7 +90,7 @@ const PunchAttendance: React.FC = observer(() => {
     <React.Fragment>
       <NormalTable
         title="Punch Attendence"
-        data={recentPunch.data}
+        data={generateResponse(recentPunch.data)}
         columns={columns}
         loading={recentPunch.loading}
         currentPage={0}
