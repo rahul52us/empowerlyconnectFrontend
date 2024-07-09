@@ -126,15 +126,18 @@ const SidebarPopover: React.FC<{
     }
   };
 
-  const isActive = (item: SidebarItem, activeItemId: number | null): boolean => {
+  const isActive = (
+    item: SidebarItem,
+    activeItemId: number | null
+  ): boolean => {
     if (item.id === activeItemId) {
       return true;
     }
     if (item.children) {
-      return item.children.some(child => isActive(child, activeItemId));
+      return item.children.some((child) => isActive(child, activeItemId));
     }
     return false;
-  }
+  };
 
   const itemIsActive = isActive(item, activeItemId);
 
@@ -234,7 +237,6 @@ const SidebarPopover: React.FC<{
   );
 };
 
-
 const SidebarAccordion: React.FC<{
   items: SidebarItem[];
   depth?: number;
@@ -254,9 +256,9 @@ const SidebarAccordion: React.FC<{
   const expandedIndex =
     expandedPath.length > depth ? expandedPath[depth] : null;
 
-  console.log('the activeItemId are', activeItemId)
+  console.log("the activeItemId are", activeItemId);
 
-  console.log('expanded path are', expandedPath)
+  console.log("expanded path are", expandedPath);
 
   const isActive = (item: SidebarItem): boolean => {
     if (item.id === activeItemId) {
@@ -266,7 +268,7 @@ const SidebarAccordion: React.FC<{
       return item.children.some(isActive);
     }
     return false;
-  }
+  };
 
   return (
     <Accordion

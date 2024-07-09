@@ -188,15 +188,15 @@ const LeaveDetails = observer(() => {
     //     column: { textAlign: "center" },
     //   }
     // },
-    {
-      headerName: "Remarks",
-      type: "approvals",
-      key: "approvals",
-      props: {
-        row: { textAlign: "center" },
-        column: { textAlign: "center" },
-      },
-    },
+    // {
+    //   headerName: "Remarks",
+    //   type: "approvals",
+    //   key: "approvals",
+    //   props: {
+    //     row: { textAlign: "center" },
+    //     column: { textAlign: "center" },
+    //   },
+    // },
     {
       headerName: "Applied On",
       type: "date",
