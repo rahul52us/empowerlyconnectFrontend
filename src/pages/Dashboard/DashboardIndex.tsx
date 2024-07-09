@@ -12,6 +12,7 @@ import { dashBreadCrumb } from "./utils/breadcrumb.constant";
 import ManagerEmployes from "./component/manager/ManagerEmployes";
 import PunchAttendence from "./PunchAttendence/PunchAttendence";
 import NewDash from "../NewDash/NewDash";
+import PunchInComponent from "./PunchAttendence/PunchInComponent";
 
 const DashboardIndex = observer(() => {
   const {
@@ -33,6 +34,9 @@ const DashboardIndex = observer(() => {
           <GridItem>
             <DashChartContainer />
           </GridItem>
+        </Grid>
+        <Grid>
+          <PunchInComponent />
         </Grid>
         <Grid
           display={checkPermission("dashboard", "view") ? "grid" : "none"}
