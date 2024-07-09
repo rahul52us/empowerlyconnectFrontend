@@ -291,11 +291,11 @@ const UserProfile: React.FC<any> = ({ employeeId }) => {
                         >
                           <Box>
                             <Text fontWeight="bold">Account Number:</Text>
-                            <Text>{bank?.accountNumber}</Text>
+                            <Text>{bank?.accountNo}</Text>
                           </Box>
                           <Box>
                             <Text fontWeight="bold">Bank Name:</Text>
-                            <Text>{bank?.bankName}</Text>
+                            <Text>{bank?.name}</Text>
                           </Box>
                           <Box>
                             <Text fontWeight="bold">Branch:</Text>
@@ -303,7 +303,7 @@ const UserProfile: React.FC<any> = ({ employeeId }) => {
                           </Box>
                           <Box>
                             <Text fontWeight="bold">IFSC Code:</Text>
-                            <Text>{bank?.ifscCode}</Text>
+                            <Text>{bank?.ifsc}</Text>
                           </Box>
                         </Grid>
                       ))}

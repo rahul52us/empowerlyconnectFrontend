@@ -126,7 +126,7 @@ const CompactCalendar: React.FC = () => {
     start: startOfCalendar,
     end: endOfCalendar,
   });
-  const dayLabels = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const dayLabels = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
   const bgHover = useColorModeValue("gray.100", "blue.700");
 
   const renderDayCell = (date: Date) => {
@@ -208,7 +208,7 @@ const CompactCalendar: React.FC = () => {
         </Flex>
         <SimpleGrid columns={7} spacing={1} mb={2}>
           {dayLabels.map((day, index) => (
-            <Box key={index} p={2} textAlign="center" fontWeight="bold">
+            <Box key={index} p={1} textAlign="center" fontWeight="700" color={'blue.600'}>
               {day}
             </Box>
           ))}

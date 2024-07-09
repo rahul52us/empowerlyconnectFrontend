@@ -233,7 +233,7 @@ const EmployeContainer = observer(
     return (
       <Box p={{ base: 1.5, lg: 0 }}>
         <Grid gridTemplateColumns={{ lg: "0.25fr 1fr" }} gap={5} mt={3} mb={10}>
-          <Box position={"sticky"} top={0} h={"fit-content"}>
+          <Box >
             <EmployFormSidebar type={type} />
           </Box>
           <Box border="1px solid #e9ecef" borderRadius={5}>

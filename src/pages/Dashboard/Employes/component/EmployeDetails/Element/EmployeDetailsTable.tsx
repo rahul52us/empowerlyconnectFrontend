@@ -300,7 +300,7 @@ const EmployeDetailsTable = observer(() => {
       <Drawer isOpen={isOpen} placement="right" onClose={onClose} size={"xl"}>
         <DrawerOverlay />
         <DrawerContent borderLeftRadius={"2xl"}>
-          <DrawerCloseButton />
+          <DrawerCloseButton zIndex={11} />
           {/* <DrawerHeader>Create your account</DrawerHeader> */}
 
           <DrawerBody p={0}>

@@ -54,7 +54,7 @@ const cardColor = ["purple", "orange", "green", "red"];
 export default function NewDash() {
   return (
     <Box>
-      <Grid templateColumns={"3fr 1fr"} columnGap={6}>
+      <Grid templateColumns={"3.3fr 1fr"} columnGap={6}>
         <Box>
           <Grid gap={4} templateColumns={"repeat(4, 1fr)"}>
             {[1, 2, 3, 4].map((item) => (
