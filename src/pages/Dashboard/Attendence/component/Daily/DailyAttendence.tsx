@@ -6,6 +6,7 @@ import store from "../../../../../store/store";
 import { format, addDays } from "date-fns";
 import NormalTable from "../../../../../config/component/Table/NormalTable/NormalTable";
 import { SearchIcon } from "@chakra-ui/icons";
+import { generatePunchResponse } from "../../../PunchAttendence/utils/function";
 
 const DailyAttendance = observer(() => {
   const {
@@ -102,7 +103,7 @@ const DailyAttendance = observer(() => {
       >
         <NormalTable
           columns={columns}
-          data={recentPunch.data}
+          data={generatePunchResponse(recentPunch.data)}
           loading={recentPunch.loading}
           currentPage={0}
           totalPages={0}

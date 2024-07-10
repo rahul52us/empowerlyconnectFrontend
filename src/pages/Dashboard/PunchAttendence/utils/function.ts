@@ -1,6 +1,6 @@
 import { convertToReadableIST, formatDate } from "../../../../config/constant/dateUtils";
 
-export const generateResponse = (data: any) => {
+export const generatePunchResponse = (data: any) => {
   return data.map((item: any) => {
     const date = formatDate(item.data)
     const punchInTimeReadable = convertToReadableIST(item.punchInTime);
