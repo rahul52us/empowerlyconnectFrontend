@@ -25,7 +25,7 @@ const ProductForm = observer(({ open, close, type, title }: IProductForm) => {
   const [showError, setShowError] = useState(false);
   const [thumbnail, setThumbnail] = useState<any>([]);
   const {
-    auth: { openNotification },
+    auth: { openNotification, user },
     VideoStore: { createVideoCategory },
   } = store;
   return (
@@ -56,7 +56,7 @@ const ProductForm = observer(({ open, close, type, title }: IProductForm) => {
                 filename: thumbnail[0].name,
                 type: thumbnail[0].type,
               };
-              createVideoCategory({ ...values, thumbnail: fileData })
+              createVideoCategory({ ...values, thumbnail: fileData, company : user.companyDetail?.company })
                 .then((data: any) => {
                   openNotification({
                     title: "Create Successfully",

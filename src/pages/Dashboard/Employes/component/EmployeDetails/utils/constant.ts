@@ -1,3 +1,16 @@
+// import { manipulateDateWithMonth } from "../../../../../../config/constant/dateUtils";
+
+import { transformPermissionsForForm } from "./function";
+
+export const defaultPermissions: any = {
+  user: { add: false, edit: false, delete: false, view: false },
+  trip: { add: false, edit: false, view: false, delete: false },
+  course: { add: false, edit: false, view: false, delete: false },
+  videos: { add: false, edit: false, view: false, delete: false },
+  managers: { view: false },
+  dashboard: { view: false },
+};
+
 export const employDropdownData: any = [
   {
     label: "BSE",
@@ -24,6 +37,15 @@ export const titles: any = [
     label: "MRS",
     value: "mrs",
   },
+];
+
+export const eTypeOption = [
+  { label: "Staff", value: "staff" },
+  {
+    label: "Manager",
+    value: "manager",
+  },
+  { label: "admin", value: "admin" },
 ];
 
 export const employeInitialValues = (type: string, data: any) => {
@@ -138,38 +160,80 @@ export const employeInitialValues = (type: string, data: any) => {
       workExperience: workExperience,
     };
   } else if (type === "documents") {
-    let docs : any = {}
+    let docs: any = {};
     let documents = { ...data?.documents[0] };
-    if(documents.documents){
-      const documentFields = Object.keys(documents.documents)
+    if (documents.documents) {
+      const documentFields = Object.keys(documents.documents);
       for (const fieldName of documentFields) {
-        docs[fieldName] = {file : [{...documents.documents[fieldName], file : documents.documents[fieldName].url}]}
+        docs[fieldName] = {
+          file: [
+            {
+              ...documents.documents[fieldName],
+              file: documents.documents[fieldName].url,
+            },
+          ],
+        };
       }
     }
 
     return {
-      documents: Object.keys(docs).length ? docs : {
-        class10: {
-          file:null,
-          isDeleted: 0,
-          isAdd: 0,
-          validTill: "",
-          effectiveForm: "",
-        },
-        class12: {
-          file:null,
-          isDeleted: 0,
-          isAdd: 0,
-          validTill: "",
-          effectiveForm: "",
-        },
-        games: {
-          file:null,
-          isDeleted: 0,
-          isAdd: 0,
-          validTill: "",
-          effectiveForm: "",
-        },
+      documents: Object.keys(docs).length
+        ? docs
+        : {
+            class10: {
+              file: null,
+              isDeleted: 0,
+              isAdd: 0,
+              validTill: "",
+              effectiveForm: "",
+            },
+            class12: {
+              file: null,
+              isDeleted: 0,
+              isAdd: 0,
+              validTill: "",
+              effectiveForm: "",
+            },
+            games: {
+              file: null,
+              isDeleted: 0,
+              isAdd: 0,
+              validTill: "",
+              effectiveForm: "",
+            },
+          },
+    };
+  } else if (type === "company-details") {
+    let details: any = {};
+    if (data) {
+      details = data?.companyDetail?.length
+        ? data.companyDetail[0].details?.length
+          ? data.companyDetail[0].details[
+              data.companyDetail[0].details?.length - 1
+            ]
+          : {}
+        : {};
+    }
+    return {
+      companyDetails: {
+        department: undefined,
+        designation: undefined,
+        managers: undefined,
+        workTiming: undefined,
+        workingLocation: undefined,
+        eType: eTypeOption[0],
+        description: "",
+        ...details,
+        doj: details.doj ? new Date(details.doj) : new Date(),
+        confirmationDate: details.confirmationDate
+          ? new Date(details.confirmationDate)
+          : new Date(),
+      },
+    };
+  } else if (type === "permissions") {
+    return {
+      permissions: {
+        permissions: data ? transformPermissionsForForm(data?.permissions || defaultPermissions) : defaultPermissions,
       },
     };
   } else {
@@ -198,6 +262,6 @@ export const generateTableData = (data: any[]) => {
   return data.map((item: any) => ({
     ...item,
     ...item.profileDetails[0],
-    _id: item._id,
+    ...item.userData,
   }));
 };

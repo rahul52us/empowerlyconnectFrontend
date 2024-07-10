@@ -6,6 +6,7 @@ import { studentInitialValues } from "../../../config/component/profile/utils/co
 import { studentEditValidation } from "../../../config/component/profile/utils/validation";
 import { EditStudentSideTab } from "../../Dashboard/UserTypes/Student/utils/constant";
 import { currentYear, oneYearLater } from "../../../config/constant/dateUtils";
+import { main } from "../../../config/constant/routes";
 
 const ProfileIndex = observer(() => {
   const {
@@ -79,7 +80,7 @@ const ProfileIndex = observer(() => {
       changePassword={changePasswordStore}
       classes={classes.data}
       sideTab={EditStudentSideTab}
-      editTabLink={"/profile?"}
+      editTabLink={`${main.profile}?`}
       handleSubmitProfile={handleSubmitProfile}
       type="edit"
     />

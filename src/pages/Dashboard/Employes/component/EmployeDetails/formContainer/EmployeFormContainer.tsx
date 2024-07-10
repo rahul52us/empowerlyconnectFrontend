@@ -14,8 +14,10 @@ import { useEffect, useState } from "react";
 import { dashboard } from "../../../../../../config/constant/routes";
 import Loader from "../../../../../../config/component/Loader/Loader";
 import { readFileAsBase64 } from "../../../../../../config/constant/function";
+import { getStatusType } from "../../../../../../config/constant/statusCode";
 
 const EmployeFormContainer = observer(() => {
+  const {auth : {user}} = store
   const [haveApiCall, setHaveApiCall] = useState(false);
   const [files, setFiles] = useState<any>({
     cancelledCheque: {
@@ -37,14 +39,27 @@ const EmployeFormContainer = observer(() => {
       updateFamilyDetails,
       updateWorkExperience,
       updateDocuments,
+      updateCompanyDetails,
+      updatePermissions
     },
     auth: { openNotification },
   } = store;
   const [userData, setUserData] = useState<any>(null);
+  const [userId, setUserId] = useState<any>(null)
   const { id } = useParams();
-  const type = useState<any>(
+  const [type,setType] = useState<any>(
     location.pathname?.split("/")[4] === "edit" && id
-  )[0];
+  );
+
+  useEffect(() => {
+    setType(location.pathname?.split("/")[4] === "edit" && id);
+  }, [location.pathname, id,setType]);
+
+  useEffect(() => {
+    if (id) {
+      setUserId(id);
+    }
+  }, [id]);
 
   useEffect(() => {
     if (
@@ -68,16 +83,20 @@ const EmployeFormContainer = observer(() => {
     }
   }, [userData]);
 
-  const handleSubmitProfile = async (
-    values: any,
-    setLoading: any,
-    resetForm: any,
-    setErrors: any,
-    setShowError: any
-  ) => {
+  const navigateUser = (id : any) => {
+    navigate(
+      `${dashboard.employes.details}/edit/${id}?tab=company-details`
+    )
+  }
+  const handleSubmitProfile = async ({
+    values,
+    setSubmitting,
+    setErrors,
+    setShowError
+  } : any) => {
     if (type) {
       if (tab === "profile-details") {
-        updateEmployeProfile(id, { ...generateSubmitResponse(values) })
+        updateEmployeProfile(userId, { ...generateSubmitResponse(values), company : user?.companyDetail?.company })
           .then(() => {
             setShowError(false);
             setErrors({});
@@ -96,9 +115,43 @@ const EmployeFormContainer = observer(() => {
             });
           })
           .finally(() => {
-            setLoading(false);
+            setSubmitting(false);
           });
-      } else if (tab === "bank-details") {
+      }
+      else if(tab === "company-details"){
+        let data : any = {}
+
+        console.log('the values are', values)
+
+        data['workTiming'] = values.workTiming.map((item : any) => item.value)
+        data['workingLocation'] = values.workingLocation.map((item : any) => item.value)
+        data['managers'] = values.managers.map((item : any) => item.value)
+        data['eType'] = values.eType?.value
+        data['department'] = values.department?.value
+        data['designation'] = values.designation?.value
+        updateCompanyDetails(userId, {details : {...values, ...data}})
+          .then(() => {
+            setShowError(false);
+            setErrors({});
+            openNotification({
+              type: "success",
+              message: "Update Company Details Successfully",
+              title: "Updated Successfully",
+            });
+            setHaveApiCall(false);
+          })
+          .catch((err) => {
+            openNotification({
+              type: "error",
+              message: err?.message,
+              title: "Failed to Update",
+            });
+          })
+          .finally(() => {
+            setSubmitting(false);
+          });
+      }
+      else if (tab === "bank-details") {
         let bankDetails: any = values;
         if (
           files?.cancelledCheque?.file &&
@@ -125,7 +178,7 @@ const EmployeFormContainer = observer(() => {
             },
           };
         }
-        updateEmployeBankDetails(id, bankDetails)
+        updateEmployeBankDetails(userId, bankDetails)
           .then(() => {
             setShowError(false);
             setErrors({});
@@ -144,10 +197,10 @@ const EmployeFormContainer = observer(() => {
             });
           })
           .finally(() => {
-            setLoading(false);
+            setSubmitting(false);
           });
       } else if (tab === "family-details") {
-        updateFamilyDetails(id, values)
+        updateFamilyDetails(userId, values)
           .then(() => {
             setShowError(false);
             setErrors({});
@@ -166,7 +219,7 @@ const EmployeFormContainer = observer(() => {
             });
           })
           .finally(() => {
-            setLoading(false);
+            setSubmitting(false);
           });
       } else if (tab === "work-experience") {
         let dt = await Promise.all(
@@ -205,7 +258,7 @@ const EmployeFormContainer = observer(() => {
             }
           })
         );
-        updateWorkExperience(id, { experienceDetails: dt })
+        updateWorkExperience(userId, { experienceDetails: dt })
           .then(() => {
             setShowError(false);
             setErrors({});
@@ -224,7 +277,7 @@ const EmployeFormContainer = observer(() => {
             });
           })
           .finally(() => {
-            setLoading(false);
+            setSubmitting(false);
           });
       } else if (tab === "documents") {
         let dt = await Promise.all(
@@ -248,7 +301,7 @@ const EmployeFormContainer = observer(() => {
           })
         );
         dt = Object.fromEntries(dt);
-        updateDocuments(id, { documents: dt })
+        updateDocuments(userId, { documents: dt })
           .then(() => {
             setShowError(false);
             setErrors({});
@@ -267,14 +320,36 @@ const EmployeFormContainer = observer(() => {
             });
           })
           .finally(() => {
-            setLoading(false);
+            setSubmitting(false);
           });
+      }
+      else if(tab === "permissions"){
+        updatePermissions(userId, values)
+        .then(() => {
+          setShowError(false);
+          setErrors({});
+          openNotification({
+            type: "success",
+            message: "Update Permissions Successfully",
+            title: "Updated Successfully",
+          });
+          setHaveApiCall(false);
+        })
+        .catch((err) => {
+          openNotification({
+            type: "error",
+            message: err?.message,
+            title: "Failed to Update Permissions Details",
+          });
+        })
+        .finally(() => {
+          setSubmitting(false);
+        });
       }
     } else {
       if (tab === "profile-details") {
-        createEmploye({ ...generateSubmitResponse(values) })
-          .then(() => {
-            resetForm();
+        createEmploye({ ...generateSubmitResponse(values),company : user?.companyDetail?.company })
+          .then((data : any) => {
             setShowError(false);
             setErrors({});
             openNotification({
@@ -283,43 +358,27 @@ const EmployeFormContainer = observer(() => {
               title: "Create Successfully",
             });
             setHaveApiCall(false);
+            navigateUser(data?.data?._id)
           })
           .catch((err) => {
             openNotification({
-              type: "error",
-              message: err?.message,
-              title: "Failed to Create",
+              title: "Create Failed",
+              message: err?.data?.message,
+              type: getStatusType(err.status),
             });
           })
           .finally(() => {
-            setLoading(false);
+            setSubmitting(false);
           });
-      } else if (tab === "bank-details") {
-        setLoading(false);
-      } else if (tab === "work-experience") {
-        updateWorkExperience(id, values)
-          .then(() => {
-            setShowError(false);
-            setErrors({});
-            openNotification({
-              type: "success",
-              message: "Create Work Experience Successfully",
-              title: "Updated Successfully",
-            });
-            setHaveApiCall(false);
-          })
-          .catch((err) => {
-            openNotification({
-              type: "error",
-              message: err?.message,
-              title: "Failed to Create Work Experience",
-            });
-          })
-          .finally(() => {
-            setLoading(false);
-          });
-      } else if (tab === "documents") {
       }
+    else{
+      openNotification({
+        title: `${tab} Tab Inaccessible`,
+        message: 'This tab is accessible only after completing the profile details.',
+        type: 'info',
+      });
+      setSubmitting(false);
+    }
     }
   };
 

@@ -1,13 +1,10 @@
 import React from "react";
 import { getIdFromObject } from "../../../utils/commonFunction";
 import { IoIosBookmarks, IoIosPerson } from "react-icons/io";
-import { MdExtension } from "react-icons/md";
 import { AiOutlineShopping } from "react-icons/ai";
 import {
   AiOutlineEdit,
   AiOutlineLock,
-  AiOutlineLogout,
-  AiOutlineMinusCircle,
 } from "react-icons/ai";
 
 interface IconProps {
@@ -37,14 +34,6 @@ export const EditStudentSideTab = [
     path: 'view'
   },
   {
-    title: "Enrolled Courses",
-    icon: <IoIosBookmarks size="18" fontWeight="bold" /> as React.ReactElement<IconProps>,
-  },
-  {
-    title: "My Quiz Attempts",
-    icon: <MdExtension size="18" fontWeight="bold" /> as React.ReactElement<IconProps>,
-  },
-  {
     title: "Order History",
     icon: <AiOutlineShopping size="18" fontWeight="bold" />,
   },
@@ -55,18 +44,10 @@ export const EditStudentSideTab = [
     path: 'edit'
   },
   {
-    title: "Withdraw",
-    icon: <AiOutlineMinusCircle size="18" fontWeight="bold" />,
-  },
-  {
     title: "Change Password",
     icon: <AiOutlineLock size="18" fontWeight="bold" />,
     path: 'change-password'
   },
-  {
-    title: "Logout",
-    icon: <AiOutlineLogout size="18" fontWeight="bold" />,
-  }
 ];
 
 export const sendStudentData = (data: any) => {

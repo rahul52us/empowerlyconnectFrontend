@@ -8,11 +8,13 @@ import {
   PopoverHeader,
   PopoverBody,
   VStack,
-  IconButton,
+
+  Flex,
 } from "@chakra-ui/react";
 import { debounce } from "lodash";
+import { MdFilterList } from "react-icons/md";
+import CustomDateRange from "../CustomDateRange/CustomDateRange";
 import CustomInput from "../CustomInput/CustomInput";
-import { FaFilter } from "react-icons/fa";
 
 interface DropdownOption {
   value: string;
@@ -34,23 +36,24 @@ interface MultiDropdownProps {
   onApply: () => void;
   resetFilters?: any;
   minH?: any;
+  actions: any;
 }
 
 const MultiDropdown = ({
   search,
-  title,
   dropdowns,
   selectedOptions,
   onDropdownChange,
   onApply,
   resetFilters,
+  actions,
 }: MultiDropdownProps) => {
   const [inputValue, setInputValue] = useState(search?.searchValue || "");
   const [isPopoverOpen, setIsPopoverOpen] = useState<boolean>(false);
 
   useEffect(() => {
     const debouncedHandler = debounce((value: string) => {
-      if(search?.onSearchChange){
+      if (search?.onSearchChange) {
         search?.onSearchChange(value);
       }
     }, 1000);
@@ -63,7 +66,6 @@ const MultiDropdown = ({
       clearTimeout(timeoutId);
     };
   }, [inputValue, search]);
-
 
   const handlePopoverClose = () => {
     setIsPopoverOpen(false);
@@ -89,18 +91,22 @@ const MultiDropdown = ({
       placement="bottom-start"
     >
       <PopoverTrigger>
-        <IconButton
+        <Button
           aria-label=""
-          fontSize="sm"
+          fontSize="md"
           onClick={() => setIsPopoverOpen(!isPopoverOpen)}
-          borderColor="teal.300"
-          bg="teal.400"
-          color= "white"
-          _hover={{ bg: "teal.400", borderColor: "teal.400", color: "white" }}
+          // border={"2px solid"}
+          // borderColor="teal.400"
+          // bg="transparent"
+          color="teal.400"
+          // _hover={{ bg: "teal.400", borderColor: "teal.400", color: "white" }}
           size="md"
+          leftIcon={<MdFilterList />}
         >
-          <FaFilter title={title || undefined}/>
-        </IconButton>
+          {/* <FaFilter title={title || undefined} /> */}
+          {/* <MdFilterList title={title || undefined} /> */}
+          Filter
+        </Button>
       </PopoverTrigger>
       <PopoverContent p={3} bg="white" borderColor="gray.300" boxShadow="md">
         <PopoverHeader
@@ -112,7 +118,27 @@ const MultiDropdown = ({
           Select Options
         </PopoverHeader>
         <PopoverBody>
-          <VStack rowGap={1} align="stretch">
+          <VStack rowGap={2} align="stretch">
+            <Flex
+              justifyContent={"center"}
+              display={{ base: "block", md: "none" }}
+            >
+              <CustomDateRange
+                isMobile={actions?.datePicker?.isMobile}
+                startDate={actions?.datePicker?.date.startDate}
+                endDate={actions?.datePicker?.date.endDate}
+                onStartDateChange={(e) => {
+                  if (actions?.datePicker?.onDateChange) {
+                    actions?.datePicker?.onDateChange(e, "startDate");
+                  }
+                }}
+                onEndDateChange={(e) => {
+                  if (actions?.datePicker?.onDateChange) {
+                    actions?.datePicker?.onDateChange(e, "endDate");
+                  }
+                }}
+              />
+            </Flex>
             {search && search?.visible && (
               <Input
                 placeholder={search?.placeholder || "Search"}
@@ -137,7 +163,7 @@ const MultiDropdown = ({
                   options={dropdown.options}
                   placeholder={dropdown.placeholder || "Select Option"}
                   value={selectedOptions[dropdown.label] || null}
-                  onChange={(selected : any) => {
+                  onChange={(selected: any) => {
                     onDropdownChange(selected, dropdown.label);
                   }}
                 />

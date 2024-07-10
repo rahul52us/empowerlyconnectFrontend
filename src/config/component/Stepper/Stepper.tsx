@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Box,
   Flex,
-  Step,
+  Step as ChakraStep,
   StepDescription,
   StepIndicator,
   StepNumber,
@@ -23,25 +23,82 @@ interface CustomStepperProps {
   steps: Steps[];
   activeStepIndex: number;
   orientation?: "horizontal" | "vertical";
+  disabledIndexes?: number[];
+  rest?:any;
+  setActiveStepIndex?: React.Dispatch<React.SetStateAction<number>>;
 }
+
+const Step: React.FC<any> = ({ isDisabled, ...props }) => {
+  return (
+    <ChakraStep {...props} opacity={isDisabled ? 0.5 : 1} cursor={isDisabled ? "not-allowed" : "pointer"} />
+  );
+};
 
 const CustomStepper: React.FC<CustomStepperProps> = ({
   steps,
   activeStepIndex,
   orientation,
+  disabledIndexes = [],
+  setActiveStepIndex,
+  rest
 }) => {
-  const { activeStep } = useSteps({
+  const { activeStep, setActiveStep } = useSteps({
     index: activeStepIndex,
     count: steps.length,
   });
 
+  useEffect(() => {
+    setActiveStep(activeStepIndex)
+  },[activeStepIndex,setActiveStep])
+
+  const handleClick = (index: number) => {
+    setActiveStep(index);
+    if (setActiveStepIndex) setActiveStepIndex(index);
+  };
+
   return (
-    <Box border="1px solid lightgray" borderRadius={10} p={5}>
-      <Stepper index={activeStep} orientation={orientation}>
-        {steps.map((step, index) => (
-          <Step key={index}>
-            <Flex flexDirection="column" alignItems="center">
-              <StepTitle>{step.title}</StepTitle>
+    <Box w="100%" cursor="pointer">
+      {orientation === "horizontal" ? (
+        <Stepper index={activeStep} orientation={orientation} {...rest}>
+          {steps.map((step, index) => (
+            <Step
+              key={index}
+              onClick={() => {
+                if (!disabledIndexes.includes(index)) handleClick(index);
+              }}
+              isDisabled={disabledIndexes.includes(index)}
+            >
+              <Flex flexDirection="column" alignItems="center" flex={1}>
+                <StepTitle>{step.title}</StepTitle>
+                <StepIndicator>
+                  <StepStatus
+                    complete={step.Icon}
+                    incomplete={<StepNumber />}
+                    active={<StepNumber />}
+                  />
+                </StepIndicator>
+                <StepDescription>{step.description}</StepDescription>
+              </Flex>
+              {index < steps.length - 1 && <StepSeparator />}
+            </Step>
+          ))}
+        </Stepper>
+      ) : (
+        <Stepper
+          index={activeStep}
+          orientation={orientation}
+          height="100%"
+          gap="0"
+          {...rest}
+        >
+          {steps.map((step, index) => (
+            <Step
+              key={index}
+              onClick={() => {
+                if (!disabledIndexes.includes(index)) handleClick(index);
+              }}
+              isDisabled={disabledIndexes.includes(index)}
+            >
               <StepIndicator>
                 <StepStatus
                   complete={step.Icon}
@@ -49,12 +106,17 @@ const CustomStepper: React.FC<CustomStepperProps> = ({
                   active={<StepNumber />}
                 />
               </StepIndicator>
-               <StepDescription> {step.description}</StepDescription>
-              </Flex>
-            {index < steps.length - 1 && <StepSeparator />}
-          </Step>
-        ))}
-      </Stepper>
+
+              <Box flexShrink="0">
+                <StepTitle>{step.title}</StepTitle>
+                <StepDescription>{step.description}</StepDescription>
+              </Box>
+
+              <StepSeparator />
+            </Step>
+          ))}
+        </Stepper>
+      )}
     </Box>
   );
 };

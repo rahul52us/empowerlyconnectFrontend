@@ -17,12 +17,14 @@ import {
 } from "@chakra-ui/react";
 import { preTitle, shortDescription, subTitle } from "./utils/text";
 import CustomCarousel from "../../../config/component/CustomCarousel/CustomCarousel";
+import CoursePage from "../Home/component/CoursePage/CoursePage";
 
 export default function CallToActionWithVideo() {
 
   const sildesValues = useBreakpointValue({base : 1 , md : 2 , lg : 3})
 
   return (
+    <>
     <Container maxW={"6xl"} style={{ overflow: "hidden" }}>
       <Stack
         align={"center"}
@@ -220,6 +222,8 @@ export default function CallToActionWithVideo() {
         </Box>
       </CustomCarousel>
     </Container>
+    <CoursePage />
+    </>
   );
 }
 

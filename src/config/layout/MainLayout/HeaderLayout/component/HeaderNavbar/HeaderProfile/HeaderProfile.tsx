@@ -9,6 +9,7 @@ import {
   Box,
   Text,
   VStack,
+  Button,
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import store from "../../../../../../../store/store";
@@ -40,8 +41,9 @@ const HeaderProfile = observer(() => {
         icon={
           <Avatar
             src={user?.pic}
-            size="sm"
-            borderRadius={10}
+            width="42px"
+            height="42px"
+            borderRadius={'full'}
             name={user?.name}
           />
         }
@@ -92,28 +94,14 @@ const HeaderProfile = observer(() => {
     </Menu>
   ) : (
     <Menu closeOnSelect={false} placement="bottom-end">
-      <MenuButton
-        as={IconButton}
-        aria-label="User Menu"
-        icon={<Avatar size="sm" borderRadius="full" />}
-        size="sm"
-        variant="ghost"
-      />
-      <MenuList
-        minWidth="220px"
-        boxShadow="md"
-        borderRadius="md"
-        zIndex={10}
-        p={2}
-      >
+      <MenuButton variant="ghost" border="2px solid" as={Button}>Login</MenuButton>
+      <MenuList minWidth="220px" boxShadow="md" borderRadius="md" zIndex={10} p={2}>
         <VStack spacing={2}>
           <MenuItem onClick={() => navigate(authentication.login)}>
             <FaUser style={{ marginRight: "8px" }} /> Login
           </MenuItem>
           <Divider />
-          <MenuItem
-            onClick={() => navigate(authentication.createOrganisationStep1)}
-          >
+          <MenuItem onClick={() => navigate(authentication.createOrganisationStep1)}>
             <FaKey style={{ marginRight: "8px" }} /> Create New Account
           </MenuItem>
         </VStack>

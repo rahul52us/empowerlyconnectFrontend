@@ -1,12 +1,36 @@
-import { Box } from "@chakra-ui/react"
+import { Box, Flex, Image, Text } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
+import { useNavigate } from "react-router-dom";
+import { dashboard } from "../../../../constant/routes";
+import store from "../../../../../store/store";
+import { headerHeight } from "../../../../constant/variable";
 
 const SidebarLogo = observer(() => {
+  const {
+    layout: { isCallapse },
+  } = store;
+  const navigate = useNavigate();
   return (
-    <Box bgGradient='linear-gradient(to right, #ff9d01, #ffaa01)' p={2} mb={3}>
-        <img src="https://www.radiustheme.com/demo/html/psdboss/akkhor/akkhor/img/logo.png" alt="" />
-    </Box>
-  )
-})
+    <Flex
+      bgGradient="linear-gradient(to right, #ff9d01, #ffaa01)"
+      justifyContent="center"
+      flexDirection="column"
+      alignItems="center"
+      height={headerHeight}
+    >
+      <Box cursor="pointer" onClick={() => navigate(dashboard.home)}>
+        {isCallapse ? (
+          <Text fontWeight={600}>TF</Text>
+        ) : (
+          <Image
+            src="https://themefisher.com/images/logo/logo.svg"
+            alt=""
+            mb={3}
+          />
+        )}
+      </Box>
+    </Flex>
+  );
+});
 
 export default SidebarLogo;

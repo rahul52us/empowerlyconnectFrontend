@@ -1,11 +1,12 @@
 import { Box, Grid, useBreakpointValue } from "@chakra-ui/react";
 import { useLocation } from "react-router-dom";
 import ProfileBanner from "./component/ProfileBanner";
-import ProfileMainTabContainer from "./component/element/component/profileTabContainer/ProfileMainTabContainer";
 import { observer } from "mobx-react-lite";
 import ProfileChangePassword from "./component/TabsComponent/ProfileChangePassword";
 import ProfileEdit from "./component/element/component/ProfileFormContainer/element/ProfileEdit/ProfileEdit";
 import ProfileView from "./component/element/component/ProfileFormContainer/element/ProfileView/ProfileView";
+import ProfileMainTabContainer from "./component/element/component/profileTabContainer/profileSideTab/ProfileMainTabContainer";
+import ProfileHeaderTab from "./component/element/component/profileTabContainer/profileHeaderTab/ProfileHeaderTab";
 
 const ProfileContainer = observer(
   ({
@@ -73,26 +74,29 @@ const ProfileContainer = observer(
     };
 
     return (
-      <Box p={{base: 1.5, lg : 0}}>
+      <Box
+        mt={5}
+        style={{
+          marginLeft: LargerThanMd ? "80px" : "0",
+          marginRight: LargerThanMd ? "80px" : "2px",
+        }}
+      >
         <ProfileBanner />
-        <Grid
-          gridTemplateColumns={{ lg: "0.35fr 1fr" }}
-          style={{
-            marginLeft: LargerThanMd ? "100px" : "0",
-            marginRight: LargerThanMd ? "100px" : "2px",
-          }}
-          gap={5}
-          mt={3}
-          mb={10}
-        >
-          <Box>
+        <Box position="sticky" top={0} zIndex="sticky" display="none">
+          <ProfileHeaderTab
+            editTabLink={editTabLink}
+            profileData={profileData}
+            type={type}
+            sideTab={sideTab}
+          />
+        </Box>
+        <Grid gridTemplateColumns={{ lg: "0.35fr 1fr" }} gap={5} mt={3} mb={10}>
             <ProfileMainTabContainer
               profileData={profileData}
               type={type}
               sideTab={sideTab}
               editTabLink={editTabLink}
             />
-          </Box>
           <Box border="1px solid #e9ecef" borderRadius={5}>
             {type === "edit"
               ? getEditActiveComponent({

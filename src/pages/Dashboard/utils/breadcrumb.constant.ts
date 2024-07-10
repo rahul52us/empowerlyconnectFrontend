@@ -35,7 +35,12 @@ const employesBreadCrumb = {
     { label: "Home", link: "/" },
   { label: "employes", link: dashboard.employes.details },
   { label: "New" },
-  ]
+  ],
+  personalDetails: [
+    { label: "Home", link: "/" },
+    { label: "Dashboard", link: dashboard.home },
+    { label: "Details" },
+  ],
 };
 
 const tripBreadCrumb = [
@@ -46,9 +51,50 @@ const tripBreadCrumb = [
 
 const departmentsBreadCrumb = [
   { label: "Home", link: "/" },
-  { label: "Dashboard", link: dashboard.home },
+  { label: "Company", link: dashboard.company.index },
   { label: "Departments" },
 ];
+
+const companyBreadCrumb = {
+  index : [
+  { label: "Home", link: "/" },
+  { label: "Dashboard", link: dashboard.home },
+  { label: "Company" },
+],policy : [
+  { label: "Home", link: "/" },
+  { label: "Company", link: dashboard.company.index },
+  { label: "Policy" },
+]};
+
+const requestBreadCrumb = {
+  userIndex : [
+    { label: "Home", link: "/" },
+    { label: "User List", link: dashboard.request.userList },
+    { label: "Request" },
+  ],
+  userList : [
+    { label: "Home", link: "/" },
+    { label: "Dashboard", link: dashboard.home },
+    { label: "User List" },
+  ],
+  index : [
+  { label: "Home", link: "/" },
+  { label: "Dashboard", link: dashboard.home },
+  { label: "Request" },
+],
+leave : [
+  { label: "Home", link: "/" },
+  { label: "Request", link: dashboard.request.index },
+  { label: "Leave" },
+]};
+
+const attendenceBreadCrumb = {
+  attendence : [
+    { label: "Home", link: "/" },
+    { label: "Dashboard", link: dashboard.home },
+    { label: "Attendence" },
+  ]
+}
 
 export {
   videoBreadCrumb,
@@ -57,5 +103,8 @@ export {
   dashBreadCrumb,
   tripBreadCrumb,
   employesBreadCrumb,
-  departmentsBreadCrumb
+  departmentsBreadCrumb,
+  companyBreadCrumb,
+  requestBreadCrumb,
+  attendenceBreadCrumb
 };

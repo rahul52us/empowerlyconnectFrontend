@@ -17,8 +17,12 @@ import ChatMessageContainer from "./config/component/Chat/ChatMessageContainer";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import LoginModel from "./pages/Authentication/LoginModel/LoginModel";
+import store from "./store/store";
+import WebLoader from "./config/component/Loader/WebLoader";
+import ChatboxPopup from "./config/component/ChatBoxPopUp/ChatBoxPopUp";
 
 const App = observer(() => {
+  const {auth : {webLoader}} = store
   const { pathname } = useLocation();
   i18n.use(initReactI18next).init({
     resources: {
@@ -42,11 +46,12 @@ const App = observer(() => {
       <GlobalStyles />
       <ErrorBoundary>
         <Notification />
-        <RouterIndex />
+        {webLoader ? <WebLoader /> : <RouterIndex />}
         <ChatMessageContainer />
         <LoginModel />
         <DashSearchBar />
         <ThemeChangeContainer />
+        <ChatboxPopup />
         <ScrollToTopButton />
       </ErrorBoundary>
     </ChakraProvider>

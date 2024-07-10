@@ -1,6 +1,10 @@
 import { lazy } from "react";
 import { dashboard } from "../constant/routes";
 
+const PersonalDetails = lazy(() => import("../../pages/Dashboard/Employes/PersonalDetails"))
+const PersonalDetailUsersChart =  lazy(() => import("../../pages/Dashboard/Employes/PersonalDetails/component/PersonalDetailChart"))
+const PageNotFound = lazy(() => import("../component/common/WebPages/PageNotFound"));
+
 const DashboardIndex = lazy(
   () => import("../../pages/Dashboard/DashboardIndex")
 );
@@ -10,6 +14,7 @@ const QuizDashIndex = lazy(
 
 // task
 const TaskIndex = lazy(() => import("../../pages/Dashboard/Task/Task"));
+const CustomDragForm = lazy(() => import("../../pages/Dashboard/CustomDragForm/CustomFragForm"))
 
 // project
 const ProjectIndex = lazy(
@@ -80,7 +85,23 @@ const EmployeCreate = lazy(
 );
 
 
-const Department = lazy(() => import("../../pages/Dashboard/Department/Department"))
+const Department = lazy(() => import("../../pages/Dashboard/Company/Department/Department"))
+
+// Company
+
+const CompanyPolicy = lazy(() => import( "../../pages/Dashboard/Company/CompanyPolicy"));
+const Company = lazy(() => import( "../../pages/Dashboard/Company/index"));
+
+// Request
+
+const Request = lazy(() => import("../../pages/Dashboard/Request"));
+const LeaveRequest = lazy(() => import('../../pages/Dashboard/Request/component/LeaveRequest/LeaveRequest'))
+const LeaveEditRequest = lazy(() => import('../../pages/Dashboard/Request/component/LeaveRequest/component/form/LeaveEditRequest'))
+// Manager Request
+const ManagerRequest = lazy(() => import("../../pages/Dashboard/Request/ManagerRequest/index"))
+
+// Attendence Request
+const Attendence = lazy(() => import("../../pages/Dashboard/Attendence"))
 
 export const DashboardRoutes = [
   {
@@ -111,6 +132,11 @@ export const DashboardRoutes = [
   {
     element: <CustomCalender />,
     path: "/dashboard/calender",
+    privateRoutes: true,
+  },
+  {
+    element: <CustomDragForm />,
+    path: "/dashboard/formbuilder",
     privateRoutes: true,
   },
   {
@@ -188,5 +214,74 @@ export const DashboardRoutes = [
     element : <Department />,
     path:dashboard.department.index,
     privateRoutes:true
-  }
+  },
+
+  // employes personal details
+
+  {
+    element : <PersonalDetails />,
+    path : dashboard.employes.personalDetails,
+    privateRoutes : true
+  },
+  {
+    element : <PersonalDetailUsersChart />,
+    path : dashboard.employes.personalDetailsUserChart,
+    privateRoutes : true
+  },
+  // Company
+  {
+    element : <Company />,
+    path : dashboard.company.index,
+    privateRoutes: true
+  },
+  {
+    element : <CompanyPolicy />,
+    path : dashboard.company.holidays,
+    privateRoutes: true
+  },
+
+  // Request
+  {
+    element : <Request />,
+    path : dashboard.request.index,
+    privateRoutes : true
+  },
+  {
+    element : <LeaveRequest />,
+    path : dashboard.request.leaveAdd,
+    privateRoutes : true
+  },
+  {
+    element : <LeaveEditRequest />,
+    path : dashboard.request.leaveEdit,
+    privateRoutes : true
+  },
+  {
+    element : <ManagerRequest />,
+    path : dashboard.request.userList,
+    privateRoutes : true
+  },
+  {
+    element : <Request />,
+    path : dashboard.request.uniqueUser,
+    privateRoutes : true
+  },
+  {
+    element : <LeaveEditRequest />,
+    path : dashboard.request.uniqueEdit,
+    privateRoutes : true
+  },
+
+  // Attendence
+  {
+    element : <Attendence />,
+    path : dashboard.attendence.index
+  },
+  // Not found
+  {
+    element : <PageNotFound />,
+    path : '/dashboard/*',
+    privateRoutes : true
+  },
+
 ];

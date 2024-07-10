@@ -5,6 +5,8 @@ import SingleProduct from "../../pages/main/Product/component/SingleProduct";
 import Home2 from "../../pages/main/Home/Home2";
 // const Home = lazy(() => import("../../pages/main/Home/Home"));
 const About = lazy(() => import("../../pages/main/About/About"));
+const PageNotFound = lazy(() => import("../component/common/WebPages/PageNotFound"));
+
 const ProfileIndex = lazy(
   () => import("../../pages/main/profile/ProfileIndex")
 );
@@ -125,5 +127,12 @@ export const MainPublicRoutes = [
     element : <IndividualCompanyHome />,
     path: main.individualHomeCompany,
     publicRoutes:true
-  }
+  },
+  // Not found
+
+  {
+    element : <PageNotFound />,
+    path : '/*',
+    privateRoutes : true
+  },
 ];

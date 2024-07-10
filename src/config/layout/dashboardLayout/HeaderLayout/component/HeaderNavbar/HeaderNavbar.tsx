@@ -9,7 +9,9 @@ import HeaderChatMessage from "./HeaderChatMessage/HeaderChatMessage";
 import store from "../../../../../../store/store";
 
 const HeaderNavbar = observer(() => {
-  const {layout : {MobileSidebarFun}} = store
+  const {
+    layout: { setOpenMobileSideDrawer },
+  } = store;
   const [isLargerThan1020] = useMediaQuery("(min-width: 1020px)");
 
   return (
@@ -28,7 +30,7 @@ const HeaderNavbar = observer(() => {
           <HeaderProfile />
         </>
       ) : (
-        <FaBars cursor="pointer" onClick={() => MobileSidebarFun(true)} />
+        <FaBars cursor="pointer" onClick={() => setOpenMobileSideDrawer(true)} />
       )}
     </Flex>
   );

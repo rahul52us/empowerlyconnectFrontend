@@ -4,14 +4,14 @@ import { dashboard } from "../../../config/constant/routes";
 import { observer } from "mobx-react-lite";
 import store from "../../../store/store";
 import { useEffect } from "react";
-import { toJS } from "mobx";
+import { useNavigate } from "react-router-dom";
 
 const DashWidgetCard = observer(() => {
+  const navigate = useNavigate();
   const {
     auth: { openNotification },
     tripStore: { getTripCounts, tripCount },
     Employe: { getEmployesCount, employesCounts },
-    DepartmentStore : {getDepartmentCounts, departmentCounts}
   } = store;
 
   const fetchData = (getDataFn: any) =>
@@ -20,21 +20,25 @@ const DashWidgetCard = observer(() => {
     });
 
   useEffect(() => {
-    Promise.all([fetchData(getTripCounts), fetchData(getEmployesCount), fetchData(getDepartmentCounts)])
+    Promise.all([fetchData(getTripCounts), fetchData(getEmployesCount)])
       .then(() => {})
       .catch((error: any) => {
         openNotification({
           type: "error",
-          message: error.message,
+          message: error?.message || "Something went wrong",
           title: "Failed to get dashboard data",
         });
       });
-  }, [getTripCounts, getEmployesCount,getDepartmentCounts, openNotification]);
+  }, [getTripCounts, getEmployesCount, openNotification]);
 
-  console.log(toJS(departmentCounts))
   return (
     <Grid
-      templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(4, 1fr)" }}
+      templateColumns={{
+        base: "repeat(1, 1fr)",
+        sm: "repeat(2, 1fr)",
+        md: "repeat(4, 1fr)",
+        lg: "repeat(5, 1fr)",
+      }}
       gap={4}
       marginX="auto"
     >
@@ -43,6 +47,12 @@ const DashWidgetCard = observer(() => {
           count: employesCounts.data,
           title: "Users",
           link: dashboard.employes.index,
+          loading: employesCounts.loading,
+        },
+        {
+          count: employesCounts.data,
+          title: "Company",
+          link: dashboard.company.index,
           loading: employesCounts.loading,
         },
         {
@@ -58,17 +68,17 @@ const DashWidgetCard = observer(() => {
           loading: tripCount.loading,
         },
         {
-          count: departmentCounts.data,
-          title: "Departments",
-          link: dashboard.department.index,
-          loading: departmentCounts.loading,
+          count: 2000,
+          title: "Quiz",
+          link: dashboard.quiz,
+          loading: tripCount.loading,
         },
       ].map((item, key) => (
         <GridItem key={key}>
           <WidgetCard
             totalCount={item.count}
             title={item.title}
-            link={item.link}
+            handleClick={() => navigate(item.link)}
             loading={item.loading}
           />
         </GridItem>

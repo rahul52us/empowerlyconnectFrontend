@@ -1,5 +1,6 @@
 import axios from "axios";
 import { action, makeObservable, observable } from "mobx";
+import store from "../store";
 
 class DepartmentStore {
   studentDetails : any = {
@@ -62,14 +63,18 @@ class DepartmentStore {
       getDepartmentCounts:action,
       getAllDepartment:action,
       deleteDepartment:action,
-      deleteDepartmentCategory:action
+      deleteDepartmentCategory:action,
+      addDepartmentCategory:action,
+      updateDepartmentCategory:action,
+      addDepartment:action,
+      updateDepartment:action
     });
   }
 
-  getAllDepartmentCategories = async (sendData: any) => {
+  getAllDepartmentCategories = async (sendData : any) => {
     try {
       this.departmentCategories.loading = true
-      const { data } = await axios.get("/department/categories",{params : sendData});
+      const { data } = await axios.get("/department/categories",{params : {company : store.auth.getCurrentCompany(), ...sendData}});
       this.departmentCategories.hasFetch = true
       this.departmentCategories.data = data?.data?.data || [];
       this.departmentCategories.totalPages = data?.data?.totalPages || 0
@@ -81,10 +86,28 @@ class DepartmentStore {
     }
   };
 
+  addDepartmentCategory = async (sendData : any) => {
+    try {
+      const { data } = await axios.post("/department/category",{company : store.auth.getCurrentCompany(), ...sendData});
+      return data
+    } catch (err: any) {
+      return Promise.reject(err?.response || err);
+    }
+  };
+
+  addDepartment = async (sendData : any) => {
+    try {
+      const { data } = await axios.post("/department",{company : store.auth.getCurrentCompany(), ...sendData});
+      return data
+    } catch (err: any) {
+      return Promise.reject(err?.response || err);
+    }
+  };
+
   getAllDepartment = async (id : string, sendData: any) => {
     try {
       this.departments.loading = true
-      const { data } = await axios.get(`/department/${id}`,{params : sendData});
+      const { data } = await axios.get(`/department/${id}`,{params : {id : id, company : store.auth.getCurrentCompany(), ...sendData}});
       this.departments.hasFetch = true
       this.departments.data = data?.data?.data || [];
       this.departments.totalPages = data?.data?.totalPages || 0
@@ -114,6 +137,24 @@ class DepartmentStore {
     }
   }
 
+  updateDepartmentCategory = async (id : string, sendData : any) => {
+    try {
+      const { data } = await axios.put(`department/category/${id}`,{...sendData,company : store.auth.getCurrentCompany()});
+      return data;
+    } catch (err: any) {
+      return Promise.reject(err?.response || err);
+    }
+  }
+
+  updateDepartment = async (id : string, sendData : any) => {
+    try {
+      const { data } = await axios.put(`/department/${id}`,{...sendData,company : store.auth.getCurrentCompany()});
+      return data;
+    } catch (err: any) {
+      return Promise.reject(err?.response || err);
+    }
+  }
+
   getPositionCount = async () => {
     try {
       this.departmentCounts.loading = true
@@ -130,7 +171,7 @@ class DepartmentStore {
   getDepartmentCounts = async () => {
     try {
       this.departmentCounts.loading = true
-      const { data } = await axios.get("/department/categories/count");
+      const { data } = await axios.get("/department/categories/count",{params : {company : store.auth.getCurrentCompany()}});
       this.departmentCounts.data = data?.data || 0;
       return data.data
     } catch (err: any) {

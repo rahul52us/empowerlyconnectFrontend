@@ -9,16 +9,15 @@ import DashPageHeader from "../../config/component/common/DashPageHeader/DashPag
 import { headerHeight } from "../../config/constant/variable";
 import { Box, Grid, GridItem, Text } from "@chakra-ui/react";
 import { dashBreadCrumb } from "./utils/breadcrumb.constant";
-// import DashboardRight from "./component/DashboardRight";
-// import MyCoursesTable from "./component/MyCoursesTable";
-// import SkeletanCategoryCard from "../../config/component/Card/CategoryCard/SkeletanCategoryCard";
-// import { addDays } from "date-fns";
+import ManagerEmployes from "./component/manager/ManagerEmployes";
+import PunchAttendence from "./PunchAttendence/PunchAttendence";
+import NewDash from "../NewDash/NewDash";
+import PunchInComponent from "./PunchAttendence/PunchInComponent";
 
 const DashboardIndex = observer(() => {
-  // const [startDate, setStartDate] = useState(new Date())
-  // const [endDate, setEndDate] = useState(addDays(new Date(), 1))
   const {
     quiz: { setDeleteCategoryModal },
+    auth: { checkPermission },
   } = store;
 
   return (
@@ -27,18 +26,25 @@ const DashboardIndex = observer(() => {
         <DashPageHeader title="Dashboard" breadcrumb={dashBreadCrumb} />
         <Grid templateColumns={{ base: "1fr", md: "1fr" }} columnGap={3}>
           <GridItem>
-            <Box>
-              <DashboardBanner />
-            </Box>
+            <DashboardBanner />
+          </GridItem>
+          <GridItem>
             <DashWidgetCard />
-            {/* <SkeletanCategoryCard/> */}
-
+          </GridItem>
+          <GridItem>
             <DashChartContainer />
           </GridItem>
-          {/* <GridItem>
-          <DashboardRight />
-        </GridItem> */}
-          {/* <MyCoursesTable /> */}
+        </Grid>
+        <Grid>
+          <PunchInComponent />
+        </Grid>
+        <Grid
+          display={checkPermission("dashboard", "view") ? "grid" : "none"}
+          gridTemplateColumns={{ base: "1fr", lg: "1fr 1fr" }}
+          columnGap={4}
+        >
+          <ManagerEmployes />
+          <PunchAttendence />
         </Grid>
         <DeleteModel
           id={store.quiz.openDeleteCategoryModal?.data?._id}
@@ -52,6 +58,7 @@ const DashboardIndex = observer(() => {
           </Box>
         </DeleteModel>
       </Box>
+      <NewDash />
       {/* <ProfileCard title="title" /> */}
     </>
   );

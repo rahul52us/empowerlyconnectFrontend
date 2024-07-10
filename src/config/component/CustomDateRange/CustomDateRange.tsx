@@ -1,9 +1,10 @@
 import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css"; // theme css file
-import "./CustomDateRangeMobile.css";
-import "./CustomDateRangePicker.css";
+// import "./CustomDateRangeMobile.css";
+// import "./CustomDateRangePicker.css";
 import { DateRange, DateRangePicker } from "react-date-range";
 import format from "date-fns/format";
+import { IoMdCalendar } from "react-icons/io";
 import {
   Input,
   Popover,
@@ -11,6 +12,8 @@ import {
   PopoverContent,
   PopoverBody,
   useBreakpointValue,
+  Text,
+  Box,
 } from "@chakra-ui/react";
 
 interface CustomDateRangeProps {
@@ -30,21 +33,45 @@ export default function CustomDateRange({
   isMobile = false,
   months = 2,
 }: CustomDateRangeProps): JSX.Element {
-
   const LargerThanMd = useBreakpointValue({ md: true });
+  const formattedStartDate = format(startDate, "d MMM yyyy");
+  const formattedEndDate = format(endDate, "d MMM yyyy");
 
-  return (isMobile || !LargerThanMd ) ? (
+  return isMobile || !LargerThanMd ? (
     <Popover placement="auto-end">
       <PopoverTrigger>
-        <Input
+        {/* <Input
           name="datePicker"
-          value={`${format(startDate, "dd/MM/yyyy")} to ${format(
+          value={`${format(startDate, "d MMM yyyy")} to ${format(
             endDate,
-            "dd/MM/yyyy"
+            "d MMM yyyy"
           )}`}
           width={{ base: "14rem", lg: "14rem" }}
           textAlign="center"
-        />
+        /> */}
+        <Box position="relative" width={{ base: "14.5rem", lg: "14.5rem" }}>
+          <Input
+            name="datePicker"
+            value=""
+            // width={{ base: "14rem", lg: "14rem" }}
+            textAlign="center"
+          />
+          <Box
+            position="absolute"
+            top="0"
+            left="0"
+            right="0"
+            bottom="0"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+          >
+            <Text as="span" fontWeight="600" color={"gray.700"}>{formattedStartDate}</Text>
+            <Text as="span" fontWeight="500" color={"gray.500"} mx={1}>to</Text>
+            <Text as="span" fontWeight="600" color={"gray.700"} mr={1}>{formattedEndDate}</Text>
+            <IoMdCalendar fontSize={"20px"} color={"gray"}/>
+          </Box>
+        </Box>
       </PopoverTrigger>
       <PopoverContent width="auto">
         <PopoverBody>
@@ -76,9 +103,9 @@ export default function CustomDateRange({
       <PopoverTrigger>
         <Input
           name="datePicker"
-          value={`${format(startDate, "dd/MM/yyyy")} to ${format(
+          value={`${format(startDate, "d MMM yyyy")} to ${format(
             endDate,
-            "dd/MM/yyyy"
+            "d MMM yyyy"
           )}`}
           width={{ lg: "18rem" }}
           textAlign="center"

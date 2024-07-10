@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { Suspense } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import HeaderLayout from "./HeaderLayout/HeaderLayout";
@@ -6,17 +6,24 @@ import {
   contentLargeBodyPadding,
   contentSmallBodyPadding,
   headerHeight,
-  sidebarWidth,
+  mediumSidebarWidth,
 } from "../../constant/variable";
 import Loader from "../../component/Loader/Loader";
 import { observer } from "mobx-react-lite";
 import store from "../../../store/store";
 import styled from "styled-components";
 import SidebarLayout from "./SidebarLayout/SidebarLayout";
-import { useColorModeValue, useMediaQuery, useTheme } from "@chakra-ui/react";
+import {
+  Box,
+  useBreakpointValue,
+  useColorModeValue,
+  useMediaQuery,
+  useTheme,
+} from "@chakra-ui/react";
 
 const RedirectComponent = observer(() => {
   const navigate = useNavigate();
+
   const {
     auth: { restoreUser },
   } = store;
@@ -31,13 +38,23 @@ const RedirectComponent = observer(() => {
 const DashboardLayout = observer(() => {
   const {
     auth: { restoreUser, user },
-    layout: { fullScreenMode },
+    layout: {
+      fullScreenMode,
+      mediumScreenMode,
+      isCallapse,
+      openDashSidebarFun,
+      openMobileSideDrawer,
+      setOpenMobileSideDrawer,
+    },
     themeStore: { themeConfig },
   } = store;
+
   const navigate = useNavigate();
   const theme = useTheme();
 
   const [sizeStatus] = useMediaQuery(`(max-width: ${theme.breakpoints.xl})`);
+  const isMobile = useBreakpointValue({ base: true, lg: false }) ?? false;
+  const sidebarRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (!restoreUser()) {
@@ -45,18 +62,48 @@ const DashboardLayout = observer(() => {
     }
   }, [restoreUser, navigate]);
 
+  const closeDrawerModel = () => {
+    setOpenMobileSideDrawer(false);
+  };
+
+  const handleSidebarItemClick = (item: any) => {
+    if (!item.children || item.url) {
+      localStorage.setItem("activeComponentName", item.id);
+    }
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        sidebarRef.current &&
+        !sidebarRef.current.contains(event.target as Node)
+      ) {
+        openDashSidebarFun(true);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isCallapse, openDashSidebarFun]);
+
   return user ? (
-    <MainContainer>
-      <SidebarContainer
-        fullScreenMode={fullScreenMode}
-        className={fullScreenMode ? "fullscreen" : ""}
-      >
-        <SidebarLayout />
-      </SidebarContainer>
+    <MainContainer isMobile={isMobile}>
+      <Box ref={sidebarRef}>
+        <SidebarLayout
+          onItemClick={handleSidebarItemClick}
+          isCollapsed={isCallapse}
+          onLeafItemClick={handleSidebarItemClick}
+          openMobileSideDrawer={openMobileSideDrawer}
+          setOpenMobileSideDrawer={closeDrawerModel}
+        />
+      </Box>
       <Container fullScreenMode={fullScreenMode}>
         <HeaderContainer
-          className={fullScreenMode ? "fullscreen" : ""}
+          isMobile={isMobile}
           sizeStatus={sizeStatus}
+          mediumScreenMode={mediumScreenMode}
           fullScreenMode={fullScreenMode}
           backgroundColor={useColorModeValue(
             themeConfig.colors.custom.light.primary,
@@ -66,7 +113,15 @@ const DashboardLayout = observer(() => {
           <HeaderLayout />
         </HeaderContainer>
         <ContentContainer
-          className={fullScreenMode ? "fullscreen" : ""}
+          isMobile={isMobile}
+          mediumScreenMode={mediumScreenMode}
+          className={
+            fullScreenMode
+              ? "fullscreen"
+              : mediumScreenMode
+              ? "mediumScreen"
+              : ""
+          }
           fullScreenMode={fullScreenMode}
           sizeStatus={sizeStatus}
         >
@@ -83,79 +138,48 @@ const DashboardLayout = observer(() => {
 
 export default DashboardLayout;
 
-const MainContainer = styled.div`
+const MainContainer = styled.div<{ isMobile: boolean }>`
   display: flex;
   transition: all 0.3s ease-in-out;
   overflow: hidden;
-
-  &.fullscreen {
-    margin-left: -${sidebarWidth};
-  }
-`;
-const SidebarContainer = styled.div<{ fullScreenMode: boolean }>`
-  height: 100vh;
-  max-height: 100vh;
-  min-height: 100vh;
-  overflow-y: auto;
-  overflow-x: hidden;
-  width: ${sidebarWidth};
-  display: inline;
-  border-right: "1px solid red";
-  background-color: blue;
-  &.fullscreen {
-    width: 0;
-    transition: width 0.3s ease-in-out;
-  }
+  margin-left: ${(props) => (props.isMobile ? "0px" : mediumSidebarWidth)};
 `;
 
 const Container = styled.div<{ fullScreenMode: boolean }>`
   display: flex;
   flex-direction: column;
   transition: all 0.3s ease-in-out;
-  &.fullscreen {
-    margin-left: 0;
-  }
 `;
 
 const HeaderContainer = styled.div<{
   fullScreenMode: boolean;
   sizeStatus: boolean;
+  mediumScreenMode: boolean;
   backgroundColor: any;
+  isMobile: boolean;
 }>`
-    height: ${headerHeight};
-    border-bottom:'1px solid black'
-    position: fixed;
-    top:0;
-    right: 0;
-    background-color:${(props) => props.backgroundColor};
-    left: ${(props) =>
-      props.fullScreenMode || props.sizeStatus ? 0 : sidebarWidth};
-    transition: all 0.3s ease-in-out;
-
-    &.fullscreen {
-      left: 0;
-      width: 100%;
-      transition: left 0.3s ease-in-out;
-    }
-  `;
+  zindex: 9999;
+  height: ${headerHeight};
+  position: fixed;
+  top: 0;
+  right: 0;
+  background-color: ${(props) => props.backgroundColor};
+  left: ${(props) => (props.isMobile ? "0px" : mediumSidebarWidth)};
+  transition: all 0.3s ease-in-out;
+`;
 
 const ContentContainer = styled.div<{
   sizeStatus: boolean;
   fullScreenMode: boolean;
+  mediumScreenMode: boolean;
+  isMobile: boolean;
 }>`
-  padding: ${({ sizeStatus }) =>
-    sizeStatus ? contentSmallBodyPadding : contentLargeBodyPadding};
-  width: ${({ sizeStatus, fullScreenMode }) =>
-    sizeStatus
-      ? `100vw`
-      : fullScreenMode
-      ? "100vw"
-      : `calc(100vw - ${sidebarWidth})`};
+  padding: ${({ isMobile }) =>
+    isMobile ? `${contentSmallBodyPadding}` : `${contentLargeBodyPadding}`};
+  width: ${({ isMobile }) =>
+    isMobile ? "100vw" : `calc(100vw - ${mediumSidebarWidth})`};
   overflow-x: hidden;
   height: calc(100vh - ${headerHeight});
   transition: all 0.3s ease-in-out;
-  &.fullscreen {
-    width: 100vw;
-    transition: width 0.3s ease-in-out;
-  }
+  margin-top: ${headerHeight};
 `;

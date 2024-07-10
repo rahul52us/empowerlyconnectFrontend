@@ -4,7 +4,7 @@ export const authentication = {
   forgotPassword: "/forgot-password",
   resetPassword: "/reset-password/:token",
   verifyEmail: "/verify-account/:token",
-  createOrganisation: "/create/company/:token",
+  createOrganisation2: "/create/company/:token",
   createOrganisationStep1: "/create/company",
 };
 
@@ -37,12 +37,31 @@ export const dashboard = {
     details: `/${dashboardName}/employes/details`,
     new: `/${dashboardName}/employes/details/new`,
     edit: `/${dashboardName}/employes/details/edit/:id`,
+    personalDetails:`/${dashboardName}/employes/personal-details`,
+    personalDetailsUserChart:`/${dashboardName}/employes/personal-details/:id`
   },
   department: {
     index: `/${dashboardName}/department`,
     details: `/${dashboardName}/employes/details`,
     new: `/${dashboardName}/employes/details/new`,
     edit: `/${dashboardName}/employes/details/edit/:id`,
+  },
+  company: {
+    index: `/${dashboardName}/company`,
+    holidays: `/${dashboardName}/company/policy/holidays`,
+  },
+  request : {
+    index : `/${dashboardName}/request`,
+    leave : `/${dashboardName}/request/leave`,
+    leaveAdd : `/${dashboardName}/request/leave/add`,
+    leaveEdit : `/${dashboardName}/request/leave/edit/:requestId`,
+    userList : `/${dashboardName}/request/users`,
+    uniqueUser : `/${dashboardName}/request/users/:userId`,
+    uniqueEdit : `/${dashboardName}/request/users/:userId/leave/edit/:requestId`,
+  },
+  attendence : {
+    index : `/${dashboardName}/attendence`,
+    leave : `/${dashboardName}/request/leave`,
   },
 };
 

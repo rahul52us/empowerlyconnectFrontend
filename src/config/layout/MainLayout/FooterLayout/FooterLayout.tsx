@@ -41,12 +41,8 @@ const FooterLayout = observer(() => {
         >
           <Box>
             <Flex flexDirection={"column"}>
-              <Image
-                src="https://rainbowit.net/html/histudy/assets/images/logo/logo.png"
-                objectFit={"contain"}
-                width={"120px"}
-                height={"60px"}
-              />
+            <Image w={160} src='https://themefisher.com/images/logo/logo.svg' alt="" cursor='pointer' mb={5} onClick={() => navigate(main.home)}/>
+
               <Text
                 color={useColorModeValue("gray.500", "gray.300")}
                 fontSize={"md"}

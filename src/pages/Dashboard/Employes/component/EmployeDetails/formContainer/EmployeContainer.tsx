@@ -1,14 +1,16 @@
 import { Box, Button, Grid } from "@chakra-ui/react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { observer } from "mobx-react-lite";
-import PersonalDetails from "../../forms/PersonalDetailsForm";
-import PersonalDetailsChangePassword from "../../forms/PersonalDetailsChangePassword";
-import PersonalBankDetails from "../../forms/PersonalBankDetails";
-import FamilyDetails from "../../forms/PersonalFamilyDetails";
 import { dashboard } from "../../../../../../config/constant/routes";
 import EmployFormSidebar from "../component/EmployFormSidebar";
-import PersonalWorkExperience from "../../forms/PersonalWorkExperience";
-import PersonalDocuments from "../../forms/PersonalDocuments";
+import PersonalCompanyDetails from "./forms/PersonalCompanyDetails";
+import PersonalDetails from "./forms/PersonalDetailsForm";
+import PersonalBankDetails from "./forms/PersonalBankDetails";
+import FamilyDetails from "./forms/PersonalFamilyDetails";
+import PersonalDetailsChangePassword from "./forms/PersonalDetailsChangePassword";
+import PersonalWorkExperience from "./forms/PersonalWorkExperience";
+import PersonalDocuments from "./forms/PersonalDocuments";
+import PersonalPermissions from "./forms/PersonalPermissions";
 
 const EmployeContainer = observer(
   ({
@@ -26,7 +28,6 @@ const EmployeContainer = observer(
     const navigate = useNavigate();
     const tab: any = new URLSearchParams(location.search).get("tab");
 
-    console.log(files)
     const getEditActiveComponent = ({
       profileData,
       type,
@@ -84,17 +85,39 @@ const EmployeContainer = observer(
             />
           );
         case "documents":
-            return (
-              <PersonalDocuments
-                type={type}
-                profileData={profileData}
-                handleSubmitProfile={handleSubmitProfile}
-                initialValues={initialValues?.documents}
-                validations={validations}
-                files={files}
-                setFiles={setFiles}
-              />
-        );
+          return (
+            <PersonalDocuments
+              type={type}
+              profileData={profileData}
+              handleSubmitProfile={handleSubmitProfile}
+              initialValues={initialValues?.documents}
+              validations={validations}
+              files={files}
+              setFiles={setFiles}
+            />
+          );
+        case "company-details":
+          return (
+            <PersonalCompanyDetails
+              type={type}
+              profileData={profileData}
+              handleSubmitProfile={handleSubmitProfile}
+              initialValues={initialValues?.companyDetails}
+              validations={validations}
+              files={files}
+              setFiles={setFiles}
+            />
+          );
+        case "permissions":
+          return (
+            <PersonalPermissions
+              type={type}
+              profileData={profileData}
+              handleSubmitProfile={handleSubmitProfile}
+              initialValues={initialValues?.permissions}
+              validations={validations}
+            />
+          );
         default:
           return (
             <Button
@@ -159,17 +182,39 @@ const EmployeContainer = observer(
             />
           );
         case "documents":
-            return (
-              <PersonalDocuments
-                type={type}
-                profileData={profileData}
-                handleSubmitProfile={handleSubmitProfile}
-                initialValues={initialValues?.documents}
-                validations={validations}
-                files={files}
-                setFiles={setFiles}
-              />
-            );
+          return (
+            <PersonalDocuments
+              type={type}
+              profileData={profileData}
+              handleSubmitProfile={handleSubmitProfile}
+              initialValues={initialValues?.documents}
+              validations={validations}
+              files={files}
+              setFiles={setFiles}
+            />
+          );
+        case "company-details":
+          return (
+            <PersonalCompanyDetails
+              type={type}
+              profileData={profileData}
+              handleSubmitProfile={handleSubmitProfile}
+              initialValues={initialValues?.companyDetails}
+              validations={validations}
+              files={files}
+              setFiles={setFiles}
+            />
+          );
+        case "permissions":
+          return (
+            <PersonalPermissions
+              type={type}
+              profileData={profileData}
+              handleSubmitProfile={handleSubmitProfile}
+              initialValues={initialValues?.permissions}
+              validations={validations}
+            />
+          );
         default:
           return (
             <Button
@@ -187,14 +232,9 @@ const EmployeContainer = observer(
 
     return (
       <Box p={{ base: 1.5, lg: 0 }}>
-        <Grid
-          gridTemplateColumns={{ lg: "0.25fr 1fr" }}
-          gap={5}
-          mt={3}
-          mb={10}
-        >
-          <Box>
-            <EmployFormSidebar />
+        <Grid gridTemplateColumns={{ lg: "0.25fr 1fr" }} gap={5} mt={3} mb={10}>
+          <Box >
+            <EmployFormSidebar type={type} />
           </Box>
           <Box border="1px solid #e9ecef" borderRadius={5}>
             {type === "edit"

@@ -18,6 +18,7 @@ interface VideoFormValues {
 
 const VideoForm = observer(({ open, close, type, categoryId }: any) => {
   const [showError, setShowError] = useState(false);
+  const {auth : {user}} = store
   const {
     VideoStore: { createVideo },
     auth: { openNotification },
@@ -41,7 +42,7 @@ const VideoForm = observer(({ open, close, type, categoryId }: any) => {
           onSubmit={(values, { setSubmitting, resetForm }) => {
             values.category = categoryId;
             values.videoType = values.videoType.value;
-            createVideo(values)
+            createVideo({...values,company:user.comanyDetail?.company})
               .then((data) => {
                 openNotification({
                   title: "Create Successfully",

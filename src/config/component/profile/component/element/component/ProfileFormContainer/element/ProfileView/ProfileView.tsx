@@ -1,11 +1,11 @@
 import React from "react";
-import { Box, Divider, Grid, Heading, Text } from "@chakra-ui/react";
+import { Box, Divider, Grid, Heading, Text, useColorModeValue } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import moment from "moment";
 
 const ProfileView = observer(({ profileData }: any) => {
   return (
-    <Box p={6} bg="white" boxShadow="md" borderRadius="md">
+    <Box p={6} boxShadow="md" borderRadius="md" height="100%" borderColor={useColorModeValue("gray.200", "gray.600")} borderWidth="1px">
       <Heading color="brand.500" fontSize="xl" mb={2}>
         Personal Information
       </Heading>

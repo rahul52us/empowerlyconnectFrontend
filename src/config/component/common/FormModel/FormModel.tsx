@@ -6,10 +6,12 @@ import {
   useColorMode,
   Flex,
   Text,
-  ModalOverlay, // Import ModalOverlay component
+  ModalOverlay,
+  Button,
+  Divider,
 } from "@chakra-ui/react";
 
-function FormModel({ open, close, isCentered, title, children }: any) {
+function FormModel({ open, close, isCentered, title, footer, children, ...rest }: any) {
   const { colorMode } = useColorMode();
 
   const headerBgColor = colorMode === "dark" ? "blue.900" : "blue.500";
@@ -17,7 +19,7 @@ function FormModel({ open, close, isCentered, title, children }: any) {
 
   return (
     <>
-      <Modal isCentered={isCentered} size={"2xl"} isOpen={open} onClose={close}>
+      <Modal isCentered={isCentered} size="2xl" isOpen={open} onClose={close} {...rest}>
         <ModalOverlay style={{ backgroundColor: "rgba(0, 0, 0, 0.6)" }} />{" "}
         {/* Increase opacity */}
         <ModalContent>
@@ -40,6 +42,15 @@ function FormModel({ open, close, isCentered, title, children }: any) {
             </Flex>
           )}
           <ModalBody p={-5}>{children}</ModalBody>
+          {footer && (
+            <>
+              <Divider />
+              <Flex justifyContent="flex-end" p={4} columnGap={3} alignItems="center">
+                <Button variant="outline" onClick={close} colorScheme="gray">Cancel</Button>
+                <Button colorScheme="blue" onClick={() => {}}>Submit</Button>
+              </Flex>
+            </>
+          )}
         </ModalContent>
       </Modal>
     </>

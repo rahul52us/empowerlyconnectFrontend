@@ -1,71 +1,96 @@
 import { observer } from "mobx-react-lite";
-import { Box, Text, VStack, Link, Divider } from "@chakra-ui/react";
-import { useNavigate, useParams } from "react-router-dom";
+import {
+  Box,
+  Text,
+  VStack,
+  Link,
+  Divider,
+  useColorMode,
+  Icon,
+} from "@chakra-ui/react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { dashboard } from "../../../../../../config/constant/routes";
+import { sideTabs } from "./utils/constant";
+import React from "react";
+import { FiFileText, FiUser } from "react-icons/fi";
+import { HiOutlineBriefcase, HiOutlineOfficeBuilding } from "react-icons/hi";
+import { RiBankLine } from "react-icons/ri";
+import { FaHome } from "react-icons/fa";
+import { MdOutlineAdminPanelSettings } from "react-icons/md";
 
-const EmployFormSidebar = observer(() => {
+const EmployFormSidebar = observer(({ type }: any) => {
+  const { colorMode } = useColorMode();
+  const location = useLocation();
   const navigate = useNavigate();
+  const tab: any = new URLSearchParams(location.search).get("tab");
   const { id } = useParams();
-  const handleChange = (tab : string) => {
-    navigate(`${dashboard.employes.details}/edit/${id}?tab=${tab}`);
+
+  const handleChange = (tab: string) => {
+    if (type === "edit") {
+      navigate(`${dashboard.employes.details}/edit/${id}?tab=${tab}`);
+    } else {
+      navigate(`${dashboard.employes.details}/new?tab=${tab}`);
+    }
   };
+  const icons = [
+    FiUser,
+    HiOutlineOfficeBuilding,
+    RiBankLine,
+    FaHome,
+    FiFileText,
+    HiOutlineBriefcase,
+    MdOutlineAdminPanelSettings,
+  ];
 
   return (
-    <Box p={4} bg="gray.100" borderRadius="md" boxShadow="md">
-      <VStack spacing={4} align="stretch">
-        <Text fontSize="xl" fontWeight="bold" color="blue.600">
+    <Box
+      p={6}
+      bg={colorMode === "light" ? "white" : "gray.700"}
+      borderRadius="lg"
+      boxShadow="lg"
+      height="100%"
+      border="1px solid"
+      borderColor={colorMode === "light" ? "gray.200" : "gray.700"}
+      position={"sticky"}
+      top={0}
+      h={"fit-content"}
+    >
+      <VStack spacing={6} align="stretch">
+        <Text
+          fontSize="2xl"
+          fontWeight="bold"
+          bgGradient="linear(to-r, blue.400, blue.600)"
+          bgClip="text"
+        >
           Employee Details
         </Text>
-        <VStack spacing={2} align="stretch">
-          <Link
-            onClick={() => handleChange("profile-details")}
-            fontSize="lg"
-            fontWeight="medium"
-            _hover={{ textDecoration: "underline", color: "blue.700" }}
-            cursor="pointer"
-          >
-            Personal Details
-          </Link>
-          <Divider />
-          <Link
-            onClick={() => handleChange("bank-details")}
-            fontSize="lg"
-            fontWeight="medium"
-            _hover={{ textDecoration: "underline", color: "blue.700" }}
-            cursor="pointer"
-          >
-            Bank Details
-          </Link>
-          <Divider />
-          <Link
-            onClick={() => handleChange("family-details")}
-            fontSize="lg"
-            fontWeight="medium"
-            _hover={{ textDecoration: "underline", color: "blue.700" }}
-            cursor="pointer"
-          >
-            Family Details
-          </Link>
-          <Divider />
-          <Link
-            onClick={() => handleChange("documents")}
-            fontSize="lg"
-            fontWeight="medium"
-            _hover={{ textDecoration: "underline", color: "blue.700" }}
-            cursor="pointer"
-          >
-            Documents
-          </Link>
-          <Divider />
-          <Link
-            onClick={() => handleChange("work-experience")}
-            fontSize="lg"
-            fontWeight="medium"
-            _hover={{ textDecoration: "underline", color: "blue.700" }}
-            cursor="pointer"
-          >
-            Work Experience
-          </Link>
+        <VStack spacing={4} align="stretch">
+          {sideTabs.map((item: any, index: number) => (
+            <React.Fragment key={index}>
+              <Link
+                onClick={() => handleChange(item.key)}
+                fontSize="lg"
+                color={tab === item.key ? "blue.600" : "gray.400"}
+                fontWeight={tab === item.key ? "bold" : "medium"}
+                _hover={{ color: "blue.600", textDecoration: "none" }}
+                _focus={{ boxShadow: "outline" }}
+                transition="all 0.2s"
+                display="flex"
+                cursor="pointer"
+                alignItems="center"
+                gap={3}
+              >
+                <Icon as={icons[index]} boxSize={6} />
+                {item.title}
+              </Link>
+              {index < sideTabs.length - 1 && (
+                <Divider
+                  borderWidth="1px"
+                  borderColor={colorMode === "light" ? "gray.200" : "gray.600"}
+                />
+              )}
+            </React.Fragment>
+          ))}
         </VStack>
       </VStack>
     </Box>

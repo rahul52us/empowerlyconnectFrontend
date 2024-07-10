@@ -8,6 +8,7 @@ import DashboardLayout from "../layout/dashboardLayout/DashboardLayout";
 import { observer } from "mobx-react-lite";
 import { mainPrivateRoutes } from "./PrivateMainRoutes";
 import PrivateMainLayout from "../layout/PrivateMainLayout/PrivateMainLayout";
+
 import store from "../../store/store";
 
 const RouterIndex = observer(() => {

@@ -1,14 +1,7 @@
 import { Flex, Box, Text, Skeleton, useColorMode } from "@chakra-ui/react";
-import { IconType } from "react-icons";
 import { useNavigate } from "react-router-dom";
+import { CardPropsI } from "../utils/constant.interface";
 
-interface CardProps {
-  title: string;
-  value: number;
-  link: string;
-  loading?: boolean;
-  icon: IconType;
-}
 
 export default function DashboardCard({
   title,
@@ -16,7 +9,7 @@ export default function DashboardCard({
   link,
   loading = false,
   icon: Icon,
-}: CardProps) {
+}: CardPropsI) {
   const { colorMode } = useColorMode();
   const navigate = useNavigate();
   return title ? (

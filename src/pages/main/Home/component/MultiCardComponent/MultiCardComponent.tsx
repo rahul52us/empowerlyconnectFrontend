@@ -8,6 +8,7 @@ import {
   Flex,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
 const MultiCardComponent = ({
   bgColor,
@@ -15,9 +16,10 @@ const MultiCardComponent = ({
   // image,
   description,
   title,
-  card,
+  cards,
 }: // button
 any) => {
+  const navigate = useNavigate();
   return (
     <>
       <Grid
@@ -45,7 +47,7 @@ any) => {
           </Text>
         </Box>
 
-        {card.map((value: any) => (
+        {cards.map((value: any) => (
           <Box bg={"white"} p={2} rounded={"1rem"}>
             <Image
               w={"100%"}
@@ -65,6 +67,11 @@ any) => {
                 }}
                 borderWidth={"3px"}
                 w={"60%"}
+                onClick={() => {
+                  if (value?.link) {
+                    navigate(value.link);
+                  }
+                }}
               >
                 {value.button}
               </Button>

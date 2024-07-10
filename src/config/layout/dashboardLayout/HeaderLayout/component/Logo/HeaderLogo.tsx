@@ -7,31 +7,51 @@ const HeaderLogo = observer(() => {
   const isLargerThanXl = useBreakpointValue({ lg: true });
 
   const {
-    layout: { fullScreenModeFun, fullScreenMode },
+    layout: {
+      fullScreenMode,
+      openDashSidebarFun,
+      isCallapse
+    },
     auth: { closeSearchBar },
   } = store;
   return (
     <Flex alignItems="center" display={"flex"} ml={2}>
-      {isLargerThanXl &&
-        (fullScreenMode ? (
+      {isLargerThanXl && (
+        <Flex alignItems="center">
           <IconButton
-            icon={<BiRightArrowAlt fontSize={25} />}
-            onClick={() => fullScreenModeFun(!fullScreenMode)}
+            icon={
+              isCallapse ? (
+                <BiRightArrowAlt fontSize={25} />
+              ) : (
+                <BiLeftArrowAlt fontSize={25} />
+              )
+            }
+            aria-label=""
+            variant="ghost"
+            size="lg"
+            style={{ marginRight: "1rem", marginTop: "2px" }}
+            onClick={() => {
+              openDashSidebarFun()
+              // mediumScreenModeFun(!mediumScreenMode);
+            }}
+          />
+          <IconButton
+            icon={
+              fullScreenMode ? (
+                <BiRightArrowAlt fontSize={25} />
+              ) : (
+                <BiLeftArrowAlt fontSize={25} />
+              )
+            }
+            onClick={() => openDashSidebarFun()}
             variant="ghost"
             size="lg"
             style={{ marginRight: "1rem", marginTop: "2px" }}
             aria-label="open the drawer button"
+            display="none"
           />
-        ) : (
-          <IconButton
-            icon={<BiLeftArrowAlt fontSize={25} />}
-            onClick={() => fullScreenModeFun(!fullScreenMode)}
-            variant="ghost"
-            size="lg"
-            style={{ marginRight: "1rem", marginTop: "2px" }}
-            aria-label="open the drawer button"
-          />
-        ))}
+        </Flex>
+      )}
       <Input
         type="text"
         // name="search"

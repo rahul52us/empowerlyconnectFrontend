@@ -9,7 +9,7 @@ import { BiLeftArrowAlt, BiRightArrowAlt } from 'react-icons/bi';
 
 interface CarouselProps {
   style?: React.CSSProperties;
-  children: React.ReactNode;
+  children: any;
   settings?: {
     slidesToShow?: number;
     [key: string]: any;

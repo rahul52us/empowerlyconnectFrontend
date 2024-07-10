@@ -10,4 +10,4 @@ const getIdFromObject = (data: any) => {
   }
 };
 
-export { getIdFromObject };
+export {getIdFromObject}

@@ -1,6 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { action, makeObservable, observable } from "mobx";
 import CryptoJS from "crypto-js";
+import { backendBaseUrl } from "../../config/constant/urls";
 
 interface Notification {
   title?: any;
@@ -13,11 +14,14 @@ interface Notification {
 class AuthStore {
   loading: boolean = false;
   user: any | null = null;
+  company: any | null = null;
   openSearch: any = false;
-  loginModel : Boolean = false;
+  loginModel: Boolean = false;
   notification: Notification | null = null;
   isRememberCredential = true;
   companyUsers = [];
+  role: any = "user";
+  webLoader: boolean = false;
 
   constructor() {
     this.initiatAppOptions();
@@ -26,12 +30,15 @@ class AuthStore {
       notification: observable,
       companyUsers: observable,
       openSearch: observable,
-      loginModel:observable,
-      openLoginModel:action,
+      loginModel: observable,
+      company: observable,
+      role: observable,
+      webLoader: observable,
+      openLoginModel: action,
       login: action,
       register: action,
       doLogout: action,
-      updateProfile:action,
+      updateProfile: action,
       closeSearchBar: action,
       openNotification: action,
       closeNotication: action,
@@ -46,11 +53,12 @@ class AuthStore {
       verifyEmail: action,
       createOrganisation: action,
       getCompanyUsers: action,
+      getCurrentCompany: action,
     });
   }
 
   setAppAxiosDefaults = async () => {
-    axios.defaults.baseURL = process.env.REACT_APP_BACKEND_BASE_URL;
+    axios.defaults.baseURL = backendBaseUrl;
   };
 
   initiatAppOptions = () => {
@@ -79,15 +87,28 @@ class AuthStore {
   };
 
   setUserOptions = () => {
+    this.webLoader = true;
     axios
       .post("/auth/me")
       .then(({ data }: AxiosResponse<{ data: any }>) => {
+        this.company = data.data?.companyDetail?.company?._id;
         this.user = data.data;
+        this.role = this.user?.role;
+        sessionStorage.setItem(
+          process.env.REACT_APP_AUTHORIZATION_USER_DATA!,
+          CryptoJS.AES.encrypt(
+            JSON.stringify(this.user),
+            process.env.REACT_APP_ENCRYPT_SECRET_KEY!
+          ).toString()
+        );
       })
       .catch(() => {
         this.loading = false;
         this.clearLocalStorage();
         this.initiatAppOptions();
+      })
+      .finally(() => {
+        this.webLoader = false;
       });
   };
 
@@ -95,7 +116,7 @@ class AuthStore {
     localStorage.removeItem(
       process.env.REACT_APP_AUTHORIZATION_TOKEN as string
     );
-    localStorage.removeItem(process.env.REACT_APP_AUTHORIZATION_USER_DATA!);
+    sessionStorage.removeItem(process.env.REACT_APP_AUTHORIZATION_USER_DATA!);
   };
 
   updateUserProfile = async (sendData: any) => {
@@ -112,21 +133,15 @@ class AuthStore {
     remember_me: boolean;
     username: string;
     password: string;
+    loginType: string;
   }) => {
     try {
       this.isRememberCredential = sendData.remember_me;
       const { data } = await axios.post<{ data: any }>("/auth/login", {
         username: sendData.username,
         password: sendData.password,
+        loginType: sendData.loginType,
       });
-      this.user = data.data;
-      localStorage.setItem(
-        process.env.REACT_APP_AUTHORIZATION_USER_DATA!,
-        CryptoJS.AES.encrypt(
-          JSON.stringify(this.user),
-          process.env.REACT_APP_ENCRYPT_SECRET_KEY!
-        ).toString()
-      );
       const headersToUpdate = {
         Accept: "application/json",
         Authorization: `Bearer ${data.data.authorization_token}`,
@@ -140,6 +155,7 @@ class AuthStore {
         process.env.REACT_APP_AUTHORIZATION_TOKEN as string,
         data.data.authorization_token
       );
+      this.setUserOptions();
       return data;
     } catch (err: any) {
       return Promise.reject(err?.response?.data || err.message);
@@ -148,8 +164,7 @@ class AuthStore {
 
   createOrganisation = async (value: any) => {
     try {
-      const { remember_me, token, first_name, last_name, ...sendData } = value;
-      sendData["name"] = `${first_name} ${last_name}`;
+      const { token, ...sendData } = value;
       const { data } = await axios.post(
         `/company/create?token=${token}`,
         sendData
@@ -164,7 +179,9 @@ class AuthStore {
     try {
       const authorization_token = process.env.REACT_APP_AUTHORIZATION_TOKEN;
       if (authorization_token) {
-        const storedData = localStorage.getItem(process.env.REACT_APP_AUTHORIZATION_USER_DATA!);
+        const storedData = sessionStorage.getItem(
+          process.env.REACT_APP_AUTHORIZATION_USER_DATA!
+        );
         if (storedData) {
           const decryptedBytes = CryptoJS.AES.decrypt(
             storedData,
@@ -193,14 +210,18 @@ class AuthStore {
   };
 
   register = () => {
-    console.log(this.user);
+    return this.user;
+  };
+
+  getCurrentCompany = () => {
+    return this.company;
   };
 
   updateProfile = async (sendData: any) => {
     try {
       const { data } = await axios.put("/auth", sendData);
-      this.user = data.data
-      localStorage.setItem(
+      this.user = data.data;
+      sessionStorage.setItem(
         process.env.REACT_APP_AUTHORIZATION_USER_DATA!,
         CryptoJS.AES.encrypt(
           JSON.stringify(data.data),
@@ -272,15 +293,15 @@ class AuthStore {
     this.notification = null;
   };
 
-  checkPermission = (check: { key: string; value: string }) => {
-    if (this.user?.adminType === "admin") {
+  checkPermission = (key: string, value: string) => {
+    if (this.user?.role === "superadmin" || this.user?.role === "admin") {
       return true;
     } else {
-      if (this.user?.permission) {
+      if (this.user?.permissions) {
         var status = false;
-        Object.entries(this.user.permission).forEach((item: any) => {
-          if (item[0] === check?.key) {
-            if (item[1][check.value]) {
+        Object.entries(this.user.permissions).forEach((item: any) => {
+          if (item[0] === key) {
+            if (item[1][value]) {
               status = true;
             } else {
               status = false;
@@ -329,8 +350,8 @@ class AuthStore {
   };
 
   openLoginModel = async () => {
-    this.loginModel = !this.loginModel ? true : false
-  }
+    this.loginModel = !this.loginModel ? true : false;
+  };
 }
 
 export default AuthStore;

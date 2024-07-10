@@ -1,5 +1,12 @@
 import { useState } from "react";
-import { Box, Button, Divider, Grid, Heading } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Divider,
+  Grid,
+  Heading,
+  useColorMode,
+} from "@chakra-ui/react";
 import CustomInput from "../../../../../../../CustomInput/CustomInput";
 import { FieldArray, Form, Formik } from "formik";
 
@@ -9,6 +16,7 @@ const ProfileEdit = ({
   initialValues,
   validations,
 }: any) => {
+  const { colorMode } = useColorMode();
   const [showError, setShowError] = useState(false);
 
   const getAddressError = (errors: any, type: string, index: number) => {
@@ -46,7 +54,14 @@ const ProfileEdit = ({
       }) => {
         return (
           <Form onSubmit={handleSubmit}>
-            <Box p={4} bg="white" borderRadius="lg" boxShadow="md">
+            <Box
+              p={6}
+              boxShadow="md"
+              borderRadius="md"
+              height="100%"
+              borderColor={colorMode === "light" ? "gray.200" : "gray.600"}
+              borderWidth="1px"
+            >
               <Grid>
                 <Heading color="#002058" fontSize="xl" mb={4}>
                   Personal Information :-

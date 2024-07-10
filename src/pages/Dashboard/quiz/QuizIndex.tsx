@@ -15,8 +15,8 @@ import QuizCategoryGridLayout from "./Layout/QuizCategoryGridLayout";
 
 const QuizIndex = observer(() => {
   const [quizTableDrawer, setQuizTableDrawer] = useState<any>({
-    open: false
-  })
+    open: false,
+  });
   const [quizCategoryForm, setQuizCategoryForm] = useState({
     open: false,
     data: null,
@@ -75,13 +75,17 @@ const QuizIndex = observer(() => {
           setQuizTableDrawer({ open: false });
         }}
       >
-        <QuizTable addData={() => setQuizCategoryForm({open : true, data : null, type : 'create'})}/>
+        <QuizTable
+          addData={() =>
+            setQuizCategoryForm({ open: true, data: null, type: "create" })
+          }
+        />
       </CustomDrawer>
       <CustomDrawer
         title="Quiz"
         open={quizCategoryForm.open}
         close={() => {
-          setQuizCategoryForm({ open: false, data : null, type : 'create' });
+          setQuizCategoryForm({ open: false, data: null, type: "create" });
         }}
       >
         <QuizCategories />

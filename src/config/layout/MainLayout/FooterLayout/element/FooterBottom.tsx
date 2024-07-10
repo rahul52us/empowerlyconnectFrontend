@@ -31,7 +31,7 @@ const FooterBottom = observer(() => {
           <Text mr={1} color={useColorModeValue("gray.500", "gray.300")}>
             Copyright © 2023
           </Text>
-          <LinkText text="Rainbow-Themes ." />
+          <LinkText text="Edukateus " />
           <Text ml={1.5} color={useColorModeValue("gray.500", "gray.300")}>
             All Rights Reserved
           </Text>
