@@ -44,7 +44,7 @@ const EmployFormSidebar = observer(({ type }: any) => {
 
   return (
     <Box
-      p={6}
+      p={4}
       bg={colorMode === "light" ? "white" : "gray.700"}
       borderRadius="lg"
       boxShadow="lg"
@@ -55,7 +55,7 @@ const EmployFormSidebar = observer(({ type }: any) => {
       top={0}
       h={"fit-content"}
     >
-      <VStack spacing={6} align="stretch">
+      <VStack spacing={4} align="stretch">
         <Text
           fontSize="2xl"
           fontWeight="bold"
@@ -64,7 +64,7 @@ const EmployFormSidebar = observer(({ type }: any) => {
         >
           Employee Details
         </Text>
-        <VStack spacing={4} align="stretch">
+        <VStack spacing={3} align="stretch">
           {sideTabs.map((item: any, index: number) => (
             <React.Fragment key={index}>
               <Link
