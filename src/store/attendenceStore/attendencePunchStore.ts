@@ -18,12 +18,13 @@ class AttendencePunchStore {
 
   getRecentPunch = async (sendData: any) => {
     try {
+      this.recentPunch.data = []
       this.recentPunch.loading = true;
-      const { startDate, endDate } = sendData;
       const { data } = await axios.get("/attendenceRequest", {
-        params: { startDate, endDate },
+        params: sendData,
       });
       this.recentPunch.data = data?.data || [];
+      return data?.data
     } catch (err: any) {
       return Promise.reject(err?.response || err);
       // Handle error as needed

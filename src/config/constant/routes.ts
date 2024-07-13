@@ -62,6 +62,8 @@ export const dashboard = {
   attendence : {
     index : `/${dashboardName}/attendence`,
     leave : `/${dashboardName}/request/leave`,
+    userList : `/${dashboardName}/attendence/users`,
+    uniqueUser : `/${dashboardName}/attendence/users/:userId`
   },
 };
 

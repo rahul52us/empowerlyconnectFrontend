@@ -60,12 +60,13 @@ const PersonalDetailTable = observer(({ data, loading }: any) => {
         );
       },
       props: {
-        column: { textAlign: "right" },
+        column: { textAlign: "center" },
         row: {
           minW: 120,
-          textAlign: "left",
+          textAlign: "center",
           fontWeight: 500,
           textDecoration: "none",
+          padding:5
         },
       },
     },
@@ -129,7 +130,7 @@ const PersonalDetailTable = observer(({ data, loading }: any) => {
       data={data}
       columns={employeTableColumns}
       loading={loading}
-      serial={{ show: true, text: "S.No.", width: "10px" }}
+      serial={{ show: false, text: "S.No.", width: "10px" }}
     />
   );
 });

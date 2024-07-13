@@ -102,7 +102,7 @@ const ManagerRequest = lazy(() => import("../../pages/Dashboard/Request/ManagerR
 
 // Attendence Request
 const Attendence = lazy(() => import("../../pages/Dashboard/Attendence"))
-
+const ManagerUserAttendence = lazy(() => import("../../pages/Dashboard/Attendence/ManagerAttendence/index"))
 export const DashboardRoutes = [
   {
     element: <DashboardIndex />,
@@ -276,6 +276,15 @@ export const DashboardRoutes = [
   {
     element : <Attendence />,
     path : dashboard.attendence.index
+  },
+  {
+    element : <Attendence />,
+    path : dashboard.attendence.uniqueUser,
+    privateRoutes : true
+  },
+  {
+    element : <ManagerUserAttendence />,
+    path : dashboard.attendence.userList
   },
   // Not found
   {

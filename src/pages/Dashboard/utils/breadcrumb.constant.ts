@@ -93,7 +93,12 @@ const attendenceBreadCrumb = {
     { label: "Home", link: "/" },
     { label: "Dashboard", link: dashboard.home },
     { label: "Attendence" },
-  ]
+  ],
+  userList : [
+    { label: "Home", link: "/" },
+    { label: "Dashboard", link: dashboard.home },
+    { label: "User List" },
+  ],
 }
 
 export {

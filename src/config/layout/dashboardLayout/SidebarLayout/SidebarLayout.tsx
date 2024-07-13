@@ -256,10 +256,6 @@ const SidebarAccordion: React.FC<{
   const expandedIndex =
     expandedPath.length > depth ? expandedPath[depth] : null;
 
-  console.log("the activeItemId are", activeItemId);
-
-  console.log("expanded path are", expandedPath);
-
   const isActive = (item: SidebarItem): boolean => {
     if (item.id === activeItemId) {
       return true;
