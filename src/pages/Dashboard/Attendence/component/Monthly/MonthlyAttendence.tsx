@@ -3,35 +3,40 @@ import { observer } from "mobx-react-lite";
 import CustomInput from "../../../../../config/component/CustomInput/CustomInput";
 import { useCallback, useState } from "react";
 import store from "../../../../../store/store";
-import { format, addDays } from "date-fns";
+import { format } from "date-fns";
 import NormalTable from "../../../../../config/component/Table/NormalTable/NormalTable";
-import { SearchIcon } from "@chakra-ui/icons";
+import { generatePunchResponse } from "../../../PunchAttendence/utils/function";
 
 const DailyAttendance = observer(() => {
   const {
     AttendencePunch: { getRecentPunch, recentPunch },
   } = store;
 
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
 
   const formatDate = (date: Date) => format(date, "yyyy-MM-dd");
 
   const fetchRecordsData = useCallback(() => {
-    const selectedDatePlusOne = addDays(selectedDate, 1);
-
     getRecentPunch({
-      startDate: formatDate(selectedDate),
-      endDate: formatDate(selectedDatePlusOne),
-      limit:31
+      startDate: formatDate(startDate),
+      endDate: formatDate(endDate),
+      limit: 31,
     })
       .then(() => {})
       .catch(() => {})
       .finally(() => {});
-  }, [selectedDate, getRecentPunch]);
+  }, [startDate, endDate, getRecentPunch]);
 
-  const handleDateChange = (date: Date) => {
+  const handleStartDateChange = (date: Date) => {
     if (date) {
-      setSelectedDate(date);
+      setStartDate(date);
+    }
+  };
+
+  const handleEndDateChange = (date: Date) => {
+    if (date) {
+      setEndDate(date);
     }
   };
 
@@ -58,28 +63,38 @@ const DailyAttendance = observer(() => {
       boxShadow={boxShadow}
       bg={bgColor}
     >
-      <Flex align="center" mb={6}>
-        <Text fontWeight="bold" mr={2}>
-          Date:
-        </Text>
-        <CustomInput
-          type="date"
-          onChange={(date) => handleDateChange(date)}
-          name="date"
-          value={selectedDate}
-          placeholder="Select Date"
-        />
+      <Flex align="center" mb={6} gap={4}>
+        <Box flex="1">
+          <CustomInput
+            type="date"
+            onChange={handleStartDateChange}
+            name="startDate"
+            value={startDate}
+            placeholder="Select Start Date"
+            label="Start Date"
+          />
+        </Box>
+        <Box flex="1">
+          <CustomInput
+            type="date"
+            onChange={handleEndDateChange}
+            name="endDate"
+            value={endDate}
+            placeholder="Select End Date"
+            label="End Date"
+          />
+        </Box>
         <Button
-          ml={{ base: 0, md: 4 }}
-          mt={{ base: 4, md: 0 }}
           colorScheme="teal"
           onClick={fetchRecordsData}
-          leftIcon={<SearchIcon />}
+          ml={{ base: 0, md: 4 }}
+          mt={{ base: 4, md: 8 }}
+          isLoading={recentPunch.loading}
         >
           Search
         </Button>
       </Flex>
-      <Flex justify="space-between" align="center" mb={6}>
+      <Flex justify="space-between" align="center" mb={4}>
         <Flex align="center" flex="1">
           <Text fontWeight="bold" mr={2}>
             Employee:
@@ -103,7 +118,7 @@ const DailyAttendance = observer(() => {
       >
         <NormalTable
           columns={columns}
-          data={recentPunch.data}
+          data={generatePunchResponse(recentPunch.data)}
           loading={recentPunch.loading}
           currentPage={0}
           totalPages={0}
