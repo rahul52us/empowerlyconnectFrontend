@@ -46,7 +46,6 @@ const PersonalDetails = ({
         handleSubmit,
         isSubmitting,
       }) => {
-        console.log(errors)
         return (
           <Form onSubmit={handleSubmit}>
             <Box p={4} borderRadius="lg" boxShadow="md">

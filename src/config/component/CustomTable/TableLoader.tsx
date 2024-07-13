@@ -1,4 +1,5 @@
-import { Flex, Heading, Spinner, Tbody, Td, Tr } from "@chakra-ui/react";
+import { Flex, Heading, Tbody, Td, Tr } from "@chakra-ui/react";
+import SpinnerLoader from "../Loader/SpinnerLoader";
 
 interface TableLoaderProps {
   loader: boolean;
@@ -17,7 +18,7 @@ const TableLoader: React.FC<TableLoaderProps> = ({
         <Tr>
           <Td colSpan={10} p={5}>
             <Flex justifyContent="center">
-              <Spinner />
+              <SpinnerLoader size="lg"/>
             </Flex>
           </Td>
         </Tr>
