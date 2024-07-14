@@ -3,12 +3,12 @@ import { observer } from "mobx-react-lite";
 import DashChartContainer from "./component/DashManagerChartContainer";
 import ManagerEmployes from "./component/ManagerEmployes";
 import PunchAttendance from "../../PunchAttendence/PunchAttendence";
-import DashWidgetCard from "../../component/DashWidgetCard";
+import ManagerDashWidget from "./component/ManagerDashWidget";
 
 const ManagerDashboard = observer(() => {
   return (
     <Grid templateColumns={{ base: "1fr", md: "1fr" }} columnGap={3}>
-      <DashWidgetCard />
+      <ManagerDashWidget />
       <DashChartContainer />
       <Grid gridTemplateColumns={{ base: "1fr", lg: "1fr 1fr" }} columnGap={4}>
         <ManagerEmployes />
