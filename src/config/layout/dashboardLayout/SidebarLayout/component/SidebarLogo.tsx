@@ -1,4 +1,4 @@
-import { Box, Flex, Image, Text } from "@chakra-ui/react";
+import { Box, Flex, Image, Text, useColorModeValue } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useNavigate } from "react-router-dom";
 import { dashboard } from "../../../../constant/routes";
@@ -8,11 +8,16 @@ import { headerHeight } from "../../../../constant/variable";
 const SidebarLogo = observer(() => {
   const {
     layout: { isCallapse },
+    themeStore: { themeConfig },
   } = store;
   const navigate = useNavigate();
+  // "linear-gradient(to right, #ff9d01, #ffaa01)"
   return (
     <Flex
-      bgGradient="linear-gradient(to right, #ff9d01, #ffaa01)"
+      bgColor={useColorModeValue(
+        themeConfig.colors.custom.light.primary,
+        themeConfig.colors.custom.dark.primary
+      )}
       justifyContent="center"
       flexDirection="column"
       alignItems="center"

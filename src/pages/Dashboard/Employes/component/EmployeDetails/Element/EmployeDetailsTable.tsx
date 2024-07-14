@@ -277,12 +277,12 @@ const EmployeDetailsTable = observer(() => {
             show: true,
             title: "Apply Filters",
             placeholder: "Apply Filters",
-            search: {
-              searchValue: searchQuery,
-              visible: true,
-              placeholder: "Search Value here",
-              onSearchChange: (e: any) => setSearchQuery(e),
-            },
+            // search: {
+            //   searchValue: searchQuery,
+            //   visible: true,
+            //   placeholder: "Search Value here",
+            //   onSearchChange: (e: any) => setSearchQuery(e),
+            // },
             dropdowns: dropdowns,
             onApply: () => applyGetAllEmployes({}),
             selectedOptions: selectedOptions,

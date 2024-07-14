@@ -1,8 +1,9 @@
 import { useState } from "react";
 import store from "../../../store/store";
 import { Box, Button } from "@chakra-ui/react";
+import { observer } from "mobx-react-lite";
 
-const PunchInComponent = () => {
+const PunchInComponent = observer(() => {
   const [loading, setLoading] = useState(false);
   const {
     AttendencePunch: { handlePunch },
@@ -69,6 +70,6 @@ const PunchInComponent = () => {
       </Button>
     </Box>
   );
-};
+});
 
 export default PunchInComponent;

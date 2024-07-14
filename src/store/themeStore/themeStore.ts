@@ -63,7 +63,7 @@ class ThemeStore {
       },
       custom: {
         light: {
-          primary: "rgba(255, 255, 255, 0.16)",
+          primary: "#1E90FF",
           secondary: "#ffffff",
         },
         dark: {
