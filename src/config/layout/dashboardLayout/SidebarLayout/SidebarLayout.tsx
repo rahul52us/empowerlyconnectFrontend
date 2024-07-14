@@ -26,7 +26,7 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 import { ChevronDownIcon, ChevronRightIcon } from "@chakra-ui/icons";
-import { sidebarData, sidebarFooterData } from "./utils/SidebarItems";
+import { getSidebarDataByRole, sidebarFooterData } from "./utils/SidebarItems";
 import { observer } from "mobx-react-lite";
 import { useNavigate } from "react-router-dom";
 import SidebarLogo from "./component/SidebarLogo";
@@ -401,15 +401,21 @@ const SidebarLayout: React.FC<SidebarProps> = observer(
     openMobileSideDrawer,
     setOpenMobileSideDrawer,
   }) => {
+    const {auth : {user}} = store
     const navigate = useNavigate();
     const isMobile = useBreakpointValue({ base: true, lg: false }) ?? false;
     const borderColor = useColorModeValue("gray.200", "gray.700");
     const headerBgColor = useColorModeValue("gray.200", "gray.700");
-
+    const [sidebarData,setSidebarData] = useState<any>([])
     const [activeItemId, setActiveItemId] = useState<number | null>(() => {
       const storedActiveItemId = localStorage.getItem("activeSidebarItemId");
       return storedActiveItemId ? parseInt(storedActiveItemId, 10) : 1;
     });
+
+    useEffect(() => {
+      setSidebarData(getSidebarDataByRole(['user',user.role]))
+    },[user])
+
 
     useEffect(() => {
       if (activeItemId !== null) {

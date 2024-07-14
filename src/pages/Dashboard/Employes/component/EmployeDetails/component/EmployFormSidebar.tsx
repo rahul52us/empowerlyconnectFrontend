@@ -69,7 +69,7 @@ const EmployFormSidebar = observer(({ type }: any) => {
             <React.Fragment key={index}>
               <Link
                 onClick={() => handleChange(item.key)}
-                fontSize="lg"
+                fontSize="md"
                 color={tab === item.key ? "blue.600" : "gray.400"}
                 fontWeight={tab === item.key ? "bold" : "medium"}
                 _hover={{ color: "blue.600", textDecoration: "none" }}
