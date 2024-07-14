@@ -40,7 +40,6 @@ const DashWidgetCard = observer(() => {
         lg: "repeat(5, 1fr)",
       }}
       gap={4}
-      marginX="auto"
     >
       {[
         {

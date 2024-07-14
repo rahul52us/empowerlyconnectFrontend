@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import store from "../../../store/store";
-import { toJS } from "mobx";
-import { format } from "date-fns"; // Importing format function from date-fns
+import { format } from "date-fns";
 import NormalTable from "../../../config/component/Table/NormalTable/NormalTable";
 import { generatePunchResponse } from "./utils/function";
 
@@ -24,8 +23,6 @@ const PunchAttendance: React.FC = observer(() => {
       .catch(() => {})
       .finally(() => {});
   }, [getRecentPunch]);
-
-  console.log("the recent punch are", toJS(recentPunch));
 
   const columns: any = [
     {

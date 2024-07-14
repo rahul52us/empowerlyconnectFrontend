@@ -1,10 +1,10 @@
 import { Card, Grid } from "@chakra-ui/react";
-import BarChart from "../../../config/component/charts/BarChart";
+import BarChart from "../../../../../config/component/charts/BarChart";
 import { observer } from "mobx-react-lite";
-import store from "../../../store/store";
+import store from "../../../../../store/store";
 import { useEffect } from "react";
-import { makeChartResponse } from "./utils/common";
-import PieChart from "../../../config/component/charts/PieChart";
+import { makeChartResponse } from "../../../component/utils/common";
+import PieChart from "../../../../../config/component/charts/PieChart";
 
 const DashChartContainer = observer(() => {
   const {

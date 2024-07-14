@@ -82,7 +82,7 @@ export default function NewDash() {
 
         <VStack align={"stretch"} spacing={4}>
           <CalendarApp />
-        
+
           <ProgressCard
             title="Check your progress"
             description="You have completed 67% of the given target"

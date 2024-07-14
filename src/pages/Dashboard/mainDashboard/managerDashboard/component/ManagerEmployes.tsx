@@ -1,11 +1,11 @@
 import { observer } from "mobx-react-lite";
-import store from "../../../../store/store";
+import store from "../../../../../store/store";
 import { useEffect, useState, useCallback } from "react";
-import { miniTablePageLimit } from "../../../../config/constant/variable";
-import { generateManagerData } from "./utils/function";
-import useDebounce from "../../../../config/component/customHooks/useDebounce";
-import { managerEmployeColumns } from "./utils/constant";
-import NormalTable from "../../../../config/component/Table/NormalTable/NormalTable";
+import { miniTablePageLimit } from "../../../../../config/constant/variable";
+import { generateManagerData } from "../utils/function";
+import useDebounce from "../../../../../config/component/customHooks/useDebounce";
+import { managerEmployeColumns } from "../utils/constant";
+import NormalTable from "../../../../../config/component/Table/NormalTable/NormalTable";
 
 const ManagerEmployes = observer(() => {
   const [currentPage, setCurrentPage] = useState(1);
