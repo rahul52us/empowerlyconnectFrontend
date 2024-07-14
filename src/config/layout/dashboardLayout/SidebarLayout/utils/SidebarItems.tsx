@@ -177,6 +177,15 @@ const sidebarDatas: SidebarItem[] = [
     icon: <FaUsers />,
     url: `${dashboard.request.userList}`,
     role: ["manager"],
+    children:[
+      {
+        id: 99,
+        name: "Team Request",
+        icon: <FaUsers />,
+        url: `${dashboard.request.userList}`,
+        role: ["manager"]
+      },
+    ]
   },
   {
     id: 27,
@@ -184,6 +193,14 @@ const sidebarDatas: SidebarItem[] = [
     icon: <FaUsers />,
     url: dashboard.attendence.userList,
     role: ["manager"],
+    children: [
+      {
+        id: 98,
+        name: "Team Attendance",
+        icon: <FaUsers />,
+        url: dashboard.attendence.userList,
+        role: ["manager"],
+      }]
   },
   {
     id: 28,
