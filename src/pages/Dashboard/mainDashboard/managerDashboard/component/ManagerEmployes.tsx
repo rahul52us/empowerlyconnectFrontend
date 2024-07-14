@@ -43,7 +43,7 @@ const ManagerEmployes = observer(() => {
   }, [user._id, currentPage, pageLimit, getAllManagerEmployes, openNotification]);
 
   useEffect(() => {
-    if (user.role === "manager") {
+    if (user.role === "manager" || user.role === "admin" || user.role === "superadmin") {
       applyGetAllManagerEmployes({ page: currentPage, limit: miniTablePageLimit, search: debouncedSearchQuery });
     }
   }, [user.role, currentPage, debouncedSearchQuery, applyGetAllManagerEmployes]);
