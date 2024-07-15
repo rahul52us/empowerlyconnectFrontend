@@ -17,17 +17,12 @@ const DashboardIndex = observer(() => {
   } = store;
 
   const renderElements = (role: string) => {
-    switch (role) {
-      case "user":
-        return <UserDashboard />;
-      case "manager":
-        return <ManagerDashboard />;
-      case "admin":
-        return <AdminDashboard />;
-      case "superadmin":
-        return <AdminDashboard />;
-      default:
-        return <UserDashboard />;
+    if (role === "manager") {
+      return <ManagerDashboard />;
+    } else if (role === "admin" || role === "superadmin") {
+      return <AdminDashboard />;
+    } else {
+      return <UserDashboard />;
     }
   };
 

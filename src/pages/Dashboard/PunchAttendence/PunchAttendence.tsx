@@ -8,6 +8,7 @@ import { generatePunchResponse } from "./utils/function";
 const PunchAttendance: React.FC = observer(() => {
   const {
     AttendencePunch: { getRecentPunch, recentPunch },
+    auth: { user },
   } = store;
 
   useEffect(() => {
@@ -22,7 +23,7 @@ const PunchAttendance: React.FC = observer(() => {
       .then(() => {})
       .catch(() => {})
       .finally(() => {});
-  }, [getRecentPunch]);
+  }, [getRecentPunch, user]);
 
   const columns: any = [
     {
