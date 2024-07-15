@@ -41,7 +41,7 @@ const UserActivityFeed = () => {
           <HStack
             key={activity.id}
             spacing={4}
-            bg={bg} shadow="md" p={3} rounded={8}
+            bg={bg} shadow="base" borderWidth={1} p={2} rounded={8}
             // _hover={{
             //   bg: "blue.100",
             //   // transform: "scale(1.02)",
@@ -50,10 +50,10 @@ const UserActivityFeed = () => {
             transition="ease-in-out 0.1s"
           >
             <Box flex="1">
-              <Text fontWeight="500" color={textColor}>
+              <Text fontWeight="500" fontSize={'sm'} color={textColor}>
                 {activity.event}
               </Text>
-              <Text fontSize="sm" color="gray.500" textTransform={"capitalize"}>
+              <Text fontSize="xs" color="gray" textTransform={"capitalize"}>
                 {activity.type} on {activity.date}
               </Text>
             </Box>

@@ -27,8 +27,9 @@ import { FaFileAlt } from "react-icons/fa";
 import store from "../../../../../../store/store";
 import ShowData from "../component/ShowData";
 // import userData from "./dummyEmployeeData.json";
-import CompanyDetails from "./component/CompanyDetails";
+// import CompanyDetails from "./component/CompanyDetails";
 import DrawerLoader from "../../../../../../config/component/Loader/DrawerLoader";
+import WorkHistory from "./component/WorkHistory/WorkHistory";
 
 const UserProfile: React.FC<any> = ({ employeeId }) => {
   const [user, setUserData] = useState<any>(null);
@@ -360,7 +361,11 @@ const UserProfile: React.FC<any> = ({ employeeId }) => {
                 </Box>
               </TabPanel>
               <TabPanel>
-                <CompanyDetails data={user?.companyDetail[0]} />
+                {user && (
+
+                  <WorkHistory workHistory={user?.companyDetail[0]?.details} />
+                )}
+                {/* <CompanyDetails data={user?.companyDetail[0]} /> */}
               </TabPanel>
             </TabPanels>
           </Tabs>
