@@ -140,8 +140,7 @@ const CompactCalendar: React.FC = () => {
         as="span"
         bg="blue.500"
         color="white"
-        px={3}
-        py={1}
+        p={1}
         borderRadius="full"
         fontWeight="bold"
       >
@@ -160,9 +159,8 @@ const CompactCalendar: React.FC = () => {
         bg="blue.600"
       >
         <Box
-          p={2}
+          p={1}
           borderRadius="xl"
-          // border="1px solid"
           _hover={{ bg: bgHover }}
           transition={"background-color 0.2s ease"}
           borderColor={isCurrentMonth ? "gray.300" : "transparent"}
@@ -208,7 +206,13 @@ const CompactCalendar: React.FC = () => {
         </Flex>
         <SimpleGrid columns={7} spacing={1} mb={2}>
           {dayLabels.map((day, index) => (
-            <Box key={index} p={1} textAlign="center" fontWeight="700" color={'blue.600'}>
+            <Box
+              key={index}
+              p={1}
+              textAlign="center"
+              fontWeight="700"
+              color={"blue.600"}
+            >
               {day}
             </Box>
           ))}
