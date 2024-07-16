@@ -13,7 +13,7 @@ import { readFileAsBase64 } from "../../../../config/constant/function";
 
 const HolidaysDetailTable = observer(() => {
   const inputRef = useRef<any>(null);
-  const [uploadLoading, setUploadLoading] = useState(false)
+  const [uploadLoading, setUploadLoading] = useState(false);
   const dropdowns = useState(employDropdownData)[0];
   const [selectedOptions, setSelectedOptions] = useState({});
   const [date, setDate] = useState<any>({
@@ -169,7 +169,7 @@ const HolidaysDetailTable = observer(() => {
 
   const uploadHolidayByExcel = async (file: any) => {
     try {
-      setUploadLoading(true)
+      setUploadLoading(true);
       const data = await readFileAsBase64(file);
       updateHolidayByExcel({ file: data })
         .then((response) => {
@@ -190,13 +190,13 @@ const HolidaysDetailTable = observer(() => {
         })
         .catch((err) => {
           openNotification({
-            type: "error",
-            title: "Failed to Upload holidays",
-            message: err?.message,
+            title: "Uploaded Failed",
+            message: err?.data?.message,
+            type: getStatusType(err.status),
           });
         })
         .finally(() => {
-          setUploadLoading(false)
+          setUploadLoading(false);
         });
     } catch (err) {}
   };
@@ -207,14 +207,16 @@ const HolidaysDetailTable = observer(() => {
 
   return (
     <>
-      <Flex mb={2} justifyContent={'end'}>
+      <Flex mb={2} justifyContent={"end"}>
         <Input
           type="file"
           ref={inputRef}
           display="none"
           onChange={handleFileChange}
         />
-        <Button isLoading={uploadLoading} onClick={handleButtonClick}>Upload Holiday Excel</Button>
+        <Button isLoading={uploadLoading} onClick={handleButtonClick}>
+          Upload Holiday Excel
+        </Button>
       </Flex>
       <CustomTable
         cells={true}

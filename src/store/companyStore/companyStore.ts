@@ -39,7 +39,8 @@ class CompanyStore {
       updateClass: action,
       updateWorkTiming:action,
       updateWorkLocation:action,
-      updateHolidayByExcel:action
+      updateHolidayByExcel:action,
+      updateWorkLocationsByExcel:action
     });
   }
 
@@ -55,6 +56,15 @@ class CompanyStore {
   updateHolidayByExcel = async (sendData: any) => {
     try {
       const { data } = await axios.put("/company/policy/holidays/excel", {...sendData,company:store.auth.getCurrentCompany()});
+      return data;
+    } catch (err: any) {
+      return Promise.reject(err?.response || err);
+    }
+  };
+
+  updateWorkLocationsByExcel = async (sendData: any) => {
+    try {
+      const { data } = await axios.put("/company/policy/workLocations/excel", {...sendData,company:store.auth.getCurrentCompany()});
       return data;
     } catch (err: any) {
       return Promise.reject(err?.response || err);
