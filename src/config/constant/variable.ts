@@ -1,4 +1,5 @@
 export const tablePageLimit = 10
+export const paginationLimit = 10
 export const miniTablePageLimit = 6
 export const LargeScreenHeaderHeight = "80px"
 export const SmallScreenHeaderHeight = "60px"

@@ -1,12 +1,13 @@
 import axios from "axios";
 import { action, makeObservable, observable } from "mobx";
 import store from "../store";
+import { paginationLimit } from "../../config/constant/variable";
 
 class ProjectStore {
-  projects : any = {
-    data : [],
-    loading : false
-  }
+  projects: any = {
+    data: [],
+    loading: false,
+  };
 
   openProjectDrawer = {
     type: "",
@@ -16,6 +17,7 @@ class ProjectStore {
   constructor() {
     makeObservable(this, {
       openProjectDrawer: observable,
+      projects:observable,
       setOpenProjectDrawer: action,
       createProject: action,
       getProjects: action,
@@ -31,20 +33,24 @@ class ProjectStore {
     }
   };
 
-  getProjects = async (sendData : any) => {
+  getProjects = async (sendData: any) => {
+    this.projects.loading = true;
+
     try {
-      this.projects.loading = true
       const { data } = await axios.post(
-        `/project`,{...sendData, company : store.auth.getCurrentCompany()}
+        `/project/get?page=${sendData.page}&limit=${
+          sendData.limit || paginationLimit
+        }&company=${store.auth.getCurrentCompany()}`,
+        {},
+        { ...sendData }
       );
-      this.projects.data = data.data
-      this.projects.totalPages = data.totalPages
+      this.projects.data = data.data?.data || [];
+      this.projects.totalPages = data.data?.totalPages || 1;
       return data;
     } catch (err: any) {
       return Promise.reject(err?.response || err);
-    }
-    finally {
-      this.projects.loading = false
+    } finally {
+      this.projects.loading = false;
     }
   };
 
