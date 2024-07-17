@@ -5,7 +5,7 @@ import store from "../../../../../store/store";
 import { useEffect } from "react";
 import { getStatusType } from "../../../../../config/constant/statusCode";
 import { toJS } from "mobx";
-import Pagination from "../../../../../config/component/pagination/Pagination";
+import MainPagePagination from "../../../../../config/component/pagination/MainPagePagination";
 
 const ProjectWidget = observer(() => {
   const {
@@ -49,7 +49,7 @@ const ProjectWidget = observer(() => {
         })}
       </SimpleGrid>
       <Box mt={20}>
-      <Pagination
+      <MainPagePagination
         currentPage={1}
         onPageChange={() => {}}
         totalPages={projects.totalPages}
