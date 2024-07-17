@@ -120,6 +120,7 @@ const DailyAttendance = observer(() => {
           colorScheme="teal"
           onClick={fetchRecordsData}
           leftIcon={<SearchIcon />}
+          isLoading={recentPunch.loading}
         >
           Search
         </Button>

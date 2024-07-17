@@ -16,7 +16,7 @@ const ProjectForm = observer(() => {
   const [showError, setShowError] = useState(false)
   const {
     auth: { getCompanyUsers, companyUsers, openNotification },
-    Project: { getFilterProject, createProject },
+    Project: { getProjects, createProject },
   } = store;
 
   useEffect(() => {
@@ -33,9 +33,9 @@ const ProjectForm = observer(() => {
 
   useEffect(() => {
     const searchDebounceProject = debounce((value) => {
-      getFilterProject(value)
+      getProjects(value)
         .then(() => {})
-        .catch((err) => {
+        .catch((err : any) => {
           console.log(err);
         });
     }, 2000);
@@ -45,7 +45,7 @@ const ProjectForm = observer(() => {
     return () => {
       searchDebounceProject.cancel();
     };
-  }, [searchProjectName, getFilterProject]);
+  }, [searchProjectName, getProjects]);
 
   return (
     <div>

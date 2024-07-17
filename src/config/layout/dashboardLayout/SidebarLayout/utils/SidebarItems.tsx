@@ -177,15 +177,15 @@ const sidebarDatas: SidebarItem[] = [
     icon: <FaUsers />,
     url: `${dashboard.request.userList}`,
     role: ["manager"],
-    children:[
+    children: [
       {
         id: 99,
         name: "Team Request",
         icon: <FaUsers />,
         url: `${dashboard.request.userList}`,
-        role: ["manager"]
+        role: ["manager"],
       },
-    ]
+    ],
   },
   {
     id: 27,
@@ -200,7 +200,8 @@ const sidebarDatas: SidebarItem[] = [
         icon: <FaUsers />,
         url: dashboard.attendence.userList,
         role: ["manager"],
-      }]
+      },
+    ],
   },
   {
     id: 28,
@@ -237,13 +238,29 @@ const sidebarDatas: SidebarItem[] = [
     name: "Corp. Info.",
     icon: <FaBuilding />,
     url: "/dashboard/class",
-    role: ["user","manager","admin","superadmin"],
+    role: ["user", "manager", "admin", "superadmin"],
     children: [
       {
         id: 33,
         name: "Employees Directory",
         icon: <FaUsers />,
         url: dashboard.employes.personalDetails,
+        role: ["user"],
+      },
+    ],
+  },
+  {
+    id: 50,
+    name: "Project",
+    icon: <FaBuilding />,
+    url: dashboard.application.project,
+    role: ["manager", "admin", "superadmin"],
+    children: [
+      {
+        id: 51,
+        name: "Project",
+        icon: <FaUsers />,
+        url: dashboard.application.project,
         role: ["user"],
       },
     ],
@@ -256,13 +273,11 @@ export const sidebarFooterData: SidebarItem[] = [
     name: "Settings",
     icon: <FaCog />,
     url: "/profile",
-    role: ["user","admin","superadmin","manager"],
+    role: ["user", "admin", "superadmin", "manager"],
   },
 ];
 
-const getSidebarDataByRole = (
-  role: string[] = ["user"]
-): SidebarItem[] => {
+const getSidebarDataByRole = (role: string[] = ["user"]): SidebarItem[] => {
   const filterByRole = (items: SidebarItem[]): SidebarItem[] => {
     return items
       .filter((item) => !item.role || item.role.some((r) => role.includes(r)))

@@ -65,6 +65,9 @@ export const dashboard = {
     userList : `/${dashboardName}/attendence/users`,
     uniqueUser : `/${dashboardName}/attendence/users/:userId`
   },
+  application:{
+    project : `/${dashboardName}/project`
+  }
 };
 
 export const main = {

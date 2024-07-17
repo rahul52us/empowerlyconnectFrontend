@@ -1,9 +1,18 @@
 import { lazy } from "react";
 import { dashboard } from "../constant/routes";
 
-const PersonalDetails = lazy(() => import("../../pages/Dashboard/Employes/PersonalDetails"))
-const PersonalDetailUsersChart =  lazy(() => import("../../pages/Dashboard/Employes/PersonalDetails/component/PersonalDetailChart"))
-const PageNotFound = lazy(() => import("../component/common/WebPages/PageNotFound"));
+const PersonalDetails = lazy(
+  () => import("../../pages/Dashboard/Employes/PersonalDetails")
+);
+const PersonalDetailUsersChart = lazy(
+  () =>
+    import(
+      "../../pages/Dashboard/Employes/PersonalDetails/component/PersonalDetailChart"
+    )
+);
+const PageNotFound = lazy(
+  () => import("../component/common/WebPages/PageNotFound")
+);
 
 const DashboardIndex = lazy(
   () => import("../../pages/Dashboard/DashboardIndex")
@@ -14,7 +23,9 @@ const QuizDashIndex = lazy(
 
 // task
 const TaskIndex = lazy(() => import("../../pages/Dashboard/Task/Task"));
-const CustomDragForm = lazy(() => import("../../pages/Dashboard/CustomDragForm/CustomFragForm"))
+const CustomDragForm = lazy(
+  () => import("../../pages/Dashboard/CustomDragForm/CustomFragForm")
+);
 
 // project
 const ProjectIndex = lazy(
@@ -71,38 +82,58 @@ const TripManagementIndex = lazy(
 
 // Employes
 
-
 const EmployesManagementIndex = lazy(
   () => import("../../pages/Dashboard/Employes")
 );
 
 const EmployeDetails = lazy(
-  () => import("../../pages/Dashboard/Employes/component/EmployeDetails/EmployeDetails")
+  () =>
+    import(
+      "../../pages/Dashboard/Employes/component/EmployeDetails/EmployeDetails"
+    )
 );
 
 const EmployeCreate = lazy(
-  () => import("../../pages/Dashboard/Employes/component/EmployeDetails/formContainer/EmployeFormContainer")
+  () =>
+    import(
+      "../../pages/Dashboard/Employes/component/EmployeDetails/formContainer/EmployeFormContainer"
+    )
 );
 
-
-const Department = lazy(() => import("../../pages/Dashboard/Company/Department/Department"))
+const Department = lazy(
+  () => import("../../pages/Dashboard/Company/Department/Department")
+);
 
 // Company
 
-const CompanyPolicy = lazy(() => import( "../../pages/Dashboard/Company/CompanyPolicy"));
-const Company = lazy(() => import( "../../pages/Dashboard/Company/index"));
+const CompanyPolicy = lazy(
+  () => import("../../pages/Dashboard/Company/CompanyPolicy")
+);
+const Company = lazy(() => import("../../pages/Dashboard/Company/index"));
 
 // Request
 
 const Request = lazy(() => import("../../pages/Dashboard/Request"));
-const LeaveRequest = lazy(() => import('../../pages/Dashboard/Request/component/LeaveRequest/LeaveRequest'))
-const LeaveEditRequest = lazy(() => import('../../pages/Dashboard/Request/component/LeaveRequest/component/form/LeaveEditRequest'))
+const LeaveRequest = lazy(
+  () =>
+    import("../../pages/Dashboard/Request/component/LeaveRequest/LeaveRequest")
+);
+const LeaveEditRequest = lazy(
+  () =>
+    import(
+      "../../pages/Dashboard/Request/component/LeaveRequest/component/form/LeaveEditRequest"
+    )
+);
 // Manager Request
-const ManagerRequest = lazy(() => import("../../pages/Dashboard/Request/ManagerRequest/index"))
+const ManagerRequest = lazy(
+  () => import("../../pages/Dashboard/Request/ManagerRequest/index")
+);
 
 // Attendence Request
-const Attendence = lazy(() => import("../../pages/Dashboard/Attendence"))
-const ManagerUserAttendence = lazy(() => import("../../pages/Dashboard/Attendence/ManagerAttendence/index"))
+const Attendence = lazy(() => import("../../pages/Dashboard/Attendence"));
+const ManagerUserAttendence = lazy(
+  () => import("../../pages/Dashboard/Attendence/ManagerAttendence/index")
+);
 export const DashboardRoutes = [
   {
     element: <DashboardIndex />,
@@ -191,106 +222,105 @@ export const DashboardRoutes = [
 
   // employes
   {
-    element : <EmployesManagementIndex />,
-    path : dashboard.employes.index,
-    privateRoutes : true
+    element: <EmployesManagementIndex />,
+    path: dashboard.employes.index,
+    privateRoutes: true,
   },
   {
-    element : <EmployeDetails />,
-    path : dashboard.employes.details,
-    privateRoutes : true
+    element: <EmployeDetails />,
+    path: dashboard.employes.details,
+    privateRoutes: true,
   },
   {
-    element : <EmployeCreate />,
-    path : dashboard.employes.new,
-    privateRoutes : true
+    element: <EmployeCreate />,
+    path: dashboard.employes.new,
+    privateRoutes: true,
   },
   {
-    element : <EmployeCreate />,
-    path : dashboard.employes.edit,
-    privateRoutes : true
+    element: <EmployeCreate />,
+    path: dashboard.employes.edit,
+    privateRoutes: true,
   },
   {
-    element : <Department />,
-    path:dashboard.department.index,
-    privateRoutes:true
+    element: <Department />,
+    path: dashboard.department.index,
+    privateRoutes: true,
   },
 
   // employes personal details
 
   {
-    element : <PersonalDetails />,
-    path : dashboard.employes.personalDetails,
-    privateRoutes : true
+    element: <PersonalDetails />,
+    path: dashboard.employes.personalDetails,
+    privateRoutes: true,
   },
   {
-    element : <PersonalDetailUsersChart />,
-    path : dashboard.employes.personalDetailsUserChart,
-    privateRoutes : true
+    element: <PersonalDetailUsersChart />,
+    path: dashboard.employes.personalDetailsUserChart,
+    privateRoutes: true,
   },
   // Company
   {
-    element : <Company />,
-    path : dashboard.company.index,
-    privateRoutes: true
+    element: <Company />,
+    path: dashboard.company.index,
+    privateRoutes: true,
   },
   {
-    element : <CompanyPolicy />,
-    path : dashboard.company.holidays,
-    privateRoutes: true
+    element: <CompanyPolicy />,
+    path: dashboard.company.holidays,
+    privateRoutes: true,
   },
 
   // Request
   {
-    element : <Request />,
-    path : dashboard.request.index,
-    privateRoutes : true
+    element: <Request />,
+    path: dashboard.request.index,
+    privateRoutes: true,
   },
   {
-    element : <LeaveRequest />,
-    path : dashboard.request.leaveAdd,
-    privateRoutes : true
+    element: <LeaveRequest />,
+    path: dashboard.request.leaveAdd,
+    privateRoutes: true,
   },
   {
-    element : <LeaveEditRequest />,
-    path : dashboard.request.leaveEdit,
-    privateRoutes : true
+    element: <LeaveEditRequest />,
+    path: dashboard.request.leaveEdit,
+    privateRoutes: true,
   },
   {
-    element : <ManagerRequest />,
-    path : dashboard.request.userList,
-    privateRoutes : true
+    element: <ManagerRequest />,
+    path: dashboard.request.userList,
+    privateRoutes: true,
   },
   {
-    element : <Request />,
-    path : dashboard.request.uniqueUser,
-    privateRoutes : true
+    element: <Request />,
+    path: dashboard.request.uniqueUser,
+    privateRoutes: true,
   },
   {
-    element : <LeaveEditRequest />,
-    path : dashboard.request.uniqueEdit,
-    privateRoutes : true
+    element: <LeaveEditRequest />,
+    path: dashboard.request.uniqueEdit,
+    privateRoutes: true,
   },
 
   // Attendence
   {
-    element : <Attendence />,
-    path : dashboard.attendence.index
+    element: <Attendence />,
+    path: dashboard.attendence.index,
   },
   {
-    element : <Attendence />,
-    path : dashboard.attendence.uniqueUser,
-    privateRoutes : true
+    element: <Attendence />,
+    path: dashboard.attendence.uniqueUser,
+    privateRoutes: true,
   },
   {
-    element : <ManagerUserAttendence />,
-    path : dashboard.attendence.userList
+    element: <ManagerUserAttendence />,
+    path: dashboard.attendence.userList,
   },
   // Not found
   {
-    element : <PageNotFound />,
-    path : '/dashboard/*',
-    privateRoutes : true
+    element: <PageNotFound />,
+    path: "/dashboard/*",
+    privateRoutes: true,
   },
-
 ];

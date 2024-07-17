@@ -1,26 +1,16 @@
+import { Box } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
-import store from "../../../store/store";
-import CustomDrawer from "../../../config/component/Drawer/CustomDrawer";
-import { Button } from "@chakra-ui/react";
-import ProjectForm from "./component/Form/ProjectForm";
+import DashPageHeader from "../../../config/component/common/DashPageHeader/DashPageHeader";
+import { projectBreadCrumb } from "../utils/breadcrumb.constant";
+import ProjectWidget from "./config/component/ProjectWidget";
 
 const ProjectIndex = observer(() => {
-  const {
-    Project: { openProjectDrawer, setOpenProjectDrawer },
-  } = store;
   return (
-    <div>
-      <Button onClick={() => setOpenProjectDrawer("create", "")}>
-        Open Drawer
-      </Button>
-      <CustomDrawer
-        open={openProjectDrawer.open}
-        close={setOpenProjectDrawer}
-        title="Create Project"
-      >
-        <ProjectForm />
-    </CustomDrawer>
-    </div>
+    <Box>
+      <DashPageHeader title="Project" breadcrumb={projectBreadCrumb.index} />
+      <ProjectWidget />
+    </Box>
   );
 });
+
 export default ProjectIndex;

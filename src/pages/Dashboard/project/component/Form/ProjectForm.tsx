@@ -6,15 +6,16 @@ import { ProjectCreateValidation } from "../utils/validation";
 import { observer } from "mobx-react-lite";
 import store from "../../../../../store/store";
 import CustomSubmitBtn from "../../../../../config/component/CustomSubmitBtn/CustomSubmitBtn";
-import {debounce} from 'lodash'
+import { debounce } from "lodash";
 import { getIdFromObject } from "../../../utils/commonFunction";
 import { ProjectFormValuesI } from "../utils/dto";
 import moment from "moment";
 
 const ProjectForm = observer(() => {
-  const [searchProjectName, setSearchProjectName] = useState('')
+  const [searchProjectName, setSearchProjectName] = useState("");
   const {
-    auth: { getCompanyUsers, companyUsers, openNotification }, Project : {getFilterProject , createProject}
+    auth: { getCompanyUsers, companyUsers, openNotification },
+    Project: { getProjects, createProject },
   } = store;
 
   useEffect(() => {
@@ -29,22 +30,21 @@ const ProjectForm = observer(() => {
       });
   }, [getCompanyUsers, openNotification]);
 
-
   useEffect(() => {
     const searchDebounceProject = debounce((value) => {
-      getFilterProject(value).then(() => {
-      }).catch((err) => {
-        console.log(err)
-      })
-    },2000)
+      getProjects(value)
+        .then(() => {})
+        .catch((err: any) => {
+          console.log(err);
+        });
+    }, 2000);
 
-    searchDebounceProject(searchProjectName)
+    searchDebounceProject(searchProjectName);
 
     return () => {
-      searchDebounceProject.cancel()
-    }
-
-  },[searchProjectName,getFilterProject])
+      searchDebounceProject.cancel();
+    };
+  }, [searchProjectName, getProjects]);
 
   return (
     <div>
@@ -57,8 +57,8 @@ const ProjectForm = observer(() => {
           end_date: "",
           due_date: "",
           priority: {
-            value : "",
-            label : ""
+            value: "",
+            label: "",
           },
           followers: [],
           team_members: [],
@@ -68,38 +68,49 @@ const ProjectForm = observer(() => {
           attach_files: [],
         }}
         validationSchema={ProjectCreateValidation}
-
-        onSubmit={(values : ProjectFormValuesI , {setSubmitting , resetForm}) => {
+        onSubmit={(
+          values: ProjectFormValuesI,
+          { setSubmitting, resetForm }
+        ) => {
           const sendDataObject = {
-            priority:values.priority ? values.priority.value : values.priority,
-            status : values.status ? values.status.value : values.status,
-            followers : getIdFromObject(values.followers),
-            project_manager : getIdFromObject(values.project_manager),
-            team_members : getIdFromObject(values.team_members),
-            customers:getIdFromObject(values.customers),
-            start_date : values.start_date ? moment(values.start_date).format('YYYY-MM-DD') : '',
-            end_date : values.end_date ? moment(values.end_date).format('YYYY-MM-DD') : '',
-            due_date :  values.due_date ? moment(values.due_date).format('YYYY-MM-DD') : ''
-          }
+            priority: values.priority ? values.priority.value : values.priority,
+            status: values.status ? values.status.value : values.status,
+            followers: getIdFromObject(values.followers),
+            project_manager: getIdFromObject(values.project_manager),
+            team_members: getIdFromObject(values.team_members),
+            customers: getIdFromObject(values.customers),
+            start_date: values.start_date
+              ? moment(values.start_date).format("YYYY-MM-DD")
+              : "",
+            end_date: values.end_date
+              ? moment(values.end_date).format("YYYY-MM-DD")
+              : "",
+            due_date: values.due_date
+              ? moment(values.due_date).format("YYYY-MM-DD")
+              : "",
+          };
 
-          console.log(values)
-          createProject({...values,...sendDataObject}).then((data) => {
-            openNotification({
-              title:'Successfully Created',
-              message : `${data.message}`,
-              type: 'success'
+          console.log(values);
+          createProject({ ...values, ...sendDataObject })
+            .then((data) => {
+              openNotification({
+                title: "Successfully Created",
+                message: `${data.message}`,
+                type: "success",
+              });
+              resetForm();
             })
-            resetForm()
-          }).catch((err) => {
-            console.log(err)
-            openNotification({
-              title : 'Create Failed',
-              message : err?.message,
-              type : 'error'
+            .catch((err) => {
+              console.log(err);
+              openNotification({
+                title: "Create Failed",
+                message: err?.message,
+                type: "error",
+              });
             })
-          }).finally(() => {
-            setSubmitting(false)
-          })
+            .finally(() => {
+              setSubmitting(false);
+            });
         }}
       >
         {({ handleChange, values, errors, setFieldValue, isSubmitting }) => {
@@ -119,9 +130,9 @@ const ProjectForm = observer(() => {
                     label="Project Name"
                     placeholder="Enter The project name"
                     required
-                    onChange={(e : any) => {
-                      setSearchProjectName(e.target.value)
-                      handleChange(e)
+                    onChange={(e: any) => {
+                      setSearchProjectName(e.target.value);
+                      handleChange(e);
                     }}
                     error={errors.project_name}
                   />
@@ -165,7 +176,7 @@ const ProjectForm = observer(() => {
                     error={errors.status}
                     onChange={(e: any) => {
                       setFieldValue("status", e);
-                      console.log(e)
+                      console.log(e);
                     }}
                     options={[
                       { value: "BackLog", label: "BackLog" },
@@ -297,7 +308,7 @@ const ProjectForm = observer(() => {
                   />
                 </GridItem>
               </Grid>
-              <CustomSubmitBtn loading={isSubmitting}/>
+              <CustomSubmitBtn loading={isSubmitting} />
             </Form>
           );
         }}

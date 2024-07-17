@@ -1,7 +1,13 @@
 import axios from "axios";
 import { action, makeObservable, observable } from "mobx";
+import store from "../store";
 
 class ProjectStore {
+  projects : any = {
+    data : [],
+    loading : false
+  }
+
   openProjectDrawer = {
     type: "",
     open: false,
@@ -12,7 +18,7 @@ class ProjectStore {
       openProjectDrawer: observable,
       setOpenProjectDrawer: action,
       createProject: action,
-      getFilterProject: action,
+      getProjects: action,
     });
   }
 
@@ -25,15 +31,20 @@ class ProjectStore {
     }
   };
 
-  getFilterProject = async (project_name: string) => {
+  getProjects = async (sendData : any) => {
     try {
-      const { data } = await axios.get(
-        `/project/get?project_name=${project_name}`
+      this.projects.loading = true
+      const { data } = await axios.post(
+        `/project`,{...sendData, company : store.auth.getCurrentCompany()}
       );
-      console.log(data);
+      this.projects.data = data.data
+      this.projects.totalPages = data.totalPages
       return data;
     } catch (err: any) {
-      return Promise.reject(err?.response?.data || err?.message);
+      return Promise.reject(err?.response || err);
+    }
+    finally {
+      this.projects.loading = false
     }
   };
 

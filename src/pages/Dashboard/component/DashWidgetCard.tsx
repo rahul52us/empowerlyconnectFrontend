@@ -58,13 +58,13 @@ const DashWidgetCard = observer(() => {
           count: tripCount.data,
           title: "Total Trips",
           link: dashboard.tripManagement.index,
-          loading: tripCount.loading,
+          loading: tripCount.loading
         },
         {
-          count: 2000,
-          title: "Calender",
-          link: dashboard.calender,
-          loading: tripCount.loading,
+          count: tripCount.data,
+          title: "Projects",
+          link: dashboard.application.project,
+          loading: tripCount.loading
         },
         {
           count: 2000,
