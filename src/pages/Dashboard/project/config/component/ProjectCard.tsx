@@ -55,12 +55,12 @@ const ProjectCard: React.FC<CardProps> = ({
       </Flex>
       <Divider mb={4} />
       <Box mb={4}>
-        <Text fontSize="md" color="gray.800">{description}</Text>
+        <Text fontSize="md" color="gray.800" minH={45}>{description?.substring(0,110)}</Text>
       </Box>
       <Stack direction="row" spacing={4} mb={4}>
         <Badge colorScheme={priority === 'High' ? 'red' : priority === 'Medium' ? 'yellow' : 'green'}>
           {priority}
-        </Badge>
+         </Badge>
         <Badge colorScheme={status === 'In Progress' ? 'blue' : status === 'Done' || status === 'Completed' ? 'green' : 'gray'}>
           {status}
         </Badge>

@@ -4,7 +4,6 @@ import ProjectCard from "./ProjectCard";
 import store from "../../../../../store/store";
 import { useEffect } from "react";
 import { getStatusType } from "../../../../../config/constant/statusCode";
-import { toJS } from "mobx";
 import MainPagePagination from "../../../../../config/component/pagination/MainPagePagination";
 
 const ProjectWidget = observer(() => {
@@ -25,11 +24,9 @@ const ProjectWidget = observer(() => {
       });
   }, [openNotification, getProjects]);
 
-  console.log("the projects are", toJS(projects));
-
   return (
     <Box>
-      <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={2}>
+      <SimpleGrid columns={{ base: 1, md: 2, xl : 3 }} spacing={2}>
         {projects.data.map((item: any, index: number) => {
           return (
             <ProjectCard

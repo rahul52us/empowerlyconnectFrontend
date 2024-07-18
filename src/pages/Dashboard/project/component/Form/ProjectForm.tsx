@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Grid, GridItem } from "@chakra-ui/react";
+import { Flex, Grid, GridItem } from "@chakra-ui/react";
 import CustomInput from "../../../../../config/component/CustomInput/CustomInput";
 import { Form, Formik } from "formik";
 import { ProjectCreateValidation } from "../utils/validation";
@@ -7,15 +7,17 @@ import { observer } from "mobx-react-lite";
 import store from "../../../../../store/store";
 import CustomSubmitBtn from "../../../../../config/component/CustomSubmitBtn/CustomSubmitBtn";
 import { debounce } from "lodash";
-import { getIdFromObject } from "../../../utils/commonFunction";
 import { ProjectFormValuesI } from "../utils/dto";
-import moment from "moment";
+import { initialValuesOfProjects, ProjectPrioties, projectStatus } from "../utils/constant";
+import { generateProjectResponse } from "../utils/function";
+import { getStatusType } from "../../../../../config/constant/statusCode";
 
 const ProjectForm = observer(() => {
   const [searchProjectName, setSearchProjectName] = useState("");
+  const [showError, setShowError] = useState(false);
   const {
     auth: { getCompanyUsers, companyUsers, openNotification },
-    Project: { getProjects, createProject },
+    Project: { getProjects, createProject, setOpenProjectDrawer },
   } = store;
 
   useEffect(() => {
@@ -49,48 +51,13 @@ const ProjectForm = observer(() => {
   return (
     <div>
       <Formik
-        initialValues={{
-          project_name: "",
-          subtitle: "",
-          description: "",
-          start_date: "",
-          end_date: "",
-          due_date: "",
-          priority: {
-            value: "",
-            label: "",
-          },
-          followers: [],
-          team_members: [],
-          customers: [],
-          project_manager: [],
-          status: "",
-          attach_files: [],
-        }}
+        initialValues={initialValuesOfProjects}
         validationSchema={ProjectCreateValidation}
         onSubmit={(
           values: ProjectFormValuesI,
           { setSubmitting, resetForm }
         ) => {
-          const sendDataObject = {
-            priority: values.priority ? values.priority.value : values.priority,
-            status: values.status ? values.status.value : values.status,
-            followers: getIdFromObject(values.followers),
-            project_manager: getIdFromObject(values.project_manager),
-            team_members: getIdFromObject(values.team_members),
-            customers: getIdFromObject(values.customers),
-            start_date: values.start_date
-              ? moment(values.start_date).format("YYYY-MM-DD")
-              : "",
-            end_date: values.end_date
-              ? moment(values.end_date).format("YYYY-MM-DD")
-              : "",
-            due_date: values.due_date
-              ? moment(values.due_date).format("YYYY-MM-DD")
-              : "",
-          };
-
-          console.log(values);
+          const sendDataObject = generateProjectResponse(values);
           createProject({ ...values, ...sendDataObject })
             .then((data) => {
               openNotification({
@@ -99,13 +66,13 @@ const ProjectForm = observer(() => {
                 type: "success",
               });
               resetForm();
+              setOpenProjectDrawer('create')
             })
             .catch((err) => {
-              console.log(err);
               openNotification({
                 title: "Create Failed",
-                message: err?.message,
-                type: "error",
+                message: err?.data?.message,
+                type: getStatusType(err.status),
               });
             })
             .finally(() => {
@@ -117,13 +84,16 @@ const ProjectForm = observer(() => {
           return (
             <Form>
               <Grid
-                templateColumns={{
+                gridTemplateColumns={{
                   base: "repeat(1, 1fr)",
-                  xl: "repeat(2,1fr)",
+                  md: "repeat(2, 1fr)",
+                  lg: "repeat(3, 1fr)",
                 }}
-                gap={4}
+                overflowY={'auto'}
+                gap={2}
+                minH={'81vh'}
+                maxH={'81vh'}
               >
-                <GridItem>
                   <CustomInput
                     value={values.project_name}
                     name="project_name"
@@ -135,28 +105,22 @@ const ProjectForm = observer(() => {
                       handleChange(e);
                     }}
                     error={errors.project_name}
+                    showError={showError}
                   />
-                </GridItem>
-                <GridItem>
                   <CustomInput
                     name="priority"
                     label="Priority"
                     value={values.priority}
                     required
                     placeholder="Select the Priority"
-                    options={[
-                      { value: "Low", label: "Low" },
-                      { value: "Medium", label: "Medium" },
-                      { value: "High", label: "High" },
-                    ]}
+                    options={ProjectPrioties}
                     type="select"
                     onChange={(e: any) => {
                       setFieldValue("priority", e);
                     }}
                     error={errors.priority}
+                    showError={showError}
                   />
-                </GridItem>
-                <GridItem>
                   <CustomInput
                     name="subtitle"
                     label="Sub Title"
@@ -164,9 +128,8 @@ const ProjectForm = observer(() => {
                     value={values.subtitle}
                     error={errors.subtitle}
                     onChange={handleChange}
+                    showError={showError}
                   />
-                </GridItem>
-                <GridItem>
                   <CustomInput
                     type="select"
                     name="status"
@@ -176,18 +139,11 @@ const ProjectForm = observer(() => {
                     error={errors.status}
                     onChange={(e: any) => {
                       setFieldValue("status", e);
-                      console.log(e);
                     }}
-                    options={[
-                      { value: "BackLog", label: "BackLog" },
-                      { value: "Todo", label: "Todo" },
-                      { value: "In Progress", label: "In Progress" },
-                      { value: "Done", label: "Done" },
-                      { value: "Completed", label: "Completed" },
-                    ]}
+                    options={projectStatus}
+                    showError={showError}
                   />
-                </GridItem>
-                <GridItem colSpan={2}>
+                <GridItem colSpan={{ base: 1, md: 3 }}>
                   <CustomInput
                     name="description"
                     label="Description"
@@ -196,45 +152,47 @@ const ProjectForm = observer(() => {
                     onChange={handleChange}
                     value={values.description}
                     error={errors.description}
+                    showError={showError}
                   />
                 </GridItem>
-                <GridItem>
                   <CustomInput
-                    value={values.start_date}
-                    error={errors.start_date}
-                    name="start_date"
+                    value={values.startDate}
+                    error={errors.startDate}
+                    name="startDate"
                     label="Start Date"
                     onChange={(date: any) => {
-                      setFieldValue("start_date", date ? date : "");
+                      setFieldValue("startDate", date ? date : "");
                     }}
                     placeholder="Select the Start Date"
                     type="date"
+                    showError={showError}
                   />
-                </GridItem>
-                <GridItem>
                   <CustomInput
-                    value={values.end_date}
-                    name="end_date"
+                    value={values.endDate}
+                    name="endDate"
                     label="End Date"
                     onChange={(date: any) => {
-                      setFieldValue("end_date", date ? date : "");
+                      setFieldValue("endDate", date ? date : "");
                     }}
+                    minDate={values.startDate}
                     placeholder="Select the End Date"
                     type="date"
-                    error={errors.end_date}
+                    error={errors.endDate}
+                    showError={showError}
                   />
-                </GridItem>
-                <GridItem colSpan={2}>
+                <GridItem colSpan={{ base: 1, md: 1 }}>
                   <CustomInput
-                    value={values.due_date}
-                    name="due_date"
+                    value={values.dueDate}
+                    name="dueDate"
                     label="Due Date"
                     placeholder="Select the Due Date"
                     type="date"
                     onChange={(date: any) => {
-                      setFieldValue("due_date", date ? date : "");
+                      setFieldValue("dueDate", date ? date : "");
                     }}
-                    error={errors.due_date}
+                    error={errors.dueDate}
+                    showError={showError}
+                    minDate={values.startDate}
                   />
                 </GridItem>
                 <GridItem>
@@ -252,17 +210,18 @@ const ProjectForm = observer(() => {
                     }}
                     isMulti
                     isSearchable
+                    showError={showError}
                   />
                 </GridItem>
                 <GridItem>
                   <CustomInput
                     name="project_manager"
-                    label="project_manager"
+                    label="Project Manager"
                     value={values.project_manager}
                     getOptionLabel={(option: any) => option.username}
                     getOptionValue={(option: any) => option._id}
                     options={companyUsers}
-                    placeholder="Select the Project manager"
+                    placeholder="Select the Project Manager"
                     type="select"
                     onChange={(e: any) => {
                       setFieldValue("project_manager", e);
@@ -270,9 +229,10 @@ const ProjectForm = observer(() => {
                     isMulti
                     isSearchable
                     error={errors.project_manager}
+                    showError={showError}
                   />
                 </GridItem>
-                <GridItem colSpan={2}>
+                <GridItem colSpan={{ base: 1, md: 1 }}>
                   <CustomInput
                     name="team_members"
                     label="Team"
@@ -287,9 +247,11 @@ const ProjectForm = observer(() => {
                     }}
                     isMulti
                     isSearchable
+                    error={errors.team_members}
+                    showError={showError}
                   />
                 </GridItem>
-                <GridItem colSpan={2} mb={5}>
+                <GridItem colSpan={{ base: 1, md: 1 }}>
                   <CustomInput
                     name="followers"
                     label="Followers"
@@ -305,10 +267,18 @@ const ProjectForm = observer(() => {
                     isMulti
                     isSearchable
                     error={errors.followers}
+                    showError={showError}
                   />
                 </GridItem>
               </Grid>
-              <CustomSubmitBtn loading={isSubmitting} />
+              <Flex justifyContent={'end'}>
+                <CustomSubmitBtn
+                  cancelFunctionality={{show : true, onClick : setOpenProjectDrawer}}
+                  onClick={() => setShowError(true)}
+                  type="submit"
+                  loading={isSubmitting}
+                />
+              </Flex>
             </Form>
           );
         }}

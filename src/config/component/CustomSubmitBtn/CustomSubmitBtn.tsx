@@ -19,18 +19,7 @@ const CustomSubmitBtn = ({
 }: CustomBtnI) => {
   return (
     <Flex mt={3} gap={4}>
-      {
-        cancelFunctionality && cancelFunctionality.show &&
-      <Button
-        onClick={() => {
-          if (cancelFunctionality.onClick) {
-            cancelFunctionality.onClick();
-          }
-        }}
-        {...cancelFunctionality.rest}
-      >
-        {cancelFunctionality.text ?  cancelFunctionality.text : 'Cancel'}
-      </Button>}
+
       <Button
         type={type ? type : "submit"}
         isLoading={loading}
@@ -44,6 +33,18 @@ const CustomSubmitBtn = ({
       >
         {buttonText ? buttonText : 'Submit'}
       </Button>
+      {
+        cancelFunctionality && cancelFunctionality.show &&
+      <Button
+        onClick={() => {
+          if (cancelFunctionality.onClick) {
+            cancelFunctionality.onClick();
+          }
+        }}
+        {...cancelFunctionality.rest}
+      >
+        {cancelFunctionality.text ?  cancelFunctionality.text : 'Cancel'}
+      </Button>}
     </Flex>
   );
 };

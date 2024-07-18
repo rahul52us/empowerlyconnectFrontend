@@ -26,10 +26,10 @@ class ProjectStore {
 
   createProject = async (sendData: any) => {
     try {
-      const { data } = await axios.post("/project/create", sendData);
+      const { data } = await axios.post("/project", {...sendData,company : store.auth.getCurrentCompany()});
       return data;
     } catch (err: any) {
-      return Promise.reject(err?.response?.data || err);
+      return Promise.reject(err?.response || err);
     }
   };
 

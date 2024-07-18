@@ -9,17 +9,17 @@ export interface StatusObjectI {
 }
 
 export interface ProjectFormValuesI {
-    project_name: string;
-    subtitle: string;
-    description: string;
-    start_date: any | "";
-    end_date: any | "";
-    due_date: any | "";
-    priority: any;
-    followers: any[]; // Update the type to the appropriate array type if needed
-    team_members: any[]; // Update the type to the appropriate array type if needed
-    customers: any[]; // Update the type to the appropriate array type if needed
-    project_manager: any[]; // Update the type to the appropriate array type if needed
-    status: any;
-    attach_files: any[]; // Update the type to the appropriate array type if needed
-  }
+  project_name: string;
+  subtitle: string;
+  description: string;
+  startDate: any | "";
+  endDate: any | "";
+  dueDate: any | "";
+  priority: any;
+  followers: any[];
+  team_members: any[];
+  customers: any[];
+  project_manager: any[];
+  status: any;
+  attach_files: any[];
+}
