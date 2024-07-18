@@ -27,9 +27,9 @@ const EmployFormSidebar = observer(({ type }: any) => {
 
   const handleChange = (tab: string) => {
     if (type === "edit") {
-      navigate(`${dashboard.employes.details}/edit/${id}?tab=${tab}`);
+      navigate(`${dashboard.Users.details}/edit/${id}?tab=${tab}`);
     } else {
-      navigate(`${dashboard.employes.details}/new?tab=${tab}`);
+      navigate(`${dashboard.Users.details}/new?tab=${tab}`);
     }
   };
   const icons = [
@@ -62,7 +62,7 @@ const EmployFormSidebar = observer(({ type }: any) => {
           bgGradient="linear(to-r, blue.400, blue.600)"
           bgClip="text"
         >
-          Employee Details
+          Usere Details
         </Text>
         <VStack spacing={3} align="stretch">
           {sideTabs.map((item: any, index: number) => (

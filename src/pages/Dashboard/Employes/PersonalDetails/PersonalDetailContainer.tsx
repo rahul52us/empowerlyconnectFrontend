@@ -21,14 +21,14 @@ const PersonalDetailContainer = observer(() => {
   });
 
   const {
-    Employe: { getEmployesSubOrdinateDetails },
+    User: { getUsersSubOrdinateDetails },
     auth: { openNotification },
   } = store;
 
   const fetchData = async () => {
     setSearchData((prev) => ({ ...prev, loading: true }));
     try {
-      const response = await getEmployesSubOrdinateDetails({
+      const response = await getUsersSubOrdinateDetails({
         username: values.username || undefined,
         code : values.code || undefined
       });

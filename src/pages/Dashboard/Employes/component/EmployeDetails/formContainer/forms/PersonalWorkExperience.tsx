@@ -95,17 +95,17 @@ const PersonalWorkExperience = ({
                                 mb={5}
                               >
                                 <CustomInput
-                                  name={`experienceDetails[${index}].pastEmployer`}
+                                  name={`experienceDetails[${index}].pastUserr`}
                                   type="text"
-                                  placeholder="Past Employer"
-                                  label="Past Employer"
+                                  placeholder="Past Userr"
+                                  label="Past Userr"
                                   showError={showError}
-                                  value={experience.pastEmployer}
+                                  value={experience.pastUserr}
                                   onChange={handleChange}
                                   error={
                                     errors.experienceDetails &&
                                     errors.experienceDetails[index] &&
-                                    errors.experienceDetails[index].pastEmployer
+                                    errors.experienceDetails[index].pastUserr
                                   }
                                 />
                                 <CustomInput
@@ -234,7 +234,7 @@ const PersonalWorkExperience = ({
                         type="button"
                         onClick={() =>
                           push({
-                            pastEmployer: "",
+                            pastUserr: "",
                             startDate: new Date(
                               Date.now() - 365 * 24 * 60 * 60 * 1000
                             ),

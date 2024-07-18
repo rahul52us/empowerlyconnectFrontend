@@ -212,9 +212,9 @@ const sidebarDatas: SidebarItem[] = [
     children: [
       {
         id: 29,
-        name: "Employees Directory",
+        name: "Useres Directory",
         icon: <FaUsers />,
-        url: "/dashboard/employes",
+        url: "/dashboard/Users",
         role: ["user", "manager", "admin", "superadmin"],
       },
       {
@@ -242,9 +242,9 @@ const sidebarDatas: SidebarItem[] = [
     children: [
       {
         id: 33,
-        name: "Employees Directory",
+        name: "Useres Directory",
         icon: <FaUsers />,
-        url: dashboard.employes.personalDetails,
+        url: dashboard.Users.personalDetails,
         role: ["user"],
       },
     ],

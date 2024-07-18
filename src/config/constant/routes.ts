@@ -32,19 +32,19 @@ export const dashboard = {
   tripManagement: {
     index: `/${dashboardName}/trip`,
   },
-  employes: {
-    index: `/${dashboardName}/employes`,
-    details: `/${dashboardName}/employes/details`,
-    new: `/${dashboardName}/employes/details/new`,
-    edit: `/${dashboardName}/employes/details/edit/:id`,
-    personalDetails:`/${dashboardName}/employes/personal-details`,
-    personalDetailsUserChart:`/${dashboardName}/employes/personal-details/:id`
+  Users: {
+    index: `/${dashboardName}/Users`,
+    details: `/${dashboardName}/Users/details`,
+    new: `/${dashboardName}/Users/details/new`,
+    edit: `/${dashboardName}/Users/details/edit/:id`,
+    personalDetails:`/${dashboardName}/Users/personal-details`,
+    personalDetailsUserChart:`/${dashboardName}/Users/personal-details/:id`
   },
   department: {
     index: `/${dashboardName}/department`,
-    details: `/${dashboardName}/employes/details`,
-    new: `/${dashboardName}/employes/details/new`,
-    edit: `/${dashboardName}/employes/details/edit/:id`,
+    details: `/${dashboardName}/Users/details`,
+    new: `/${dashboardName}/Users/details/new`,
+    edit: `/${dashboardName}/Users/details/edit/:id`,
   },
   company: {
     index: `/${dashboardName}/company`,

@@ -128,7 +128,7 @@ const DailyAttendance = observer(() => {
       <Flex justify="space-between" align="center" mb={4}>
         <Flex align="center" flex="1">
           <Text fontWeight="bold" mr={2}>
-            Employee:
+            Usere:
           </Text>
           <Text>Rahul Kushwah</Text>
         </Flex>

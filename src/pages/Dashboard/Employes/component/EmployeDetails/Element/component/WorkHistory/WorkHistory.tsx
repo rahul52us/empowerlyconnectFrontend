@@ -16,7 +16,7 @@ const WorkHistory = ({ workHistory }: any) => {
   return (
     <Box p={5}>
       <Heading mb={4} size={"md"}>
-        Employee Work History
+        Usere Work History
       </Heading>
       <Stepper size="lg" index={0} orientation="vertical" colorScheme="teal">
         {workHistory?.map((history: any) => (

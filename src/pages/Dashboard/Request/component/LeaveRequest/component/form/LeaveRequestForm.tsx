@@ -23,7 +23,7 @@ const LeaveRequestForm = observer(
     const [managers, setManagers] = useState<any>({ loading: false, data: [] });
     const {
       auth: { user, openNotification },
-      Employe: { getManagersOfUsers },
+      User: { getManagersOfUsers },
     } = store;
 
     useEffect(() => {
@@ -44,7 +44,7 @@ const LeaveRequestForm = observer(
         });
     }, [getManagersOfUsers, openNotification, user]);
 
-    const employesOptions = managers.data.map((item: any) => ({
+    const UsersOptions = managers.data.map((item: any) => ({
       value: item?._id,
       label: item?.username,
     }));
@@ -109,7 +109,7 @@ const LeaveRequestForm = observer(
                     onChange={(e) => {
                       setFieldValue("sendTo", e);
                     }}
-                    options={employesOptions}
+                    options={UsersOptions}
                     showError={showError}
                     required={true}
                   />

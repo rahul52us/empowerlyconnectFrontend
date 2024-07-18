@@ -19,10 +19,10 @@ import { tablePageLimit } from "../../../../../../config/constant/variable";
 import store from "../../../../../../store/store";
 import { employDropdownData, generateTableData } from "../utils/constant";
 import UserProfile from "./UserProfile";
-// import IndividualEmployeeDetails from "./IndividualEmployeeDetails";
+// import IndividualUsereDetails from "./IndividualUsereDetails";
 
-// Employe Table
-const EmployeDetailsTable = observer(() => {
+// User Table
+const UserDetailsTable = observer(() => {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const dropdowns = useState(employDropdownData)[0];
@@ -35,16 +35,16 @@ const EmployeDetailsTable = observer(() => {
     endDate: new Date(),
   });
 
-  const [employeeId, setEmployeeId] = useState<any>();
+  const [UsereId, setUsereId] = useState<any>();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
-    Employe: { getAllEmployes, employes },
+    User: { getAllUsers, Users },
     auth: { openNotification },
   } = store;
 
-  // console.log('generateTableData',generateTableData(employes.data))
-  const applyGetAllEmployes = useCallback(
+  // console.log('generateTableData',generateTableData(Users.data))
+  const applyGetAllUsers = useCallback(
     ({ page, limit, reset }: any) => {
       const query: any = {};
       if (reset) {
@@ -59,7 +59,7 @@ const EmployeDetailsTable = observer(() => {
         query["startDate"] = date.startDate;
         query["endDate"] = date.endDate;
       }
-      getAllEmployes(query)
+      getAllUsers(query)
         .then(() => {})
         .catch((err) => {
           openNotification({
@@ -74,18 +74,18 @@ const EmployeDetailsTable = observer(() => {
       currentPage,
       pageLimit,
       date,
-      getAllEmployes,
+      getAllUsers,
       openNotification,
     ]
   );
 
   useEffect(() => {
-    applyGetAllEmployes({
+    applyGetAllUsers({
       page: currentPage,
       limit: tablePageLimit,
       search: debouncedSearchQuery,
     });
-  }, [currentPage, debouncedSearchQuery, applyGetAllEmployes]);
+  }, [currentPage, debouncedSearchQuery, applyGetAllUsers]);
 
   const onDateChange = (e: any, type: string) => {
     setDate((prev: any) => ({ ...prev, [type]: e }));
@@ -104,17 +104,17 @@ const EmployeDetailsTable = observer(() => {
     });
     setSelectedOptions({});
     setSearchQuery("");
-    applyGetAllEmployes({ reset: true });
+    applyGetAllUsers({ reset: true });
   };
 
-  const employeTableColumns = [
+  const UserTableColumns = [
     {
       headerName: "Name",
       key: "name",
       type: "link",
       function: (e: any) => {
         navigate(
-          `${dashboard.employes.details}/edit/${e?._id}?tab=profile-details`
+          `${dashboard.Users.details}/edit/${e?._id}?tab=profile-details`
         );
       },
       props: {
@@ -219,7 +219,7 @@ const EmployeDetailsTable = observer(() => {
           },
           applyFilter: {
             show: true,
-            function: () => applyGetAllEmployes({ page: currentPage }),
+            function: () => applyGetAllUsers({ page: currentPage }),
           },
           resetData: {
             show: true,
@@ -231,7 +231,7 @@ const EmployeDetailsTable = observer(() => {
               showAddButton: true,
               function: () => {
                 navigate(
-                  `${dashboard.employes.details}/new?tab=profile-details`
+                  `${dashboard.Users.details}/new?tab=profile-details`
                 );
               },
             },
@@ -239,14 +239,14 @@ const EmployeDetailsTable = observer(() => {
               showEditButton: true,
               function: (e: any) => {
                 navigate(
-                  `${dashboard.employes.details}/edit/${e?._id}?tab=profile-details`
+                  `${dashboard.Users.details}/edit/${e?._id}?tab=profile-details`
                 );
               },
             },
             viewKey: {
               showViewButton: true,
               function: (e: any) => {
-                setEmployeeId(e._id);
+                setUsereId(e._id);
                 console.log("---------------", e._id);
                 onOpen();
               },
@@ -262,7 +262,7 @@ const EmployeDetailsTable = observer(() => {
             show: true,
             onClick: handleChangePage,
             currentPage: currentPage,
-            totalPages: employes.totalPages,
+            totalPages: Users.totalPages,
           },
           datePicker: {
             show: true,
@@ -284,17 +284,17 @@ const EmployeDetailsTable = observer(() => {
             //   onSearchChange: (e: any) => setSearchQuery(e),
             // },
             dropdowns: dropdowns,
-            onApply: () => applyGetAllEmployes({}),
+            onApply: () => applyGetAllUsers({}),
             selectedOptions: selectedOptions,
             onDropdownChange: (value: any, label: string) => {
               setSelectedOptions((prev: any) => ({ ...prev, [label]: value }));
             },
           },
         }}
-        title="Employes Details"
-        data={generateTableData(employes.data)}
-        columns={employeTableColumns}
-        loading={employes.loading}
+        title="Users Details"
+        data={generateTableData(Users.data)}
+        columns={UserTableColumns}
+        loading={Users.loading}
         serial={{ show: false, text: "S.No.", width: "10px" }}
       />
       <Drawer isOpen={isOpen} placement="right" onClose={onClose} size={"xl"}>
@@ -304,13 +304,13 @@ const EmployeDetailsTable = observer(() => {
           {/* <DrawerHeader>Create your account</DrawerHeader> */}
 
           <DrawerBody p={0}>
-              {isOpen && employeeId && (
-              // <IndividualEmployeeDetails
-              //   employeeId={employeeId}
+              {isOpen && UsereId && (
+              // <IndividualUsereDetails
+              //   UsereId={UsereId}
 
               // />
               <>
-                <UserProfile employeeId={employeeId} />
+                <UserProfile UsereId={UsereId} />
               </>
             )}
           </DrawerBody>
@@ -327,4 +327,4 @@ const EmployeDetailsTable = observer(() => {
   );
 });
 
-export default EmployeDetailsTable;
+export default UserDetailsTable;

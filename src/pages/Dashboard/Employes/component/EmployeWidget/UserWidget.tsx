@@ -1,25 +1,25 @@
 import { Grid } from "@chakra-ui/react";
-import EmployeWidgetCard from "../../element/EmployeWidgetCard";
+import UserWidgetCard from "../../element/EmployeWidgetCard";
 import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
 import store from "../../../../../store/store";
 import { cardArrayData } from "../../utils/constant";
 import { CardDataI } from "../../utils/constant.interface";
 
-const EmployeWidget = observer(() => {
+const UserWidget = observer(() => {
   const [cardData, setCardData] = useState<CardDataI>(cardArrayData);
 
   const {
-    Employe: { getEmployesCount, employesCounts },
+    User: { getUsersCount, UsersCounts },
     auth: { openNotification },
   } = store;
 
   useEffect(() => {
-    getEmployesCount()
+    getUsersCount()
       .then((data) => {
         setCardData((prevData) => ({
           ...prevData,
-          NoOfEmployes: { ...prevData.NoOfEmployes, value: data },
+          NoOfUsers: { ...prevData.NoOfUsers, value: data },
         }));
       })
       .catch((err) => {
@@ -29,7 +29,7 @@ const EmployeWidget = observer(() => {
           message: err?.message,
         });
       });
-  }, [getEmployesCount, openNotification]);
+  }, [getUsersCount, openNotification]);
 
   return (
     <Grid
@@ -39,11 +39,11 @@ const EmployeWidget = observer(() => {
     >
       {Object.entries(cardData).map(([key, item]) => {
         return(
-        <EmployeWidgetCard
+        <UserWidgetCard
           key={key}
           title={item.title}
           value={item.value}
-          loading={employesCounts.loading}
+          loading={UsersCounts.loading}
           icon={item.icon}
           link={item.link}
         />
@@ -52,4 +52,4 @@ const EmployeWidget = observer(() => {
   );
 });
 
-export default EmployeWidget;
+export default UserWidget;

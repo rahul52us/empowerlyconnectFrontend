@@ -19,7 +19,7 @@ const PersonalCompanyDetails = observer(
         getAllDepartment,
         departments,
       },
-      Employe: { getAllEmployesRoles, employesRoles },
+      User: { getAllUsersRoles, UsersRoles },
     } = store;
     const [showError, setShowError] = useState(false);
 
@@ -58,7 +58,7 @@ const PersonalCompanyDetails = observer(
 
 
     useEffect(() => {
-      getAllEmployesRoles({ page: 1, limit: 15 })
+      getAllUsersRoles({ page: 1, limit: 15 })
         .then(() => {})
         .catch((err: any) => {
           openNotification({
@@ -67,7 +67,7 @@ const PersonalCompanyDetails = observer(
             message: err?.message,
           });
         });
-    }, [getAllEmployesRoles, openNotification]);
+    }, [getAllUsersRoles, openNotification]);
 
     useEffect(() => {
       const eTypes = eTypeOption.filter(
@@ -79,7 +79,7 @@ const PersonalCompanyDetails = observer(
 
       if (initialValues.managers?.length) {
         const tempManagers: any = [];
-        employesRoles.data.forEach((item: any) => {
+        UsersRoles.data.forEach((item: any) => {
           if (updatedInitialValues.managers.includes(item._id)) {
             tempManagers.push({
               label: item.username,
@@ -152,7 +152,7 @@ const PersonalCompanyDetails = observer(
       setFormInitialValues(updatedInitialValues);
     }, [
       initialValues,
-      employesRoles.data,
+      UsersRoles.data,
       departments.data,
       departmentCategories?.data,
       user?.companyDetail?.company?.policy?.workTiming,
@@ -209,7 +209,7 @@ const PersonalCompanyDetails = observer(
       value: option._id,
     }));
 
-    const employesOptions = employesRoles.data.map((item: any) => ({
+    const UsersOptions = UsersRoles.data.map((item: any) => ({
       value: item?._id,
       label: item?.username,
     }));
@@ -350,7 +350,7 @@ const PersonalCompanyDetails = observer(
                       onChange={(e) => {
                         setFieldValue("managers", e);
                       }}
-                      options={employesOptions}
+                      options={UsersOptions}
                       showError={showError}
                       required={true}
                     />

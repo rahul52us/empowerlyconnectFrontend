@@ -26,38 +26,38 @@ import React, { useEffect, useState } from "react";
 import { FaFileAlt } from "react-icons/fa";
 import store from "../../../../../../store/store";
 import ShowData from "../component/ShowData";
-// import userData from "./dummyEmployeeData.json";
+// import userData from "./dummyUsereData.json";
 // import CompanyDetails from "./component/CompanyDetails";
 import DrawerLoader from "../../../../../../config/component/Loader/DrawerLoader";
 import WorkHistory from "./component/WorkHistory/WorkHistory";
 import BankDetailsCard from "../component/common/BankDetailCard";
 
-const UserProfile: React.FC<any> = ({ employeeId }) => {
+const UserProfile: React.FC<any> = ({ UsereId }) => {
   const [user, setUserData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [tabIndex, setTabIndex] = useState(0);
   const {
-    Employe: { getEmployesDetailsById },
+    User: { getUsersDetailsById },
     auth: { openNotification },
   }: any = store;
 
   useEffect(() => {
-    if (employeeId) {
+    if (UsereId) {
       setLoading(true);
-      getEmployesDetailsById(employeeId)
+      getUsersDetailsById(UsereId)
         .then((details: any) => {
           setUserData(details);
         })
         .catch((error: any) => {
-          console.error("Failed to fetch employee details", error);
+          console.error("Failed to fetch Usere details", error);
         })
         .finally(() => {
           setLoading(false);
         });
     }
-  }, [employeeId, getEmployesDetailsById, openNotification]);
+  }, [UsereId, getUsersDetailsById, openNotification]);
 
-  const employee = {
+  const Usere = {
     skills: ["React", "JavaScript", "TypeScript", "Node.js"],
     education: "Bachelor's in Computer Science",
     linkedin: "https://www.linkedin.com/in/johndoe",
@@ -132,7 +132,7 @@ const UserProfile: React.FC<any> = ({ employeeId }) => {
                       label="Phone"
                       value={user?.profileDetails[0]?.mobileNo}
                     />
-                    <ShowData label="Employee Code" value={user?.code} />
+                    <ShowData label="Usere Code" value={user?.code} />
                     <ShowData
                       label="Languages"
                       type="multi"
@@ -160,15 +160,15 @@ const UserProfile: React.FC<any> = ({ employeeId }) => {
                   <Text fontWeight={"bold"}>Professional Details</Text>
                   <Divider my={2} borderColor={borderColor} />
                   <Grid templateColumns={"2fr 3fr"} gap={4}>
-                    <ShowData label="Profile" value={employee?.profession} />
-                    <ShowData label="Experience" value={employee?.experience} />
-                    <ShowData label="Education" value={employee?.education} />
+                    <ShowData label="Profile" value={Usere?.profession} />
+                    <ShowData label="Experience" value={Usere?.experience} />
+                    <ShowData label="Education" value={Usere?.education} />
                     <Box>
                       <Text p={1} fontSize={"sm"} color={"gray"}>
                         Skills
                       </Text>
                       <Flex flexWrap={"wrap"} gap={2}>
-                        {employee.skills.map((skill) => (
+                        {Usere.skills.map((skill) => (
                           <Tag
                             rounded={"full"}
                             key={skill}
@@ -180,7 +180,7 @@ const UserProfile: React.FC<any> = ({ employeeId }) => {
                         ))}
                       </Flex>
                     </Box>
-                    <ShowData label="LinkedIn" value={employee?.linkedin} />
+                    <ShowData label="LinkedIn" value={Usere?.linkedin} />
                   </Grid>
                 </Box>
               </TabPanel>

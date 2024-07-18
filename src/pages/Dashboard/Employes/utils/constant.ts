@@ -6,14 +6,14 @@ import {
 import { dashboard } from "../../../../config/constant/routes";
 
 export const cardArrayData = {
-  NoOfEmployes: {
-    title: "Total No Of Employes",
+  NoOfUsers: {
+    title: "Total No Of Users",
     value: 0,
     icon: FaExclamationCircle,
-    link: dashboard.employes.details,
+    link: dashboard.Users.details,
   },
   NoOfData: {
-    title: "Total Number of Resign Employes",
+    title: "Total Number of Resign Users",
     value: 0,
     icon: FaCheckCircle,
     link: "",
@@ -22,6 +22,6 @@ export const cardArrayData = {
     title: "Total Number of Users",
     value: 0,
     icon: FaTimesCircle,
-    link: `${dashboard.employes.details}/new/?tab=profile-details`,
+    link: `${dashboard.Users.details}/new/?tab=profile-details`,
   },
 };

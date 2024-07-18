@@ -80,23 +80,23 @@ const TripManagementIndex = lazy(
   () => import("../../pages/Dashboard/Trip/TripManagement")
 );
 
-// Employes
+// Users
 
-const EmployesManagementIndex = lazy(
+const UsersManagementIndex = lazy(
   () => import("../../pages/Dashboard/Employes")
 );
 
-const EmployeDetails = lazy(
+const UserDetails = lazy(
   () =>
     import(
-      "../../pages/Dashboard/Employes/component/EmployeDetails/EmployeDetails"
+      "../../pages/Dashboard/Employes/component/EmployeDetails/UserDetails"
     )
 );
 
-const EmployeCreate = lazy(
+const UserCreate = lazy(
   () =>
     import(
-      "../../pages/Dashboard/Employes/component/EmployeDetails/formContainer/EmployeFormContainer"
+      "../../pages/Dashboard/Employes/component/EmployeDetails/formContainer/UserFormContainer"
     )
 );
 
@@ -220,25 +220,25 @@ export const DashboardRoutes = [
     privateRoutes: true,
   },
 
-  // employes
+  // Users
   {
-    element: <EmployesManagementIndex />,
-    path: dashboard.employes.index,
+    element: <UsersManagementIndex />,
+    path: dashboard.Users.index,
     privateRoutes: true,
   },
   {
-    element: <EmployeDetails />,
-    path: dashboard.employes.details,
+    element: <UserDetails />,
+    path: dashboard.Users.details,
     privateRoutes: true,
   },
   {
-    element: <EmployeCreate />,
-    path: dashboard.employes.new,
+    element: <UserCreate />,
+    path: dashboard.Users.new,
     privateRoutes: true,
   },
   {
-    element: <EmployeCreate />,
-    path: dashboard.employes.edit,
+    element: <UserCreate />,
+    path: dashboard.Users.edit,
     privateRoutes: true,
   },
   {
@@ -247,16 +247,16 @@ export const DashboardRoutes = [
     privateRoutes: true,
   },
 
-  // employes personal details
+  // Users personal details
 
   {
     element: <PersonalDetails />,
-    path: dashboard.employes.personalDetails,
+    path: dashboard.Users.personalDetails,
     privateRoutes: true,
   },
   {
     element: <PersonalDetailUsersChart />,
-    path: dashboard.employes.personalDetailsUserChart,
+    path: dashboard.Users.personalDetailsUserChart,
     privateRoutes: true,
   },
   // Company

@@ -48,7 +48,7 @@ export const eTypeOption = [
   { label: "admin", value: "admin" },
 ];
 
-export const employeInitialValues = (type: string, data: any) => {
+export const UserInitialValues = (type: string, data: any) => {
   if (type === "profile-details") {
     data = { ...data, ...data?.profileDetails[0] };
     let dt: any = {
@@ -126,7 +126,7 @@ export const employeInitialValues = (type: string, data: any) => {
     let workExperience: any = {
       experienceDetails: [
         {
-          pastEmployer: "",
+          pastUserr: "",
           startDate: new Date(Date.now() - 365 * 24 * 60 * 60 * 1000),
           endDate: new Date(),
           relevantExperience: "",

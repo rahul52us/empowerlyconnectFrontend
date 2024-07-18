@@ -1,8 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
-import {
-  employDropdownData,
-} from "../../Employes/component/EmployeDetails/utils/constant";
 import store from "../../../../store/store";
 import CustomTable from "../../../../config/component/CustomTable/CustomTable";
 import { getStatusType } from "../../../../config/constant/statusCode";
@@ -12,6 +9,7 @@ import EditWorkLocation from "./component/EditWorkLocation";
 import DeleteWorkLocation from "./component/DeleteWorkLocation";
 import { Button, Flex, Input } from "@chakra-ui/react";
 import { readFileAsBase64 } from "../../../../config/constant/function";
+import { employDropdownData } from "../../Employes/component/EmployeDetails/utils/constant";
 
 const WorkLocationDetails = observer(() => {
   const inputRef = useRef<any>(null);
@@ -99,7 +97,7 @@ const WorkLocationDetails = observer(() => {
       })
   }
 
-  const employeTableColumns = [
+  const UserTableColumns = [
     {
       headerName: "Location",
       key: "locationName",
@@ -267,7 +265,7 @@ const WorkLocationDetails = observer(() => {
         }}
         title="Locations"
         data={generateResponse(workLocations.data)}
-        columns={employeTableColumns}
+        columns={UserTableColumns}
         loading={workLocations.loading}
         serial={{ show: false, text: "S.No.", width: "10px" }}
       />

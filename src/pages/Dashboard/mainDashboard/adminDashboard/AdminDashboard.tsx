@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 import DashWidgetCard from "../../component/DashWidgetCard";
 import PunchAttendance from "../../PunchAttendence/PunchAttendence";
 import DashChartContainer from "../managerDashboard/component/DashManagerChartContainer";
-import ManagerEmployes from "../managerDashboard/component/ManagerEmployes";
+import ManagerUsers from "../managerDashboard/component/ManagerUsers";
 
 const AdminDashboard = observer(() => {
   return (
@@ -11,7 +11,7 @@ const AdminDashboard = observer(() => {
       <DashWidgetCard />
       <DashChartContainer />
       <Grid gridTemplateColumns={{ base: "1fr", lg: "1fr 1fr" }} columnGap={4}>
-        <ManagerEmployes />
+        <ManagerUsers />
         <PunchAttendance />
       </Grid>
     </Grid>

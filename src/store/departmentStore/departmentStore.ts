@@ -34,7 +34,7 @@ class DepartmentStore {
     loading : false
   }
 
-  employesCounts : any = {
+  UsersCounts : any = {
     data : 0,
     loading : false
   }
@@ -54,11 +54,11 @@ class DepartmentStore {
       departments:observable,
       resetStudentDetails:action,
       setHandleFormDrawer: action,
-      createEmploye: action,
+      createUser: action,
       getStudentById:action,
       getAllDepartmentCategories: action,
-      getEmployesDetailsById:action,
-      updateEmployeProfile: action,
+      getUsersDetailsById:action,
+      updateUserProfile: action,
       getPositionCount:action,
       getDepartmentCounts:action,
       getAllDepartment:action,
@@ -181,9 +181,9 @@ class DepartmentStore {
     }
   };
 
-  getEmployesDetailsById = async (id: any) => {
+  getUsersDetailsById = async (id: any) => {
     try {
-      const { data } = await axios.get(`/employe/${id}`);
+      const { data } = await axios.get(`/User/${id}`);
       return data.data
     } catch (err: any) {
       return Promise.reject(err?.response?.data || err);
@@ -199,18 +199,18 @@ class DepartmentStore {
     }
   };
 
-  createEmploye = async (sendData : any) => {
+  createUser = async (sendData : any) => {
     try {
-      const { data } = await axios.post("employe/create", sendData);
+      const { data } = await axios.post("User/create", sendData);
       return data;
     } catch (err: any) {
       return Promise.reject(err?.response?.data || err);
     }
   }
 
-  updateEmployeProfile = async (id : any , sendData : any) => {
+  updateUserProfile = async (id : any , sendData : any) => {
     try {
-      const { data } = await axios.put(`employe/profile/${id}`, sendData);
+      const { data } = await axios.put(`User/profile/${id}`, sendData);
       return data;
     } catch (err: any) {
       return Promise.reject(err?.response?.data || err);

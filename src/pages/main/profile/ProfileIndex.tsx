@@ -7,19 +7,19 @@ import MyProfile from "./MyProfile/MyProfile"
 const ProfileIndex = observer(() => {
   const [loading,setLoading] = useState(false)
   const [userDetails,setUserDetails] = useState(null)
-  const {Employe : {getEmployesDetailsById}, auth : {user}} = store
+  const {User : {getUsersDetailsById}, auth : {user}} = store
 
   useEffect(() => {
     if(user){
       setLoading(true)
-      getEmployesDetailsById(user._id).then((data) => {
+      getUsersDetailsById(user._id).then((data) => {
         setUserDetails(data)
       }).catch(() => {
       }).finally(() => {
         setLoading(false)
       })
     }
-  },[getEmployesDetailsById,user])
+  },[getUsersDetailsById,user])
 
   console.log('the user details', userDetails,loading)
 

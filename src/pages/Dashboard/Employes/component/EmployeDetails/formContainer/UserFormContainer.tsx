@@ -1,10 +1,10 @@
 import { Box, Center } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import DashPageHeader from "../../../../../../config/component/common/DashPageHeader/DashPageHeader";
-import { employesBreadCrumb } from "../../../../utils/breadcrumb.constant";
-import EmployeContainer from "./EmployeContainer";
+import { UsersBreadCrumb } from "../../../../utils/breadcrumb.constant";
+import UserContainer from "./UserContainer";
 import {
-  employeInitialValues,
+  UserInitialValues,
   generateSubmitResponse,
 } from "../utils/constant";
 import { getValidation } from "../utils/validations";
@@ -16,7 +16,7 @@ import Loader from "../../../../../../config/component/Loader/Loader";
 import { readFileAsBase64 } from "../../../../../../config/constant/function";
 import { getStatusType } from "../../../../../../config/constant/statusCode";
 
-const EmployeFormContainer = observer(() => {
+const UserFormContainer = observer(() => {
   const {auth : {user}} = store
   const [haveApiCall, setHaveApiCall] = useState(false);
   const [files, setFiles] = useState<any>({
@@ -31,11 +31,11 @@ const EmployeFormContainer = observer(() => {
   const tab: any = new URLSearchParams(location.search).get("tab");
   const navigate = useNavigate();
   const {
-    Employe: {
-      createEmploye,
-      updateEmployeProfile,
-      getEmployesDetailsById,
-      updateEmployeBankDetails,
+    User: {
+      createUser,
+      updateUserProfile,
+      getUsersDetailsById,
+      updateUserBankDetails,
       updateFamilyDetails,
       updateWorkExperience,
       updateDocuments,
@@ -85,7 +85,7 @@ const EmployeFormContainer = observer(() => {
 
   const navigateUser = (id : any) => {
     navigate(
-      `${dashboard.employes.details}/edit/${id}?tab=company-details`
+      `${dashboard.Users.details}/edit/${id}?tab=company-details`
     )
   }
   const handleSubmitProfile = async ({
@@ -96,7 +96,7 @@ const EmployeFormContainer = observer(() => {
   } : any) => {
     if (type) {
       if (tab === "profile-details") {
-        updateEmployeProfile(userId, { ...generateSubmitResponse(values), company : user?.companyDetail?.company })
+        updateUserProfile(userId, { ...generateSubmitResponse(values), company : user?.companyDetail?.company })
           .then(() => {
             setShowError(false);
             setErrors({});
@@ -178,7 +178,7 @@ const EmployeFormContainer = observer(() => {
             },
           };
         }
-        updateEmployeBankDetails(userId, bankDetails)
+        updateUserBankDetails(userId, bankDetails)
           .then(() => {
             setShowError(false);
             setErrors({});
@@ -348,13 +348,13 @@ const EmployeFormContainer = observer(() => {
       }
     } else {
       if (tab === "profile-details") {
-        createEmploye({ ...generateSubmitResponse(values),company : user?.companyDetail?.company })
+        createUser({ ...generateSubmitResponse(values),company : user?.companyDetail?.company })
           .then((data : any) => {
             setShowError(false);
             setErrors({});
             openNotification({
               type: "success",
-              message: "Create New Employe Successfully",
+              message: "Create New User Successfully",
               title: "Create Successfully",
             });
             setHaveApiCall(false);
@@ -385,7 +385,7 @@ const EmployeFormContainer = observer(() => {
   useEffect(() => {
     // check this, is it edit page or not
     if (type && !haveApiCall) {
-      getEmployesDetailsById(id)
+      getUsersDetailsById(id)
         .then((data: any) => {
           setUserData(data);
           setHaveApiCall(true);
@@ -397,7 +397,7 @@ const EmployeFormContainer = observer(() => {
             title: "Failed to Get Details",
           });
           setTimeout(() => {
-            navigate(dashboard.employes.details);
+            navigate(dashboard.Users.details);
           }, 2000);
         });
     }
@@ -406,14 +406,14 @@ const EmployeFormContainer = observer(() => {
     location,
     id,
     openNotification,
-    getEmployesDetailsById,
+    getUsersDetailsById,
     navigate,
     haveApiCall,
   ]);
 
   const commonProps = {
     handleSubmitProfile,
-    initialValues: employeInitialValues(tab, userData),
+    initialValues: UserInitialValues(tab, userData),
     validations: getValidation(tab, type ? "edit" : "create"),
     type: type ? "edit" : "create",
     changePassword: () => alert("rahul"),
@@ -426,13 +426,13 @@ const EmployeFormContainer = observer(() => {
   return (
     <Box>
       <DashPageHeader
-        title="Employes > New"
-        breadcrumb={employesBreadCrumb.new}
+        title="Users > New"
+        breadcrumb={UsersBreadCrumb.new}
       />
       {isDataLoaded ? (
-        <EmployeContainer {...commonProps} />
+        <UserContainer {...commonProps} />
       ) : type === false ? (
-        <EmployeContainer {...commonProps} />
+        <UserContainer {...commonProps} />
       ) : (
         <Center>
           <Loader height={"70vh"} />
@@ -442,4 +442,4 @@ const EmployeFormContainer = observer(() => {
   );
 });
 
-export default EmployeFormContainer;
+export default UserFormContainer;
