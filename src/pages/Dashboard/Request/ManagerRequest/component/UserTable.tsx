@@ -23,7 +23,7 @@ const UserTable = observer(() => {
   });
 
   const {
-    Employe: { getAllManagerEmployes, managerEmployes },
+    User: { getAllManagerUsers, managerUsers },
     auth: { openNotification, user },
   } = store;
 
@@ -44,7 +44,7 @@ const UserTable = observer(() => {
         query["startDate"] = date.startDate;
         query["endDate"] = date.endDate;
       }
-      getAllManagerEmployes(query)
+      getAllManagerUsers(query)
         .then(() => {})
         .catch((err) => {
           openNotification({
@@ -59,7 +59,7 @@ const UserTable = observer(() => {
       currentPage,
       pageLimit,
       date,
-      getAllManagerEmployes,
+      getAllManagerUsers,
       openNotification,
       user,
     ]
@@ -93,7 +93,7 @@ const UserTable = observer(() => {
     applyGetAllRecords({ reset: true });
   };
 
-  const employeTableColumns = [
+  const UserTableColumns = [
     {
       headerName: "Name",
       key: "name",
@@ -186,7 +186,7 @@ const UserTable = observer(() => {
           show: true,
           onClick: handleChangePage,
           currentPage: currentPage,
-          totalPages: managerEmployes.totalPages,
+          totalPages: managerUsers.totalPages,
         },
         datePicker: {
           show: true,
@@ -216,10 +216,10 @@ const UserTable = observer(() => {
         },
       }}
 
-      title="Employes Details"
-      data={generateTableData(managerEmployes.data)}
-      columns={employeTableColumns}
-      loading={managerEmployes.loading}
+      title="Users Details"
+      data={generateTableData(managerUsers.data)}
+      columns={UserTableColumns}
+      loading={managerUsers.loading}
       serial={{ show: false, text: "S.No.", width: "10px" }}
     />
   );

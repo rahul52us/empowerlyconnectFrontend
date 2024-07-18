@@ -10,7 +10,7 @@ import UserHierarchy from "./HierarchyComponent";
 const PersonalDetailUsersChart = observer(() => {
   const { id } = useParams();
   const {
-    Employe: { getEmployesSubOrdinateActionsDetails },
+    User: { getUsersSubOrdinateActionsDetails },
     auth: { openNotification },
   } = store;
   const [treeData, setTreeData] = useState<any[]>([]);
@@ -67,9 +67,9 @@ const PersonalDetailUsersChart = observer(() => {
       .map((user: any) => userMap[user._id]);
   };
 
-  const getEmployesActionsDetails = async () => {
+  const getUsersActionsDetails = async () => {
     try {
-      const { data } = await getEmployesSubOrdinateActionsDetails({ id });
+      const { data } = await getUsersSubOrdinateActionsDetails({ id });
       setData(data);
       // console.log(data);
       const tree = transformDataToTree(data);
@@ -85,7 +85,7 @@ const PersonalDetailUsersChart = observer(() => {
   };
 
   useEffect(() => {
-    getEmployesActionsDetails();
+    getUsersActionsDetails();
   }, [id]);
 
   return (

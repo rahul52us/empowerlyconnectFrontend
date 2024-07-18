@@ -28,20 +28,20 @@ const projectBreadCrumb = {
   ],
 };
 
-const employesBreadCrumb = {
+const UsersBreadCrumb = {
   index: [
     { label: "Home", link: "/" },
     { label: "Dashboard", link: dashboard.home },
-    { label: "Employes" },
+    { label: "Users" },
   ],
   details: [
     { label: "Home", link: "/" },
-    { label: "employes", link: dashboard.employes.index },
+    { label: "Users", link: dashboard.Users.index },
     { label: "Details" },
   ],
   new: [
     { label: "Home", link: "/" },
-    { label: "employes", link: dashboard.employes.details },
+    { label: "Users", link: dashboard.Users.details },
     { label: "New" },
   ],
   personalDetails: [
@@ -118,7 +118,7 @@ export {
   quizBreadCrumb,
   dashBreadCrumb,
   tripBreadCrumb,
-  employesBreadCrumb,
+  UsersBreadCrumb,
   departmentsBreadCrumb,
   companyBreadCrumb,
   requestBreadCrumb,

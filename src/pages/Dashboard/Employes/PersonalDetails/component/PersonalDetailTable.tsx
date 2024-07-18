@@ -12,11 +12,11 @@ const PersonalDetailTable = observer(({ data, loading }: any) => {
   const [pageLimit] = useState(tablePageLimit);
 
   const {
-    Employe: { getAllEmployes, employes },
+    User: { getAllUsers, Users },
     auth: { openNotification },
   } = store;
 
-  const applyGetAllEmployes = useCallback(
+  const applyGetAllUsers = useCallback(
     ({ page, limit, reset }: any) => {
       const query: any = {};
       if (reset) {
@@ -26,7 +26,7 @@ const PersonalDetailTable = observer(({ data, loading }: any) => {
         query["page"] = page || currentPage;
         query["limit"] = limit || pageLimit;
       }
-      getAllEmployes(query)
+      getAllUsers(query)
         .then(() => {})
         .catch((err) => {
           openNotification({
@@ -36,27 +36,27 @@ const PersonalDetailTable = observer(({ data, loading }: any) => {
           });
         });
     },
-    [currentPage, pageLimit, getAllEmployes, openNotification]
+    [currentPage, pageLimit, getAllUsers, openNotification]
   );
 
   useEffect(() => {
     if (false) {
-      applyGetAllEmployes({});
+      applyGetAllUsers({});
     }
-  }, [applyGetAllEmployes]);
+  }, [applyGetAllUsers]);
 
   const handleChangePage = (page: number) => {
     setCurrentPage(page);
   };
 
-  const employeTableColumns = [
+  const UserTableColumns = [
     {
       headerName: "Name",
       key: "name",
       type: "link",
       function: (e: any) => {
         navigate(
-          `${dashboard.employes.personalDetails}/${e?._id}`
+          `${dashboard.Users.personalDetails}/${e?._id}`
         );
       },
       props: {
@@ -71,7 +71,7 @@ const PersonalDetailTable = observer(({ data, loading }: any) => {
       },
     },
     {
-      headerName: "Employe Name",
+      headerName: "User Name",
       key: "name",
       props: {
         row: { minW: 160, textAlign: "left" },
@@ -124,11 +124,11 @@ const PersonalDetailTable = observer(({ data, loading }: any) => {
           show: true,
           onClick: handleChangePage,
           currentPage: currentPage,
-          totalPages: employes.totalPages,
+          totalPages: Users.totalPages,
         },
       }}
       data={data}
-      columns={employeTableColumns}
+      columns={UserTableColumns}
       loading={loading}
       serial={{ show: false, text: "S.No.", width: "10px" }}
     />

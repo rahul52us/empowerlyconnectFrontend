@@ -12,7 +12,7 @@ import PersonalWorkExperience from "./forms/PersonalWorkExperience";
 import PersonalDocuments from "./forms/PersonalDocuments";
 import PersonalPermissions from "./forms/PersonalPermissions";
 
-const EmployeContainer = observer(
+const UserContainer = observer(
   ({
     profileData,
     type,
@@ -123,7 +123,7 @@ const EmployeContainer = observer(
             <Button
               onClick={() =>
                 navigate(
-                  `${dashboard.employes.details}/edit/${id}?tab=profile-details`
+                  `${dashboard.Users.details}/edit/${id}?tab=profile-details`
                 )
               }
             >
@@ -220,7 +220,7 @@ const EmployeContainer = observer(
             <Button
               onClick={() =>
                 navigate(
-                  `${dashboard.employes.details}/new?tab=profile-details`
+                  `${dashboard.Users.details}/new?tab=profile-details`
                 )
               }
             >
@@ -252,4 +252,4 @@ const EmployeContainer = observer(
   }
 );
 
-export default EmployeContainer;
+export default UserContainer;

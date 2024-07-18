@@ -2,7 +2,7 @@ import axios from "axios";
 import { action, makeObservable, observable } from "mobx";
 import store from "../store";
 
-class EmployeStore {
+class Userstore {
   studentDetails: any = {
     data: null,
     loading: true,
@@ -15,26 +15,26 @@ class EmployeStore {
     hasFetch: false,
   };
 
-  employesRoles = {
+  UsersRoles = {
     data: [],
     loading: false,
     hasFetch: false,
     totalPages: 0,
   }
 
-  managersEmployesCount = {
+  managersUsersCount = {
     data : [],
     loading : false
   }
 
-  employes = {
+  Users = {
     data: [],
     loading: false,
     hasFetch: false,
     totalPages: 0,
   };
 
-  managerEmployes = {
+  managerUsers = {
     data: [],
     loading: false,
     hasFetch: false,
@@ -46,7 +46,7 @@ class EmployeStore {
     loading: false,
   };
 
-  employesCounts: any = {
+  UsersCounts: any = {
     data: 0,
     loading: false,
   };
@@ -61,39 +61,39 @@ class EmployeStore {
       studentDrawerForm: observable,
       studentDetails: observable,
       classes: observable,
-      employes: observable,
+      Users: observable,
       designationCount: observable,
-      employesCounts: observable,
-      employesRoles:observable,
-      managerEmployes:observable,
-      managersEmployesCount:observable,
+      UsersCounts: observable,
+      UsersRoles:observable,
+      managerUsers:observable,
+      managersUsersCount:observable,
       resetStudentDetails: action,
       setHandleFormDrawer: action,
-      getAllManagerEmployes:action,
-      createEmploye: action,
+      getAllManagerUsers:action,
+      createUser: action,
       getStudentById: action,
-      getAllEmployes: action,
-      getEmployesDetailsById: action,
-      updateEmployeProfile: action,
+      getAllUsers: action,
+      getUsersDetailsById: action,
+      updateUserProfile: action,
       getDesignationCount: action,
-      getEmployesCount: action,
-      updateEmployeBankDetails: action,
+      getUsersCount: action,
+      updateUserBankDetails: action,
       updateFamilyDetails: action,
       updateWorkExperience: action,
       updateDocuments: action,
       updateCompanyDetails:action,
       updatePermissions:action,
-      getAllEmployesRoles:action,
-      getManagersEmployesCount:action,
-      getEmployesSubOrdinateDetails:action,
-      getEmployesSubOrdinateActionsDetails:action,
+      getAllUsersRoles:action,
+      getManagersUsersCount:action,
+      getUsersSubOrdinateDetails:action,
+      getUsersSubOrdinateActionsDetails:action,
       getManagersOfUsers:action
     });
   }
 
-  getEmployesSubOrdinateDetails = async (sendData: any) => {
+  getUsersSubOrdinateDetails = async (sendData: any) => {
     try {
-      const { data } = await axios.post("/employe/info/Subordinate", { ...sendData, company: store.auth.company },
+      const { data } = await axios.post("/User/info/Subordinate", { ...sendData, company: store.auth.company },
       );
       return data;
     } catch (err: any) {
@@ -102,9 +102,9 @@ class EmployeStore {
     }
   };
 
-  getEmployesSubOrdinateActionsDetails = async (sendData: any) => {
+  getUsersSubOrdinateActionsDetails = async (sendData: any) => {
     try {
-      const { data } = await axios.get(`/employe/info/Subordinate/${sendData.id}?company=${store.auth.company}`,
+      const { data } = await axios.get(`/User/info/Subordinate/${sendData.id}?company=${store.auth.company}`,
       );
       return data;
     } catch (err: any) {
@@ -113,90 +113,90 @@ class EmployeStore {
     }
   };
 
-  getAllEmployes = async (sendData: any) => {
+  getAllUsers = async (sendData: any) => {
     try {
-      this.employes.loading = true;
-      const { data } = await axios.get("/employe", {
+      this.Users.loading = true;
+      const { data } = await axios.get("/User", {
         params: { ...sendData, company: store.auth.company },
       });
-      this.employes.hasFetch = true;
-      this.employes.data = data?.data?.data || [];
-      this.employes.totalPages = data?.data?.totalPages || 0;
+      this.Users.hasFetch = true;
+      this.Users.data = data?.data?.data || [];
+      this.Users.totalPages = data?.data?.totalPages || 0;
       return data.data;
     } catch (err: any) {
       return Promise.reject(err?.response?.data || err);
     } finally {
-      this.employes.loading = false;
+      this.Users.loading = false;
     }
   };
 
   getManagersOfUsers = async (sendData: any) => {
     try {
-      this.employes.loading = true;
-      const { data } = await axios.get(`/employe/getManagers/${sendData.user}`, {
+      this.Users.loading = true;
+      const { data } = await axios.get(`/User/getManagers/${sendData.user}`, {
         params: { ...sendData, company: store.auth.company },
       });
       return data.data;
     } catch (err: any) {
       return Promise.reject(err?.response?.data || err);
     } finally {
-      this.employes.loading = false;
+      this.Users.loading = false;
     }
   };
 
-  getAllManagerEmployes = async (sendData: any) => {
+  getAllManagerUsers = async (sendData: any) => {
     try {
-      this.managerEmployes.loading = true;
-      const { data } = await axios.get(`/employe/managers/${sendData.managerId}`, {
+      this.managerUsers.loading = true;
+      const { data } = await axios.get(`/User/managers/${sendData.managerId}`, {
         params: { ...sendData, company: store.auth.company },
       });
-      this.managerEmployes.hasFetch = true;
-      this.managerEmployes.data = data?.data?.data || [];
-      this.managerEmployes.totalPages = data?.data?.totalPages || 0;
+      this.managerUsers.hasFetch = true;
+      this.managerUsers.data = data?.data?.data || [];
+      this.managerUsers.totalPages = data?.data?.totalPages || 0;
       return data.data;
     } catch (err: any) {
       return Promise.reject(err?.response?.data || err);
     } finally {
-      this.managerEmployes.loading = false;
+      this.managerUsers.loading = false;
     }
   };
 
-  getAllEmployesRoles = async (sendData: any) => {
+  getAllUsersRoles = async (sendData: any) => {
     try {
-      this.employes.loading = true;
-      const { data } = await axios.get("/employe/users/roles", {
+      this.Users.loading = true;
+      const { data } = await axios.get("/User/users/roles", {
         params: { ...sendData, company: store.auth.company },
       });
-      this.employesRoles.hasFetch = true;
-      this.employesRoles.data = data?.data?.data || [];
-      this.employesRoles.totalPages = data?.data?.totalPages || 0;
+      this.UsersRoles.hasFetch = true;
+      this.UsersRoles.data = data?.data?.data || [];
+      this.UsersRoles.totalPages = data?.data?.totalPages || 0;
       return data.data;
     } catch (err: any) {
       return Promise.reject(err?.response?.data || err);
     } finally {
-      this.employesRoles.loading = false;
+      this.UsersRoles.loading = false;
     }
   };
 
-  getManagersEmployesCount = async (sendData: any) => {
+  getManagersUsersCount = async (sendData: any) => {
     try {
-      this.managersEmployesCount.loading = true;
-      const { data } = await axios.get("/employe/managers/employes/count", {
+      this.managersUsersCount.loading = true;
+      const { data } = await axios.get("/User/managers/Users/count", {
         params: { ...sendData, company: store.auth.company },
       });
-      this.managersEmployesCount.data = data?.data || [];
+      this.managersUsersCount.data = data?.data || [];
       return data.data;
     } catch (err: any) {
       return Promise.reject(err?.response?.data || err);
     } finally {
-      this.managersEmployesCount.loading = false;
+      this.managersUsersCount.loading = false;
     }
   };
 
   getDesignationCount = async () => {
     try {
       this.designationCount.loading = true;
-      const { data } = await axios.get("/employe/designation/count");
+      const { data } = await axios.get("/User/designation/count");
       this.designationCount.data = data?.data || [];
       return data.data;
     } catch (err: any) {
@@ -206,22 +206,22 @@ class EmployeStore {
     }
   };
 
-  getEmployesCount = async () => {
+  getUsersCount = async () => {
     try {
-      this.employesCounts.loading = true;
-      const { data } = await axios.get("/employe/total/count",{params : {company: store.auth.company}});
-      this.employesCounts.data = data?.data || 0;
+      this.UsersCounts.loading = true;
+      const { data } = await axios.get("/User/total/count",{params : {company: store.auth.company}});
+      this.UsersCounts.data = data?.data || 0;
       return data.data;
     } catch (err: any) {
       return Promise.reject(err?.response?.data || err);
     } finally {
-      this.employesCounts.loading = false;
+      this.UsersCounts.loading = false;
     }
   };
 
-  getEmployesDetailsById = async (id: any) => {
+  getUsersDetailsById = async (id: any) => {
     try {
-      const { data } = await axios.get(`/employe/${id}`);
+      const { data } = await axios.get(`/User/${id}`);
       return data.data;
     } catch (err: any) {
       return Promise.reject(err?.response?.data || err);
@@ -237,9 +237,9 @@ class EmployeStore {
     }
   };
 
-  createEmploye = async (sendData: any) => {
+  createUser = async (sendData: any) => {
     try {
-      const { data } = await axios.post("employe/create", {...sendData, company: store.auth.company});
+      const { data } = await axios.post("User/create", {...sendData, company: store.auth.company});
       return data;
     } catch (err: any) {
       return Promise.reject(err?.response || err);
@@ -249,7 +249,7 @@ class EmployeStore {
   updateDocuments = async (id: any, sendData: any) => {
     try {
       const { data } = await axios.put(
-        `employe/updateDocuments/${id}`,
+        `User/updateDocuments/${id}`,
         sendData
       );
       return data;
@@ -261,7 +261,7 @@ class EmployeStore {
   updatePermissions = async (id: any, sendData: any) => {
     try {
       const { data } = await axios.put(
-        `employe/permissions/${id}`,
+        `User/permissions/${id}`,
         sendData
       );
       return data;
@@ -270,9 +270,9 @@ class EmployeStore {
     }
   };
 
-  updateEmployeProfile = async (id: any, sendData: any) => {
+  updateUserProfile = async (id: any, sendData: any) => {
     try {
-      const { data } = await axios.put(`employe/profile/${id}`, sendData);
+      const { data } = await axios.put(`User/profile/${id}`, sendData);
       return data;
     } catch (err: any) {
       return Promise.reject(err?.response?.data || err);
@@ -282,7 +282,7 @@ class EmployeStore {
   updateWorkExperience = async (id: any, sendData: any) => {
     try {
       const { data } = await axios.put(
-        `employe/workExperience/${id}`,
+        `User/workExperience/${id}`,
         sendData
       );
       return data;
@@ -293,16 +293,16 @@ class EmployeStore {
 
   updateFamilyDetails = async (id: any, sendData: any) => {
     try {
-      const { data } = await axios.put(`employe/familyDetails/${id}`, sendData);
+      const { data } = await axios.put(`User/familyDetails/${id}`, sendData);
       return data;
     } catch (err: any) {
       return Promise.reject(err?.response?.data || err);
     }
   };
 
-  updateEmployeBankDetails = async (id: any, sendData: any) => {
+  updateUserBankDetails = async (id: any, sendData: any) => {
     try {
-      const { data } = await axios.put(`employe/bankDetails/${id}`, sendData);
+      const { data } = await axios.put(`User/bankDetails/${id}`, sendData);
       return data;
     } catch (err: any) {
       return Promise.reject(err?.response?.data || err);
@@ -311,7 +311,7 @@ class EmployeStore {
 
   updateCompanyDetails = async (id: any, sendData: any) => {
     try {
-      const { data } = await axios.put(`employe/companyDetails/${id}`, sendData);
+      const { data } = await axios.put(`User/companyDetails/${id}`, sendData);
       return data;
     } catch (err: any) {
       return Promise.reject(err?.response?.data || err);
@@ -339,4 +339,4 @@ class EmployeStore {
   };
 }
 
-export default EmployeStore;
+export default Userstore;

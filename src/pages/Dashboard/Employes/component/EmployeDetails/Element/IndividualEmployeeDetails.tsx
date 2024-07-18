@@ -3,41 +3,41 @@ import { Box, Button } from "@chakra-ui/react";
 import store from "../../../../../../store/store";
 import { useEffect } from "react";
 
-interface IndividualEmployeeDetailsProps {
-  employeeId: string;
+interface IndividualUsereDetailsProps {
+  UsereId: string;
   onClose: () => void;
 }
 
-const IndividualEmployeeDetails: React.FC<IndividualEmployeeDetailsProps> = ({
-  employeeId,
+const IndividualUsereDetails: React.FC<IndividualUsereDetailsProps> = ({
+  UsereId,
   onClose,
 }) => {
   const {
-    Employee: { getEmployeeDetailsById },
+    Usere: { getUsereDetailsById },
     auth: { openNotification },
   }: any = store;
 
   useEffect(() => {
-    if (employeeId) {
-      getEmployeeDetailsById(employeeId)
+    if (UsereId) {
+      getUsereDetailsById(UsereId)
         .then((details: any) => {
           console.log(details);
-          // openNotification("Employee details fetched successfully");
+          // openNotification("Usere details fetched successfully");
         })
         .catch((error: any) => {
-          console.error("Failed to fetch employee details", error);
-          // openNotification("Failed to fetch employee details", "error");
+          console.error("Failed to fetch Usere details", error);
+          // openNotification("Failed to fetch Usere details", "error");
         });
     }
-  }, [employeeId, getEmployeeDetailsById, openNotification]);
+  }, [UsereId, getUsereDetailsById, openNotification]);
 
   return (
     <Box>
-      {/* Render employee details here */}
-      <p>Details for employee ID: {employeeId}</p>
+      {/* Render Usere details here */}
+      <p>Details for Usere ID: {UsereId}</p>
       <Button onClick={onClose}>Close</Button>
     </Box>
   );
 };
 
-export default IndividualEmployeeDetails;
+export default IndividualUsereDetails;

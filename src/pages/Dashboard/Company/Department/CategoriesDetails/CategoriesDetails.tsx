@@ -4,10 +4,10 @@ import DepartmentDetails from "../Departmentdetails/DepartmentDetails";
 import DeleteCategory from "./Category/component/DeleteCategory";
 import AddCategory from "./Category/component/AddCategory";
 import EditCategory from "./Category/component/EditCategory";
-import { employDropdownData } from "../../../Employes/component/EmployeDetails/utils/constant";
 import { tablePageLimit } from "../../../../../config/constant/variable";
 import CustomTable from "../../../../../config/component/CustomTable/CustomTable";
 import store from "../../../../../store/store";
+import { employDropdownData } from "../../../Employes/component/EmployeDetails/utils/constant";
 
 const DepartmentCategories = observer(() => {
   const [searchValue, setSearchValue] = useState("");

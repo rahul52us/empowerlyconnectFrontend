@@ -8,7 +8,7 @@ import PieChart from "../../../../../config/component/charts/PieChart";
 
 const DashChartContainer = observer(() => {
   const {
-    Employe: { getManagersEmployesCount, managersEmployesCount },
+    User: { getManagersUsersCount, managersUsersCount },
   } = store;
 
   const fetchData = (getDataFn: any) =>
@@ -18,16 +18,16 @@ const DashChartContainer = observer(() => {
 
   useEffect(() => {
     Promise.all([
-      fetchData(getManagersEmployesCount)
+      fetchData(getManagersUsersCount)
     ])
       .then(() => {})
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
-  }, [getManagersEmployesCount]);
+  }, [getManagersUsersCount]);
 
   // const videosChartData = makeChartResponse(
-  //   managersEmployesCount.data,
+  //   managersUsersCount.data,
   //   "Videos Data",
   //   "title",
   //   "count",
@@ -35,7 +35,7 @@ const DashChartContainer = observer(() => {
   // );
 
   const coursesChartData = makeChartResponse(
-    managersEmployesCount.data,
+    managersUsersCount.data,
     "Member Counts",
     "title",
     "count",
@@ -53,14 +53,14 @@ const DashChartContainer = observer(() => {
         <BarChart
           data={coursesChartData?.data}
           options={coursesChartData?.options}
-          loading={managersEmployesCount.loading}
+          loading={managersUsersCount.loading}
         />
       </Card>
       <Card width={"100%"} minH={350} p={{ base: 0, sm: 2 }}>
         <PieChart
           data={coursesChartData?.data}
           options={coursesChartData?.options}
-          loading={managersEmployesCount.loading}
+          loading={managersUsersCount.loading}
         />
       </Card>
     </Grid>

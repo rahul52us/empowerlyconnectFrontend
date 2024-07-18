@@ -35,7 +35,7 @@ const addressValidation = Yup.object().shape({
   pinCode: Yup.string().required("please enter the pinCode"),
 });
 
-export const employeCreateValidation = Yup.object().shape({
+export const UserCreateValidation = Yup.object().shape({
   title:Yup.mixed().required('title is required'),
   firstName: Yup.string()
     .min(2, "First Name should be at least 2 characters")
@@ -94,7 +94,7 @@ export const employeCreateValidation = Yup.object().shape({
   weddingDate: Yup.date(),
 });
 
-export const employeUpdateProfileValidation = Yup.object().shape({
+export const UserUpdateProfileValidation = Yup.object().shape({
   title:Yup.mixed().required('title is required'),
   firstName: Yup.string()
     .min(2, "First Name should be at least 2 characters")
@@ -143,7 +143,7 @@ export const employeUpdateProfileValidation = Yup.object().shape({
   weddingDate: Yup.date(),
 });
 
-export const employeEditValidation = Yup.object().shape({
+export const UserEditValidation = Yup.object().shape({
   firstName: Yup.string()
     .min(2, "First Name atleast of 2 characters")
     .max(60, "First Name cannot greater than 60 characters")
@@ -228,7 +228,7 @@ const WorkExperienceDetails = Yup.object().shape({
   experienceDetails: Yup.array()
     .of(
       Yup.object().shape({
-        pastEmployer: Yup.string().trim().required('Past Employer is required'),
+        pastUserr: Yup.string().trim().required('Past Userr is required'),
         startDate: Yup.date().required('start Date is required'),
         endDate: Yup.date().required('End Date is required'),
         relevantExperience: Yup.string().trim().required('Relevant Experience is required'),
@@ -241,7 +241,7 @@ const WorkExperienceDetails = Yup.object().shape({
     .required("Experience details are required"),
 });
 
-export const employeCompanyDetailsValidation = Yup.object().shape({
+export const UserCompanyDetailsValidation = Yup.object().shape({
   workTiming:Yup.mixed().required('workTiming is required'),
   department:Yup.mixed().required('department is required'),
   designation:Yup.mixed().required('designation is required'),
@@ -256,10 +256,10 @@ export const employeCompanyDetailsValidation = Yup.object().shape({
 export const getValidation = (type : string, mode : string) => {
   if(type === "profile-details"){
     if(mode === "edit"){
-      return employeUpdateProfileValidation
+      return UserUpdateProfileValidation
     }
     else {
-      return employeCreateValidation
+      return UserCreateValidation
     }
   }
   else if(type === "bank-details"){
@@ -288,13 +288,13 @@ export const getValidation = (type : string, mode : string) => {
   }
   else if(type === "company-details"){
     if(mode === "edit"){
-      return employeCompanyDetailsValidation
+      return UserCompanyDetailsValidation
     }
     else {
-      return employeCompanyDetailsValidation
+      return UserCompanyDetailsValidation
     }
   }
   else {
-    return employeCreateValidation
+    return UserCreateValidation
   }
 }

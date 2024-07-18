@@ -1,4 +1,4 @@
-export const managerEmployeColumns = [
+export const managerUserColumns = [
   {
     headerName: "E-code",
     key: "code",

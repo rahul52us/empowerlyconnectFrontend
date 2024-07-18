@@ -11,7 +11,7 @@ const DashWidgetCard = observer(() => {
   const {
     auth: { openNotification },
     tripStore: { getTripCounts, tripCount },
-    Employe: { getEmployesCount, employesCounts },
+    User: { getUsersCount, UsersCounts },
   } = store;
 
   const fetchData = (getDataFn: any) =>
@@ -20,7 +20,7 @@ const DashWidgetCard = observer(() => {
     });
 
   useEffect(() => {
-    Promise.all([fetchData(getTripCounts), fetchData(getEmployesCount)])
+    Promise.all([fetchData(getTripCounts), fetchData(getUsersCount)])
       .then(() => {})
       .catch((error: any) => {
         openNotification({
@@ -29,7 +29,7 @@ const DashWidgetCard = observer(() => {
           title: "Failed to get dashboard data",
         });
       });
-  }, [getTripCounts, getEmployesCount, openNotification]);
+  }, [getTripCounts, getUsersCount, openNotification]);
 
   return (
     <Grid
@@ -43,16 +43,16 @@ const DashWidgetCard = observer(() => {
     >
       {[
         {
-          count: employesCounts.data,
+          count: UsersCounts.data,
           title: "Users",
-          link: dashboard.employes.index,
-          loading: employesCounts.loading,
+          link: dashboard.Users.index,
+          loading: UsersCounts.loading,
         },
         {
-          count: employesCounts.data,
+          count: UsersCounts.data,
           title: "Company",
           link: dashboard.company.index,
-          loading: employesCounts.loading,
+          loading: UsersCounts.loading,
         },
         {
           count: tripCount.data,

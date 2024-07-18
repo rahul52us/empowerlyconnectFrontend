@@ -4,21 +4,21 @@ import { useEffect, useState, useCallback } from "react";
 import { miniTablePageLimit } from "../../../../../config/constant/variable";
 import { generateManagerData } from "../utils/function";
 import useDebounce from "../../../../../config/component/customHooks/useDebounce";
-import { managerEmployeColumns } from "../utils/constant";
+import { managerUserColumns } from "../utils/constant";
 import NormalTable from "../../../../../config/component/Table/NormalTable/NormalTable";
 
-const ManagerEmployes = observer(() => {
+const ManagerUsers = observer(() => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageLimit] = useState(miniTablePageLimit);
   const [searchQuery, setSearchQuery] = useState("");
   const debouncedSearchQuery = useDebounce(searchQuery, 500);
 
   const {
-    Employe: { getAllManagerEmployes, managerEmployes },
+    User: { getAllManagerUsers, managerUsers },
     auth: { openNotification, user },
   } = store;
 
-  const applyGetAllManagerEmployes = useCallback(({ page, limit, reset, search }: any) => {
+  const applyGetAllManagerUsers = useCallback(({ page, limit, reset, search }: any) => {
     const query: any = {};
     query["managerId"] = user._id;
     if (reset) {
@@ -31,7 +31,7 @@ const ManagerEmployes = observer(() => {
     if (search) {
       query["search"] = search;
     }
-    getAllManagerEmployes(query)
+    getAllManagerUsers(query)
       .then(() => {})
       .catch((err: any) => {
         openNotification({
@@ -40,13 +40,13 @@ const ManagerEmployes = observer(() => {
           message: err?.message,
         });
       });
-  }, [user._id, currentPage, pageLimit, getAllManagerEmployes, openNotification]);
+  }, [user._id, currentPage, pageLimit, getAllManagerUsers, openNotification]);
 
   useEffect(() => {
     if (user.role === "manager" || user.role === "admin" || user.role === "superadmin") {
-      applyGetAllManagerEmployes({ page: currentPage, limit: miniTablePageLimit, search: debouncedSearchQuery });
+      applyGetAllManagerUsers({ page: currentPage, limit: miniTablePageLimit, search: debouncedSearchQuery });
     }
-  }, [user.role, currentPage, debouncedSearchQuery, applyGetAllManagerEmployes]);
+  }, [user.role, currentPage, debouncedSearchQuery, applyGetAllManagerUsers]);
 
   const handleChangePage = (page: number) => {
     setCurrentPage(page);
@@ -55,16 +55,16 @@ const ManagerEmployes = observer(() => {
   return (
     <NormalTable
       title="Team Members"
-      data={generateManagerData(managerEmployes.data)}
-      loading={managerEmployes.loading}
+      data={generateManagerData(managerUsers.data)}
+      loading={managerUsers.loading}
       searchValue={searchQuery}
       onSearchChange={(e: any) => setSearchQuery(e.target.value)}
       currentPage={currentPage}
-      totalPages={managerEmployes.totalPages || 1}
+      totalPages={managerUsers.totalPages || 1}
       onPageChange={handleChangePage}
-      columns={managerEmployeColumns}
+      columns={managerUserColumns}
     />
   );
 });
 
-export default ManagerEmployes;
+export default ManagerUsers;

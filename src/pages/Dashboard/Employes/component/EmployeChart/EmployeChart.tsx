@@ -6,9 +6,9 @@ import { makeChartResponse } from "../../../component/utils/common";
 import store from "../../../../../store/store";
 import { useEffect } from "react";
 
-const EmployeChart = observer(() => {
+const UserChart = observer(() => {
   const {
-    Employe: { getDesignationCount, designationCount },
+    User: { getDesignationCount, designationCount },
     auth: { openNotification },
   } = store;
 
@@ -52,4 +52,4 @@ const EmployeChart = observer(() => {
   );
 });
 
-export default EmployeChart;
+export default UserChart;
