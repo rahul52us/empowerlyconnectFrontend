@@ -1,7 +1,8 @@
 import { observer } from "mobx-react-lite"
-import store from "../../../store/store"
 import { useEffect, useState } from "react"
-import SpinnerLoader from "../../../config/component/Loader/SpinnerLoader"
+import store from "../../../store/store"
+import MyProfile from "./MyProfile/MyProfile"
+// import SpinnerLoader from "../../../config/component/Loader/SpinnerLoader"
 
 const ProfileIndex = observer(() => {
   const [loading,setLoading] = useState(false)
@@ -20,12 +21,21 @@ const ProfileIndex = observer(() => {
     }
   },[getEmployesDetailsById,user])
 
-  console.log('the user details', userDetails)
+  console.log('the user details', userDetails,loading)
 
-  return (
-    loading ?
-    <SpinnerLoader /> :
-    <div>ProfileIndex</div>
+  // return (
+  //   loading ?
+  //   <SpinnerLoader /> :
+  //   <div>ProfileIndex</div>
+  // )
+  return(
+    <>
+    {userDetails && (
+
+      <MyProfile userDetails={userDetails} /> 
+    )}
+    </>
+    
   )
 })
 

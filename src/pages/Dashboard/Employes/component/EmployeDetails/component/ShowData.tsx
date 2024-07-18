@@ -17,7 +17,7 @@ const ShowData: FC<ShowDataProps> = ({ label, value, type = "single" }) => {
       </Text>
       {type === "single" ? (
         <Text fontWeight={"semibold"} color={textColor}>
-          {value}
+          {value || "Na"}
         </Text>
       ) : (
         Array.isArray(value) &&
@@ -27,7 +27,7 @@ const ShowData: FC<ShowDataProps> = ({ label, value, type = "single" }) => {
             textTransform={"capitalize"}
             fontWeight={"semibold"}
           >
-            {item}
+            {item || "Na"}
           </Text>
         ))
       )}

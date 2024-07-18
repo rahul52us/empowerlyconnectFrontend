@@ -30,6 +30,7 @@ import ShowData from "../component/ShowData";
 // import CompanyDetails from "./component/CompanyDetails";
 import DrawerLoader from "../../../../../../config/component/Loader/DrawerLoader";
 import WorkHistory from "./component/WorkHistory/WorkHistory";
+import BankDetailsCard from "../component/common/BankDetailCard";
 
 const UserProfile: React.FC<any> = ({ employeeId }) => {
   const [user, setUserData] = useState<any>(null);
@@ -285,45 +286,20 @@ const UserProfile: React.FC<any> = ({ employeeId }) => {
               <TabPanel>
                 <Box>
                   <SimpleGrid columns={[1, null, 1]} spacing={5}>
-                    <Card
+                    <Box
                       rounded={16}
-                      boxShadow="0 0 10px rgba(0,0,0,0.06)"
+                      shadow={"md"}
                       borderWidth={1}
                       borderColor={borderColor}
                       bg={cardBgColor}
+                      p={5}
                     >
-                      <CardHeader pb={0}>
-                        <Heading size="md" color={"blue.600"}>
-                          Bank Details
-                        </Heading>
-                      </CardHeader>
-                      <CardBody pt={2}>
-                        {user?.bankDetails?.map((bank: any) => (
-                          <Grid
-                            key={bank._id}
-                            gap={4}
-                            templateColumns={"1fr 1fr"}
-                          >
-                            <Box>
-                              <Text fontWeight="bold">Account Number:</Text>
-                              <Text>{bank?.accountNo}</Text>
-                            </Box>
-                            <Box>
-                              <Text fontWeight="bold">Bank Name:</Text>
-                              <Text>{bank?.name}</Text>
-                            </Box>
-                            <Box>
-                              <Text fontWeight="bold">Branch:</Text>
-                              <Text>{bank?.branch}</Text>
-                            </Box>
-                            <Box>
-                              <Text fontWeight="bold">IFSC Code:</Text>
-                              <Text>{bank?.ifsc}</Text>
-                            </Box>
-                          </Grid>
-                        ))}
-                      </CardBody>
-                    </Card>
+                      <BankDetailsCard
+                        bankDetails={user?.bankDetails}
+                        cardBgColor={cardBgColor}
+                        borderColor={borderColor}
+                      />
+                    </Box>
 
                     {/* Documents */}
                     <Card
@@ -362,7 +338,6 @@ const UserProfile: React.FC<any> = ({ employeeId }) => {
               </TabPanel>
               <TabPanel>
                 {user && (
-
                   <WorkHistory workHistory={user?.companyDetail[0]?.details} />
                 )}
                 {/* <CompanyDetails data={user?.companyDetail[0]} /> */}
