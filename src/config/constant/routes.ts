@@ -67,6 +67,9 @@ export const dashboard = {
   },
   application:{
     project : `/${dashboardName}/project`
+  },
+  liberary: {
+    index : `${dashboardName}/liberary`
   }
 };
 

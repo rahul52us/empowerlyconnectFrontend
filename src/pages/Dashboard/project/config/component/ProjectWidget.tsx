@@ -30,6 +30,7 @@ const ProjectWidget = observer(() => {
         {projects.data.map((item: any, index: number) => {
           return (
             <ProjectCard
+              item={item}
               key={index}
               project_name={item.project_name}
               subtitle={item.subtitle}
@@ -41,6 +42,7 @@ const ProjectWidget = observer(() => {
               endDate={item.endDate}
               dueDate={item.dueDate}
               approval={item.approval}
+              onClick={() => {}}
             />
           );
         })}

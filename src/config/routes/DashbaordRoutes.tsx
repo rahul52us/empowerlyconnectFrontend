@@ -134,6 +134,8 @@ const Attendence = lazy(() => import("../../pages/Dashboard/Attendence"));
 const ManagerUserAttendence = lazy(
   () => import("../../pages/Dashboard/Attendence/ManagerAttendence/index")
 );
+
+const BookLiberary = lazy(() => import("../../pages/Dashboard/BookLiberaryManagement/BookLiberary"))
 export const DashboardRoutes = [
   {
     element: <DashboardIndex />,
@@ -317,6 +319,14 @@ export const DashboardRoutes = [
     element: <ManagerUserAttendence />,
     path: dashboard.attendence.userList,
   },
+
+  // Books Liberary
+  {
+    element : <BookLiberary />,
+    path : dashboard.liberary.index,
+    privateRoutes: true
+  },
+
   // Not found
   {
     element: <PageNotFound />,

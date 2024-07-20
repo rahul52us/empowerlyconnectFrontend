@@ -8,11 +8,11 @@ import store from "../../../../../store/store";
 import CustomSubmitBtn from "../../../../../config/component/CustomSubmitBtn/CustomSubmitBtn";
 import { debounce } from "lodash";
 import { ProjectFormValuesI } from "../utils/dto";
-import { initialValuesOfProjects, ProjectPrioties, projectStatus } from "../utils/constant";
+import { ProjectPrioties, projectStatus } from "../utils/constant";
 import { generateProjectResponse } from "../utils/function";
 import { getStatusType } from "../../../../../config/constant/statusCode";
 
-const ProjectForm = observer(() => {
+const ProjectForm = observer(({initialValuesOfProjects} : any) => {
   const [searchProjectName, setSearchProjectName] = useState("");
   const [showError, setShowError] = useState(false);
   const {

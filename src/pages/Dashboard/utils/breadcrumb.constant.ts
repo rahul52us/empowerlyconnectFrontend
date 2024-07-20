@@ -112,6 +112,14 @@ const attendenceBreadCrumb = {
   ],
 };
 
+const liberaryBreadCrumb = {
+  liberary: [
+    { label: "Home", link: "/" },
+    { label: "Dashboard", link: dashboard.home },
+    { label: "Liberay" },
+  ]
+};
+
 export {
   videoBreadCrumb,
   coursesBreadCrumb,
@@ -124,4 +132,5 @@ export {
   requestBreadCrumb,
   attendenceBreadCrumb,
   projectBreadCrumb,
+  liberaryBreadCrumb
 };

@@ -265,6 +265,23 @@ const sidebarDatas: SidebarItem[] = [
       },
     ],
   },
+  // liberay
+    {
+      id: 80,
+      name: "Liberary",
+      icon: <FaBuilding />,
+      url: dashboard.liberary.index,
+      role: ["admin", "superadmin"],
+      children: [
+        {
+          id: 81,
+          name: "Liberay",
+          icon: <FaUsers />,
+          url: dashboard.liberary.index,
+          role: ["admin", "superadmin"],
+        },
+      ],
+    },
 ];
 
 export const sidebarFooterData: SidebarItem[] = [

@@ -1,7 +1,9 @@
-const CreateProject = () => {
-  return (
-    <div>CreateProject</div>
-  )
-}
+import { observer } from "mobx-react-lite";
+import ProjectForm from "./ProjectForm";
+import { initialValuesOfProjects } from "../utils/constant";
 
-export default CreateProject
+const CreateProject = observer(() => {
+  return <ProjectForm initialValuesOfProjects={initialValuesOfProjects}/>;
+});
+
+export default CreateProject;

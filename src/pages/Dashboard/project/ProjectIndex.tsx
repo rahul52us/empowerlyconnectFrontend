@@ -12,7 +12,8 @@ import { projectBreadCrumb } from "../utils/breadcrumb.constant";
 import ProjectWidget from "./config/component/ProjectWidget";
 import store from "../../../store/store";
 import CustomDrawer from "../../../config/component/Drawer/CustomDrawer";
-import ProjectForm from "./component/Form/ProjectForm";
+import CreateProject from "./component/Form/CreateProject";
+import EditProject from "./component/Form/EditProject";
 
 const ProjectIndex = observer(() => {
   const {
@@ -25,7 +26,12 @@ const ProjectIndex = observer(() => {
       <Flex justifyContent="space-between" alignItems="center">
         <DashPageHeader title="Project" breadcrumb={projectBreadCrumb.index} />
         {showIcon ? (
-          <IconButton title="create project" onClick={() => setOpenProjectDrawer("create")} aria-label="" mb={5}>
+          <IconButton
+            title="create project"
+            onClick={() => setOpenProjectDrawer("create")}
+            aria-label=""
+            mb={5}
+          >
             <FaPlus />
           </IconButton>
         ) : (
@@ -43,10 +49,22 @@ const ProjectIndex = observer(() => {
       {/* Projects in Widgets */}
       <ProjectWidget />
       {/* OPEN THE PROJECT CREATION DRAWER */}
-      <CustomDrawer width="90vw" title="CREATE NEW PROJECT" open={openProjectDrawer.open} close={setOpenProjectDrawer}>
-        <ProjectForm />
+      <CustomDrawer
+        width="90vw"
+        title={`${
+          openProjectDrawer.type === "edit"
+            ? "UPDATE PROJECT"
+            : "CREATE NEW PROJECT"
+        }`}
+        open={openProjectDrawer.open}
+        close={setOpenProjectDrawer}
+      >
+        {openProjectDrawer.type === "edit" ? (
+          <EditProject />
+        ) : (
+          <CreateProject />
+        )}
       </CustomDrawer>
-
     </Box>
   );
 });
