@@ -11,6 +11,10 @@ const PersonalCompanyDetails = observer(
   ({ handleSubmitProfile, initialValues, validations }: any) => {
     const [formInitialValues, setFormInitialValues] = useState(initialValues);
 
+
+    console.log('the initialValues are', initialValues)
+
+
     const {
       auth: { user, openNotification },
       DepartmentStore: {

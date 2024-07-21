@@ -2,6 +2,12 @@ import axios from "axios";
 import { action, makeObservable, observable } from "mobx";
 import store from "../store";
 class CompanyStore {
+  companies = {
+    data : [],
+    loading : false,
+    totalPages : 0
+  }
+
   holidays = {
     data: [],
     loading: false,
@@ -32,6 +38,8 @@ class CompanyStore {
       holidays: observable,
       workLocations:observable,
       workTiming:observable,
+      companies:observable,
+      getCompanies:action,
       getHolidays: action,
       getWorkLocations:action,
       getWorkTiming:action,
@@ -142,6 +150,20 @@ getWorkTiming = async (sendData : any) => {
     this.workTiming.loading = false;
 };
 }
+
+getCompanies = async (sendData : any) => {
+  try {
+    this.companies.loading = true
+    const { data } = await axios.get("/company/companies", {params :  {...sendData,company:store.auth.getCurrentCompany()}});
+    this.companies.data = data.data || [];
+    return data;
+  } catch (err: any) {
+    return Promise.reject(err?.response || err);
+  } finally {
+    this.companies.loading = false;
+};
+}
+
 }
 
 export default CompanyStore;

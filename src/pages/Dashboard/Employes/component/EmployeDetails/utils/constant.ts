@@ -46,6 +46,8 @@ export const eTypeOption = [
     value: "manager",
   },
   { label: "admin", value: "admin" },
+  { label: "SuperAdmin", value: "superadmin" },
+
 ];
 
 export const UserInitialValues = (type: string, data: any) => {

@@ -10,6 +10,7 @@ import HolidaysDetailTable from "./Holidays/Holidays";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import store from "../../../store/store";
+import CompaniesTable from "./companies/CompaniesTable";
 
 const Company = observer(() => {
   const {
@@ -92,6 +93,11 @@ const Company = observer(() => {
             </GridItem>
           );
         })}
+      </Grid>
+      <Grid mt={5}>
+        <GridItem>
+          <CompaniesTable />
+        </GridItem>
       </Grid>
       <Grid gridTemplateColumns={{ md: "1fr", xl: "1fr 1fr" }} gap={4} mt={5}>
         <GridItem overflowX="auto">
