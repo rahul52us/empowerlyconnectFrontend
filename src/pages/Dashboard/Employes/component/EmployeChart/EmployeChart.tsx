@@ -8,7 +8,12 @@ import { useEffect } from "react";
 
 const UserChart = observer(() => {
   const {
-    User: { getDesignationCount, designationCount },
+    User: {
+      getDesignationCount,
+      designationCount,
+      getUsersRoleCount,
+      userRoleCounts,
+    },
     auth: { openNotification },
   } = store;
 
@@ -22,7 +27,12 @@ const UserChart = observer(() => {
           message: err?.message,
         });
       });
-  }, [getDesignationCount, openNotification]);
+    getUsersRoleCount()
+      .then((data: any) => {
+        console.log("the data are", data);
+      })
+      .catch(() => {});
+  }, [getDesignationCount, openNotification, getUsersRoleCount]);
 
   const coursesChartData = makeChartResponse(
     designationCount.data,
@@ -32,13 +42,48 @@ const UserChart = observer(() => {
     ["#FFB6C1", "#98FB98", "#87CEEB", "#FFDAB9", "#FFFACD"]
   );
 
+  const formatRoleCountData = (data: any) => {
+    if (!data) return { data: [], options: {} };
+
+    const labels = data.map((item: any) => item._id);
+    const counts = data.map((item: any) => item.count);
+
+    return {
+      data: {
+        labels,
+        datasets: [
+          {
+            label: "Users Count",
+            data: counts,
+            backgroundColor: [
+              "#FFB6C1",
+              "#98FB98",
+              "#87CEEB",
+              "#FFDAB9",
+              "#FFFACD",
+            ],
+          },
+        ],
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+          },
+        },
+      },
+    };
+  };
+
+  const roleChartData = formatRoleCountData(userRoleCounts.data);
+
   return (
     <Grid templateColumns={{ base: "1fr", lg: "1fr 1fr" }} gap={5} mt={5}>
       <Card width={"100%"} minH={350} p={{ base: 0, sm: 2 }}>
         <BarChart
-          data={coursesChartData.data}
-          options={coursesChartData.options}
-          loading={designationCount.loading}
+          data={roleChartData.data}
+          options={roleChartData.options}
+          loading={userRoleCounts.loading}
         />
       </Card>
       <Card width={"100%"} minH={350} p={{ base: 0, sm: 2 }}>

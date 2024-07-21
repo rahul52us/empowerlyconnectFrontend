@@ -8,6 +8,10 @@ class Userstore {
     loading: true,
     hasFetch: false,
   };
+  userRoleCounts : any = {
+    loading : false,
+    data : []
+  }
 
   classes = {
     data: [],
@@ -67,6 +71,7 @@ class Userstore {
       UsersRoles:observable,
       managerUsers:observable,
       managersUsersCount:observable,
+      userRoleCounts:observable,
       resetStudentDetails: action,
       setHandleFormDrawer: action,
       getAllManagerUsers:action,
@@ -87,7 +92,8 @@ class Userstore {
       getManagersUsersCount:action,
       getUsersSubOrdinateDetails:action,
       getUsersSubOrdinateActionsDetails:action,
-      getManagersOfUsers:action
+      getManagersOfUsers:action,
+      getUsersRoleCount:action
     });
   }
 
@@ -218,6 +224,20 @@ class Userstore {
       this.UsersCounts.loading = false;
     }
   };
+
+  getUsersRoleCount = async () => {
+    try {
+      this.userRoleCounts.loading = true
+      const { data } = await axios.get("/User/get/roles/count",{params : {company: store.auth.company}});
+      this.userRoleCounts.data = data.data || []
+      return data.data;
+    } catch (err: any) {
+      return Promise.reject(err?.response?.data || err);
+    } finally {
+      this.userRoleCounts.loading = false
+    }
+  };
+
 
   getUsersDetailsById = async (id: any) => {
     try {
