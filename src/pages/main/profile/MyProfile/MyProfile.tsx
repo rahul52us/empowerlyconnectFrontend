@@ -50,7 +50,7 @@ const MyProfile: React.FC<any> = ({ userDetails }) => {
   } = userDetails;
 
   const borderColor = useColorModeValue("gray.200", "gray.700");
-  const cardBgColor = useColorModeValue("gray.50", "gray.900");
+  const cardBgColor = useColorModeValue("gray.50", "black");
 
   // const user = userDetails;
 
@@ -156,7 +156,7 @@ const MyProfile: React.FC<any> = ({ userDetails }) => {
 
           // h={'100%'}
         >
-          <Tabs variant={"soft-rounded"} colorScheme="telegram" size={"sm"}>
+          <Tabs variant={"soft-rounded"} colorScheme="telegram">
             <TabList gap={4}>
               <Tab>Details</Tab>
               <Tab>Family Details</Tab>
@@ -295,24 +295,35 @@ const MyProfile: React.FC<any> = ({ userDetails }) => {
                     Documents
                   </Heading>
 
-                  {documents.length > 0 ? (
+                  {documents?.length > 0 ? (
                     <Box>
-                      {documents.map((doc: any) => (
-                        <HStack
-                          key={doc?._id}
-                          spacing={4}
-                          alignItems="center"
-                          borderBottom="1px"
-                          borderColor={borderColor}
-                          py={2}
-                        >
-                          <Icon as={FaFileAlt} boxSize={6} color="blue.500" />
-                          <VStack align="start" spacing={0}>
-                            <Text fontWeight="bold">{doc?.documentType}</Text>
-                            <Text>{doc?.documentNumber}</Text>
-                          </VStack>
-                        </HStack>
-                      ))}
+                      {documents?.map((doc: any) =>
+                        Object.keys(doc?.documents).map((key) => (
+                          <HStack
+                            key={key}
+                            spacing={4}
+                            alignItems="center"
+                            borderBottom="1px"
+                            borderColor={borderColor}
+                            py={2}
+                          >
+                            <Icon as={FaFileAlt} boxSize={6} color="blue.500" />
+                            <VStack align="start" spacing={0}>
+                              <Text fontWeight="bold">{key}</Text>
+                              <Text>{doc?.documents[key]?.name}</Text>
+                              <Text
+                                as="a"
+                                href={doc?.documents[key]?.url}
+                                color="blue.500"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                View Document
+                              </Text>
+                            </VStack>
+                          </HStack>
+                        ))
+                      )}
                     </Box>
                   ) : (
                     <Text>No documents found</Text>

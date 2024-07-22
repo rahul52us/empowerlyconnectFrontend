@@ -2,9 +2,6 @@
 import {
   Avatar,
   Box,
-  Card,
-  CardBody,
-  CardHeader,
   Divider,
   Flex,
   Grid,
@@ -29,8 +26,8 @@ import ShowData from "../component/ShowData";
 // import userData from "./dummyUsereData.json";
 // import CompanyDetails from "./component/CompanyDetails";
 import DrawerLoader from "../../../../../../config/component/Loader/DrawerLoader";
-import WorkHistory from "./component/WorkHistory/WorkHistory";
 import BankDetailsCard from "../component/common/BankDetailCard";
+import WorkHistory from "./component/WorkHistory/WorkHistory";
 
 const UserProfile: React.FC<any> = ({ UsereId }) => {
   const [user, setUserData] = useState<any>(null);
@@ -302,37 +299,64 @@ const UserProfile: React.FC<any> = ({ UsereId }) => {
                     </Box>
 
                     {/* Documents */}
-                    <Card
-                      rounded={16}
-                      boxShadow="0 0 10px rgba(0,0,0,0.06)"
-                      borderWidth={1}
-                      borderColor={borderColor}
-                      bg={cardBgColor}
-                    >
-                      <CardHeader pb={0}>
-                        <Heading color={"blue.600"} size="md">
-                          Documents
-                        </Heading>
-                      </CardHeader>
-                      <CardBody pt={2}>
-                        {user?.documents.map((doc: any) => (
-                          <HStack
-                            key={doc?._id}
-                            spacing={4}
-                            alignItems="center"
-                            borderBottom="1px"
-                            borderColor={borderColor}
-                            py={2}
-                          >
-                            <Icon as={FaFileAlt} boxSize={6} color="blue.500" />
-                            <VStack align="start" spacing={0}>
-                              <Text fontWeight="bold">{doc?.documentType}</Text>
-                              <Text>{doc?.documentNumber}</Text>
-                            </VStack>
-                          </HStack>
-                        ))}
-                      </CardBody>
-                    </Card>
+                    <Box>
+                      <Heading color={"blue.600"} size="md">
+                        Documents
+                      </Heading>
+
+                      {user?.documents && user?.documents?.length > 0 ? (
+                        <Box>
+                          {user?.documents.map((doc: any, index: number) =>
+                            doc?.documents ? (
+                              Object.keys(doc.documents).map((key) => (
+                                <HStack
+                                  key={`${doc?._id || index}-${key}`}
+                                  spacing={4}
+                                  alignItems="center"
+                                  borderBottom="1px"
+                                  borderColor={borderColor}
+                                  py={2}
+                                >
+                                  <Icon
+                                    as={FaFileAlt}
+                                    boxSize={6}
+                                    color="blue.500"
+                                  />
+                                  <VStack align="start" spacing={0}>
+                                    <Text fontWeight="bold">{key}</Text>
+                                    <Text>
+                                      {doc?.documents[key]?.name ||
+                                        "No name available"}
+                                    </Text>
+                                    {doc?.documents[key]?.url ? (
+                                      <Text
+                                        as="a"
+                                        href={doc?.documents[key]?.url}
+                                        color="blue.500"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                      >
+                                        View Document
+                                      </Text>
+                                    ) : (
+                                      <Text color="red.500">
+                                        URL not available
+                                      </Text>
+                                    )}
+                                  </VStack>
+                                </HStack>
+                              ))
+                            ) : (
+                              <Text key={index} color="red.500">
+                               No documents found
+                              </Text>
+                            )
+                          )}
+                        </Box>
+                      ) : (
+                        <Text>No documents found</Text>
+                      )}
+                    </Box>
                   </SimpleGrid>
                 </Box>
               </TabPanel>
