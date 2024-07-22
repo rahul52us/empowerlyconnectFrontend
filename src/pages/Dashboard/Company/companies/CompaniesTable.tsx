@@ -5,8 +5,14 @@ import CustomTable from "../../../../config/component/CustomTable/CustomTable";
 import { getStatusType } from "../../../../config/constant/statusCode";
 import { employDropdownData } from "../../Employes/component/EmployeDetails/utils/constant";
 import { toJS } from "mobx";
+import ViewCompany from "./component/element/ViewCompany";
+import CustomDrawer from "../../../../config/component/Drawer/CustomDrawer";
 
 const HolidaysDetailTable = observer(() => {
+  const [viewCompanyModel, setViewCompanyModel] = useState<any>({
+    open: false,
+    data: null,
+  });
   const dropdowns = useState(employDropdownData)[0];
   const [selectedOptions, setSelectedOptions] = useState({});
   const [date, setDate] = useState<any>({
@@ -68,8 +74,7 @@ const HolidaysDetailTable = observer(() => {
     applyGetAllRecords();
   };
 
-
-  console.log('the companies are', toJS(companies))
+  console.log("the companies are", toJS(companies));
 
   const UserTableColumns = [
     {
@@ -137,7 +142,6 @@ const HolidaysDetailTable = observer(() => {
     },
   ];
 
-
   return (
     <>
       <CustomTable
@@ -181,9 +185,9 @@ const HolidaysDetailTable = observer(() => {
               },
             },
             viewKey: {
-              showViewButton: false,
+              showViewButton: true,
               function: (dt: string) => {
-                alert(dt);
+                setViewCompanyModel({ open: true, data: dt });
               },
             },
             deleteKey: {
@@ -237,6 +241,15 @@ const HolidaysDetailTable = observer(() => {
         loading={companies.loading}
         serial={{ show: false, text: "S.No.", width: "10px" }}
       />
+
+      {/* View Company Model */}
+      {viewCompanyModel.data && viewCompanyModel.open && <CustomDrawer
+        open={viewCompanyModel.open}
+        width={'80vw'}
+        close={() => setViewCompanyModel({ open: false, data: null })}
+      >
+        <ViewCompany data={viewCompanyModel.data} onClose={() => setViewCompanyModel({ open: false, data: null })}/>
+      </CustomDrawer>}
     </>
   );
 });

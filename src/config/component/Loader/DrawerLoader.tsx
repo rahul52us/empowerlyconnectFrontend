@@ -8,8 +8,8 @@ const DrawerLoader = observer(({ loading, children }: { loading: boolean; childr
     <>
       {loading ? (
         <Center height="100%">
-          <Flex alignItems="center">
-            <Box p={4}>
+          <Flex alignItems="center" justifyContent="center">
+            <Box p={4} mt={'40vh'}>
               <SpinnerLoader />
             </Box>
           </Flex>
