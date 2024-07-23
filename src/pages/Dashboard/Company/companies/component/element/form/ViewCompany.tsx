@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import DrawerLoader from "../../../../../../config/component/Loader/DrawerLoader";
+import DrawerLoader from "../../../../../../../config/component/Loader/DrawerLoader";
 import {
   Box,
   Image,
@@ -36,9 +36,9 @@ import {
   FaMapMarkerAlt,
   FaTimes,
 } from "react-icons/fa";
-import store from "../../../../../../store/store";
+import store from "../../../../../../../store/store";
 import { useEffect, useState } from "react";
-import { getStatusType } from "../../../../../../config/constant/statusCode";
+import { getStatusType } from "../../../../../../../config/constant/statusCode";
 
 const ViewCompany = observer(({ data, onClose }: any) => {
   const [holidays, setHolidays] = useState([]);

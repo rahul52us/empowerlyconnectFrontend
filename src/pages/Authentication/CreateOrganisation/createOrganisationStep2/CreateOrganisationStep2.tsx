@@ -1,4 +1,11 @@
-import { Box, Grid, Image, StepIcon } from "@chakra-ui/react";
+import {
+  Box,
+  Grid,
+  Image,
+  StepIcon,
+  useBreakpointValue,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import { BiHome } from "react-icons/bi";
 import CustomStepper from "../../../../config/component/Stepper/Stepper";
 import CreateOrganisationPersonalDetails from "./component/OrganisationCreateStepper";
@@ -9,7 +16,7 @@ import { authentication, main } from "../../../../config/constant/routes";
 import { useState } from "react";
 import { readFileAsBase64 } from "../../../../config/constant/function";
 
-const CreateOrganisationStep2 = () => {
+const CreateOrganisationStep2 = ({ showLogo }: any) => {
   const navigate = useNavigate();
   const [activeStep, setActiveStep] = useState(0);
   const { token } = useParams();
@@ -24,11 +31,11 @@ const CreateOrganisationStep2 = () => {
       Icon: <StepIcon />,
     },
     { title: "Company Details", description: "Date & Time", Icon: <BiHome /> },
-    { title: "Links", description: "Select Rooms", Icon: <StepIcon /> }
+    { title: "Links", description: "Select Rooms", Icon: <StepIcon /> },
   ];
 
   const handleSubmit = async ({ values, setSubmitting }: any) => {
-    let logo : any = null
+    let logo: any = null;
     if (values.logo && values.logo?.length !== 0) {
       const buffer = await readFileAsBase64(values.logo);
       const fileData = {
@@ -38,8 +45,14 @@ const CreateOrganisationStep2 = () => {
       };
       logo = fileData;
     }
-    const {first_name,last_name, password, username, ...rest} = values
-    createOrganisation({ name : `${first_name} ${last_name}`, password, username , companyDetails : {...rest, logo }, token: token })
+    const { first_name, last_name, password, username, ...rest } = values;
+    createOrganisation({
+      name: `${first_name} ${last_name}`,
+      password,
+      username,
+      companyDetails: { ...rest, logo },
+      token: token,
+    })
       .then((data) => {
         openNotification({
           title: "Create Success",
@@ -60,29 +73,48 @@ const CreateOrganisationStep2 = () => {
       });
   };
 
+  const gridTemplateColumns = useBreakpointValue({
+    base: "1fr",
+    xl: "0.8fr 3fr",
+  });
+
+  const padding = useBreakpointValue({
+    base: 2,
+    md: 6,
+  });
+
+  const borderBottom = useColorModeValue("1px solid lightgray", "1px solid gray");
+
   return (
-    <Box height="90vh">
-      <Box
-        p={2}
-        borderBottom="1px solid lightgray"
-        boxShadow={"xl"}
-        width="100vw"
+    <Box height={showLogo ? "90vh" : "100vh"}>
+      {showLogo ? (
+        <Box
+          p={2}
+          borderBottom={borderBottom}
+          boxShadow={"xl"}
+          width="100%"
+        >
+          <Image
+            src="https://themefisher.com/images/logo/logo.svg"
+            alt=""
+            cursor="pointer"
+            mb={3}
+            onClick={() => navigate(main.home)}
+          />
+        </Box>
+      ) : null}
+      <Grid
+        gridTemplateColumns={gridTemplateColumns}
+        p={padding}
+        columnGap={4}
+        height="100%"
       >
-        <Image
-          src="https://themefisher.com/images/logo/logo.svg"
-          alt=""
-          cursor="pointer"
-          mb={3}
-          onClick={() => navigate(main.home)}
-        />
-      </Box>
-      <Grid gridTemplateColumns={"0.8fr 3fr"} p={6} columnGap={4} height="100%">
         <CustomStepper
           steps={steps}
           disabledIndexes={[]}
           setActiveStepIndex={setActiveStep}
           activeStepIndex={activeStep}
-          orientation="vertical"
+          orientation={useBreakpointValue({ base: "horizontal", xl: "vertical" })}
           rest={{ p: 5, boxShadow: "lg", width: "100%", borderRadius: "lg" }}
         />
         <CreateOrganisationPersonalDetails

@@ -5,11 +5,16 @@ import CustomTable from "../../../../config/component/CustomTable/CustomTable";
 import { getStatusType } from "../../../../config/constant/statusCode";
 import { employDropdownData } from "../../Employes/component/EmployeDetails/utils/constant";
 import { toJS } from "mobx";
-import ViewCompany from "./component/element/ViewCompany";
+import ViewCompany from "./component/element/form/ViewCompany";
 import CustomDrawer from "../../../../config/component/Drawer/CustomDrawer";
+import AddCompany from "./component/element/form/AddCompany";
 
 const HolidaysDetailTable = observer(() => {
   const [viewCompanyModel, setViewCompanyModel] = useState<any>({
+    open: false,
+    data: null,
+  });
+  const [addCompanyModel, setAddCompanyModel] = useState<any>({
     open: false,
     data: null,
   });
@@ -80,14 +85,9 @@ const HolidaysDetailTable = observer(() => {
     {
       headerName: "Company Name",
       key: "company_name",
-      type: "tooltip",
-      function: (e: any) => {
-        setFormValues(() => ({
-          ...formValues,
-          type: "edit",
-          data: e,
-          open: true,
-        }));
+      type: "link",
+      function: (dt: string) => {
+        setViewCompanyModel({ open: true, data: dt });
       },
       props: {
         column: { textAlign: "center" },
@@ -166,11 +166,7 @@ const HolidaysDetailTable = observer(() => {
             addKey: {
               showAddButton: true,
               function: () => {
-                setFormValues(() => ({
-                  ...formValues,
-                  open: true,
-                  type: "add",
-                }));
+                setAddCompanyModel({open : true , data : null})
               },
             },
             editKey: {
@@ -242,14 +238,35 @@ const HolidaysDetailTable = observer(() => {
         serial={{ show: false, text: "S.No.", width: "10px" }}
       />
 
+      {/* Add Company Model */}
+
+      {addCompanyModel.open && (
+        <CustomDrawer
+          open={addCompanyModel.open}
+          width={"95vw"}
+          props={{margin:0,padding : 0}}
+          close={() => setAddCompanyModel({ open: false, data: null })}
+        >
+          <AddCompany
+            // data={addCompanyModel.data}
+            // onClose={() => setAddCompanyModel({ open: false, data: null })}
+          />
+        </CustomDrawer>
+      )}
+
       {/* View Company Model */}
-      {viewCompanyModel.data && viewCompanyModel.open && <CustomDrawer
-        open={viewCompanyModel.open}
-        width={'80vw'}
-        close={() => setViewCompanyModel({ open: false, data: null })}
-      >
-        <ViewCompany data={viewCompanyModel.data} onClose={() => setViewCompanyModel({ open: false, data: null })}/>
-      </CustomDrawer>}
+      {viewCompanyModel.data && viewCompanyModel.open && (
+        <CustomDrawer
+          open={viewCompanyModel.open}
+          width={"70vw"}
+          close={() => setViewCompanyModel({ open: false, data: null })}
+        >
+          <ViewCompany
+            data={viewCompanyModel.data}
+            onClose={() => setViewCompanyModel({ open: false, data: null })}
+          />
+        </CustomDrawer>
+      )}
     </>
   );
 });
