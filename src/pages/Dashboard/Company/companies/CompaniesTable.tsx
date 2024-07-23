@@ -249,7 +249,7 @@ const HolidaysDetailTable = observer(() => {
         >
           <AddCompany
             // data={addCompanyModel.data}
-            // onClose={() => setAddCompanyModel({ open: false, data: null })}
+            onClose={() => setAddCompanyModel({ open: false, data: null })}
           />
         </CustomDrawer>
       )}

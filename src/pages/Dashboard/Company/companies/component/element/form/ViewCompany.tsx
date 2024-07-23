@@ -83,7 +83,13 @@ const ViewCompany = observer(({ data, onClose }: any) => {
       .finally(() => {
         setLoading(false);
       });
-  }, [getHolidays, getWorkLocations, getWorkTiming, data._id, openNotification]);
+  }, [
+    getHolidays,
+    getWorkLocations,
+    getWorkTiming,
+    data._id,
+    openNotification,
+  ]);
 
   return (
     <DrawerLoader loading={false}>
@@ -100,8 +106,8 @@ const ViewCompany = observer(({ data, onClose }: any) => {
           <Image
             borderRadius="full"
             boxSize="120px"
-            src={data.logo.url}
-            alt={data.logo.name}
+            src={data?.logo?.url}
+            alt={data?.logo?.name}
             mb={4}
           />
         </Flex>
@@ -129,13 +135,16 @@ const ViewCompany = observer(({ data, onClose }: any) => {
               </Text>{" "}
               {data.workNo}
             </Text>
-            <Text fontSize="md" color={textColor}>
-              <Text as="span" fontWeight="bold">
-                Address:
-              </Text>{" "}
-              {data.addressInfo[0].address}, {data.addressInfo[0].city}, {data.addressInfo[0].state},{" "}
-              {data.addressInfo[0].country} - {data.addressInfo[0].pinCode}
-            </Text>
+            {data.addressInfo?.length > 0 && (
+              <Text fontSize="md" color={textColor}>
+                <Text as="span" fontWeight="bold">
+                  Address:
+                </Text>{" "}
+                {data.addressInfo[0].address}, {data.addressInfo[0].city},{" "}
+                {data.addressInfo[0].state}, {data.addressInfo[0].country} -{" "}
+                {data.addressInfo[0].pinCode}
+              </Text>
+            )}
             <Text fontSize="md" color={textColor}>
               <Text as="span" fontWeight="bold">
                 Created At:
@@ -147,8 +156,12 @@ const ViewCompany = observer(({ data, onClose }: any) => {
           <Tabs variant="soft-rounded" colorScheme="teal" defaultIndex={0}>
             <TabList mb="1em">
               <Tab _selected={{ color: "white", bg: "teal.500" }}>Holidays</Tab>
-              <Tab _selected={{ color: "white", bg: "teal.500" }}>Work Timings</Tab>
-              <Tab _selected={{ color: "white", bg: "teal.500" }}>Work Locations</Tab>
+              <Tab _selected={{ color: "white", bg: "teal.500" }}>
+                Work Timings
+              </Tab>
+              <Tab _selected={{ color: "white", bg: "teal.500" }}>
+                Work Locations
+              </Tab>
             </TabList>
             <TabPanels>
               <TabPanel>
@@ -168,7 +181,11 @@ const ViewCompany = observer(({ data, onClose }: any) => {
                         bg={useColorModeValue("gray.50", "gray.700")}
                       >
                         <Heading as="h4" size="sm" color={headingColor}>
-                          <Icon as={FaCalendarAlt} mr={2} color={headingColor} />
+                          <Icon
+                            as={FaCalendarAlt}
+                            mr={2}
+                            color={headingColor}
+                          />
                           {holiday.title}
                         </Heading>
                         <Text fontSize="sm" color={textColor}>
@@ -201,7 +218,8 @@ const ViewCompany = observer(({ data, onClose }: any) => {
                         borderRadius="md"
                       >
                         <ListIcon as={FaClock} color="green.500" />
-                        {timing.startTime} - {timing.endTime} ({timing.daysOfWeek.join(", ")})
+                        {timing.startTime} - {timing.endTime} (
+                        {timing.daysOfWeek.join(", ")})
                       </ListItem>
                     ))}
                   </List>

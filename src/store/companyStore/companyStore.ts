@@ -39,6 +39,7 @@ class CompanyStore {
       workLocations:observable,
       workTiming:observable,
       companies:observable,
+      createSingleCompany:action,
       getCompanies:action,
       getHolidays: action,
       getWorkLocations:action,
@@ -51,6 +52,21 @@ class CompanyStore {
       updateWorkLocationsByExcel:action
     });
   }
+
+
+  createSingleCompany = async (value: any) => {
+    try {
+      const { token, ...sendData } = value;
+      const { data } = await axios.post(
+        `/company/single/create`,
+        sendData
+      );
+      return data;
+    } catch (err: any) {
+      return Promise.reject(err?.response?.data || err.message);
+    }
+  };
+
 
   updateHoliday = async (sendData: any) => {
     try {

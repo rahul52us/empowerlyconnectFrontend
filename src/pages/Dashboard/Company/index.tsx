@@ -95,8 +95,8 @@ const Company = observer(() => {
         })}
       </Grid>
       <Grid mt={5}>
-        <GridItem>
-          <CompaniesTable />
+      <GridItem overflowX="auto">
+      <CompaniesTable />
         </GridItem>
       </Grid>
       <Grid gridTemplateColumns={{ md: "1fr", xl: "1fr 1fr" }} gap={4} mt={5}>

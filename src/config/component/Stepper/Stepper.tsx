@@ -25,7 +25,7 @@ interface CustomStepperProps {
   orientation?: "horizontal" | "vertical";
   disabledIndexes?: number[];
   rest?:any;
-  setActiveStepIndex?: React.Dispatch<React.SetStateAction<number>>;
+  setActiveStepIndex?: any;
 }
 
 const Step: React.FC<any> = ({ isDisabled, ...props }) => {
