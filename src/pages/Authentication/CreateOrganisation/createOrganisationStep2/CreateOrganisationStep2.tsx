@@ -9,14 +9,18 @@ import {
 import { BiHome } from "react-icons/bi";
 import CustomStepper from "../../../../config/component/Stepper/Stepper";
 import CreateOrganisationPersonalDetails from "./component/OrganisationCreateStepper";
-import { initialValues } from "./utils/constant";
 import store from "../../../../store/store";
 import { useNavigate, useParams } from "react-router-dom";
 import { authentication, main } from "../../../../config/constant/routes";
 import { useEffect, useState } from "react";
 import { readFileAsBase64 } from "../../../../config/constant/function";
 
-const CreateOrganisationStep2 = ({ singleCompany, onClose }: any) => {
+const CreateOrganisationStep2 = ({
+  singleCompany,
+  onClose,
+  initialValues,
+  isEdit,
+}: any) => {
   const [initialValuesData, setInitialValuesData] =
     useState<any>(initialValues);
   const navigate = useNavigate();
@@ -24,7 +28,7 @@ const CreateOrganisationStep2 = ({ singleCompany, onClose }: any) => {
   const { token } = useParams();
   const {
     auth: { openNotification, createOrganisation, user },
-    company : {createSingleCompany, getCompanies}
+    company: { createSingleCompany, getCompanies, updateSingleCompany },
   } = store;
 
   const steps = [
@@ -47,25 +51,15 @@ const CreateOrganisationStep2 = ({ singleCompany, onClose }: any) => {
         password: "Rahul@123",
       });
     }
-  }, [user, singleCompany]);
-
+  }, [user, singleCompany, initialValues]);
 
   const handleSubmit = async ({ values, setSubmitting }: any) => {
-    let logo: any = null;
-    if (values.logo && values.logo?.length !== 0) {
-      const buffer = await readFileAsBase64(values.logo);
-      const fileData = {
-        buffer: buffer,
-        filename: values.logo?.name,
-        type: values.logo?.type,
-      };
-      logo = fileData;
-    }
-    const { first_name, last_name, password, username, ...rest } = values;
+    if (isEdit) {
+      const { first_name, last_name, password, username, logo, ...rest } = values;
 
-    if (singleCompany) {
-      createSingleCompany({
-        companyDetails: { ...rest, logo }
+      updateSingleCompany({
+        _id : initialValues._id,
+        companyDetails: { ...rest },
       })
         .then((data: any) => {
           openNotification({
@@ -73,9 +67,9 @@ const CreateOrganisationStep2 = ({ singleCompany, onClose }: any) => {
             message: data.message,
             type: "success",
           });
-          if(onClose){
-            onClose()
-            getCompanies({})
+          if (onClose) {
+            onClose();
+            getCompanies({});
           }
         })
         .catch((error: any) => {
@@ -88,32 +82,72 @@ const CreateOrganisationStep2 = ({ singleCompany, onClose }: any) => {
         .finally(() => {
           setSubmitting(false);
         });
+      setSubmitting(false)
     } else {
-      createOrganisation({
-        name: `${first_name} ${last_name}`,
-        password,
-        username,
-        companyDetails: { ...rest, logo },
-        token: token,
-      })
-        .then((data) => {
-          openNotification({
-            title: "Create Success",
-            message: data.message,
-            type: "success",
-          });
-          navigate(authentication.login);
+      let logo: any = null;
+      if (values.logo && values.logo?.length !== 0) {
+        const buffer = await readFileAsBase64(values.logo);
+        const fileData = {
+          buffer: buffer,
+          filename: values.logo?.name,
+          type: values.logo?.type,
+        };
+        logo = fileData;
+      }
+      const { first_name, last_name, password, username, ...rest } = values;
+
+      if (singleCompany) {
+        createSingleCompany({
+          companyDetails: { ...rest, logo },
         })
-        .catch((error) => {
-          openNotification({
-            title: "Create Failed",
-            message: error?.message,
-            type: "error",
+          .then((data: any) => {
+            openNotification({
+              title: "Create Success",
+              message: data.message,
+              type: "success",
+            });
+            if (onClose) {
+              onClose();
+              getCompanies({});
+            }
+          })
+          .catch((error: any) => {
+            openNotification({
+              title: "Create Failed",
+              message: error?.message,
+              type: "error",
+            });
+          })
+          .finally(() => {
+            setSubmitting(false);
           });
+      } else {
+        createOrganisation({
+          name: `${first_name} ${last_name}`,
+          password,
+          username,
+          companyDetails: { ...rest, logo },
+          token: token,
         })
-        .finally(() => {
-          setSubmitting(false);
-        });
+          .then((data) => {
+            openNotification({
+              title: "Create Success",
+              message: data.message,
+              type: "success",
+            });
+            navigate(authentication.login);
+          })
+          .catch((error) => {
+            openNotification({
+              title: "Create Failed",
+              message: error?.message,
+              type: "error",
+            });
+          })
+          .finally(() => {
+            setSubmitting(false);
+          });
+      }
     }
   };
 
@@ -169,6 +203,7 @@ const CreateOrganisationStep2 = ({ singleCompany, onClose }: any) => {
           activeIndex={activeStep}
           setActiveIndex={setActiveStep}
           singleCompany={singleCompany}
+          isEdit={isEdit}
         />
       </Grid>
     </Box>

@@ -8,6 +8,7 @@ import { toJS } from "mobx";
 import ViewCompany from "./component/element/form/ViewCompany";
 import CustomDrawer from "../../../../config/component/Drawer/CustomDrawer";
 import AddCompany from "./component/element/form/AddCompany";
+import EditCompany from "./component/element/form/EditCompany";
 
 const HolidaysDetailTable = observer(() => {
   const [viewCompanyModel, setViewCompanyModel] = useState<any>({
@@ -15,6 +16,10 @@ const HolidaysDetailTable = observer(() => {
     data: null,
   });
   const [addCompanyModel, setAddCompanyModel] = useState<any>({
+    open: false,
+    data: null,
+  });
+  const [editCompanyModel, setEditCompanyModel] = useState<any>({
     open: false,
     data: null,
   });
@@ -172,12 +177,10 @@ const HolidaysDetailTable = observer(() => {
             editKey: {
               showEditButton: true,
               function: (e: any) => {
-                setFormValues(() => ({
-                  ...formValues,
-                  type: "edit",
-                  data: e,
-                  open: true,
-                }));
+                setEditCompanyModel({
+                  open : true,
+                  data : e
+                })
               },
             },
             viewKey: {
@@ -239,7 +242,21 @@ const HolidaysDetailTable = observer(() => {
       />
 
       {/* Add Company Model */}
+      {editCompanyModel.open && (
+        <CustomDrawer
+          open={editCompanyModel.open}
+          width={"95vw"}
+          props={{margin:0,padding : 0}}
+          close={() => setEditCompanyModel({ open: false, data: null })}
+        >
+          <EditCompany
+            data={editCompanyModel.data}
+            onClose={() => setEditCompanyModel({ open: false, data: null })}
+          />
+        </CustomDrawer>
+      )}
 
+      {/* Add Company Model */}
       {addCompanyModel.open && (
         <CustomDrawer
           open={addCompanyModel.open}

@@ -107,7 +107,7 @@ const Department = lazy(
 // Company
 
 const CompanyPolicy = lazy(
-  () => import("../../pages/Dashboard/Company/CompanyPolicy")
+  () => import("../../pages/Dashboard/Company/policy/CompanyPolicy")
 );
 const Company = lazy(() => import("../../pages/Dashboard/Company/index"));
 

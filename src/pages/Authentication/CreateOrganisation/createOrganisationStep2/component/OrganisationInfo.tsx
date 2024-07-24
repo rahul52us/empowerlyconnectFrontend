@@ -12,6 +12,7 @@ const OrganisationInfo = ({
   handleSearchChange,
   organisationError,
   setFieldValue,
+  isEdit
 }: any) => {
   const getAddressError = (errors: any, type: string, index: number) => {
     const errorTypes = ["address", "country", "state", "city", "pinCode"];
@@ -49,6 +50,7 @@ const OrganisationInfo = ({
 							setFieldValue('logo',removeDataByIndex(values.logo, 0))
 						}
 						}
+            edit={isEdit}
 						/>
 					</Box>
 					)}

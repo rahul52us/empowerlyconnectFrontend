@@ -23,13 +23,12 @@ const ShowFileUploadFile = observer(({ files, removeFile, edit }: any) => {
 
   const setSelectedFileFun = async (item: any) => {
     if (edit) {
-      if(item.url){
+      if (item.url) {
         setSelectedFile({
           type: item.type,
-          file: item.file,
+          file: item.file || item.url,
         });
-      }
-      else {
+      } else {
         let file: any = await readFileAsBase64(item);
         if (file) {
           if (item.name.endsWith(".pdf")) {
@@ -41,7 +40,7 @@ const ShowFileUploadFile = observer(({ files, removeFile, edit }: any) => {
             type: item.type,
             file: file,
           });
-      }
+        }
       }
     } else {
       let file: any = await readFileAsBase64(item);

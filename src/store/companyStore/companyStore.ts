@@ -49,7 +49,8 @@ class CompanyStore {
       updateWorkTiming:action,
       updateWorkLocation:action,
       updateHolidayByExcel:action,
-      updateWorkLocationsByExcel:action
+      updateWorkLocationsByExcel:action,
+      updateSingleCompany:action
     });
   }
 
@@ -59,6 +60,19 @@ class CompanyStore {
       const { token, ...sendData } = value;
       const { data } = await axios.post(
         `/company/single/create`,
+        sendData
+      );
+      return data;
+    } catch (err: any) {
+      return Promise.reject(err?.response?.data || err.message);
+    }
+  };
+
+  updateSingleCompany = async (value: any) => {
+    try {
+      const { _id, ...sendData } = value;
+      const { data } = await axios.put(
+        `/company/${_id}`,
         sendData
       );
       return data;
