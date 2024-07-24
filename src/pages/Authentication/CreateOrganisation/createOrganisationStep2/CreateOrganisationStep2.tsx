@@ -14,8 +14,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import { authentication, main } from "../../../../config/constant/routes";
 import { useEffect, useState } from "react";
 import { readFileAsBase64 } from "../../../../config/constant/function";
+import { observer } from "mobx-react-lite";
 
-const CreateOrganisationStep2 = ({
+const CreateOrganisationStep2 = observer(({
   singleCompany,
   onClose,
   initialValues,
@@ -55,8 +56,8 @@ const CreateOrganisationStep2 = ({
 
   const handleSubmit = async ({ values, setSubmitting }: any) => {
     if (isEdit) {
+      setSubmitting(true)
       const { first_name, last_name, password, username, logo, ...rest } = values;
-
       updateSingleCompany({
         _id : initialValues._id,
         companyDetails: { ...rest },
@@ -82,7 +83,6 @@ const CreateOrganisationStep2 = ({
         .finally(() => {
           setSubmitting(false);
         });
-      setSubmitting(false)
     } else {
       let logo: any = null;
       if (values.logo && values.logo?.length !== 0) {
@@ -208,6 +208,6 @@ const CreateOrganisationStep2 = ({
       </Grid>
     </Box>
   );
-};
+});
 
 export default CreateOrganisationStep2;

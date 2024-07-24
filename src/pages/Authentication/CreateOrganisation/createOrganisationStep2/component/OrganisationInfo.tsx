@@ -28,7 +28,7 @@ const OrganisationInfo = ({
   return (
     <Grid height="68vh" overflowY="auto">
       <Flex>
-					{values.logo.length === 0 ? (
+					{values?.logo?.length === 0 ? (
 					<CustomInput
 						type="file-drag"
 						name="logo"

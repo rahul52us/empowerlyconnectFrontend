@@ -72,6 +72,7 @@ const CreateOrganisationPersonalDetails = observer(
         <Divider />
         <Formik
           initialValues={initialValues}
+          enableReinitialize={true}
           validationSchema={OrganisationCreateValidation}
           onSubmit={(values, { setSubmitting }) => {
             if (!organisationError) {
