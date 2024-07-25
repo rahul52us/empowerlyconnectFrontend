@@ -332,7 +332,7 @@ const MyProfile: React.FC<any> = observer(({ userDetails, user }) => {
                 </Box>
               </TabPanel>
               <TabPanel>
-                {companyDetail && (
+                {companyDetail && user && (
                   <WorkHistory workHistory={companyDetail[0]?.details} user={user._id}/>
                 )}
               </TabPanel>
