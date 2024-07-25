@@ -107,8 +107,10 @@ const Company = observer(() => {
         <GridItem overflowX="auto">
           <WorkLocationDetails />
         </GridItem>
-        <GridItem overflowX="auto">
-          <Card border={'1px solid gray'}>
+      </Grid>
+      <Grid gridTemplateColumns={{ base : '1fr', md: "2fr 1fr" }} mt={5}>
+        <GridItem>
+          <Card border={"1px solid gray"}>
             <WorkTimingForm />
           </Card>
         </GridItem>

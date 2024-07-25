@@ -32,7 +32,7 @@ const WorkTimingForm = observer(({ setFormData }: any) => {
   }, [getWorkTiming, openNotification]);
 
   return (
-    <Box p={6} boxShadow="lg" borderRadius="md" bg="white" maxW="100%" mx="auto">
+    <Box p={6} maxW="100%">
       <Heading size="lg" mb={6} textAlign="center" color="teal.500">
         Work Timing Form
       </Heading>
@@ -80,7 +80,7 @@ const WorkTimingForm = observer(({ setFormData }: any) => {
               {({ push, remove }) => (
                 <VStack spacing={6} align="stretch">
                   {values.workTiming.map((item: any, index: number) => (
-                    <Box key={index} p={4} boxShadow="md" borderRadius="md" bg="gray.50">
+                    <Box key={index} p={4} boxShadow="md" borderRadius="md">
                       <Grid templateColumns="repeat(3, 1fr) auto" gap={4} alignItems="center">
                         <CustomInput
                           type="select"
