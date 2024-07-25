@@ -11,6 +11,7 @@ import {
   useColorMode,
 } from "@chakra-ui/react";
 import { useRef } from "react";
+import DrawerLoader from "../Loader/DrawerLoader";
 
 interface CustomDrawerProps {
   open: boolean;
@@ -19,7 +20,8 @@ interface CustomDrawerProps {
   children: any;
   size?: string;
   props?:any;
-  width?:any
+  width?:any;
+  loading?:boolean
 }
 
 const CustomDrawer: React.FC<CustomDrawerProps> = ({
@@ -29,6 +31,7 @@ const CustomDrawer: React.FC<CustomDrawerProps> = ({
   size,
   children,
   width,
+  loading = false,
   props
 }) => {
   const drawerRef = useRef<HTMLDivElement>(null);
@@ -81,7 +84,9 @@ const CustomDrawer: React.FC<CustomDrawerProps> = ({
         )}
         <Divider />
         <DrawerBody style={{ overflowY: "auto",padding:isDesktop ? '15px' : '6px'  }}>
-          <div style={{ maxHeight: "calc(100vh - 245px)" }}>{children}</div>
+        <DrawerLoader loading={loading}>
+        <div style={{ maxHeight: "calc(100vh - 245px)" }}>{children}</div>
+        </DrawerLoader>
         </DrawerBody>
       </DrawerContent>
     </Drawer>

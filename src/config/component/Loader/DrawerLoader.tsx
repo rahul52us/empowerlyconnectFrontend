@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 import SpinnerLoader from "./SpinnerLoader";
 
 // it handle loader and it's children for the drawer
-const DrawerLoader = observer(({ loading, children }: { loading: boolean; children: React.ReactNode; }) => {
+const DrawerLoader = observer(({ loading, children }: { loading?: boolean; children: React.ReactNode; }) => {
   return (
     <>
       {loading ? (

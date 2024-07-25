@@ -93,7 +93,8 @@ class Userstore {
       getUsersSubOrdinateDetails:action,
       getUsersSubOrdinateActionsDetails:action,
       getManagersOfUsers:action,
-      getUsersRoleCount:action
+      getUsersRoleCount:action,
+      getCompanyDetailsById:action
     });
   }
 
@@ -242,6 +243,15 @@ class Userstore {
   getUsersDetailsById = async (id: any) => {
     try {
       const { data } = await axios.get(`/User/${id}`);
+      return data.data;
+    } catch (err: any) {
+      return Promise.reject(err?.response?.data || err);
+    }
+  };
+
+  getCompanyDetailsById = async (id: any) => {
+    try {
+      const { data } = await axios.get(`/User/details/${id}`);
       return data.data;
     } catch (err: any) {
       return Promise.reject(err?.response?.data || err);

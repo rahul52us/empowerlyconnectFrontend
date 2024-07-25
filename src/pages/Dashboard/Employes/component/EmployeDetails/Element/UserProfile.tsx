@@ -362,7 +362,7 @@ const UserProfile: React.FC<any> = ({ UsereId }) => {
               </TabPanel>
               <TabPanel>
                 {user && (
-                  <WorkHistory workHistory={user?.companyDetail[0]?.details} />
+                  <WorkHistory user={user._id} workHistory={user?.companyDetail[0]?.details} />
                 )}
                 {/* <CompanyDetails data={user?.companyDetail[0]} /> */}
               </TabPanel>

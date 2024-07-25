@@ -30,12 +30,12 @@ const ProfileIndex = observer(() => {
   // )
   return(
     <>
-    {userDetails && (
+    {userDetails && user && (
 
-      <MyProfile userDetails={userDetails} /> 
+      <MyProfile userDetails={userDetails} user={user}/>
     )}
     </>
-    
+
   )
 })
 

@@ -26,6 +26,7 @@ import ShowData from "../../../Dashboard/Employes/component/EmployeDetails/compo
 import ShowTagData from "../../../Dashboard/Employes/component/EmployeDetails/component/ShowTagData";
 import BankDetailsCard from "../../../Dashboard/Employes/component/EmployeDetails/component/common/BankDetailCard";
 import WorkHistory from "../../../Dashboard/Employes/component/EmployeDetails/Element/component/WorkHistory/WorkHistory";
+import { observer } from "mobx-react-lite";
 
 const employee = {
   skills: ["React", "JavaScript", "TypeScript", "Node.js"],
@@ -34,7 +35,7 @@ const employee = {
   experience: "5 Years",
   profession: "Full Stack Developer",
 };
-const MyProfile: React.FC<any> = ({ userDetails }) => {
+const MyProfile: React.FC<any> = observer(({ userDetails, user }) => {
   //   console.log("userDetails", userDetails);
 
   const {
@@ -332,7 +333,7 @@ const MyProfile: React.FC<any> = ({ userDetails }) => {
               </TabPanel>
               <TabPanel>
                 {companyDetail && (
-                  <WorkHistory workHistory={companyDetail[0]?.details} />
+                  <WorkHistory workHistory={companyDetail[0]?.details} user={user._id}/>
                 )}
               </TabPanel>
             </TabPanels>
@@ -341,6 +342,6 @@ const MyProfile: React.FC<any> = ({ userDetails }) => {
       </Grid>
     </Box>
   );
-};
+});
 
 export default MyProfile;

@@ -1,14 +1,4 @@
-import {
-  Avatar,
-  Box,
-  Drawer,
-  DrawerBody,
-  DrawerCloseButton,
-  DrawerContent,
-  DrawerOverlay,
-  Tooltip,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Avatar, Box, Tooltip, useDisclosure } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -19,6 +9,7 @@ import { tablePageLimit } from "../../../../../../config/constant/variable";
 import store from "../../../../../../store/store";
 import { employDropdownData, generateTableData } from "../utils/constant";
 import UserProfile from "./UserProfile";
+import CustomDrawer from "../../../../../../config/component/Drawer/CustomDrawer";
 // import IndividualUsereDetails from "./IndividualUsereDetails";
 
 // User Table
@@ -230,9 +221,7 @@ const UserDetailsTable = observer(() => {
             addKey: {
               showAddButton: true,
               function: () => {
-                navigate(
-                  `${dashboard.Users.details}/new?tab=profile-details`
-                );
+                navigate(`${dashboard.Users.details}/new?tab=profile-details`);
               },
             },
             editKey: {
@@ -297,32 +286,10 @@ const UserDetailsTable = observer(() => {
         loading={Users.loading}
         serial={{ show: false, text: "S.No.", width: "10px" }}
       />
-      <Drawer isOpen={isOpen} placement="right" onClose={onClose} size={"xl"}>
-        <DrawerOverlay />
-        <DrawerContent borderLeftRadius={"2xl"}>
-          <DrawerCloseButton zIndex={11} />
-          {/* <DrawerHeader>Create your account</DrawerHeader> */}
 
-          <DrawerBody p={0}>
-              {isOpen && UsereId && (
-              // <IndividualUsereDetails
-              //   UsereId={UsereId}
-
-              // />
-              <>
-                <UserProfile UsereId={UsereId} />
-              </>
-            )}
-          </DrawerBody>
-
-          {/* <DrawerFooter>
-            <Button variant="outline" mr={3} onClick={onClose}>
-              Cancel
-            </Button>
-            <Button colorScheme="blue">Save</Button>
-          </DrawerFooter> */}
-        </DrawerContent>
-      </Drawer>
+      <CustomDrawer open={isOpen} close={onClose} width={'75vw'}>
+        {isOpen && UsereId && <UserProfile UsereId={UsereId} />}
+      </CustomDrawer>
     </Box>
   );
 });
