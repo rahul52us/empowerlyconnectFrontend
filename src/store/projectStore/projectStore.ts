@@ -7,9 +7,11 @@ class ProjectStore {
   projects: any = {
     data: [],
     loading: false,
+    currentPage :1,
+    limit : paginationLimit
   };
 
-  openProjectDrawer = {
+  openProjectDrawer : any = {
     type: "create",
     open: false,
     data: null,
@@ -40,7 +42,7 @@ class ProjectStore {
 
   getSingleProject = async (sendData: any) => {
     try {
-      const { data } = await axios.get(`/project/${sendData.id}`, {
+      const { data } = await axios.get(`/project/single/${sendData.id}`, {
         params: { company: store.auth.getCurrentCompany() },
       });
       return data;
@@ -53,8 +55,8 @@ class ProjectStore {
     this.projects.loading = true;
     try {
       const { data } = await axios.post(
-        `/project/get?page=${sendData.page}&limit=${
-          sendData.limit || paginationLimit
+        `/project/get?page=${this.projects.currentPage}&limit=${
+          this.projects.limit
         }&company=${store.auth.getCurrentCompany()}`,
         {},
         { ...sendData }

@@ -98,7 +98,7 @@ const WorkHistory = observer(({ user }: any) => {
                       Work Location
                     </Text>
                     <Text fontSize="md">
-                      {history.workingLocation.map((loc: any) => loc.locationName).join(", ") || "N/A"}
+                      {history.workingLocation.map((loc: any) => loc?.locationName)?.join(", ") || "N/A"}
                     </Text>
                     <Divider />
                   </Stack>
@@ -129,7 +129,6 @@ const WorkHistory = observer(({ user }: any) => {
                     <Text fontSize="md">{new Date(history.doj).toLocaleDateString() || "N/A"}</Text>
                     <Divider />
                   </Stack>
-
                   <Stack spacing={3} mb={4}>
                     <Text fontWeight="bold" fontSize="lg" color="teal.600">
                       <Icon as={FaCalendarAlt} mr={2} boxSize={iconSize} />
@@ -157,8 +156,8 @@ const WorkHistory = observer(({ user }: any) => {
                     </Text>
                     <Text fontSize="md">
                       {history.workTiming.map((timing: any) =>
-                        `${timing.daysOfWeek.join(", ")}: ${timing.startTime} - ${timing.endTime}`
-                      ).join("; ") || "N/A"}
+                        `${timing?.daysOfWeek?.join(", ")}: ${timing?.startTime} - ${timing?.endTime}`
+                      )?.join("; ") || "N/A"}
                     </Text>
                     <Divider />
                   </Stack>

@@ -1,7 +1,7 @@
 export const projectStatus : any = [
     { value: "backlog", label: "BackLog" },
     { value: "todo", label: "Todo" },
-    { value: "in-progress", label: "In Progress" },
+    { value: "inProgress", label: "In Progress" },
     { value: "done", label: "Done" },
     { value: "complete", label: "Completed" },
 ]

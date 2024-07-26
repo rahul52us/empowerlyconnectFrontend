@@ -5,6 +5,17 @@ import {
 import { getIdFromObject } from "../../../../../config/constant/function";
 import { ProjectPrioties, projectStatus } from "./constant";
 
+export const generateProjectInitialValues = (values : any) => {
+  return {
+    ...values,
+   priority : ProjectPrioties.find((item : any) => item.value === values.priority)  || ProjectPrioties[0],
+   status : projectStatus.find((item : any) => item.value === values.status)  || projectStatus[0],
+   startDate : values.startDate ? new Date(values.startDate) : new Date(),
+   endDate : values.endDate ? new Date(values.endDate) : new Date(),
+   dueDate : values.dueDate ? new Date(values.dueDate) : new Date()
+  }
+}
+
 export const generateProjectResponse = (values: any) => {
   return {
     priority: values?.priority
