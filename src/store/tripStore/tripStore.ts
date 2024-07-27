@@ -30,7 +30,8 @@ class TripStore {
       createTrip: action,
       updateTrip:action,
       getTripChartCounts:action,
-      getTripCounts:action
+      getTripCounts:action,
+      getSingleTrip:action
     });
   }
 
@@ -47,6 +48,15 @@ class TripStore {
     try {
       const { data } = await axios.put(`trip/${id}`, sendData);
       return data;
+    } catch (err: any) {
+      return Promise.reject(err?.response || err);
+    }
+  }
+
+  getSingleTrip = async (sendData : any) => {
+    try {
+      const { data } = await axios.get(`trip/${sendData._id}`);
+      return data.data || {};
     } catch (err: any) {
       return Promise.reject(err?.response || err);
     }

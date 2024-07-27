@@ -232,7 +232,7 @@ const TripLayout = observer(
             }}
           />
         )}
-        {tripFormData?.type === "edit" && (
+        {tripFormData && tripFormData?.type === "edit" && (
           <EditTripForm
             tripFormData={tripFormData}
             setTripFormData={setTripFormData}

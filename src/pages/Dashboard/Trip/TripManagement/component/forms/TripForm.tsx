@@ -62,6 +62,7 @@ return (
 	<Formik<any>
 		initialValues={initialValues}
 		validationSchema={tripFormValidation}
+		enableReinitialize={true}
 		onSubmit={(values, { resetForm }) => {
 		onSubmit(values, resetForm);
 		}}

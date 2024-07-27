@@ -40,16 +40,16 @@ export const generateTripResponse = async (data: TripFormValues) => {
       isCab:Boolean(item.isCab)
     })
   );
-  const type = data.type ? data.type.value : tripTypes[0].value;
-  const updatedParticipants = data.participants.map(
+  const type = data.type ? data?.type?.value : tripTypes[0].value;
+  const updatedParticipants = data.participants?.map(
     (item: Participants) => item.value
-  );
-  const updatedAdditionalExpense = data.additionalExpenses.map(
+  ) || [];
+  const updatedAdditionalExpense = data.additionalExpenses?.map(
     (item: AdditionalExpense) => ({
       ...item,
       type: item?.type?.value || "",
     })
-  );
+  ) || [];
   const updatedData = {
     ...data,
     type: type,
@@ -62,7 +62,7 @@ export const generateTripResponse = async (data: TripFormValues) => {
 
 
 export const generateEditInitialValues = (data : any) => {
-  const updatedTravelDetails = data.travelDetails.map(
+  const updatedTravelDetails = data?.travelDetails?.map(
     (item: TravelDetails) => {
       let td : any = travelModes.filter((it : any) => it.value === item.travelMode)
       return({
@@ -73,22 +73,21 @@ export const generateEditInitialValues = (data : any) => {
       isAccommodation:item.isAccommodation ? String(item.isAccommodation) : undefined,
       isCab:String(item.isCab)
     })
-});
-  let types = tripTypes.filter((it : any) => it.value === data.type.value)
-  const type = data.type ? types.length ? types[0] : undefined : undefined;
+}) || [];
 
-  const updatedAdditionalExpense = data.additionalExpenses.map(
+
+  const updatedAdditionalExpense = data?.additionalExpenses?.map(
     (item: AdditionalExpense) => {
       let dt = categoryTypes.filter((it : any) => it.value === item.type)
       return ({
       ...item,
       type: dt.length ? dt[0] : undefined,
     })
-});
-  let trtype = tripTypes.filter((item : any) => item.value === type)
+}) || [];
+
   const updatedData = {
     ...data,
-    type: trtype.length ? trtype[0] : tripTypes[0] ,
+    type: tripTypes.find((it : any) => it.value === data.type) || tripTypes[0],
     travelDetails: updatedTravelDetails,
     additionalExpenses: updatedAdditionalExpense,
   };
