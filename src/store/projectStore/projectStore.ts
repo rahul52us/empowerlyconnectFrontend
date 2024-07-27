@@ -11,6 +11,11 @@ class ProjectStore {
     limit : paginationLimit
   };
 
+  projectCount : any = {
+    data : 0,
+    loading : false
+  }
+
   openProjectDrawer : any = {
     type: "create",
     open: false,
@@ -21,11 +26,13 @@ class ProjectStore {
     makeObservable(this, {
       openProjectDrawer: observable,
       projects: observable,
+      projectCount:observable,
       setOpenProjectDrawer: action,
       createProject: action,
       getProjects: action,
       getSingleProject: action,
-      updateProject:action
+      updateProject:action,
+      getProjectCounts:action
     });
   }
 
@@ -63,6 +70,19 @@ class ProjectStore {
       return Promise.reject(err?.response || err);
     }
   };
+
+  getProjectCounts = async () => {
+    try {
+      this.projectCount.loading = true;
+      const { data } = await axios.get(`/project/total/count`,{params : {company : store.auth.getCurrentCompany()}});
+      this.projectCount.data = data?.data || 0
+      return data;
+    } catch (err: any) {
+      return Promise.reject(err?.response || err);
+    } finally {
+      this.projectCount.loading = false;
+    }
+  }
 
   getProjects = async (sendData: any) => {
     this.projects.loading = true;
