@@ -26,5 +26,5 @@ export const initialValuesOfProjects : any = {
     project_manager: [],
     status: projectStatus[0],
     attach_files: [],
-    logo : []
+    logo : {file : []}
 }

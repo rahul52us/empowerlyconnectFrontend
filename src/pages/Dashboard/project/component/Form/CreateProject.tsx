@@ -13,12 +13,12 @@ const CreateProject = observer(() => {
 
   const handleSubmitForm = async({ values, setSubmitting, resetForm }: any) => {
     try {
-      if (values.logo && values.logo?.length !== 0) {
-        const buffer = await readFileAsBase64(values.logo);
+      if (values.logo?.file && values.logo?.file?.length !== 0) {
+        const buffer = await readFileAsBase64(values.logo?.file);
         const fileData = {
           buffer: buffer,
-          filename: values.logo?.name,
-          type: values.logo?.type,
+          filename: values.logo?.file?.name,
+          type: values.logo?.file?.type,
         };
         values.logo = fileData;
       }

@@ -7,7 +7,7 @@ const ProjectCreateValidation = Yup.object().shape({
   description: Yup.string()
     .trim()
     .min(2, "Description must have a minimum length of 2."),
-  logo: Yup.string(),
+  logo: Yup.mixed().required(),
   dueDate: Yup.date(),
   priority: Yup.mixed().required(),
   project_manager: Yup.array()

@@ -53,7 +53,7 @@ const ProjectForm = observer(
             return (
               <Form>
                 <Flex>
-                  {values?.logo?.length === 0 ? (
+                  {values?.logo?.file?.length === 0 ? (
                     <CustomInput
                       type="file-drag"
                       name="logo"
@@ -61,7 +61,7 @@ const ProjectForm = observer(
                       isMulti={true}
                       accept="image/*"
                       onChange={(e: any) => {
-                        setFieldValue("logo", e.target.files[0]);
+                        setFieldValue("logo", {...values.logo, file : e.target.files[0], isAdd : 1});
                       }}
                       required={true}
                       showError={showError}
@@ -70,11 +70,11 @@ const ProjectForm = observer(
                   ) : (
                     <Box mt={-5} width="100%">
                       <ShowFileUploadFile
-                        files={values.logo}
+                        files={values.logo?.file}
                         removeFile={(_: any) => {
                           setFieldValue(
                             "logo",
-                            removeDataByIndex(values.logo, 0)
+                            {...values.logo, file : removeDataByIndex(values.logo, 0), isDeleted : 1}
                           );
                         }}
                         edit={isEdit}
