@@ -7,6 +7,7 @@ import CustomTable from "../../../../../config/component/CustomTable/CustomTable
 import { tablePageLimit } from "../../../../../config/constant/variable";
 import EditTripForm from "../component/forms/EditTripForm";
 import AddTripForm from "../component/forms/AddTripForm";
+import { getStatusType } from "../../../../../config/constant/statusCode";
 const TripLayout = observer(
   ({
     setTripFormData,
@@ -36,9 +37,9 @@ const TripLayout = observer(
         .then(() => {})
         .catch((err: any) => {
           openNotification({
-            type: "error",
             title: "Failed to get Department Categories",
-            message: err?.message,
+            message: err?.data?.message,
+            type: getStatusType(err.status),
           });
         })
         .finally(() => {
@@ -65,9 +66,9 @@ const TripLayout = observer(
         .then(() => {})
         .catch((err: any) => {
           openNotification({
-            type: "error",
             title: "Failed to get Department Categories",
-            message: err?.message,
+            message: err?.data?.message,
+            type: getStatusType(err.status),
           });
         });
     };

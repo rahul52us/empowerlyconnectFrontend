@@ -6,6 +6,7 @@ import store from "../../../../../../store/store";
 import { initialValues } from "../../utils/constant";
 import {generateTripResponse} from '../../utils/functions'
 import { TripFormValues } from "../../utils/interface";
+import { getStatusType } from "../../../../../../config/constant/statusCode";
 
 const AddTripForm = observer(({ tripFormData, setTripFormData,handleGetRecord }: any) => {
   const {
@@ -34,8 +35,8 @@ const AddTripForm = observer(({ tripFormData, setTripFormData,handleGetRecord }:
       .catch((err) => {
         openNotification({
           title: "Create Failed",
-          message: err?.message,
-          type: "error",
+          message: err?.data?.message,
+          type: getStatusType(err.status),
         });
       })
       .finally(() => {

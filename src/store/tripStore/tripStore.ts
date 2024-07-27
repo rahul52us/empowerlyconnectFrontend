@@ -39,7 +39,7 @@ class TripStore {
       const { data } = await axios.post("trip/create", {...sendData,company : store.auth.getCurrentCompany()});
       return data;
     } catch (err: any) {
-      return Promise.reject(err?.response?.data || err?.message);
+      return Promise.reject(err?.response || err);
     }
   }
 
@@ -48,7 +48,7 @@ class TripStore {
       const { data } = await axios.put(`trip/${id}`, sendData);
       return data;
     } catch (err: any) {
-      return Promise.reject(err?.response?.data || err?.message);
+      return Promise.reject(err?.response || err);
     }
   }
 
@@ -60,7 +60,7 @@ class TripStore {
       this.trips.totalPages = data?.data?.totalPages || 0
       return data;
     } catch (err: any) {
-      return Promise.reject(err?.response?.data || err?.message);
+      return Promise.reject(err?.response || err);
     } finally {
       this.trips.loading = false;
     }
@@ -73,7 +73,7 @@ class TripStore {
       this.tripChartCount.data = data?.data
       return data;
     } catch (err: any) {
-      return Promise.reject(err?.response?.data);
+      return Promise.reject(err?.response || err);
     } finally {
       this.tripChartCount.loading = false;
     }
@@ -86,7 +86,7 @@ class TripStore {
       this.tripCount.data = data?.data || 0
       return data;
     } catch (err: any) {
-      return Promise.reject(err?.response?.data);
+      return Promise.reject(err?.response || err);
     } finally {
       this.tripCount.loading = false;
     }

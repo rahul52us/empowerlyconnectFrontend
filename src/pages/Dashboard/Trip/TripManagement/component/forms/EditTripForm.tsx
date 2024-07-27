@@ -8,6 +8,7 @@ import {
   generateEditInitialValues,
   generateTripResponse,
 } from "../../utils/functions";
+import { getStatusType } from "../../../../../../config/constant/statusCode";
 
 const EditTripForm = observer(({ tripFormData, setTripFormData, handleGetRecord }: any) => {
   const {
@@ -75,9 +76,9 @@ const EditTripForm = observer(({ tripFormData, setTripFormData, handleGetRecord 
       })
       .catch((err) => {
         openNotification({
-          title: "Updation Failed",
-          message: err?.message,
-          type: "error",
+          title: "Update Failed",
+          message: err?.data?.message,
+          type: getStatusType(err.status),
         });
       })
       .finally(() => {
