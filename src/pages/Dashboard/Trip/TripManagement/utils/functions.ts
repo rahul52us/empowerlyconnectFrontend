@@ -1,9 +1,8 @@
 import { YYYYMMDD_FORMAT, formatDate } from "../../../../../config/constant/dateUtils";
 import { readFileAsBase64 } from "../../../../../config/constant/function";
-import { categoryTypes, travelModes, tripTypes } from "./constant";
+import { categoryTypes,  travelModes, tripTypes } from "./constant";
 import {
   AdditionalExpense,
-  Participants,
   TravelDetails,
   TripFormValues,
 } from "./interface";
@@ -42,7 +41,7 @@ export const generateTripResponse = async (data: TripFormValues) => {
   );
   const type = data.type ? data?.type?.value : tripTypes[0].value;
   const updatedParticipants = data.participants?.map(
-    (item: Participants) => item.value
+    (item: any) => item.value || item._id
   ) || [];
   const updatedAdditionalExpense = data.additionalExpenses?.map(
     (item: AdditionalExpense) => ({
@@ -90,6 +89,7 @@ export const generateEditInitialValues = (data : any) => {
     type: tripTypes.find((it : any) => it.value === data.type) || tripTypes[0],
     travelDetails: updatedTravelDetails,
     additionalExpenses: updatedAdditionalExpense,
+    participants : data.participants || []
   };
   return updatedData;
 }

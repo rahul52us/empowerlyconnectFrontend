@@ -68,6 +68,7 @@ return (
 		}}
 	>
 		{({ handleChange, setFieldValue, values, errors }) => {
+			console.log(errors)
 		return (
 			<Form>
 			<SimpleGrid columns={2} spacing={4}>
@@ -170,6 +171,8 @@ return (
 						name={`participants`}
 						options={participants}
 						value={values.participants}
+						getOptionLabel={(options : any) => options.username}
+						getOptionValue={(options : any) => options._id}
 						onChange={(e) => {
 						setFieldValue(`participants`, e);
 						}}
