@@ -4,10 +4,17 @@ import { useEffect, useState } from "react";
 import store from "../../../../../store/store";
 import { generateProjectInitialValues } from "../utils/function";
 import Loader from "../../../../../config/component/Loader/Loader";
+import { getStatusType } from "../../../../../config/constant/statusCode";
 
 const EditProject = observer((projectData: any) => {
   const {
-    Project: { getSingleProject, openProjectDrawer },
+    Project: {
+      getSingleProject,
+      openProjectDrawer,
+      setOpenProjectDrawer,
+      updateProject,
+    },
+    auth: { openNotification },
   } = store;
   const [fetchProjectData, setFetchProjectData] = useState<any>({
     data: null,
@@ -18,21 +25,49 @@ const EditProject = observer((projectData: any) => {
     setFetchProjectData({ loading: true, data: null });
     getSingleProject({ id: openProjectDrawer?.data?._id })
       .then((data: any) => {
-        setFetchProjectData({ loading: false, data: data.data });
+        setFetchProjectData({
+          loading: false,
+          data: generateProjectInitialValues(data.data),
+        });
       })
       .catch(() => {
         setFetchProjectData({ loading: false, data: null });
       });
   }, [getSingleProject, projectData, openProjectDrawer]);
 
+  const handleSubmitForm = ({ values, setSubmitting, resetForm }: any) => {
+    try {
+      updateProject({ _id: fetchProjectData?.data?._id, ...values })
+        .then((data: any) => {
+          openNotification({
+            title: "Successfully Updated",
+            message: `${data.message}`,
+            type: "success",
+          });
+          resetForm();
+          setOpenProjectDrawer("create");
+        })
+        .catch((err) => {
+          openNotification({
+            title: "Create Failed",
+            message: err?.data?.message,
+            type: getStatusType(err.status),
+          });
+        })
+        .finally(() => {
+          setSubmitting(false);
+        });
+    } catch (err: any) {}
+  };
+
   return (
     <div>
       {fetchProjectData.loading === false ? (
         fetchProjectData.data && (
           <ProjectForm
-            initialValuesOfProjects={generateProjectInitialValues(
-              fetchProjectData.data
-            )}
+            initialValuesOfProjects={fetchProjectData.data}
+            handleSubmitForm={handleSubmitForm}
+            isEdit={true}
           />
         )
       ) : (

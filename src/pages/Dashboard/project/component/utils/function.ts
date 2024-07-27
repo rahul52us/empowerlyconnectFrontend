@@ -12,9 +12,9 @@ export const generateProjectInitialValues = (values : any) => {
    status : projectStatus.find((item : any) => item.value === values.status)  || projectStatus[0],
    startDate : values.startDate ? new Date(values.startDate) : new Date(),
    endDate : values.endDate ? new Date(values.endDate) : new Date(),
-   dueDate : values.dueDate ? new Date(values.dueDate) : new Date()
-  }
-}
+   dueDate : values.dueDate ? new Date(values.dueDate) : new Date(),
+   logo: values.logo?.url ? values?.logo : []
+}}
 
 export const generateProjectResponse = (values: any) => {
   return {

@@ -1,9 +1,56 @@
 import { observer } from "mobx-react-lite";
 import ProjectForm from "./ProjectForm";
 import { initialValuesOfProjects } from "../utils/constant";
+import store from "../../../../../store/store";
+import { getStatusType } from "../../../../../config/constant/statusCode";
+import { readFileAsBase64 } from "../../../../../config/constant/function";
 
 const CreateProject = observer(() => {
-  return <ProjectForm initialValuesOfProjects={initialValuesOfProjects}/>;
+  const {
+    Project: { createProject, setOpenProjectDrawer },
+    auth: { openNotification },
+  } = store;
+
+  const handleSubmitForm = async({ values, setSubmitting, resetForm }: any) => {
+    try {
+      if (values.logo && values.logo?.length !== 0) {
+        const buffer = await readFileAsBase64(values.logo);
+        const fileData = {
+          buffer: buffer,
+          filename: values.logo?.name,
+          type: values.logo?.type,
+        };
+        values.logo = fileData;
+      }
+      createProject({...values})
+        .then((data) => {
+          openNotification({
+            title: "Successfully Created",
+            message: `${data.message}`,
+            type: "success",
+          });
+          resetForm();
+          setOpenProjectDrawer("create");
+        })
+        .catch((err) => {
+          openNotification({
+            title: "Create Failed",
+            message: err?.data?.message,
+            type: getStatusType(err.status),
+          });
+        })
+        .finally(() => {
+          setSubmitting(false);
+        });
+    } catch (err: any) {}
+  };
+
+  return (
+    <ProjectForm
+      initialValuesOfProjects={initialValuesOfProjects}
+      handleSubmitForm={handleSubmitForm}
+    />
+  );
 });
 
 export default CreateProject;

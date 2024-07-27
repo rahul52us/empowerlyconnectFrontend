@@ -61,6 +61,7 @@ class AuthStore {
     axios.defaults.baseURL = backendBaseUrl;
   };
 
+
   initiatAppOptions = () => {
     this.loading = true;
     this.setAppAxiosDefaults();

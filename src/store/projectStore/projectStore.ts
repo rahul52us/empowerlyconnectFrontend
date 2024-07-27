@@ -25,8 +25,21 @@ class ProjectStore {
       createProject: action,
       getProjects: action,
       getSingleProject: action,
+      updateProject:action
     });
   }
+
+  updateProject = async (sendData: any) => {
+    try {
+      const { data } = await axios.put(`/project/${sendData._id}`, {
+        ...sendData,
+        company: store.auth.getCurrentCompany(),
+      });
+      return data;
+    } catch (err: any) {
+      return Promise.reject(err?.response || err);
+    }
+  };
 
   createProject = async (sendData: any) => {
     try {

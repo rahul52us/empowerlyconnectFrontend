@@ -69,6 +69,7 @@ interface CustomInputProps {
   readOnly?: boolean;
   rest?: any;
   labelcolor?: any;
+  isPortal?:any
 }
 
 const CustomInput: React.FC<CustomInputProps> = ({
@@ -98,6 +99,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
   accept,
   readOnly,
   labelcolor,
+  isPortal,
   // Added onFileDrop prop
   ...rest
 }) => {
@@ -296,7 +298,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
                 <div className="chakra-select__dropdown-indicator" />
               ),
             }}
-            // menuPosition="fixed"
+            menuPosition={isPortal ? 'fixed' : undefined}
           />
         );
       case "date":

@@ -1,111 +1,107 @@
 import { useEffect, useState } from "react";
-import { Flex, Grid, GridItem } from "@chakra-ui/react";
+import { Box, Flex, Grid, GridItem } from "@chakra-ui/react";
 import CustomInput from "../../../../../config/component/CustomInput/CustomInput";
 import { Form, Formik } from "formik";
 import { ProjectCreateValidation } from "../utils/validation";
 import { observer } from "mobx-react-lite";
 import store from "../../../../../store/store";
 import CustomSubmitBtn from "../../../../../config/component/CustomSubmitBtn/CustomSubmitBtn";
-import { debounce } from "lodash";
 import { ProjectFormValuesI } from "../utils/dto";
 import { ProjectPrioties, projectStatus } from "../utils/constant";
 import { generateProjectResponse } from "../utils/function";
-import { getStatusType } from "../../../../../config/constant/statusCode";
+import ShowFileUploadFile from "../../../../../config/component/common/ShowFileUploadFile/ShowFileUploadFile";
+import { removeDataByIndex } from "../../../../../config/constant/function";
 
-const ProjectForm = observer(({initialValuesOfProjects} : any) => {
-  const [searchProjectName, setSearchProjectName] = useState("");
-  const [showError, setShowError] = useState(false);
-  const {
-    auth: { getCompanyUsers, companyUsers, openNotification },
-    Project: { getProjects, createProject, setOpenProjectDrawer },
-  } = store;
+const ProjectForm = observer(
+  ({ initialValuesOfProjects, handleSubmitForm, isEdit }: any) => {
+    const [showError, setShowError] = useState(false);
+    const {
+      auth: { getCompanyUsers, companyUsers, openNotification },
+      Project: { setOpenProjectDrawer },
+    } = store;
 
-  useEffect(() => {
-    getCompanyUsers({ page: 1 })
-      .then(() => {})
-      .catch((err) => {
-        openNotification({
-          message: err?.message,
-          title: "Fetch Users Failed",
-          type: "err",
-        });
-      });
-  }, [getCompanyUsers, openNotification]);
-
-  useEffect(() => {
-    const searchDebounceProject = debounce((value) => {
-      getProjects(value)
+    useEffect(() => {
+      getCompanyUsers({ page: 1 })
         .then(() => {})
-        .catch((err: any) => {
-          console.log(err);
+        .catch((err) => {
+          openNotification({
+            message: err?.message,
+            title: "Fetch Users Failed",
+            type: "err",
+          });
         });
-    }, 2000);
+    }, [getCompanyUsers, openNotification]);
 
-    searchDebounceProject(searchProjectName);
-
-    return () => {
-      searchDebounceProject.cancel();
-    };
-  }, [searchProjectName, getProjects]);
-
-  return (
-    <div>
-      <Formik
-        initialValues={initialValuesOfProjects}
-        validationSchema={ProjectCreateValidation}
-        onSubmit={(
-          values: ProjectFormValuesI,
-          { setSubmitting, resetForm }
-        ) => {
-          const sendDataObject = generateProjectResponse(values);
-          createProject({ ...values, ...sendDataObject })
-            .then((data) => {
-              openNotification({
-                title: "Successfully Created",
-                message: `${data.message}`,
-                type: "success",
-              });
-              resetForm();
-              setOpenProjectDrawer('create')
-            })
-            .catch((err) => {
-              openNotification({
-                title: "Create Failed",
-                message: err?.data?.message,
-                type: getStatusType(err.status),
-              });
-            })
-            .finally(() => {
-              setSubmitting(false);
+    return (
+      <div>
+        <Formik
+          initialValues={initialValuesOfProjects}
+          validationSchema={ProjectCreateValidation}
+          onSubmit={(
+            values: ProjectFormValuesI,
+            { setSubmitting, resetForm }
+          ) => {
+            const sendDataObject = generateProjectResponse(values);
+            handleSubmitForm({
+              values: { ...values, ...sendDataObject },
+              setSubmitting,
+              resetForm
             });
-        }}
-      >
-        {({ handleChange, values, errors, setFieldValue, isSubmitting }) => {
-          return (
-            <Form>
-              <Grid
-                gridTemplateColumns={{
-                  base: "repeat(1, 1fr)",
-                  md: "repeat(2, 1fr)",
-                  lg: "repeat(3, 1fr)",
-                }}
-                overflowY={'auto'}
-                gap={2}
-                minH={'81vh'}
-                maxH={'81vh'}
-              >
+          }}
+        >
+          {({ handleChange, values, errors, setFieldValue, isSubmitting }) => {
+            return (
+              <Form>
+                <Flex>
+                  {values?.logo?.length === 0 ? (
+                    <CustomInput
+                      type="file-drag"
+                      name="logo"
+                      value={values.logo}
+                      isMulti={true}
+                      accept="image/*"
+                      onChange={(e: any) => {
+                        setFieldValue("logo", e.target.files[0]);
+                      }}
+                      required={true}
+                      showError={showError}
+                      error={errors.logo}
+                    />
+                  ) : (
+                    <Box mt={-5} width="100%">
+                      <ShowFileUploadFile
+                        files={values.logo}
+                        removeFile={(_: any) => {
+                          setFieldValue(
+                            "logo",
+                            removeDataByIndex(values.logo, 0)
+                          );
+                        }}
+                        edit={isEdit}
+                      />
+                    </Box>
+                  )}
+                </Flex>
+                <Grid
+                  gridTemplateColumns={{
+                    base: "repeat(1, 1fr)",
+                    md: "repeat(2, 1fr)",
+                    lg: "repeat(3, 1fr)",
+                  }}
+                  overflowY={"auto"}
+                  gap={2}
+                  minH={"81vh"}
+                  maxH={"81vh"}
+                >
                   <CustomInput
                     value={values.project_name}
                     name="project_name"
                     label="Project Name"
                     placeholder="Enter The project name"
-                    required
-                    onChange={(e: any) => {
-                      setSearchProjectName(e.target.value);
-                      handleChange(e);
-                    }}
+                    required={true}
                     error={errors.project_name}
                     showError={showError}
+                    onChange={handleChange}
                   />
                   <CustomInput
                     name="priority"
@@ -143,18 +139,18 @@ const ProjectForm = observer(({initialValuesOfProjects} : any) => {
                     options={projectStatus}
                     showError={showError}
                   />
-                <GridItem colSpan={{ base: 1, md: 3 }}>
-                  <CustomInput
-                    name="description"
-                    label="Description"
-                    placeholder="Write the Description"
-                    type="textarea"
-                    onChange={handleChange}
-                    value={values.description}
-                    error={errors.description}
-                    showError={showError}
-                  />
-                </GridItem>
+                  <GridItem colSpan={{ base: 1, md: 3 }}>
+                    <CustomInput
+                      name="description"
+                      label="Description"
+                      placeholder="Write the Description"
+                      type="textarea"
+                      onChange={handleChange}
+                      value={values.description}
+                      error={errors.description}
+                      showError={showError}
+                    />
+                  </GridItem>
                   <CustomInput
                     value={values.startDate}
                     error={errors.startDate}
@@ -180,111 +176,119 @@ const ProjectForm = observer(({initialValuesOfProjects} : any) => {
                     error={errors.endDate}
                     showError={showError}
                   />
-                <GridItem colSpan={{ base: 1, md: 1 }}>
-                  <CustomInput
-                    value={values.dueDate}
-                    name="dueDate"
-                    label="Due Date"
-                    placeholder="Select the Due Date"
-                    type="date"
-                    onChange={(date: any) => {
-                      setFieldValue("dueDate", date ? date : "");
+                  <GridItem colSpan={{ base: 1, md: 1 }}>
+                    <CustomInput
+                      value={values.dueDate}
+                      name="dueDate"
+                      label="Due Date"
+                      placeholder="Select the Due Date"
+                      type="date"
+                      onChange={(date: any) => {
+                        setFieldValue("dueDate", date ? date : "");
+                      }}
+                      error={errors.dueDate}
+                      showError={showError}
+                      minDate={values.startDate}
+                    />
+                  </GridItem>
+                  <GridItem>
+                    <CustomInput
+                      name="customers"
+                      label="Customers"
+                      value={values.customers}
+                      getOptionLabel={(option: any) => option.username}
+                      getOptionValue={(option: any) => option._id}
+                      options={companyUsers}
+                      placeholder="Select the Customers"
+                      type="select"
+                      onChange={(e: any) => {
+                        setFieldValue("customers", e);
+                      }}
+                      isMulti
+                      isSearchable
+                      showError={showError}
+                      isPortal={true}
+                    />
+                  </GridItem>
+                  <GridItem>
+                    <CustomInput
+                      name="project_manager"
+                      label="Project Manager"
+                      value={values.project_manager}
+                      getOptionLabel={(option: any) => option.username}
+                      getOptionValue={(option: any) => option._id}
+                      options={companyUsers}
+                      placeholder="Select the Project Manager"
+                      type="select"
+                      onChange={(e: any) => {
+                        setFieldValue("project_manager", e);
+                      }}
+                      isMulti
+                      isSearchable
+                      error={errors.project_manager}
+                      showError={showError}
+                      isPortal={true}
+                    />
+                  </GridItem>
+                  <GridItem colSpan={{ base: 1, md: 1 }}>
+                    <CustomInput
+                      name="team_members"
+                      label="Team"
+                      value={values.team_members}
+                      getOptionLabel={(option: any) => option.username}
+                      getOptionValue={(option: any) => option._id}
+                      options={companyUsers}
+                      placeholder="Select the Team Members"
+                      type="select"
+                      onChange={(e: any) => {
+                        setFieldValue("team_members", e);
+                      }}
+                      isMulti
+                      isSearchable
+                      error={errors.team_members}
+                      showError={showError}
+                      isPortal={true}
+                    />
+                  </GridItem>
+                  <GridItem colSpan={{ base: 1, md: 1 }}>
+                    <CustomInput
+                      name="followers"
+                      label="Followers"
+                      value={values.followers}
+                      getOptionLabel={(option: any) => option.username}
+                      getOptionValue={(option: any) => option._id}
+                      options={companyUsers}
+                      placeholder="Select the Team Followers"
+                      type="select"
+                      onChange={(e: any) => {
+                        setFieldValue("followers", e);
+                      }}
+                      isMulti
+                      isSearchable
+                      error={errors.followers}
+                      showError={showError}
+                      isPortal={true}
+                    />
+                  </GridItem>
+                </Grid>
+                <Flex justifyContent={"end"}>
+                  <CustomSubmitBtn
+                    cancelFunctionality={{
+                      show: true,
+                      onClick: setOpenProjectDrawer,
                     }}
-                    error={errors.dueDate}
-                    showError={showError}
-                    minDate={values.startDate}
+                    onClick={() => setShowError(true)}
+                    type="submit"
+                    loading={isSubmitting}
                   />
-                </GridItem>
-                <GridItem>
-                  <CustomInput
-                    name="customers"
-                    label="Customers"
-                    value={values.customers}
-                    getOptionLabel={(option: any) => option.username}
-                    getOptionValue={(option: any) => option._id}
-                    options={companyUsers}
-                    placeholder="Select the Customers"
-                    type="select"
-                    onChange={(e: any) => {
-                      setFieldValue("customers", e);
-                    }}
-                    isMulti
-                    isSearchable
-                    showError={showError}
-                  />
-                </GridItem>
-                <GridItem>
-                  <CustomInput
-                    name="project_manager"
-                    label="Project Manager"
-                    value={values.project_manager}
-                    getOptionLabel={(option: any) => option.username}
-                    getOptionValue={(option: any) => option._id}
-                    options={companyUsers}
-                    placeholder="Select the Project Manager"
-                    type="select"
-                    onChange={(e: any) => {
-                      setFieldValue("project_manager", e);
-                    }}
-                    isMulti
-                    isSearchable
-                    error={errors.project_manager}
-                    showError={showError}
-                  />
-                </GridItem>
-                <GridItem colSpan={{ base: 1, md: 1 }}>
-                  <CustomInput
-                    name="team_members"
-                    label="Team"
-                    value={values.team_members}
-                    getOptionLabel={(option: any) => option.username}
-                    getOptionValue={(option: any) => option._id}
-                    options={companyUsers}
-                    placeholder="Select the Team Members"
-                    type="select"
-                    onChange={(e: any) => {
-                      setFieldValue("team_members", e);
-                    }}
-                    isMulti
-                    isSearchable
-                    error={errors.team_members}
-                    showError={showError}
-                  />
-                </GridItem>
-                <GridItem colSpan={{ base: 1, md: 1 }}>
-                  <CustomInput
-                    name="followers"
-                    label="Followers"
-                    value={values.followers}
-                    getOptionLabel={(option: any) => option.username}
-                    getOptionValue={(option: any) => option._id}
-                    options={companyUsers}
-                    placeholder="Select the Team Followers"
-                    type="select"
-                    onChange={(e: any) => {
-                      setFieldValue("followers", e);
-                    }}
-                    isMulti
-                    isSearchable
-                    error={errors.followers}
-                    showError={showError}
-                  />
-                </GridItem>
-              </Grid>
-              <Flex justifyContent={'end'}>
-                <CustomSubmitBtn
-                  cancelFunctionality={{show : true, onClick : setOpenProjectDrawer}}
-                  onClick={() => setShowError(true)}
-                  type="submit"
-                  loading={isSubmitting}
-                />
-              </Flex>
-            </Form>
-          );
-        }}
-      </Formik>
-    </div>
-  );
-});
+                </Flex>
+              </Form>
+            );
+          }}
+        </Formik>
+      </div>
+    );
+  }
+);
 
 export default ProjectForm;

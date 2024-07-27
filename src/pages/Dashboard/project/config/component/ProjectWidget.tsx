@@ -35,7 +35,7 @@ const ProjectWidget = observer(() => {
               project_name={item.project_name}
               subtitle={item.subtitle}
               description={item.description}
-              logo={{ name: "Alpha", url: "https://via.placeholder.com/150" }}
+              logo={item.logo}
               priority={item.priority}
               status={item.status}
               startDate={item.startDate}

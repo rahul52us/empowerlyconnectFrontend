@@ -23,7 +23,7 @@ interface CardProps {
     type?: string;
   };
   priority: "Low" | "Medium" | "High";
-  status: "BackLog" | "Todo" | "In Progress" | "Done" | "Completed";
+  status: "BackLog" | "Todo" | "InProgress" | "Done" | "Completed";
   startDate?: Date;
   endDate?: Date;
   dueDate?: Date;
@@ -63,9 +63,12 @@ const ProjectCard: React.FC<CardProps> = ({
       transition="all 0.3s ease-in-out"
     >
       <Flex align="center" mb={4}>
-        {logo?.url && (
-          <Avatar size="xl" src={logo.url} name={logo.name} mr={4} />
-        )}
+        <Avatar
+          size="xl"
+          src={logo?.url || "https://via.placeholder.com/150"}
+          name={logo?.name}
+          mr={4}
+        />
         <Box
           cursor="pointer"
           onClick={() => setOpenProjectDrawer("edit", { ...item, id: item.id })}
@@ -100,7 +103,7 @@ const ProjectCard: React.FC<CardProps> = ({
         </Badge>
         <Badge
           colorScheme={
-            status === "In Progress"
+            status === "InProgress"
               ? "blue"
               : status === "Done" || status === "Completed"
               ? "green"
