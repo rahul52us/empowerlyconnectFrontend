@@ -74,7 +74,7 @@ class ProjectStore {
   getProjectCounts = async () => {
     try {
       this.projectCount.loading = true;
-      const { data } = await axios.get(`/project/total/count`,{params : {company : store.auth.getCurrentCompany()}});
+      const { data } = await axios.post(`/project/total/count`,{company : [store.auth.getCurrentCompany()]});
       this.projectCount.data = data?.data || 0
       return data;
     } catch (err: any) {
@@ -88,11 +88,9 @@ class ProjectStore {
     this.projects.loading = true;
     try {
       const { data } = await axios.post(
-        `/project/get?page=${this.projects.currentPage}&limit=${
-          this.projects.limit
-        }&company=${store.auth.getCurrentCompany()}`,
-        {},
-        { ...sendData }
+        `/project/get`,
+        {...sendData, company : [store.auth.getCurrentCompany() ]},
+        {params : {page : this.projects.currentPage, limit : this.projects.limit }}
       );
       this.projects.data = data.data?.data || [];
       this.projects.totalPages = data.data?.totalPages || 1;

@@ -95,3 +95,7 @@ export const getIdFromObject = (data: any, property: string = "_id") => {
   return arr;
 };
 
+export const capitalizeString = (str : string) => {
+  if (!str) return '';
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+};

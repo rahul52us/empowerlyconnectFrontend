@@ -55,7 +55,7 @@ class TripStore {
 
   getSingleTrip = async (sendData : any) => {
     try {
-      const { data } = await axios.get(`trip/${sendData._id}`);
+      const { data } = await axios.get(`trip/single/${sendData._id}`);
       return data.data || {};
     } catch (err: any) {
       return Promise.reject(err?.response || err);
@@ -65,7 +65,7 @@ class TripStore {
   getAllTrip = async (sendData : any) => {
     try {
       this.trips.loading = true;
-      const { data } = await axios.get("/trip", {params : {...sendData, company : store.auth.getCurrentCompany()}});
+      const { data } = await axios.post("/trip", {company : [store.auth.getCurrentCompany()]},{params : {...sendData}}, );
       this.trips.data = data?.data?.data || [];
       this.trips.totalPages = data?.data?.totalPages || 0
       return data;
@@ -79,7 +79,7 @@ class TripStore {
   getTripChartCounts = async () => {
     try {
       this.tripChartCount.loading = true;
-      const { data } = await axios.get(`/trip/tripcounts`);
+      const { data } = await axios.post(`/trip/tripcounts`, {company : [store.auth.getCurrentCompany()]});
       this.tripChartCount.data = data?.data
       return data;
     } catch (err: any) {
@@ -92,7 +92,7 @@ class TripStore {
   getTripCounts = async () => {
     try {
       this.tripCount.loading = true;
-      const { data } = await axios.get(`/trip/total/count`,{params : {company : store.auth.getCurrentCompany()}});
+      const { data } = await axios.post(`/trip/total/count`,{company : [store.auth.getCurrentCompany()]});
       this.tripCount.data = data?.data || 0
       return data;
     } catch (err: any) {
@@ -101,7 +101,6 @@ class TripStore {
       this.tripCount.loading = false;
     }
   }
-
 }
 
 export default TripStore;

@@ -7,11 +7,14 @@ import {
   Text,
   useColorModeValue,
   IconButton,
+  Tooltip,
 } from "@chakra-ui/react";
 import styled from "styled-components";
 import { BiBookmark } from "react-icons/bi";
 import { useState } from "react";
 import { observer } from "mobx-react-lite";
+import { toJS } from "mobx";
+import { capitalizeString } from "../../../../../config/constant/function";
 
 const ThumbnailWrapper = styled(Box)`
   position: relative;
@@ -48,10 +51,20 @@ const ThumbnailCard = styled(Image)`
 const TripCard = observer(({ setTripFormData, item, handleClick }: any) => {
   const [thumbnailLoadError, setThumbnailLoadError] = useState(false);
   const bookmarkColor = useColorModeValue("gray.600", "gray.500");
+  const headingColor = useColorModeValue("black", "white");
   const { title, description, thumbnail } = item;
 
+  console.log("the item are", toJS(item));
+
   return (
-    <Card p={2} borderRadius="8px" overflow="hidden">
+    <Card
+      p={4}
+      borderRadius="lg"
+      overflow="hidden"
+      boxShadow="md"
+      _hover={{ boxShadow: "lg" }}
+      transition="0.3s"
+    >
       <ThumbnailWrapper>
         {thumbnailLoadError ? (
           <ThumbnailElementNoImage />
@@ -59,27 +72,32 @@ const TripCard = observer(({ setTripFormData, item, handleClick }: any) => {
           <ThumbnailCard
             src={thumbnail?.url}
             alt={thumbnail?.name || "Image Not Found"}
-            onError={() => {
-              setThumbnailLoadError(true);
-            }}
+            onError={() => setThumbnailLoadError(true)}
           />
         )}
       </ThumbnailWrapper>
-      <Flex mt={5} justify="space-between" alignItems="center">
-        <IconButton
-          icon={<BiBookmark />}
-          aria-label="Bookmark"
-          borderRadius={20}
-          title="Bookmark"
-        />
+      <Flex mt={4} justify="space-between" alignItems="center">
+        <Tooltip label="Bookmark" aria-label="Bookmark Tooltip">
+          <IconButton
+            icon={<BiBookmark />}
+            aria-label="Bookmark"
+            borderRadius="full"
+            color={bookmarkColor}
+            _hover={{ color: "blue.500" }}
+            transition="0.3s"
+          />
+        </Tooltip>
+        <Heading color="gray.500" fontSize="sm">
+          {capitalizeString(item.type)} Trip
+        </Heading>
       </Flex>
       <Flex mt={3} justifyContent="space-between" alignItems="center">
         <Heading
           fontSize="lg"
           cursor="pointer"
-          color={bookmarkColor}
-          _hover={{ color: "blue" }}
-          transition="0.5s ease-in-out"
+          color={headingColor}
+          _hover={{ color: "blue.500" }}
+          transition="0.3s"
           onClick={() => {
             handleClick && handleClick(item);
             setTripFormData({ open: true, data: item, type: "edit" });
@@ -95,11 +113,13 @@ const TripCard = observer(({ setTripFormData, item, handleClick }: any) => {
         color="gray.500"
         fontSize="sm"
         noOfLines={2}
+        minH="40px"
+        maxH="40px"
       >
         {description}
       </Text>
       <Text mt={2} fontSize="sm" color="gray.500">
-        Total Travels {item?.travelDetails?.length}
+        Total Travels: {item?.travelDetails?.length}
       </Text>
     </Card>
   );

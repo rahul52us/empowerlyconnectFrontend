@@ -55,7 +55,7 @@ thumbnail,
 setThumbnail,
 isEdit,
 isFileDeleted,
-setIsFileDeleted
+setIsFileDeleted,
 }: TripFormI) => {
 return (
 	<Box>
@@ -68,7 +68,7 @@ return (
 		}}
 	>
 		{({ handleChange, setFieldValue, values, errors }) => {
-			console.log(errors)
+		console.log(errors);
 		return (
 			<Form>
 			<SimpleGrid columns={2} spacing={4}>
@@ -97,12 +97,11 @@ return (
 						setIsFileDeleted={setIsFileDeleted}
 						isFileDeleted={isFileDeleted}
 						removeFile={(_: any, index: number) => {
-							setThumbnail(removeDataByIndex(thumbnail, index))
-							if(isEdit && isFileDeleted === 0){
-								setIsFileDeleted(1)
+							setThumbnail(removeDataByIndex(thumbnail, index));
+							if (isEdit && isFileDeleted === 0) {
+							setIsFileDeleted(1);
 							}
-						}
-						}
+						}}
 						/>
 					</Box>
 					)}
@@ -171,8 +170,8 @@ return (
 						name={`participants`}
 						options={participants}
 						value={values.participants}
-						getOptionLabel={(options : any) => options.username}
-						getOptionValue={(options : any) => options._id}
+						getOptionLabel={(options: any) => options.username}
+						getOptionValue={(options: any) => options._id}
 						onChange={(e) => {
 						setFieldValue(`participants`, e);
 						}}
@@ -605,28 +604,24 @@ return (
 				value={values.description}
 				/>
 			</GridItem>
-			<Flex justifyContent="end" mt={5} mr={3}>
+			<Flex justifyContent="end" mt={5} p={3}>
 				<Button
 				type="button"
-				leftIcon={<FaTimes />}
 				onClick={onClose}
 				mr={4}
 				variant="outline"
-				size="sm"
 				>
 				Cancel
 				</Button>
 				<Button
 				type="submit"
-				leftIcon={<FaPlus />}
 				colorScheme="blue"
 				isLoading={loading}
-				size="sm"
 				onClick={() => {
 					setShowError(true);
 				}}
 				>
-				Create
+				{isEdit ? "Update" : "Create"}
 				</Button>
 			</Flex>
 			</Form>
