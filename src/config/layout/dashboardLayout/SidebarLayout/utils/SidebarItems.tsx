@@ -266,7 +266,7 @@ const sidebarDatas: SidebarItem[] = [
     ],
   },
   // liberay
-    {
+  {
       id: 80,
       name: "Liberary",
       icon: <FaBuilding />,
@@ -281,7 +281,24 @@ const sidebarDatas: SidebarItem[] = [
           role: ["admin", "superadmin"],
         },
       ],
-    },
+  },
+  // Trip
+  {
+    id: 90,
+    name: "Trips",
+    icon: <FaBuilding />,
+    url: dashboard.tripManagement.index,
+    role: ["admin", "superadmin"],
+    children: [
+      {
+        id: 91,
+        name: "Trip",
+        icon: <FaUsers />,
+        url: dashboard.tripManagement.index,
+        role: ["admin", "superadmin"],
+      },
+    ],
+},
 ];
 
 export const sidebarFooterData: SidebarItem[] = [

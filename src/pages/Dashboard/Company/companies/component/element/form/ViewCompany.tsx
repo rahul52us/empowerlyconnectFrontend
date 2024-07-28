@@ -23,6 +23,7 @@ import {
   TabPanel,
   Spinner,
   IconButton,
+  Center,
 } from "@chakra-ui/react";
 import {
   FaFacebook,
@@ -169,7 +170,7 @@ const ViewCompany = observer(({ data, onClose }: any) => {
                   <Flex align="center" justify="center" height="100%">
                     <Spinner size="xl" color="teal.500" />
                   </Flex>
-                ) : (
+                ) : holidays?.length ? (
                   <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
                     {holidays.map((holiday: any) => (
                       <Box
@@ -201,6 +202,19 @@ const ViewCompany = observer(({ data, onClose }: any) => {
                       </Box>
                     ))}
                   </SimpleGrid>
+                ) : (
+                  <Center
+                    width="100%"
+                    border="1px solid"
+                    borderColor="gray.200"
+                    borderRadius="md"
+                    p={4}
+                    bg="gray.50"
+                  >
+                    <Text fontSize="lg" fontWeight="semibold" color="gray.600">
+                      No Holiday Records Available
+                    </Text>
+                  </Center>
                 )}
               </TabPanel>
               <TabPanel>
@@ -210,18 +224,37 @@ const ViewCompany = observer(({ data, onClose }: any) => {
                   </Flex>
                 ) : (
                   <List spacing={2}>
-                    {workTiming.map((timing: any) => (
-                      <ListItem
-                        key={timing._id}
-                        p={2}
-                        bg={useColorModeValue("gray.50", "gray.700")}
+                    {workTiming?.length ? (
+                      workTiming.map((timing: any) => (
+                        <ListItem
+                          key={timing._id}
+                          p={2}
+                          bg={useColorModeValue("gray.50", "gray.700")}
+                          borderRadius="md"
+                        >
+                          <ListIcon as={FaClock} color="green.500" />
+                          {timing.startTime} - {timing.endTime} (
+                          {timing.daysOfWeek.join(", ")})
+                        </ListItem>
+                      ))
+                    ) : (
+                      <Center
+                        width="100%"
+                        border="1px solid"
+                        borderColor="gray.200"
                         borderRadius="md"
+                        p={4}
+                        bg="gray.50"
                       >
-                        <ListIcon as={FaClock} color="green.500" />
-                        {timing.startTime} - {timing.endTime} (
-                        {timing.daysOfWeek.join(", ")})
-                      </ListItem>
-                    ))}
+                        <Text
+                          fontSize="lg"
+                          fontWeight="semibold"
+                          color="gray.600"
+                        >
+                          No Working Available
+                        </Text>
+                      </Center>
+                    )}
                   </List>
                 )}
               </TabPanel>
@@ -232,17 +265,36 @@ const ViewCompany = observer(({ data, onClose }: any) => {
                   </Flex>
                 ) : (
                   <List spacing={2}>
-                    {workLocations.map((location: any) => (
-                      <ListItem
-                        key={location._id}
-                        p={2}
-                        bg={useColorModeValue("gray.50", "gray.700")}
+                    {workLocations?.length ? (
+                      workLocations.map((location: any) => (
+                        <ListItem
+                          key={location._id}
+                          p={2}
+                          bg={useColorModeValue("gray.50", "gray.700")}
+                          borderRadius="md"
+                        >
+                          <ListIcon as={FaMapMarkerAlt} color="green.500" />
+                          {location.locationName} ({location.ipAddress})
+                        </ListItem>
+                      ))
+                    ) : (
+                      <Center
+                        width="100%"
+                        border="1px solid"
+                        borderColor="gray.200"
                         borderRadius="md"
+                        p={4}
+                        bg="gray.50"
                       >
-                        <ListIcon as={FaMapMarkerAlt} color="green.500" />
-                        {location.locationName} ({location.ipAddress})
-                      </ListItem>
-                    ))}
+                        <Text
+                          fontSize="lg"
+                          fontWeight="semibold"
+                          color="gray.600"
+                        >
+                          No WorkLocation Available
+                        </Text>
+                      </Center>
+                    )}
                   </List>
                 )}
               </TabPanel>

@@ -189,9 +189,10 @@ class Userstore {
   getManagersUsersCount = async (sendData: any) => {
     try {
       this.managersUsersCount.loading = true;
-      const { data } = await axios.get("/User/managers/Users/count", {
-        params: { ...sendData, company: store.auth.company },
-      });
+      const { data } = await axios.post("/User/managers/Users/count",
+        {company: [store.auth.company]},
+        {params: { ...sendData }},
+      );
       this.managersUsersCount.data = data?.data || [];
       return data.data;
     } catch (err: any) {
