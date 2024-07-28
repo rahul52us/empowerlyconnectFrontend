@@ -123,8 +123,9 @@ class Userstore {
   getAllUsers = async (sendData: any) => {
     try {
       this.Users.loading = true;
-      const { data } = await axios.get("/User", {
-        params: { ...sendData, company: store.auth.company },
+      const { data } = await axios.post("/User",
+       { company: [store.auth.company]},
+       { params: { ...sendData },
       });
       this.Users.hasFetch = true;
       this.Users.data = data?.data?.data || [];
@@ -216,7 +217,7 @@ class Userstore {
   getUsersCount = async () => {
     try {
       this.UsersCounts.loading = true;
-      const { data } = await axios.get("/User/total/count",{params : {company: store.auth.company}});
+      const { data } = await axios.post("/User/total/count",{company : [store.auth.company]});
       this.UsersCounts.data = data?.data || 0;
       return data.data;
     } catch (err: any) {
