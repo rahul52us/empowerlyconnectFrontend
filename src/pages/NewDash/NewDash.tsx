@@ -41,6 +41,15 @@ const coursesData = [
     timeLeft: "3 hr 20 min left",
     colorScheme: "purple",
   },
+  {
+    name: "Figma",
+    imageUrl: "https://cdn-icons-png.flaticon.com/128/5968/5968705.png",
+    title: "Figma UI UX Design",
+    academy: "Abcd Academy",
+    completion: 64,
+    timeLeft: "3 hr 20 min left",
+    colorScheme: "purple",
+  },
 ];
 
 const quizcore = [
@@ -93,7 +102,7 @@ export default function NewDash() {
           <UserActivityFeed />
         </VStack>
       </Grid>
-      <Grid templateColumns={"1fr 1fr 1fr"} gap={4} mt={6}>
+      <Grid templateColumns={"1fr 1fr 1fr 1fr"} gap={6} mt={6}>
         {coursesData.map((course, index) => (
           <MyCoursesCard key={index} course={course} />
         ))}
