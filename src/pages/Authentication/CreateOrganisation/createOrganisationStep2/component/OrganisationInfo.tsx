@@ -71,6 +71,17 @@ const OrganisationInfo = ({
           showError={showError}
         />
         <CustomInput
+          type="text"
+          name="companyCode"
+          label="Company Code"
+          placeholder="Enter the Company Code"
+          required={true}
+          error={errors.companyCode}
+          onChange={handleChange}
+          value={values.companyCode}
+          showError={showError}
+        />
+        <CustomInput
           type="phone"
           name="Mobile No"
           label="Mobile No"

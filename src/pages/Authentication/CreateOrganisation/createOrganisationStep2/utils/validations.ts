@@ -22,6 +22,10 @@ export const OrganisationCreateValidation = Yup.object().shape({
     .min(2, "Last Name atleast of 2 characters")
     .max(60, "Last Name cannot greater than 60 characters")
     .required("Last Name is required").trim(),
+    code: Yup.string()
+    .min(2, "Code atleast of 2 characters")
+    .max(60, "Code cannot greater than 60 characters")
+    .required("Code is required").trim(),
     username: Yup.string()
     .min(2, "user name atleast of 2 characters")
     .max(60, "user name cannot greater than 60 characters")
@@ -49,6 +53,7 @@ export const OrganisationCreateValidation = Yup.object().shape({
     .min(2, "Organisation Name atleast of 2 characters")
     .max(60, "Organisation Name cannot greater than 250 characters")
     .required("Organisation is required"),
+  companyCode:Yup.string().min(2,'Company Code of 2 characters').trim().required(),
   password: Yup.string()
     .required("Password is required")
     .matches(

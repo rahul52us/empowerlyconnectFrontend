@@ -43,6 +43,17 @@ const OrganisationUserPersonalInfo = ({
         showError={showError}
       />
       <CustomInput
+        type="text"
+        name="code"
+        label="Code"
+        placeholder="Code"
+        required={true}
+        error={errors.code}
+        onChange={handleChange}
+        value={values.code}
+        showError={showError}
+      />
+      <CustomInput
         type="password"
         name="password"
         label="Password"

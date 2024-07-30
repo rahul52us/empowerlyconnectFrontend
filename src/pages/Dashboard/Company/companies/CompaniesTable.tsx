@@ -21,7 +21,7 @@ const HolidaysDetailTable = observer(() => {
   });
   const [editCompanyModel, setEditCompanyModel] = useState<any>({
     open: false,
-    data: null,
+    data: null
   });
   const dropdowns = useState(employDropdownData)[0];
   const [selectedOptions, setSelectedOptions] = useState({});

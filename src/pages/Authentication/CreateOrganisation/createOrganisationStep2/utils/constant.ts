@@ -1,10 +1,12 @@
 export const onBoardingTitle = ['Personal Details', 'Company Details', 'Links', 'Other Info']
-export const CompantInitialValues = {
+export const CompanyInitialValues = {
     first_name: "",
     last_name: "",
     username: "",
     company_name: "",
     logo:[],
+    code:"",
+    companyCode: "",
     password: "",
     mobileNo: "",
     workNo: "",

@@ -20,7 +20,7 @@ const CreateOrganisationStep2 = observer(({
   singleCompany,
   onClose,
   initialValues,
-  isEdit,
+  isEdit
 }: any) => {
   const [initialValuesData, setInitialValuesData] =
     useState<any>(initialValues);
@@ -45,11 +45,7 @@ const CreateOrganisationStep2 = observer(({
   useEffect(() => {
     if (singleCompany && user) {
       setInitialValuesData({
-        ...initialValues,
-        first_name: user.name,
-        last_name: user.name,
-        username: user.username,
-        password: "Rahul@123",
+        ...initialValues
       });
     }
   }, [user, singleCompany, initialValues]);
@@ -57,9 +53,10 @@ const CreateOrganisationStep2 = observer(({
   const handleSubmit = async ({ values, setSubmitting }: any) => {
     if (isEdit) {
       setSubmitting(true)
-      const { first_name, last_name, password, username, logo, ...rest } = values;
+      const { first_name, last_name, password, username, logo, code , ...rest } = values;
       updateSingleCompany({
         _id : initialValues._id,
+        name: `${first_name} ${last_name}`, last_name, password, username, code, logo,
         companyDetails: { ...rest },
       })
         .then((data: any) => {
@@ -94,12 +91,16 @@ const CreateOrganisationStep2 = observer(({
         };
         logo = fileData;
       }
-      const { first_name, last_name, password, username, ...rest } = values;
+      const { first_name, last_name, password, username, code, ...rest } = values;
 
       if (singleCompany) {
         createSingleCompany({
-          companyDetails: { ...rest, logo },
-        })
+            name: `${first_name} ${last_name}`,
+            password,
+            role:'admin',
+            username,
+            code : code,
+            companyDetails: { ...rest, logo }})
           .then((data: any) => {
             openNotification({
               title: "Create Success",

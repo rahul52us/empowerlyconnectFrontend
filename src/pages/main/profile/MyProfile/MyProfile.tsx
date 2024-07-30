@@ -295,11 +295,10 @@ const MyProfile: React.FC<any> = observer(({ userDetails, user }) => {
                   <Heading color={"blue.600"} size="md">
                     Documents
                   </Heading>
-
                   {documents?.length > 0 ? (
                     <Box>
-                      {documents?.map((doc: any) =>
-                        Object.keys(doc?.documents).map((key) => (
+                      {documents && documents?.map((doc: any) =>
+                        Object.keys(doc?.documents || {}).map((key) => (
                           <HStack
                             key={key}
                             spacing={4}

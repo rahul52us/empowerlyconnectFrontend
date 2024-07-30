@@ -91,9 +91,9 @@ const UserProfile: React.FC<any> = ({ UsereId }) => {
                   Active
                 </Tag>
               </Heading>
-              <Text fontWeight="semibold" color={"gray"}>
-                {user?.designation.join(", ")}
-              </Text>
+              {/* <Text fontWeight="semibold" color={"gray"}>
+                {user?.designation?.join(", ")}
+              </Text> */}
               {/* <Text fontSize={'sm'}>{user?.bio}</Text> */}
             </Box>
           </HStack>
@@ -135,11 +135,11 @@ const UserProfile: React.FC<any> = ({ UsereId }) => {
                       type="multi"
                       value={user?.profileDetails[0]?.language}
                     />
-                    <ShowData
+                    {/* <ShowData
                       label="Designation"
                       value={user?.designation}
                       type="multi"
-                    />
+                    /> */}
                     <ShowData label="Employment Type" value={user?.role} />
                     <ShowData
                       label="Referred By"

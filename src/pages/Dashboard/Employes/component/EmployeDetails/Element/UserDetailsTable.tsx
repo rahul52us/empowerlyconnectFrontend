@@ -1,4 +1,4 @@
-import { Avatar, Box, Tooltip, useDisclosure } from "@chakra-ui/react";
+import { Avatar, Box, useDisclosure } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -162,20 +162,6 @@ const UserDetailsTable = observer(() => {
       type: "tooltip",
       props: {
         row: { minW: 160, textAlign: "center" },
-        column: { textAlign: "center" },
-      },
-    },
-    {
-      headerName: "Designation",
-      key: "designation",
-      type: "component",
-      metaData: {
-        component: (e: any) => (
-          <Tooltip label={e?.designation}>Comments</Tooltip>
-        ),
-      },
-      props: {
-        row: { minW: 120, textAlign: "center" },
         column: { textAlign: "center" },
       },
     },

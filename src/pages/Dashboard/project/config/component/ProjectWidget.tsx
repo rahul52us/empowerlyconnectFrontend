@@ -80,9 +80,6 @@ const ProjectWidget = observer(() => {
           description="The number of active team members."
         />
       </SimpleGrid>
-      <Button onClick={() => setIsOpen(true)}>open drawer</Button>
-
-
       <SimpleGrid columns={{ sm: 1, md: 2, lg: 3 }} spacing={5}>
           {dummyProjects.map((project, index) => (
             <ProjectCard2
@@ -97,6 +94,8 @@ const ProjectWidget = observer(() => {
             />
           ))}
         </SimpleGrid>
+
+      <Button onClick={() => setIsOpen(true)}>open drawer</Button>
 
       <SimpleGrid columns={{ base: 1, md: 2, xl: 3 }} spacing={2}>
         {projects.data.map((item: any, index: number) => {
@@ -131,7 +130,7 @@ const ProjectWidget = observer(() => {
         close={() => setIsOpen(false)}
         title="Project Details"
         // headerTextColor="black"
-        width="50vw"
+        width="70vw"
         // headerBgColor="white"
       >
         <Box>
