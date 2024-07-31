@@ -128,7 +128,7 @@ const ProjectWidget = observer(() => {
       <CustomDrawer
         open={isOpen}
         close={() => setIsOpen(false)}
-        title="Project Details"
+        // title="Project Details"
         // headerTextColor="black"
         width="70vw"
         // headerBgColor="white"
