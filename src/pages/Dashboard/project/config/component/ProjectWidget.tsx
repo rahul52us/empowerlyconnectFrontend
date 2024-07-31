@@ -1,7 +1,12 @@
-import { Box, Button, SimpleGrid } from "@chakra-ui/react";
+import { Box, Heading, SimpleGrid, Flex, Icon } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useEffect, useState, useCallback } from "react";
-import { FaProjectDiagram, FaTasks, FaUsers } from "react-icons/fa";
+import {
+  FaProjectDiagram,
+  FaTasks,
+  FaUsers,
+  FaFolderOpen,
+} from "react-icons/fa";
 import MainPagePagination from "../../../../../config/component/pagination/MainPagePagination";
 import { getStatusType } from "../../../../../config/constant/statusCode";
 import store from "../../../../../store/store";
@@ -9,65 +14,47 @@ import SummaryWidget from "../../component/SummaryWidget/SummaryWidget";
 import ProjectCard from "./ProjectCard";
 import CustomDrawer from "../../../../../config/component/Drawer/CustomDrawer";
 import ProjectDetails from "../../component/ProjectDetails/ProjectDetails";
-import ProjectCard2 from "../../component/ProjectCard/ProjectCard2";
-
-const dummyProjects = [
-  {
-    title: "Project Alpha",
-    // description: 'A project to develop a new feature for our application.',
-    manager: "John Doe",
-    deadline: "2024-08-15",
-    status: "In Progress",
-    team: ["Alice", "Bob", "Charlie"],
-    progress: 50,
-  },
-  {
-    title: "Project Beta",
-    // description: 'A project to improve the performance of our system.',
-    manager: "Jane Smith",
-    deadline: "2024-09-01",
-    status: "Completed",
-    team: ["David", "Eve", "Frank"],
-    progress: 100,
-  },
-  // Add more dummy projects as needed
-];
+import NotFoundData from "../../../../../config/component/NotFound/NotFoundData";
 
 const ProjectWidget = observer(() => {
   const {
     Project: { getProjects, projects, projectCount },
     auth: { openNotification },
   } = store;
-
-  const [isOpen, setIsOpen] = useState(false);
+  const [selectedProject, setSelectedProject] = useState({
+    open: false,
+    data: null,
+  });
   const [currentPage, setCurrentPage] = useState(1);
 
-  const fetchProjectDetails = useCallback((page : number) => {
-    getProjects({ page, limit: 10 })
-      .then(() => {})
-      .catch((err) => {
-        openNotification({
-          title: "Failed to Retrieve Project",
-          message: err?.data?.message,
-          type: getStatusType(err.status),
+  const fetchProjectDetails = useCallback(
+    (page: number) => {
+      getProjects({ page, limit: 10 })
+        .then(() => {})
+        .catch((err) => {
+          openNotification({
+            title: "Failed to Retrieve Project",
+            message: err?.data?.message,
+            type: getStatusType(err.status),
+          });
         });
-      });
-  }, [getProjects, openNotification]);
+    },
+    [getProjects, openNotification]
+  );
 
   useEffect(() => {
     fetchProjectDetails(currentPage);
   }, [currentPage, fetchProjectDetails]);
 
   return (
-    <Box>
-      <SimpleGrid columns={[1, null, 3]} spacing={6}>
+    <Box px={{ base: 4, md: 6 }} py={6}>
+      <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6} mb={6}>
         <SummaryWidget
           label="Total Projects"
           value={projectCount.data}
           icon={FaProjectDiagram}
           colorScheme="teal"
           description="Total number of projects."
-          change={5}
         />
         <SummaryWidget
           label="Total Tasks"
@@ -75,7 +62,6 @@ const ProjectWidget = observer(() => {
           icon={FaTasks}
           colorScheme="blue"
           description="Total number of tasks across all projects."
-          change={-3}
         />
         <SummaryWidget
           label="Team Members"
@@ -85,26 +71,28 @@ const ProjectWidget = observer(() => {
           description="The number of active team members."
         />
       </SimpleGrid>
-      <SimpleGrid columns={{ sm: 1, md: 2, lg: 3 }} spacing={5}>
-        {dummyProjects.map((project, index) => (
-          <ProjectCard2
-            key={index}
-            title={project.title}
-            // description={project.description}
-            manager={project.manager}
-            deadline={project.deadline}
-            status={project.status}
-            team={project.team}
-            progress={project.progress}
-          />
-        ))}
-      </SimpleGrid>
 
-      <Button onClick={() => setIsOpen(true)}>open drawer</Button>
+      <Heading
+        display="flex"
+        alignItems="center"
+        mb={6}
+        fontSize={{ base: "xl", md: "2xl" }}
+        color="teal.600"
+      >
+        <Icon as={FaFolderOpen} boxSize={6} mr={2} />
+        Projects
+      </Heading>
 
-      <SimpleGrid columns={{ base: 1, md: 2, xl: 3 }} spacing={2}>
-        {projects.data.map((item: any, index: number) => {
-          return (
+      {projects.data.length === 0 && projects.loading === false ? (
+        <NotFoundData
+          onClick={() => {}}
+          btnText="CREATE PROJECT"
+          title="No projects found"
+          subTitle="Start by creating a new project to get started."
+        />
+      ) : (
+        <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6} mb={8}>
+          {projects.data.map((item: any, index: number) => (
             <ProjectCard
               item={item}
               key={index}
@@ -118,28 +106,30 @@ const ProjectWidget = observer(() => {
               endDate={item.endDate}
               dueDate={item.dueDate}
               approval={item.approval}
-              onClick={() => {}}
+              onClick={() => {
+                setSelectedProject({ open: true, data: item });
+              }}
             />
-          );
-        })}
-      </SimpleGrid>
-      <Box mt={20}>
+          ))}
+        </SimpleGrid>
+      )}
+
+      <Flex justifyContent="center" mt={8}>
         <MainPagePagination
           currentPage={currentPage}
           onPageChange={(page) => setCurrentPage(page.selected)}
           totalPages={projects.totalPages}
         />
-      </Box>
+      </Flex>
+
       <CustomDrawer
-        open={isOpen}
-        close={() => setIsOpen(false)}
+        open={selectedProject.open}
+        close={() => setSelectedProject({ open: false, data: null })}
         title="Project Details"
-        // headerTextColor="black"
         width="70vw"
-        // headerBgColor="white"
       >
-        <Box>
-          <ProjectDetails />
+        <Box p={4}>
+          <ProjectDetails selectedProject={selectedProject.data} />
         </Box>
       </CustomDrawer>
     </Box>

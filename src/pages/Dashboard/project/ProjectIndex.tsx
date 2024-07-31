@@ -25,29 +25,31 @@ const ProjectIndex = observer(() => {
   return (
     <React.Fragment>
       <Box>
-        <Flex justifyContent="space-between" alignItems="center">
+        <Flex justifyContent="space-between" alignItems="center" mb={5}>
           <DashPageHeader
             title="Project"
             breadcrumb={projectBreadCrumb.index}
           />
           {showIcon ? (
             <IconButton
-              title="create project"
+              title="Create Project"
               onClick={() => setOpenProjectDrawer("create")}
-              aria-label=""
-              mb={5}
-            >
-              <FaPlus />
-            </IconButton>
+              aria-label="Create Project"
+              icon={<FaPlus />}
+              colorScheme="teal"
+            />
           ) : (
             <Button
-              leftIcon={showIcon ? <FaPlus /> : undefined}
+              leftIcon={<FaPlus />}
               colorScheme="teal"
               variant="solid"
-              mb={5}
+              size="lg"
+              _hover={{ bg: "teal.600" }}
+              _active={{ bg: "teal.700" }}
+              _focus={{ boxShadow: "outline" }}
               onClick={() => setOpenProjectDrawer("create")}
             >
-              {"CREATE PROJECT"}
+              CREATE PROJECT
             </Button>
           )}
         </Flex>
@@ -62,7 +64,7 @@ const ProjectIndex = observer(() => {
               : "CREATE NEW PROJECT"
           }`}
           open={openProjectDrawer.open}
-          close={setOpenProjectDrawer}
+          close={() => setOpenProjectDrawer("create")}
         >
           {openProjectDrawer.type === "edit" ? (
             <EditProject />

@@ -19,9 +19,9 @@ import { TbProgress, TbTags } from "react-icons/tb";
 import AttachmentSection from "../ProjectAttachments/ProjectAttachments";
 import store from "../../../../../store/store";
 
-const ProjectDetails = () => {
+const ProjectDetails = ({selectedProject} : any) => {
   const {
-    Project: { setOpenTaskDrawer },
+    Project: { setOpenProjectDrawer },
   } = store;
   return (
     <Box pl={4}>
@@ -31,7 +31,7 @@ const ProjectDetails = () => {
         </Text>
         <Button
           onClick={() => {
-            setOpenTaskDrawer("create");
+            setOpenProjectDrawer("edit",selectedProject);
           }}
         >
           Create Task

@@ -10,10 +10,12 @@ import {
   Divider,
   VStack,
   useColorModeValue,
-  Link,
+  IconButton,
+  Tooltip,
 } from "@chakra-ui/react";
-import store from "../../../../../store/store";
 import { useNavigate } from "react-router-dom";
+import { EditIcon } from "@chakra-ui/icons";
+import store from "../../../../../store/store";
 import { dashboard } from "../../../../../config/constant/routes";
 
 interface CardProps {
@@ -47,14 +49,16 @@ const ProjectCard: React.FC<CardProps> = ({
   endDate,
   dueDate,
   approval,
+  onClick,
 }) => {
-
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const {
     Project: { setOpenProjectDrawer },
   } = store;
   const bgColor = useColorModeValue("white", "gray.800");
   const boxShadow = useColorModeValue("lg", "dark-lg");
+  const textColor = useColorModeValue("gray.700", "gray.200");
+  const subtitleColor = useColorModeValue("gray.500", "gray.400");
 
   return (
     <Box
@@ -67,31 +71,39 @@ const ProjectCard: React.FC<CardProps> = ({
       _hover={{ boxShadow: "xl", transform: "scale(1.02)" }}
       transition="all 0.3s ease-in-out"
     >
-      <Flex align="center" mb={4}>
-        <Avatar
-          size="xl"
-          src={logo?.url || "https://via.placeholder.com/150"}
-          name={logo?.name}
-          mr={4}
-        />
-        <Box
-          cursor="pointer"
-          onClick={() => setOpenProjectDrawer("edit", { ...item, id: item.id })}
-        >
-          <Heading fontSize="2xl" fontWeight="bold">
-            {project_name}
-          </Heading>
-          {subtitle && (
-            <Text fontSize="md" color="gray.600">
-              {subtitle}
-            </Text>
-          )}
-        </Box>
+      <Flex align="center" justifyContent="space-between" mb={4}>
+        <Flex align="center">
+          <Avatar
+            size="xl"
+            src={logo?.url || "https://via.placeholder.com/150"}
+            name={logo?.name}
+            mr={4}
+          />
+          <Box cursor="pointer" onClick={onClick}>
+            <Heading fontSize="2xl" fontWeight="bold">
+              {project_name}
+            </Heading>
+            {subtitle && (
+              <Text fontSize="md" color={subtitleColor}>
+                {subtitle}
+              </Text>
+            )}
+          </Box>
+        </Flex>
+        <Tooltip label="Edit Project" aria-label="Edit Project">
+          <IconButton
+            icon={<EditIcon />}
+            onClick={() => setOpenProjectDrawer("edit", item)}
+            variant="ghost"
+            colorScheme="teal"
+            aria-label="Edit Project"
+          />
+        </Tooltip>
       </Flex>
       <Divider mb={4} />
       <Box mb={4}>
-        <Text fontSize="md" color="gray.800" minH={45}>
-          {description?.substring(0, 110)}
+        <Text fontSize="md" color={textColor} noOfLines={2}>
+          {description}
         </Text>
       </Box>
       <Stack direction="row" spacing={4} mb={4}>
@@ -124,27 +136,34 @@ const ProjectCard: React.FC<CardProps> = ({
         )}
       </Stack>
       <Divider mb={4} />
-      <Flex justifyContent={'space-between'}>
-      <VStack align="start" spacing={2}>
-        {startDate && (
-          <Text fontSize="sm" color="gray.600">
-            Start Date: {new Date(startDate).toLocaleDateString()}
-          </Text>
-        )}
-        {endDate && (
-          <Text fontSize="sm" color="gray.600">
-            End Date: {new Date(endDate).toLocaleDateString()}
-          </Text>
-        )}
-        {dueDate && (
-          <Text fontSize="sm" color="gray.600">
-            Due Date: {new Date(dueDate).toLocaleDateString()}
-          </Text>
-        )}
-      </VStack>
-      <Link cursor='pointer' onClick={() => {
-        navigate(`${dashboard.project.index}/${item._id}/task`)
-      }}>View task</Link>
+      <Flex justifyContent="space-between" alignItems="center">
+        <VStack align="start" spacing={2}>
+          {startDate && (
+            <Text fontSize="sm" color="gray.600">
+              Start Date: {new Date(startDate).toLocaleDateString()}
+            </Text>
+          )}
+          {endDate && (
+            <Text fontSize="sm" color="gray.600">
+              End Date: {new Date(endDate).toLocaleDateString()}
+            </Text>
+          )}
+          {dueDate && (
+            <Text fontSize="sm" color="gray.600">
+              Due Date: {new Date(dueDate).toLocaleDateString()}
+            </Text>
+          )}
+        </VStack>
+        <Text
+          cursor="pointer"
+          color="teal.500"
+          fontWeight="bold"
+          onClick={() => {
+            navigate(`${dashboard.project.index}/${item._id}/task`);
+          }}
+        >
+          View tasks
+        </Text>
       </Flex>
     </Box>
   );
