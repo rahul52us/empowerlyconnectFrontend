@@ -117,7 +117,7 @@ class ProjectStore {
       const { data } = await axios.post(
         `/project/get`,
         {...sendData, company : [store.auth.getCurrentCompany() ]},
-        {params : {page : this.projects.currentPage, limit : this.projects.limit }}
+        {params : {page : sendData.page, limit : sendData.limit }}
       );
       this.projects.data = data.data?.data || [];
       this.projects.totalPages = data.data?.totalPages || 1;
