@@ -11,11 +11,19 @@ class ProjectStore {
     limit : paginationLimit
   };
 
+  tasks: any = {
+    data: [],
+    loading: false,
+    currentPage :1,
+    limit : paginationLimit
+  };
+
   task = {
     data : [],
     loading : false,
     currentPage:1,
-    limit : paginationLimit
+    limit : paginationLimit,
+    totalPages:1
   }
 
   projectCount : any = {
@@ -150,6 +158,24 @@ class ProjectStore {
       return data;
     } catch (err: any) {
       return Promise.reject(err?.response || err);
+    }
+  };
+
+  getTasks = async (sendData: any) => {
+    this.task.loading = true;
+    try {
+      const { data } = await axios.post(
+        `/project/task/${sendData.id}/get`,
+        {...sendData, company : [store.auth.getCurrentCompany() ]},
+        {params : {page : this.task.currentPage, limit : this.task.limit }}
+      );
+      this.task.data = data.data?.data || [];
+      this.task.totalPages = data.data?.totalPages || 1;
+      return data;
+    } catch (err: any) {
+      return Promise.reject(err?.response || err);
+    } finally {
+      this.projects.loading = false;
     }
   };
 

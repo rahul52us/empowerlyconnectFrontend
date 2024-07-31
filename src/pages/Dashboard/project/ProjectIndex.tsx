@@ -15,7 +15,6 @@ import CustomDrawer from "../../../config/component/Drawer/CustomDrawer";
 import CreateProject from "./component/Form/CreateProject";
 import EditProject from "./component/Form/EditProject";
 import React from "react";
-import TaskIndex from "./task/TaskIndex";
 
 const ProjectIndex = observer(() => {
   const {
@@ -25,51 +24,53 @@ const ProjectIndex = observer(() => {
 
   return (
     <React.Fragment>
-    <Box>
-      <Flex justifyContent="space-between" alignItems="center">
-        <DashPageHeader title="Project" breadcrumb={projectBreadCrumb.index} />
-        {showIcon ? (
-          <IconButton
-            title="create project"
-            onClick={() => setOpenProjectDrawer("create")}
-            aria-label=""
-            mb={5}
-          >
-            <FaPlus />
-          </IconButton>
-        ) : (
-          <Button
-            leftIcon={showIcon ? <FaPlus /> : undefined}
-            colorScheme="teal"
-            variant="solid"
-            mb={5}
-            onClick={() => setOpenProjectDrawer("create")}
-          >
-            {"CREATE PROJECT"}
-          </Button>
-        )}
-      </Flex>
-      {/* Projects in Widgets */}
-      <ProjectWidget />
-      {/* OPEN THE PROJECT CREATION DRAWER */}
-      <CustomDrawer
-        width="90vw"
-        title={`${
-          openProjectDrawer.type === "edit"
-            ? "UPDATE PROJECT"
-            : "CREATE NEW PROJECT"
-        }`}
-        open={openProjectDrawer.open}
-        close={setOpenProjectDrawer}
-      >
-        {openProjectDrawer.type === "edit" ? (
-          <EditProject />
-        ) : (
-          <CreateProject />
-        )}
-      </CustomDrawer>
-    </Box>
-     <TaskIndex />
+      <Box>
+        <Flex justifyContent="space-between" alignItems="center">
+          <DashPageHeader
+            title="Project"
+            breadcrumb={projectBreadCrumb.index}
+          />
+          {showIcon ? (
+            <IconButton
+              title="create project"
+              onClick={() => setOpenProjectDrawer("create")}
+              aria-label=""
+              mb={5}
+            >
+              <FaPlus />
+            </IconButton>
+          ) : (
+            <Button
+              leftIcon={showIcon ? <FaPlus /> : undefined}
+              colorScheme="teal"
+              variant="solid"
+              mb={5}
+              onClick={() => setOpenProjectDrawer("create")}
+            >
+              {"CREATE PROJECT"}
+            </Button>
+          )}
+        </Flex>
+        {/* Projects in Widgets */}
+        <ProjectWidget />
+        {/* OPEN THE PROJECT CREATION DRAWER */}
+        <CustomDrawer
+          width="90vw"
+          title={`${
+            openProjectDrawer.type === "edit"
+              ? "UPDATE PROJECT"
+              : "CREATE NEW PROJECT"
+          }`}
+          open={openProjectDrawer.open}
+          close={setOpenProjectDrawer}
+        >
+          {openProjectDrawer.type === "edit" ? (
+            <EditProject />
+          ) : (
+            <CreateProject />
+          )}
+        </CustomDrawer>
+      </Box>
     </React.Fragment>
   );
 });

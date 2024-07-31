@@ -17,7 +17,7 @@ const TaskIndex = observer(() => {
     data: null,
   });
   const {
-    Project: { getSingleProject, setOpenTaskDrawer, openTaskDrawer },
+    Project: { getSingleProject, setOpenTaskDrawer, openTaskDrawer, getTasks },
     auth: { openNotification },
   } = store;
   const { projectId } = useParams();
@@ -28,6 +28,14 @@ const TaskIndex = observer(() => {
       getSingleProject({ id: projectId })
         .then((data: any) => {
           setProjectDetails({ loading: false, data: data.data });
+          getTasks({id : projectId}).then(() => {
+          }).catch((err) => {
+            openNotification({
+              title: "Failed to Get",
+              message: err?.data?.message || "An error occurred",
+              type: getStatusType(err.status),
+            });
+          })
         })
         .catch((err) => {
           openNotification({
@@ -38,7 +46,7 @@ const TaskIndex = observer(() => {
           setProjectDetails({ loading: false, data: null });
         });
     }
-  }, [openNotification, getSingleProject, projectId]);
+  }, [openNotification, getSingleProject, projectId, getTasks]);
 
   return (
     <React.Fragment>
