@@ -102,7 +102,7 @@ const ProjectAttachments = () => {
   const filesToShow = showAll ? fileData : fileData.slice(0, 5);
 
   return (
-    <Box pb={4} bg={useColorModeValue("white", "gray.800")} w={"100%"}>
+    <Box pb={4} p={5} w={"100%"}>
       <VStack spacing={4} align="stretch">
         <Flex
           justifyContent="space-between"

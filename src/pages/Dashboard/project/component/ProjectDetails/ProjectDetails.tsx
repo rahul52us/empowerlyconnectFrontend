@@ -24,27 +24,25 @@ import AttachmentSection from "../ProjectAttachments/ProjectAttachments";
 import TaskTable from "../TaskTable/TaskTable";
 import { observer } from "mobx-react-lite";
 
-
-const ProjectDetails = ({selectedProject} : any) => {
+const ProjectDetails = ({ selectedProject }: any) => {
   const {
     Project: { setOpenProjectDrawer },
   } = store;
 
   const gridColumns = "1fr 4fr";
   return (
-    <Box pl={4}>
-      <Flex justifyContent={"space-between"} align={'start'}>
+    <Box pl={2}>
+      <Flex justifyContent={"space-between"} align={"start"}>
         <Text fontWeight={500} fontSize={"2xl"}>
           Name of the Project
         </Text>
-        <Button
+        <IconButton
           onClick={() => {
-            setOpenProjectDrawer("edit",selectedProject);
+            setOpenProjectDrawer("edit", selectedProject);
           }}
-        >
-          Create Task
-        </Button>
-        <IconButton aria-label="Edit" icon={<EditIcon />} />
+          aria-label="Edit"
+          icon={<EditIcon />}
+        />
       </Flex>
       <VStack spacing={6} mt={6} align={"start"}>
         <Grid templateColumns={"1fr 4fr"} gap={4} w={"full"}>
@@ -52,7 +50,9 @@ const ProjectDetails = ({selectedProject} : any) => {
             <Icon as={TbProgress} />
             <Text>Status</Text>
           </Flex>
-          <Tag colorScheme="green" rounded={"full"} w={'fit-content'} >In Progress</Tag>
+          <Tag colorScheme="green" rounded={"full"} w={"fit-content"}>
+            In Progress
+          </Tag>
         </Grid>
         <Grid templateColumns={gridColumns} rowGap={5} columnGap={4} w={"full"}>
           <Flex gap={2} align={"center"} color={"gray"} fontWeight={500}>
