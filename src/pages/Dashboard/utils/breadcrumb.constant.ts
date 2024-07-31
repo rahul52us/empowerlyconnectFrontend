@@ -26,6 +26,14 @@ const projectBreadCrumb = {
     { label: "Dashboard", link: dashboard.home },
     { label: "project" },
   ],
+  task : {
+    index: [
+      { label: "Home", link: "/" },
+      { label: "Dashboard", link: dashboard.home },
+      { label: "Project", link: dashboard.project.index },
+      { label: "Task" },
+    ],
+  }
 };
 
 const UsersBreadCrumb = {

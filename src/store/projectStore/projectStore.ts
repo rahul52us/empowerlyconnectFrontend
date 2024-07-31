@@ -11,6 +11,13 @@ class ProjectStore {
     limit : paginationLimit
   };
 
+  task = {
+    data : [],
+    loading : false,
+    currentPage:1,
+    limit : paginationLimit
+  }
+
   projectCount : any = {
     data : 0,
     loading : false
@@ -20,6 +27,13 @@ class ProjectStore {
     type: "create",
     open: false,
     data: null,
+  };
+
+  openTaskDrawer : any = {
+    type: "create",
+    open: false,
+    data: null,
+    project : null
   };
 
   constructor() {
@@ -32,7 +46,12 @@ class ProjectStore {
       getProjects: action,
       getSingleProject: action,
       updateProject:action,
-      getProjectCounts:action
+      getProjectCounts:action,
+      // task
+      task:observable,
+      openTaskDrawer:observable,
+      createTask:action,
+      setOpenTaskDrawer:action
     });
   }
 
@@ -110,6 +129,30 @@ class ProjectStore {
       : null;
     this.openProjectDrawer.type = this.openProjectDrawer.open ? type : "create";
   };
+
+  setOpenTaskDrawer = (type : string, data? : any) => {
+    this.openTaskDrawer.open = this.openTaskDrawer.open ? false : true;
+    this.openTaskDrawer.type = type;
+    this.openTaskDrawer.data = this.openTaskDrawer.open
+      ? data || null
+      : null;
+    this.openTaskDrawer.type = this.openTaskDrawer.open ? type : "create";
+  }
+
+  // Task Related function
+
+  createTask = async (sendData: any) => {
+    try {
+      const { data } = await axios.post("/project/task/create", {
+        ...sendData,
+        company: store.auth.getCurrentCompany(),
+      });
+      return data;
+    } catch (err: any) {
+      return Promise.reject(err?.response || err);
+    }
+  };
+
 }
 
 export default ProjectStore;

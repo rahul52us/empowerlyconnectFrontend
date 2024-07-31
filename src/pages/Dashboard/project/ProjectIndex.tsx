@@ -14,6 +14,8 @@ import store from "../../../store/store";
 import CustomDrawer from "../../../config/component/Drawer/CustomDrawer";
 import CreateProject from "./component/Form/CreateProject";
 import EditProject from "./component/Form/EditProject";
+import React from "react";
+import TaskIndex from "./task/TaskIndex";
 
 const ProjectIndex = observer(() => {
   const {
@@ -22,6 +24,7 @@ const ProjectIndex = observer(() => {
   const showIcon = useBreakpointValue({ base: true, md: false });
 
   return (
+    <React.Fragment>
     <Box>
       <Flex justifyContent="space-between" alignItems="center">
         <DashPageHeader title="Project" breadcrumb={projectBreadCrumb.index} />
@@ -66,6 +69,8 @@ const ProjectIndex = observer(() => {
         )}
       </CustomDrawer>
     </Box>
+     <TaskIndex />
+    </React.Fragment>
   );
 });
 

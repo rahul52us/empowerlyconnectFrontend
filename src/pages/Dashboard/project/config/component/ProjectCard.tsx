@@ -10,8 +10,11 @@ import {
   Divider,
   VStack,
   useColorModeValue,
+  Link,
 } from "@chakra-ui/react";
 import store from "../../../../../store/store";
+import { useNavigate } from "react-router-dom";
+import { dashboard } from "../../../../../config/constant/routes";
 
 interface CardProps {
   project_name: string;
@@ -45,6 +48,8 @@ const ProjectCard: React.FC<CardProps> = ({
   dueDate,
   approval,
 }) => {
+
+  const navigate = useNavigate()
   const {
     Project: { setOpenProjectDrawer },
   } = store;
@@ -119,6 +124,7 @@ const ProjectCard: React.FC<CardProps> = ({
         )}
       </Stack>
       <Divider mb={4} />
+      <Flex justifyContent={'space-between'}>
       <VStack align="start" spacing={2}>
         {startDate && (
           <Text fontSize="sm" color="gray.600">
@@ -136,6 +142,10 @@ const ProjectCard: React.FC<CardProps> = ({
           </Text>
         )}
       </VStack>
+      <Link cursor='pointer' onClick={() => {
+        navigate(`${dashboard.project.index}/${item._id}/task`)
+      }}>CREATE TASK</Link>
+      </Flex>
     </Box>
   );
 };

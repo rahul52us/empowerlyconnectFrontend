@@ -70,6 +70,15 @@ export const dashboard = {
   },
   liberary: {
     index : `${dashboardName}/liberary`
+  },
+  // project
+  project : {
+    index : `/${dashboardName}/project`,
+    task : {
+      index : `/${dashboardName}/project/:projectId/task`,
+      create : `/${dashboardName}/:projectId/task/create`,
+      edit:`/${dashboardName}/:projectId/task/edit/:taskId`
+    }
   }
 };
 

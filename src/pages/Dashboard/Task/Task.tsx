@@ -1,5 +1,5 @@
 import { Box, Button } from "@chakra-ui/react";
-import Board from "./Board/Board";
+import Board from "../project/task/Board/Board";
 import TaskHeader from "./component/TaskHeader/TaskHeader";
 import { observer } from "mobx-react-lite";
 import store from "../../../store/store";

@@ -22,7 +22,7 @@ const QuizDashIndex = lazy(
 );
 
 // task
-const TaskIndex = lazy(() => import("../../pages/Dashboard/Task/Task"));
+const TaskIndex = lazy(() => import("../../pages/Dashboard/project/task/TaskIndex"));
 const CustomDragForm = lazy(
   () => import("../../pages/Dashboard/CustomDragForm/CustomFragForm")
 );
@@ -155,11 +155,6 @@ export const DashboardRoutes = [
   {
     element: <NotesIndex />,
     path: "/dashboard/courses",
-    privateRoutes: true,
-  },
-  {
-    element: <ProjectIndex />,
-    path: "/dashboard/project",
     privateRoutes: true,
   },
   {
@@ -332,5 +327,18 @@ export const DashboardRoutes = [
     element: <PageNotFound />,
     path: "/dashboard/*",
     privateRoutes: true,
+  },
+
+  // Project
+
+  {
+    element: <ProjectIndex />,
+    path: dashboard.project.index,
+    privateRoutes: true,
+  },
+  {
+    element: <TaskIndex />,
+    path: dashboard.project.task.index,
+    privateRoutes: true
   },
 ];

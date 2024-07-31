@@ -75,7 +75,7 @@ const ProjectCard2: React.FC<ProjectCardProps> = ({
               <Avatar key={index} name={member} />
             ))}
           </AvatarGroup>
-        
+
           <HStack>
             <Icon as={FiClock} boxSize={5} />
             <Text fontSize="sm">{deadline}</Text>
@@ -101,7 +101,6 @@ const ProjectCard2: React.FC<ProjectCardProps> = ({
             <Icon as={FiUser} boxSize={5} />
             <Text fontSize="sm">{manager}</Text>
           </HStack>
-        
         </HStack>
         {/* <Flex justify={"end"} w={"100%"}>
           <Button mt={2} colorScheme="telegram" variant={"outline"} size={"sm"}>

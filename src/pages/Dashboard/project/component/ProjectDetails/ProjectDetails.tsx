@@ -8,7 +8,7 @@ import {
   Tag,
   TagLabel,
   Text,
-  VStack
+  VStack,
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { FaCalendar, FaPeopleGroup } from "react-icons/fa6";
@@ -17,13 +17,26 @@ import { RiUserAddLine } from "react-icons/ri";
 import { TbProgress, TbTags } from "react-icons/tb";
 // import ProjectAttachments from "../ProjectAttachments/ProjectAttachments";
 import AttachmentSection from "../ProjectAttachments/ProjectAttachments";
+import store from "../../../../../store/store";
 
 const ProjectDetails = () => {
+  const {
+    Project: { setOpenTaskDrawer },
+  } = store;
   return (
     <Box pl={4}>
-      <Text fontWeight={500} fontSize={"2xl"}>
-        Name of the Project
-      </Text>
+      <Flex justifyContent={"space-between"}>
+        <Text fontWeight={500} fontSize={"2xl"}>
+          Name of the Project
+        </Text>
+        <Button
+          onClick={() => {
+            setOpenTaskDrawer("create");
+          }}
+        >
+          Create Task
+        </Button>
+      </Flex>
       <VStack spacing={6} mt={6} align={"start"}>
         <Grid templateColumns={"1fr 4fr"} gap={4} w={"full"}>
           <Flex gap={2} align={"center"} color={"gray"} fontWeight={500}>
@@ -106,14 +119,21 @@ const ProjectDetails = () => {
             <Icon boxSize={5} as={MdOutlineDescription} />
             <Text>Description</Text>
           </Flex>
-          <Text color={"gray.500"} fontSize={'sm'} p={2} borderWidth={2} rounded={12} mt={2}>
+          <Text
+            color={"gray.500"}
+            fontSize={"sm"}
+            p={2}
+            borderWidth={2}
+            rounded={12}
+            mt={2}
+          >
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta sed
             delectus accusantium repellat eligendi odit beatae perferendis vel
             illum. Voluptate ex nulla magni accusantium architecto quibusdam
             velit, est dicta modi! ashd aosid asodas d09
           </Text>
         </Box>
-        <AttachmentSection/>
+        <AttachmentSection />
       </VStack>
     </Box>
   );

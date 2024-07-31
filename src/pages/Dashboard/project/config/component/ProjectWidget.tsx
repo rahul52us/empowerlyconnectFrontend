@@ -35,7 +35,7 @@ const dummyProjects = [
 
 const ProjectWidget = observer(() => {
   const {
-    Project: { getProjects, projects },
+    Project: { getProjects, projects, projectCount },
     auth: { openNotification },
   } = store;
 
@@ -58,7 +58,7 @@ const ProjectWidget = observer(() => {
       <SimpleGrid columns={[1, null, 3]} spacing={6}>
         <SummaryWidget
           label="Total Projects"
-          value={12}
+          value={projectCount.data}
           icon={FaProjectDiagram}
           colorScheme="teal"
           description="Total number of projects."
