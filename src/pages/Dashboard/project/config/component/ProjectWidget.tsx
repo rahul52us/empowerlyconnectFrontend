@@ -1,6 +1,6 @@
 import { Box, Button, SimpleGrid } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { FaProjectDiagram, FaTasks, FaUsers } from "react-icons/fa";
 import MainPagePagination from "../../../../../config/component/pagination/MainPagePagination";
 import { getStatusType } from "../../../../../config/constant/statusCode";
@@ -13,21 +13,21 @@ import ProjectCard2 from "../../component/ProjectCard/ProjectCard2";
 
 const dummyProjects = [
   {
-    title: 'Project Alpha',
+    title: "Project Alpha",
     // description: 'A project to develop a new feature for our application.',
-    manager: 'John Doe',
-    deadline: '2024-08-15',
-    status: 'In Progress',
-    team: ['Alice', 'Bob', 'Charlie'],
+    manager: "John Doe",
+    deadline: "2024-08-15",
+    status: "In Progress",
+    team: ["Alice", "Bob", "Charlie"],
     progress: 50,
   },
   {
-    title: 'Project Beta',
+    title: "Project Beta",
     // description: 'A project to improve the performance of our system.',
-    manager: 'Jane Smith',
-    deadline: '2024-09-01',
-    status: 'Completed',
-    team: ['David', 'Eve', 'Frank'],
+    manager: "Jane Smith",
+    deadline: "2024-09-01",
+    status: "Completed",
+    team: ["David", "Eve", "Frank"],
     progress: 100,
   },
   // Add more dummy projects as needed
@@ -40,18 +40,23 @@ const ProjectWidget = observer(() => {
   } = store;
 
   const [isOpen, setIsOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
 
-  useEffect(() => {
-    getProjects({ page: 1, limit: 10 })
+  const fetchProjectDetails = useCallback((page : number) => {
+    getProjects({ page, limit: 10 })
       .then(() => {})
       .catch((err) => {
         openNotification({
-          title: "Failed to Retrived Project",
+          title: "Failed to Retrieve Project",
           message: err?.data?.message,
           type: getStatusType(err.status),
         });
       });
-  }, [openNotification, getProjects]);
+  }, [getProjects, openNotification]);
+
+  useEffect(() => {
+    fetchProjectDetails(currentPage);
+  }, [currentPage, fetchProjectDetails]);
 
   return (
     <Box>
@@ -81,19 +86,19 @@ const ProjectWidget = observer(() => {
         />
       </SimpleGrid>
       <SimpleGrid columns={{ sm: 1, md: 2, lg: 3 }} spacing={5}>
-          {dummyProjects.map((project, index) => (
-            <ProjectCard2
-              key={index}
-              title={project.title}
-              // description={project.description}
-              manager={project.manager}
-              deadline={project.deadline}
-              status={project.status}
-              team={project.team}
-              progress={project.progress}
-            />
-          ))}
-        </SimpleGrid>
+        {dummyProjects.map((project, index) => (
+          <ProjectCard2
+            key={index}
+            title={project.title}
+            // description={project.description}
+            manager={project.manager}
+            deadline={project.deadline}
+            status={project.status}
+            team={project.team}
+            progress={project.progress}
+          />
+        ))}
+      </SimpleGrid>
 
       <Button onClick={() => setIsOpen(true)}>open drawer</Button>
 
@@ -120,8 +125,8 @@ const ProjectWidget = observer(() => {
       </SimpleGrid>
       <Box mt={20}>
         <MainPagePagination
-          currentPage={1}
-          onPageChange={() => {}}
+          currentPage={currentPage}
+          onPageChange={(page) => setCurrentPage(page.selected)}
           totalPages={projects.totalPages}
         />
       </Box>

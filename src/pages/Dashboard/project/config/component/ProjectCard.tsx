@@ -144,7 +144,7 @@ const ProjectCard: React.FC<CardProps> = ({
       </VStack>
       <Link cursor='pointer' onClick={() => {
         navigate(`${dashboard.project.index}/${item._id}/task`)
-      }}>CREATE TASK</Link>
+      }}>View task</Link>
       </Flex>
     </Box>
   );
