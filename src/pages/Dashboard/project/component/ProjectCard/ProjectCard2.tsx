@@ -39,7 +39,7 @@ const ProjectCard2: React.FC<ProjectCardProps> = ({
 }) => {
   // const bg = useColorModeValue('white', 'gray.800');
   // const color = useColorModeValue('gray.800', 'white');
-  const cardBg = useColorModeValue("gray.100", "gray.700");
+  const cardBg = useColorModeValue("gray.50", "gray.700");
   const statusColor =
     status === "In Progress"
       ? "yellow"
@@ -61,10 +61,10 @@ const ProjectCard2: React.FC<ProjectCardProps> = ({
     >
       <VStack align="start" spacing={4}>
         <HStack w="full" justify="space-between" align="center">
-          <Text fontWeight="bold" fontSize="2xl">
+          <Text fontWeight="bold" fontSize="xl">
             {title}
           </Text>
-          <Badge colorScheme={statusColor} px={2} py={1} borderRadius="md">
+          <Badge colorScheme={statusColor} px={2} py={1} borderRadius="md" rounded={'full'}>
             {status}
           </Badge>
         </HStack>

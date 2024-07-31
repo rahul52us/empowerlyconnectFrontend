@@ -1,3 +1,4 @@
+import { CalendarIcon, EditIcon } from "@chakra-ui/icons";
 import {
   Avatar,
   Box,
@@ -5,27 +6,34 @@ import {
   Flex,
   Grid,
   Icon,
+  IconButton,
+  // IconButton,
+  // Image,
   Tag,
   TagLabel,
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { observer } from "mobx-react-lite";
-import { FaCalendar, FaPeopleGroup } from "react-icons/fa6";
+import { FaPeopleGroup } from "react-icons/fa6";
+import { GrUserManager } from "react-icons/gr";
 import { MdOutlineDescription } from "react-icons/md";
 import { RiUserAddLine } from "react-icons/ri";
 import { TbProgress, TbTags } from "react-icons/tb";
-// import ProjectAttachments from "../ProjectAttachments/ProjectAttachments";
-import AttachmentSection from "../ProjectAttachments/ProjectAttachments";
 import store from "../../../../../store/store";
+import AttachmentSection from "../ProjectAttachments/ProjectAttachments";
+import TaskTable from "../TaskTable/TaskTable";
+import { observer } from "mobx-react-lite";
+
 
 const ProjectDetails = ({selectedProject} : any) => {
   const {
     Project: { setOpenProjectDrawer },
   } = store;
+
+  const gridColumns = "1fr 4fr";
   return (
     <Box pl={4}>
-      <Flex justifyContent={"space-between"}>
+      <Flex justifyContent={"space-between"} align={'start'}>
         <Text fontWeight={500} fontSize={"2xl"}>
           Name of the Project
         </Text>
@@ -36,6 +44,7 @@ const ProjectDetails = ({selectedProject} : any) => {
         >
           Create Task
         </Button>
+        <IconButton aria-label="Edit" icon={<EditIcon />} />
       </Flex>
       <VStack spacing={6} mt={6} align={"start"}>
         <Grid templateColumns={"1fr 4fr"} gap={4} w={"full"}>
@@ -43,14 +52,27 @@ const ProjectDetails = ({selectedProject} : any) => {
             <Icon as={TbProgress} />
             <Text>Status</Text>
           </Flex>
-          <Text fontWeight={700}>In Progress</Text>
+          <Tag colorScheme="green" rounded={"full"} w={'fit-content'} >In Progress</Tag>
         </Grid>
-        <Grid templateColumns={"1fr 4fr"} gap={4} w={"full"}>
+        <Grid templateColumns={gridColumns} rowGap={5} columnGap={4} w={"full"}>
           <Flex gap={2} align={"center"} color={"gray"} fontWeight={500}>
-            <Icon as={FaCalendar} />
+            <Icon as={CalendarIcon} />
+            <Text>Start Date</Text>
+          </Flex>
+          <Text fontWeight={700}>14 March 2024</Text>
+          <Flex gap={2} align={"center"} color={"gray"} fontWeight={500}>
+            <Icon as={CalendarIcon} />
             <Text>Due Date</Text>
           </Flex>
-          <Text fontWeight={700}>4 March 2024</Text>
+          <Text fontWeight={700}>20 December 2024</Text>
+        </Grid>
+
+        <Grid templateColumns={gridColumns} gap={4} w={"full"}>
+          <Flex gap={2} align={"center"} color={"gray"} fontWeight={500}>
+            <Icon as={GrUserManager} />
+            <Text>Manager</Text>
+          </Flex>
+          <Text fontWeight={700}>Ayush Yadav</Text>
         </Grid>
 
         <Grid
@@ -77,7 +99,7 @@ const ProjectDetails = ({selectedProject} : any) => {
           </Flex>
         </Grid>
 
-        <Grid templateColumns={"1fr 4fr"} gap={4} w={"full"}>
+        <Grid templateColumns={gridColumns} gap={4} w={"full"}>
           <Flex gap={2} align={"center"} color={"gray"} fontWeight={500}>
             <Icon as={FaPeopleGroup} />
             <Text>Team</Text>
@@ -117,7 +139,7 @@ const ProjectDetails = ({selectedProject} : any) => {
         <Box mt={2}>
           <Flex gap={2} align={"center"} color={"gray.600"} fontWeight={500}>
             <Icon boxSize={5} as={MdOutlineDescription} />
-            <Text>Description</Text>
+            <Text fontWeight={500}>Description</Text>
           </Flex>
           <Text
             color={"gray.500"}
@@ -135,6 +157,9 @@ const ProjectDetails = ({selectedProject} : any) => {
         </Box>
         <AttachmentSection />
       </VStack>
+      <Box py={4}>
+        <TaskTable />
+      </Box>
     </Box>
   );
 };
