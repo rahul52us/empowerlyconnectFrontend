@@ -27,7 +27,7 @@ const NotFoundData = ({ onClick, title, subTitle, btnText }: any) => {
         color={isDarkMode ? theme.colors.orange[300] : theme.colors.orange[400]} // Conditional icon color
         mb={4}
       />
-      <VStack spacing={{ base: 3, md: 5 }}>
+      <VStack spacing={{ base: 3, md: 3 }}>
         <Text
           fontSize={{ base: "lg", md: "xl" }}
           color={isDarkMode ? theme.colors.gray[200] : theme.colors.gray[800]} // Conditional text color for title

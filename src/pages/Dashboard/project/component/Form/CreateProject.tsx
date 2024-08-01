@@ -7,7 +7,7 @@ import { readFileAsBase64 } from "../../../../../config/constant/function";
 
 const CreateProject = observer(() => {
   const {
-    Project: { createProject, setOpenProjectDrawer, getProjects },
+    Project: { createProject, setOpenProjectDrawer, getProjects, projects },
     auth: { openNotification },
   } = store;
 
@@ -29,7 +29,7 @@ const CreateProject = observer(() => {
             message: `${data.message}`,
             type: "success",
           });
-          getProjects({})
+          getProjects({page : projects.currentPage, limit : projects.limit})
           resetForm();
           setOpenProjectDrawer("create");
         })

@@ -14,7 +14,8 @@ const EditProject = observer((projectData: any) => {
       openProjectDrawer,
       setOpenProjectDrawer,
       updateProject,
-      getProjects
+      getProjects,
+      projects
     },
     auth: { openNotification },
   } = store;
@@ -74,7 +75,7 @@ const EditProject = observer((projectData: any) => {
             message: `${data.message}`,
             type: "success",
           });
-          getProjects({})
+          getProjects({page : projects.currentPage, limit : projects.limit})
           resetForm();
           setOpenProjectDrawer("create");
         })

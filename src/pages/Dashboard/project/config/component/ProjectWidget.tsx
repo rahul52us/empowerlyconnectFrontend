@@ -28,7 +28,7 @@ const ProjectWidget = observer(() => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const fetchProjectDetails = useCallback(
-    (page: number) => {
+    (page: number = 1) => {
       getProjects({ page, limit: 10 })
         .then(() => {})
         .catch((err) => {
