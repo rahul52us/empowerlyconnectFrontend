@@ -80,7 +80,6 @@ const ProjectWidget = observer(() => {
           />
         ))}
       </SimpleGrid>
-
       <Heading
         display="flex"
         alignItems="center"
