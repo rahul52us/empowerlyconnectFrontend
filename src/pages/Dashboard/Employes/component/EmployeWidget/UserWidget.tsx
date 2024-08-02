@@ -1,10 +1,10 @@
 import { Grid } from "@chakra-ui/react";
-import UserWidgetCard from "../../element/EmployeWidgetCard";
 import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
 import store from "../../../../../store/store";
 import { cardArrayData } from "../../utils/constant";
 import { CardDataI } from "../../utils/constant.interface";
+import SummaryWidget from "../../../../../config/component/WigdetCard/SummaryWidget";
 
 const UserWidget = observer(() => {
   const [cardData, setCardData] = useState<CardDataI>(cardArrayData);
@@ -39,11 +39,13 @@ const UserWidget = observer(() => {
     >
       {Object.entries(cardData).map(([key, item]) => {
         return(
-        <UserWidgetCard
+        <SummaryWidget
           key={key}
-          title={item.title}
-          value={item.value}
-          loading={UsersCounts.loading}
+          label={item.title}
+          description="desctiion for the users"
+          colorScheme={item.colorScheme}
+          value={UsersCounts.data}
+          // loading={UsersCounts.loading}
           icon={item.icon}
           link={item.link}
         />

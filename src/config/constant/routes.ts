@@ -66,7 +66,7 @@ export const dashboard = {
     uniqueUser : `/${dashboardName}/attendence/users/:userId`
   },
   application:{
-    project : `/${dashboardName}/project`
+    project : `/${dashboardName}/project?page=1`
   },
   liberary: {
     index : `${dashboardName}/liberary`

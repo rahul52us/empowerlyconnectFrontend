@@ -12,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { IconType } from "react-icons";
+import { useNavigate } from "react-router-dom";
 
 interface SummaryWidgetProps {
   label: string;
@@ -20,6 +21,7 @@ interface SummaryWidgetProps {
   colorScheme: string;
   description: string;
   change?: number;
+  link?:any
 }
 
 const SummaryWidget: React.FC<SummaryWidgetProps> = ({
@@ -28,7 +30,9 @@ const SummaryWidget: React.FC<SummaryWidgetProps> = ({
   icon,
   colorScheme,
   description,
+  link
 }) => {
+  const navigate = useNavigate()
   const bgColor = useColorModeValue("gray.50", "blackAlpha.300");
   const textColor = useColorModeValue("gray.700", "gray.200");
   const itemShadow = useColorModeValue('md', 'dark-lg');
@@ -60,7 +64,11 @@ const SummaryWidget: React.FC<SummaryWidgetProps> = ({
         </Flex>
         <Box>
           <Stat>
-            <StatLabel fontSize="lg" fontWeight={700} color={textColor}>
+            <StatLabel cursor="pointer" fontSize="lg" fontWeight={700} color={textColor} onClick={() => {
+              if(link){
+                navigate(link)
+              }
+            }}>
               {label}
             </StatLabel>
             <StatNumber fontSize="3xl" fontWeight="bold" color={textColor}>

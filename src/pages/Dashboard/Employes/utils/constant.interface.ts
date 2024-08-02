@@ -6,6 +6,7 @@ export interface CardDataI {
     value: number;
     icon: any;
     link: string;
+    colorScheme:string
   };
 }
 export interface CardPropsI {

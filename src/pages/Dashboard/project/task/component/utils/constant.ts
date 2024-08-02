@@ -6,6 +6,11 @@ export const taskStatus : any = [
     { value: "complete", label: "Completed" },
 ]
 
+export const activeStatus : any = [
+    { value: true, label: "Yes" },
+    { value: false, label: "No" },
+]
+
 export const taskPrioties : any = [
     { value: "low", label: "Low" },
     { value: "medium", label: "Medium" },
@@ -15,13 +20,17 @@ export const taskPrioties : any = [
 export const initialValuesOfTask : any = {
     title: "",
     description: "",
+    isActive:activeStatus[0],
     startDate: new Date(),
     endDate: new Date(),
     dueDate: new Date(),
     priority: taskPrioties[1],
+    reminders : new Date(),
     followers: [],
+    dependencies:[],
     team_members: [],
     customers: [],
     project_manager: [],
     status: taskStatus[0],
+    attach_files : []
 }

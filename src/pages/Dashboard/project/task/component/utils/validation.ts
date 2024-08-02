@@ -4,6 +4,7 @@ import * as Yup from "yup";
 const TaskCreateValidation = Yup.object().shape({
   title: Yup.string().trim().required("Title is required."),
   subtitle: Yup.string().trim(),
+  isActive :Yup.mixed().required('Active state is required'),
   status: Yup.mixed().required('please select the status'),
   description: Yup.string()
     .trim()

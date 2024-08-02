@@ -40,6 +40,7 @@ interface CustomInputProps {
     | "date"
     | "url"
     | "phone"
+    | "dateAndTime"
     | "file-drag"; // New type for file drag-and-drop
   label?: string;
   placeholder?: string;
@@ -81,7 +82,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
   value,
   onChange,
   required,
-  isClear,
+  isClear = false,
   options,
   isSearchable,
   isMulti,
@@ -266,7 +267,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
             value={value}
             onChange={onChange}
             placeholder={placeholder}
-            isClearable
+            isClearable={isClear ? true : undefined}
             className={`chakra-select ${
               theme ? theme.components.Select.baseStyle : ""
             }`}
@@ -301,6 +302,22 @@ const CustomInput: React.FC<CustomInputProps> = ({
             menuPosition={isPortal ? 'fixed' : undefined}
           />
         );
+      case 'dateAndTime':
+        return(
+          <Input
+            readOnly={readOnly}
+            style={style}
+            bg={inputBg}
+            type="datetime-local"
+            placeholder={placeholder}
+            value={value}
+            onChange={onChange}
+            name={name}
+            disabled={disabled}
+            _placeholder={{ fontSize: "12px" }}
+            {...rest}
+          />
+        )
       case "date":
         return (
           <div style={{ position: "relative" }}>

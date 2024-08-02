@@ -84,6 +84,7 @@ const TaskIndex = observer(() => {
         title="CREATE NEW TASK"
         open={openTaskDrawer.open}
         close={() => setOpenTaskDrawer("create")}
+        width={'75vw'}
       >
         <AddTask />
       </CustomDrawer>
