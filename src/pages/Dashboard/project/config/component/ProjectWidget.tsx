@@ -20,13 +20,14 @@ import TaskCard from "../../component/TaskCard/TaskCard";
 
 const ProjectWidget = observer(() => {
   const {
-    Project: { getProjects, projects, projectCount },
+    Project: { getProjects, projects, projectCount, getProjectCounts },
     auth: { openNotification },
   } = store;
   const [selectedProject, setSelectedProject] = useState({
     open: false,
-    data: null,
+    data: null
   });
+
   const { getQueryParam, setQueryParam } = useQueryParams();
   const [currentPage, setCurrentPage] = useState(() =>
     getQueryParam("page") ? Number(getQueryParam("page")) : 1
@@ -45,6 +46,10 @@ const ProjectWidget = observer(() => {
   }, [getProjects, openNotification, currentPage]);
 
   useEffect(() => {
+    getProjectCounts()
+  },[getProjectCounts])
+
+  useEffect(() => {
     fetchProjectDetails();
   }, [currentPage, fetchProjectDetails]);
 
@@ -60,6 +65,7 @@ const ProjectWidget = observer(() => {
       icon: FaProjectDiagram,
       colorScheme: "teal",
       description: "Total number of projects.",
+      loading:projectCount.loading
     },
     {
       label: "Total Tasks",
@@ -67,6 +73,7 @@ const ProjectWidget = observer(() => {
       icon: FaTasks,
       colorScheme: "blue",
       description: "Total number of tasks across all projects.",
+      loading:projectCount.loading
     },
     {
       label: "Team Members",
@@ -74,6 +81,7 @@ const ProjectWidget = observer(() => {
       icon: FaUsers,
       colorScheme: "purple",
       description: "The number of active team members.",
+      loading:projectCount.loading
     },
   ];
 
@@ -103,6 +111,7 @@ const ProjectWidget = observer(() => {
             icon={data.icon}
             colorScheme={data.colorScheme}
             description={data.description}
+            loading={data.loading}
           />
         ))}
       </SimpleGrid>
@@ -170,11 +179,9 @@ const ProjectWidget = observer(() => {
         open={selectedProject.open}
         close={() => setSelectedProject({ open: false, data: null })}
         title="Project Details"
-        width="70vw"
+        width="80vw"
       >
-        <Box p={4}>
           <ProjectDetails selectedProject={selectedProject.data} />
-        </Box>
       </CustomDrawer>
     </Box>
   );

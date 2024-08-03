@@ -2,7 +2,6 @@ import {
   formatDate,
   YYYYMMDD_FORMAT,
 } from "../../../../../config/constant/dateUtils";
-import { getIdFromObject } from "../../../../../config/constant/function";
 import { ProjectPrioties, projectStatus } from "./constant";
 
 export const generateProjectInitialValues = (values : any) => {
@@ -22,10 +21,10 @@ export const generateProjectResponse = (values: any) => {
       ? values?.priority?.value
       : ProjectPrioties[1].value,
     status: values?.status ? values?.status?.value : projectStatus[0].value,
-    followers: getIdFromObject(values?.followers),
-    project_manager: getIdFromObject(values.project_manager),
-    team_members: getIdFromObject(values.team_members),
-    customers: getIdFromObject(values.customers),
+    followers: values?.followers.map((item : any) => ({user : item?.user?._id, isActive : item.isActive || true})),
+    project_manager: values.project_manager.map((item : any) => ({user : item?.user?._id, isActive : item.isActive  || true})),
+    team_members: values.team_members.map((item : any) => ({user : item?.user?._id, isActive : item.isActive  || true})),
+    customers: values.customers.map((item : any) => ({user : item?.user?._id, isActive : item.isActive  || true})),
     startDate: values?.startDate
       ? formatDate(values?.startDate, YYYYMMDD_FORMAT)
       : new Date(),

@@ -67,7 +67,6 @@ const EditProject = observer((projectData: any) => {
           values.logo = fileData;
         }
       }
-
       updateProject({ _id: fetchProjectData?.data?._id, ...values })
         .then((data: any) => {
           openNotification({

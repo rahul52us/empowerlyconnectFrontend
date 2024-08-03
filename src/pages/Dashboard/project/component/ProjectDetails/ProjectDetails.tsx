@@ -7,160 +7,306 @@ import {
   Grid,
   Icon,
   IconButton,
-  // IconButton,
-  // Image,
+  Image,
   Tag,
   TagLabel,
   Text,
   VStack,
+  useColorModeValue,
 } from "@chakra-ui/react";
-import { FaPeopleGroup } from "react-icons/fa6";
 import { GrUserManager } from "react-icons/gr";
 import { MdOutlineDescription } from "react-icons/md";
 import { RiUserAddLine } from "react-icons/ri";
-import { TbProgress, TbTags } from "react-icons/tb";
+import { TbProgress } from "react-icons/tb";
+import { observer } from "mobx-react-lite";
+import { useEffect, useState } from "react";
 import store from "../../../../../store/store";
 import AttachmentSection from "../ProjectAttachments/ProjectAttachments";
 import TaskTable from "../TaskTable/TaskTable";
-import { observer } from "mobx-react-lite";
+import DrawerLoader from "../../../../../config/component/Loader/DrawerLoader";
+import {
+  formatDate,
+  formatDateTime,
+  LONG_DATE_FORMAT,
+} from "../../../../../config/constant/dateUtils";
+import { generateProjectInitialValues } from "../utils/function";
+import { FaPeopleGroup } from "react-icons/fa6";
 
 const ProjectDetails = ({ selectedProject }: any) => {
   const {
-    Project: { setOpenProjectDrawer },
+    Project: { setOpenProjectDrawer, getSingleProject },
   } = store;
 
-  const gridColumns = "1fr 4fr";
+  const [fetchProjectData, setFetchProjectData] = useState<any>({
+    data: null,
+    loading: true,
+  });
+
+  useEffect(() => {
+    setFetchProjectData({ loading: true, data: null });
+    getSingleProject({ id: selectedProject?._id })
+      .then((data: any) => {
+        setFetchProjectData({
+          loading: false,
+          data: generateProjectInitialValues(data.data),
+        });
+      })
+      .catch(() => {
+        setFetchProjectData({ loading: false, data: null });
+      });
+  }, [getSingleProject, selectedProject]);
+
+  const placeholderImage =
+    "https://via.placeholder.com/300x400?text=No+thumbnail+found";
+
+  // Theme-aware colors
+  const bgColor = useColorModeValue("white", "gray.800");
+  const borderColor = useColorModeValue("gray.200", "gray.600");
+  const textColor = useColorModeValue("gray.800", "gray.100");
+  const descBgColor = useColorModeValue("gray.50", "gray.700");
+  const labelColor = useColorModeValue("gray.600", "gray.400"); // Adjust label color based on theme
+
   return (
-    <Box pl={2}>
-      <Flex justifyContent={"space-between"} align={"start"}>
-        <Text fontWeight={500} fontSize={"2xl"}>
-          Name of the Project
-        </Text>
-        <IconButton
-          onClick={() => {
-            setOpenProjectDrawer("edit", selectedProject);
-          }}
-          aria-label="Edit"
-          icon={<EditIcon />}
-        />
-      </Flex>
-      <VStack spacing={6} mt={6} align={"start"}>
-        <Grid templateColumns={"1fr 4fr"} gap={4} w={"full"}>
-          <Flex gap={2} align={"center"} color={"gray"} fontWeight={500}>
-            <Icon as={TbProgress} />
-            <Text>Status</Text>
-          </Flex>
-          <Tag colorScheme="green" rounded={"full"} w={"fit-content"}>
-            In Progress
-          </Tag>
-        </Grid>
-        <Grid templateColumns={gridColumns} rowGap={5} columnGap={4} w={"full"}>
-          <Flex gap={2} align={"center"} color={"gray"} fontWeight={500}>
-            <Icon as={CalendarIcon} />
-            <Text>Start Date</Text>
-          </Flex>
-          <Text fontWeight={700}>14 March 2024</Text>
-          <Flex gap={2} align={"center"} color={"gray"} fontWeight={500}>
-            <Icon as={CalendarIcon} />
-            <Text>Due Date</Text>
-          </Flex>
-          <Text fontWeight={700}>20 December 2024</Text>
-        </Grid>
-
-        <Grid templateColumns={gridColumns} gap={4} w={"full"}>
-          <Flex gap={2} align={"center"} color={"gray"} fontWeight={500}>
-            <Icon as={GrUserManager} />
-            <Text>Manager</Text>
-          </Flex>
-          <Text fontWeight={700}>Ayush Yadav</Text>
-        </Grid>
-
-        <Grid
-          templateColumns={"1fr 4fr"}
-          gap={4}
-          alignItems={"center"}
-          w={"full"}
-        >
-          <Flex gap={2} align={"center"} color={"gray"} fontWeight={500}>
-            <Icon as={TbTags} />
-            <Text>Tags</Text>
-          </Flex>
-          <Flex gap={3}>
-            {[0, 1, 2].map((item) => (
-              <Tag
-                // fontSize={"sm"}
-                w={"fit-content"}
-                colorScheme="purple"
-                key={item}
-              >
-                Backend
-              </Tag>
-            ))}
-          </Flex>
-        </Grid>
-
-        <Grid templateColumns={gridColumns} gap={4} w={"full"}>
-          <Flex gap={2} align={"center"} color={"gray"} fontWeight={500}>
-            <Icon as={FaPeopleGroup} />
-            <Text>Team</Text>
-          </Flex>
-          <Flex align={"center"} justify={"space-between"}>
-            <Flex wrap={"wrap"} gap={2} align={"start"}>
-              {[0, 1, 2].map((item) => (
-                <Tag
-                  size="lg"
-                  colorScheme="telegram"
-                  borderRadius="full"
-                  w={"fit-content"}
-                  key={item}
-                >
-                  <Avatar
-                    src="https://bit.ly/sage-adebayo"
-                    size="xs"
-                    name="Segun Adebayo"
-                    ml={-1}
-                    mr={2}
-                  />
-                  <TagLabel>Ayush Yadav</TagLabel>
-                </Tag>
-              ))}
-            </Flex>
-            <Button
-              leftIcon={<RiUserAddLine />}
-              variant="outline"
-              size={"sm"}
-              rounded={"full"}
-            >
-              Invite
-            </Button>
-          </Flex>
-        </Grid>
-
-        <Box mt={2}>
-          <Flex gap={2} align={"center"} color={"gray.600"} fontWeight={500}>
-            <Icon boxSize={5} as={MdOutlineDescription} />
-            <Text fontWeight={500}>Description</Text>
-          </Flex>
-          <Text
-            color={"gray.500"}
-            fontSize={"sm"}
-            p={2}
-            borderWidth={2}
-            rounded={12}
-            mt={2}
-          >
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta sed
-            delectus accusantium repellat eligendi odit beatae perferendis vel
-            illum. Voluptate ex nulla magni accusantium architecto quibusdam
-            velit, est dicta modi! ashd aosid asodas d09
+    <DrawerLoader
+      loading={fetchProjectData.loading}
+      noRecordFoundText={!fetchProjectData.data}
+      height="25vh"
+    >
+      <Box
+        p={3}
+        bg={bgColor}
+        rounded="lg"
+        shadow="lg"
+        borderWidth={1}
+        borderColor={borderColor}
+      >
+        {/* Logo and Title Section */}
+        <Flex justifyContent={"end"}>
+          <IconButton
+            onClick={() => setOpenProjectDrawer("edit", selectedProject)}
+            aria-label="Edit"
+            icon={<EditIcon />}
+            variant="outline"
+            colorScheme="teal"
+            size="sm"
+            ml={3}
+          />
+        </Flex>
+        <Flex direction="column" align="center" mb={6}>
+          <Image
+            src={fetchProjectData?.data?.logo?.file?.url || placeholderImage}
+            alt={fetchProjectData?.data?.logo?.file?.name || "Project Logo"}
+            borderRadius="full"
+            boxSize={{ base: "120px", md: "150px" }}
+            objectFit="cover"
+            shadow="md"
+            mb={4}
+          />
+          <Text fontWeight="bold" fontSize="3xl" color={textColor} mb={2}>
+            {fetchProjectData?.data?.project_name}
           </Text>
-        </Box>
+        </Flex>
+
+        {/* Project Details */}
+        <VStack spacing={8} align="start" w="full">
+          <Flex
+            gap={2}
+            w="full"
+            borderBottom="1px"
+            borderColor={borderColor}
+            pb={4}
+            justifyContent="space-between"
+            flexDirection={{base : 'column', sm : 'row'}}
+          >
+            <Flex>
+            <Flex gap={2} align="center" color={labelColor} fontWeight="medium">
+              <Icon as={TbProgress} boxSize={5} />
+              <Text>Status :- </Text>
+            </Flex>
+            <Tag ml={2} colorScheme="yellow" rounded="full" w="fit-content">
+              {fetchProjectData?.data?.status?.value}
+            </Tag>
+            </Flex>
+            <Flex>
+            <Flex gap={2} align="center" color={labelColor} fontWeight="medium">
+              <Text>Create Date:-</Text>
+            </Flex>
+            <Tag ml={2} colorScheme="green" rounded="full" w="fit-content">
+              {formatDateTime(fetchProjectData?.data?.createdAt)}
+            </Tag>
+            </Flex>
+          </Flex>
+
+          <Grid
+            templateColumns={{ base: "1fr", md: "1fr 3fr" }}
+            gap={6}
+            w="full"
+          >
+            <Flex gap={2} align="center" color={labelColor} fontWeight="medium">
+              <Icon as={CalendarIcon} boxSize={5} />
+              <Text>Start Date</Text>
+            </Flex>
+            <Text fontWeight="bold">
+              {formatDate(fetchProjectData?.data?.startDate, LONG_DATE_FORMAT)}
+            </Text>
+            <Flex gap={2} align="center" color={labelColor} fontWeight="medium">
+              <Icon as={CalendarIcon} boxSize={5} />
+              <Text>End Date</Text>
+            </Flex>
+            <Text fontWeight="bold">
+              {formatDate(fetchProjectData?.data?.endDate, LONG_DATE_FORMAT)}
+            </Text>
+            <Flex gap={2} align="center" color={labelColor} fontWeight="medium">
+              <Icon as={CalendarIcon} boxSize={5} />
+              <Text>Due Date</Text>
+            </Flex>
+            <Text fontWeight="bold">
+              {formatDate(fetchProjectData?.data?.dueDate, LONG_DATE_FORMAT)}
+            </Text>
+          </Grid>
+
+          <Grid
+            templateColumns={{ base: "1fr", md: "1fr 3fr" }}
+            gap={6}
+            w="full"
+          >
+            <Flex gap={2} align="center" color={labelColor} fontWeight="medium">
+              <Icon as={GrUserManager} boxSize={5} />
+              <Text>Manager</Text>
+            </Flex>
+            <Flex wrap="wrap" gap={2}>
+              {fetchProjectData?.data?.project_manager?.map(
+                (item: any, index: number) => (
+                  <Tag
+                    size="lg"
+                    colorScheme="teal"
+                    borderRadius="full"
+                    key={index}
+                  >
+                    <Avatar
+                      src="https://bit.ly/sage-adebayo"
+                      size="xs"
+                      ml={-1}
+                      mr={2}
+                    />
+                    <TagLabel>{item?.user?.username}</TagLabel>
+                  </Tag>
+                )
+              )}
+              <Button
+                leftIcon={<RiUserAddLine />}
+                variant="outline"
+                size="sm"
+                rounded="full"
+              >
+                Invite New
+              </Button>
+            </Flex>
+          </Grid>
+
+          <Grid
+            templateColumns={{ base: "1fr", md: "1fr 3fr" }}
+            gap={6}
+            w="full"
+          >
+            <Flex gap={2} align="center" color={labelColor} fontWeight="medium">
+              <Icon as={FaPeopleGroup} boxSize={5} />
+              <Text>Team</Text>
+            </Flex>
+            <Flex wrap="wrap" gap={3}>
+              {fetchProjectData?.data?.team_members?.map(
+                (item: any, index: number) => (
+                  <Tag
+                    size="lg"
+                    colorScheme="teal"
+                    borderRadius="full"
+                    key={index}
+                  >
+                    <Avatar
+                      src="https://bit.ly/sage-adebayo"
+                      size="xs"
+                      ml={-1}
+                      mr={2}
+                    />
+                    <TagLabel>{item?.user?.username}</TagLabel>
+                  </Tag>
+                )
+              )}
+              <Button
+                leftIcon={<RiUserAddLine />}
+                variant="outline"
+                size="sm"
+                rounded="full"
+              >
+                Invite New
+              </Button>
+            </Flex>
+          </Grid>
+
+          <Grid
+            templateColumns={{ base: "1fr", md: "1fr 3fr" }}
+            gap={6}
+            w="full"
+          >
+            <Flex gap={2} align="center" color={labelColor} fontWeight="medium">
+              <Icon as={FaPeopleGroup} boxSize={5} />
+              <Text>Followers</Text>
+            </Flex>
+            <Flex wrap="wrap" gap={3}>
+              {fetchProjectData?.data?.followers?.map(
+                (item: any, index: number) => (
+                  <Tag
+                    size="lg"
+                    colorScheme="teal"
+                    borderRadius="full"
+                    key={index}
+                  >
+                    <Avatar
+                      src="https://bit.ly/sage-adebayo"
+                      size="xs"
+                      ml={-1}
+                      mr={2}
+                    />
+                    <TagLabel>{item?.user?.username}</TagLabel>
+                  </Tag>
+                )
+              )}
+              <Button
+                leftIcon={<RiUserAddLine />}
+                variant="outline"
+                size="sm"
+                rounded="full"
+              >
+                Invite New
+              </Button>
+            </Flex>
+          </Grid>
+
+          <Grid
+            templateColumns={{ base: "1fr", md: "1fr 3fr" }}
+            gap={6}
+            w="full"
+          >
+            <Flex gap={2} align="center" color={labelColor} fontWeight="medium">
+              <Icon as={MdOutlineDescription} boxSize={5} />
+              <Text>Description</Text>
+            </Flex>
+            <Box bg={descBgColor} p={4} rounded="md" shadow="sm" w="full">
+              <Text>{fetchProjectData?.data?.description}</Text>
+            </Box>
+          </Grid>
+        </VStack>
+
+        {/* Attachments */}
+        <Box mt={2}>
         <AttachmentSection />
-      </VStack>
-      <Box py={4}>
-        <TaskTable />
+        </Box>
+        {/* Tasks Table */}
+        <Box mt={3}>
+          <TaskTable />
+        </Box>
       </Box>
-    </Box>
+    </DrawerLoader>
   );
 };
 

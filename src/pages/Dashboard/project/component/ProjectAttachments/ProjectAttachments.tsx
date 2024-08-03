@@ -20,7 +20,6 @@ import {
 } from "react-icons/fa";
 import {
   FiDownload,
-  FiDownloadCloud,
   FiMoreHorizontal,
   FiPaperclip,
   FiUpload,
@@ -68,13 +67,14 @@ const AttachmentItem = ({
       <Flex
         alignItems="center"
         borderWidth="1px"
-        shadow={"base"}
-        borderRadius="xl"
-        p={2}
-        w="100%"
+        shadow="md"
+        borderRadius="md"
+        p={3}
+        w="full"
         justifyContent="space-between"
+        bg={useColorModeValue("white", "gray.700")}
       >
-        <HStack>
+        <HStack spacing={3}>
           <FileIcon format={format} />
           <VStack align="flex-start" spacing={0}>
             <Text fontSize="sm" fontWeight="bold" isTruncated>
@@ -86,8 +86,8 @@ const AttachmentItem = ({
           </VStack>
         </HStack>
         <IconButton
-          variant={"ghost"}
-          colorScheme="green"
+          variant="outline"
+          colorScheme="teal"
           aria-label="Download file"
           icon={<FiDownload />}
         />
@@ -102,52 +102,50 @@ const ProjectAttachments = () => {
   const filesToShow = showAll ? fileData : fileData.slice(0, 5);
 
   return (
-    <Box pb={4} p={5} w={"100%"}>
+    <Box p={5} w="100%" bg={useColorModeValue("gray.50", "gray.800")} borderRadius="md" shadow="md">
       <VStack spacing={4} align="stretch">
         <Flex
           justifyContent="space-between"
           alignItems="center"
-          color={"gray.600"}
+          color={useColorModeValue("gray.600", "gray.300")}
         >
           <HStack>
             <Icon as={FiPaperclip} />
-            <Text fontWeight="bold">Attachments (5)</Text>
+            <Text fontWeight="bold" fontSize="lg">
+              Attachments ({filesToShow.length})
+            </Text>
           </HStack>
 
-          <Flex align={"end"} gap={2}>
-            <Button
-              variant={"ghost"}
-              leftIcon={<FiDownloadCloud />}
-              colorScheme="teal"
-              size={"sm"}
-            >
-              Download All
-            </Button>
-
+          <Flex align="end" gap={2}>
             <Button
               leftIcon={<FiUpload />}
               colorScheme="blue"
-              size={"sm"}
-              variant={"outline"}
+              size="sm"
+              variant="outline"
             >
               Upload
             </Button>
           </Flex>
         </Flex>
-        <Grid templateColumns={"1fr 1fr 1fr"} gap={4}>
+
+        <Grid
+          templateColumns={{ base: "1fr", md: "1fr 1fr", lg: "1fr 1fr 1fr" }}
+          gap={4}
+        >
           {filesToShow.map((file, index) => (
             <AttachmentItem key={index} {...file} />
           ))}
         </Grid>
-        {!showAll && fileData.length > 4 && (
+
+        {!showAll && fileData.length > 5 && (
           <Button
             leftIcon={<FiMoreHorizontal />}
             colorScheme="telegram"
             onClick={() => setShowAll(true)}
-            variant={"ghost"}
-            size={"sm"}
+            variant="outline"
+            size="sm"
           >
-            More Files
+            Show More
           </Button>
         )}
       </VStack>

@@ -196,8 +196,8 @@ const ProjectForm = observer(
                       name="customers"
                       label="Customers"
                       value={values.customers}
-                      getOptionLabel={(option: any) => option.username}
-                      getOptionValue={(option: any) => option._id}
+                      getOptionLabel={(option: any) => option.user?.username}
+                      getOptionValue={(option: any) => option.user?._id}
                       options={companyUsers}
                       placeholder="Select the Customers"
                       type="select"
@@ -215,8 +215,8 @@ const ProjectForm = observer(
                       name="project_manager"
                       label="Project Manager"
                       value={values.project_manager}
-                      getOptionLabel={(option: any) => option.username}
-                      getOptionValue={(option: any) => option._id}
+                      getOptionLabel={(option: any) => option.user?.username}
+                      getOptionValue={(option: any) => option.user?._id}
                       options={companyUsers}
                       placeholder="Select the Project Manager"
                       type="select"
@@ -235,8 +235,8 @@ const ProjectForm = observer(
                       name="team_members"
                       label="Team"
                       value={values.team_members}
-                      getOptionLabel={(option: any) => option.username}
-                      getOptionValue={(option: any) => option._id}
+                      getOptionLabel={(option: any) => option.user?.username}
+                      getOptionValue={(option: any) => option.user?._id}
                       options={companyUsers}
                       placeholder="Select the Team Members"
                       type="select"
@@ -255,8 +255,8 @@ const ProjectForm = observer(
                       name="followers"
                       label="Followers"
                       value={values.followers}
-                      getOptionLabel={(option: any) => option.username}
-                      getOptionValue={(option: any) => option._id}
+                      getOptionLabel={(option: any) => option.user?.username}
+                      getOptionValue={(option: any) => option.user?._id}
                       options={companyUsers}
                       placeholder="Select the Team Followers"
                       type="select"
