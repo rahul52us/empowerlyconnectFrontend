@@ -1,6 +1,6 @@
 export const taskStatus : any = [
     { value: "backlog", label: "BackLog" },
-    { value: "todo", label: "Todo" },
+    { value: "toDo", label: "Todo" },
     { value: "inProgress", label: "In Progress" },
     { value: "done", label: "Done" },
     { value: "complete", label: "Completed" },

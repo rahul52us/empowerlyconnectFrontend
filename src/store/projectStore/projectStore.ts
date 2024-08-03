@@ -151,7 +151,7 @@ class ProjectStore {
 
   createTask = async (sendData: any) => {
     try {
-      const { data } = await axios.post("/project/task/create", {
+      const { data } = await axios.post(`/project/task/${sendData.projectId}/create`, {
         ...sendData,
         company: store.auth.getCurrentCompany(),
       });

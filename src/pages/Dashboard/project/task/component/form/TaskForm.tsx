@@ -7,8 +7,9 @@ import { activeStatus, taskPrioties, taskStatus } from "../utils/constant";
 import CustomSubmitBtn from "../../../../../../config/component/CustomSubmitBtn/CustomSubmitBtn";
 import CustomInput from "../../../../../../config/component/CustomInput/CustomInput";
 import { TaskCreateValidation } from "../utils/validation";
+import ShowFileUploadFile from "../../../../../../config/component/common/ShowFileUploadFile/ShowFileUploadFile";
 
-const TaskForm = observer(({ initialValues, handleSubmitForm }: any) => {
+const TaskForm = observer(({ type = "create", initialValues, handleSubmitForm }: any) => {
   const [showError, setShowError] = useState(false);
   const {
     auth: { getCompanyUsers, companyUsers, openNotification },
@@ -27,13 +28,25 @@ const TaskForm = observer(({ initialValues, handleSubmitForm }: any) => {
       });
   }, [getCompanyUsers, openNotification]);
 
+  const getAttachFilesError = (errors: any, type: string, index: number) => {
+    const errorTypes = ["title"];
+    if (errors.attach_files && errors.attach_files[index]) {
+      const errorTypeIndex = errorTypes.indexOf(type);
+      if (errorTypeIndex !== -1) {
+        return errors.attach_files[index][errorTypes[errorTypeIndex]];
+      }
+    }
+    return undefined;
+  };
+
+
   return (
     <Box>
       <Formik
         initialValues={initialValues}
         validationSchema={TaskCreateValidation}
-        onSubmit={() => {
-          handleSubmitForm();
+        onSubmit={(values , {resetForm, setSubmitting}) => {
+          handleSubmitForm({values,resetForm,setSubmitting});
         }}
       >
         {({ handleChange, values, errors, setFieldValue, isSubmitting }) => {
@@ -164,6 +177,23 @@ const TaskForm = observer(({ initialValues, handleSubmitForm }: any) => {
                     minDate={values.startDate}
                   />
                   <CustomInput
+                    name="assigner"
+                    label="Team"
+                    value={values.assigner}
+                    getOptionLabel={(option: any) => option.username}
+                    getOptionValue={(option: any) => option._id}
+                    options={companyUsers}
+                    placeholder="Select the Assigner"
+                    type="select"
+                    onChange={(e: any) => {
+                      setFieldValue("assigner", e);
+                    }}
+                    isMulti
+                    isSearchable
+                    error={errors.assigner}
+                    showError={showError}
+                  />
+                  <CustomInput
                     name="team_members"
                     label="Team"
                     value={values.team_members}
@@ -199,48 +229,63 @@ const TaskForm = observer(({ initialValues, handleSubmitForm }: any) => {
                   />
                 </Grid>
                 <Box mt={5}>
-                <Text fontWeight={'bold'}>Add Attachments :- </Text>
-                 </Box>
-                 <Grid columnGap={5} rowGap={3} mb={5}>
+                  <Text fontWeight={'bold'}>Add Attachments :- </Text>
+                </Box>
+                <Grid columnGap={5} rowGap={3} mb={5}>
                   <FieldArray name="attach_files">
                     {({ push, remove }) => (
                       <Box>
-                        {values.attach_files.map((add: any, index: number) => (
-                          <div key={index}>
+                        {values.attach_files.map((file : any, index : number) => (
+                          <Box key={index} mb="20px">
                             <Grid
                               gridTemplateColumns={{ md: "1fr" }}
                               gap={2}
-                              key={index}
-                              mb="20px"
                             >
+                              <Box width="100%">
+                                {file.file ? (
+                                  <ShowFileUploadFile
+                                    edit={type === "edit"}
+                                    files={file.file[0]}
+                                    removeFile={() => {
+                                      const updatedFiles = values.attach_files.map((item : any, i : number) =>
+                                        i === index ? { ...item, file: null, isDeleted: 1, isAdd: 0 } : item
+                                      );
+                                      setFieldValue("attach_files", updatedFiles);
+                                    }}
+                                    // Optionally, you can add functionality to remove files
+                                  />
+                                ) : (
+                                  <CustomInput
+                                    name={`attach_files.${index}.file`}
+                                    type="file-drag"
+                                    placeholder="File"
+                                    label="File"
+                                    required
+                                    showError={showError}
+                                    onChange={(e: any) => {
+                                      setFieldValue(`attach_files.${index}.file`, e.target.files);
+                                    }}
+                                  />
+                                )}
+                              </Box>
                               <CustomInput
                                 name={`attach_files.${index}.title`}
                                 type="text"
                                 placeholder="Title"
                                 label="Title"
-                                value={add.title}
+                                value={file.title}
                                 required
                                 showError={showError}
-                                // error={getAddressError(
-                                //   errors,
-                                //   "address",
-                                //   index
-                                // )}
                                 onChange={handleChange}
+                                error={getAttachFilesError(errors, "title", index)}
                               />
-
                               <CustomInput
                                 name={`attach_files.${index}.description`}
                                 type="textarea"
                                 placeholder="Description"
                                 label="Description"
-                                value={add.description}
+                                value={file.description}
                                 showError={showError}
-                                // error={getAddressError(
-                                //   errors,
-                                //   "pinCode",
-                                //   index
-                                // )}
                                 onChange={handleChange}
                               />
                             </Grid>
@@ -255,7 +300,7 @@ const TaskForm = observer(({ initialValues, handleSubmitForm }: any) => {
                                 Remove Section
                               </Button>
                             )}
-                          </div>
+                          </Box>
                         ))}
                         <Button
                           colorScheme="blue"
@@ -267,7 +312,8 @@ const TaskForm = observer(({ initialValues, handleSubmitForm }: any) => {
                           onClick={() =>
                             push({
                               title: "",
-                              description: ""
+                              description: "",
+                              file: null,
                             })
                           }
                         >

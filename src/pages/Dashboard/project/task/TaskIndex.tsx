@@ -86,7 +86,7 @@ const TaskIndex = observer(() => {
         close={() => setOpenTaskDrawer("create")}
         width={'75vw'}
       >
-        <AddTask />
+        <AddTask projectId={openTaskDrawer?.data?.projectId} />
       </CustomDrawer>
     </React.Fragment>
   );
