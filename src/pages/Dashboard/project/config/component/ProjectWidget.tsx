@@ -1,7 +1,12 @@
-import { Box, Heading, SimpleGrid, Flex, Icon } from "@chakra-ui/react";
+import { Box, Heading, SimpleGrid, Flex, Icon, Grid } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useEffect, useState, useCallback } from "react";
-import { FaProjectDiagram, FaTasks, FaUsers, FaFolderOpen } from "react-icons/fa";
+import {
+  FaProjectDiagram,
+  FaTasks,
+  FaUsers,
+  FaFolderOpen,
+} from "react-icons/fa";
 import MainPagePagination from "../../../../../config/component/pagination/MainPagePagination";
 import { getStatusType } from "../../../../../config/constant/statusCode";
 import store from "../../../../../store/store";
@@ -11,35 +16,41 @@ import CustomDrawer from "../../../../../config/component/Drawer/CustomDrawer";
 import ProjectDetails from "../../component/ProjectDetails/ProjectDetails";
 import NotFoundData from "../../../../../config/component/NotFound/NotFoundData";
 import { useQueryParams } from "../../../../../config/component/customHooks/useQuery";
+import TaskCard from "../../component/TaskCard/TaskCard";
 
 const ProjectWidget = observer(() => {
-  const { Project: { getProjects, projects, projectCount }, auth: { openNotification } } = store;
-  const [selectedProject, setSelectedProject] = useState({ open: false, data: null });
+  const {
+    Project: { getProjects, projects, projectCount },
+    auth: { openNotification },
+  } = store;
+  const [selectedProject, setSelectedProject] = useState({
+    open: false,
+    data: null,
+  });
   const { getQueryParam, setQueryParam } = useQueryParams();
-  const [currentPage, setCurrentPage] = useState(() => getQueryParam('page') ? Number(getQueryParam('page')) : 1);
-
-  const fetchProjectDetails = useCallback(
-    () => {
-      getProjects({ page: currentPage, limit: 10 })
-        .then(() => {})
-        .catch((err) => {
-          openNotification({
-            title: "Failed to Retrieve Project",
-            message: err?.data?.message,
-            type: getStatusType(err.status),
-          });
-        });
-    },
-    [getProjects, openNotification, currentPage]
+  const [currentPage, setCurrentPage] = useState(() =>
+    getQueryParam("page") ? Number(getQueryParam("page")) : 1
   );
+
+  const fetchProjectDetails = useCallback(() => {
+    getProjects({ page: currentPage, limit: 10 })
+      .then(() => {})
+      .catch((err) => {
+        openNotification({
+          title: "Failed to Retrieve Project",
+          message: err?.data?.message,
+          type: getStatusType(err.status),
+        });
+      });
+  }, [getProjects, openNotification, currentPage]);
 
   useEffect(() => {
     fetchProjectDetails();
   }, [currentPage, fetchProjectDetails]);
 
-  const handlePageChange = (page : any) => {
+  const handlePageChange = (page: any) => {
     setCurrentPage(page.selected);
-    setQueryParam('page', page.selected);
+    setQueryParam("page", page.selected);
   };
 
   const summaryData = [
@@ -66,6 +77,21 @@ const ProjectWidget = observer(() => {
     },
   ];
 
+  const taskData = {
+    title: "Admin Dashboard UI",
+    description:
+      "This is a task description of the task, it can be long or short.",
+    category: "Frontend",
+    avatars: [
+      { name: "Ryan Florence", src: "https://bit.ly/ryan-florence" },
+      { name: "Segun Adebayo", src: "https://bit.ly/sage-adebayo" },
+      { name: "Kent Dodds", src: "https://bit.ly/kent-c-dodds" },
+      { name: "Prosper Otemuyiwa", src: "https://bit.ly/prosper-baba" },
+      { name: "Christian Nwamba", src: "https://bit.ly/code-beast" },
+    ],
+    deadline: "6 Days Left",
+  };
+
   return (
     <Box px={{ base: 4, md: 6 }} py={6}>
       <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6} mb={6}>
@@ -80,6 +106,16 @@ const ProjectWidget = observer(() => {
           />
         ))}
       </SimpleGrid>
+
+      <Grid templateColumns={"1fr 1fr 1fr 1fr"}>
+        <TaskCard
+          title={taskData.title}
+          description={taskData.description}
+          category={taskData.category}
+          avatars={taskData.avatars}
+          deadline={taskData.deadline}
+        />
+      </Grid>
       <Heading
         display="flex"
         alignItems="center"
