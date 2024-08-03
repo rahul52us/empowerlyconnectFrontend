@@ -8,10 +8,16 @@ import SummaryWidget from "../../../config/component/WigdetCard/SummaryWidget";
 import { FaPersonCircleQuestion } from "react-icons/fa6";
 import { getStatusType } from "../../../config/constant/statusCode";
 import BookDetails from "./component/BooksDetails/BookDetails";
+import { FaBookOpen, FaBookReader } from "react-icons/fa";
 
 const BookLiberary = observer(() => {
   const {
-    bookLiberary: { getBooksCounts, booksCounts },
+    bookLiberary: {
+      getBooksCounts,
+      booksCounts,
+      bookCategoryCount,
+      getBooksCategoryCounts,
+    },
     auth: { openNotification },
   } = store;
 
@@ -21,35 +27,38 @@ const BookLiberary = observer(() => {
     });
 
   useEffect(() => {
-    Promise.all([fetchData(getBooksCounts)])
+    Promise.all([fetchData(getBooksCounts), fetchData(getBooksCategoryCounts)])
       .then(() => {})
       .catch((err: any) => {
         openNotification({
-          title: "Failed to Retrieve Books Count",
+          title: "Failed to Retrieve Counts",
           message: err?.data?.message,
           type: getStatusType(err.status),
         });
       });
-  }, [getBooksCounts, openNotification]);
+  }, [getBooksCounts, getBooksCategoryCounts, openNotification]);
 
   const summaryData = [
     {
+      label: "Books Category",
+      value: bookCategoryCount.data,
+      loading:bookCategoryCount.loading,
+      icon: FaBookReader,
+      colorScheme: "teal",
+      description: "Here is an description for the users",
+    },
+    {
       label: "Total Books",
       value: booksCounts.data,
-      icon: FaPersonCircleQuestion,
+      loading:booksCounts.loading,
+      icon: FaBookOpen,
       colorScheme: "teal",
       description: "Total No. of Books Counts",
     },
     {
       label: "New Label Data",
       value: booksCounts.data,
-      icon: FaPersonCircleQuestion,
-      colorScheme: "teal",
-      description: "Here is an description for the users",
-    },
-    {
-      label: "New Label Data",
-      value: booksCounts.data,
+      loading:booksCounts.loading,
       icon: FaPersonCircleQuestion,
       colorScheme: "teal",
       description: "Here is an description for the users",
@@ -71,6 +80,7 @@ const BookLiberary = observer(() => {
             icon={data.icon}
             colorScheme={data.colorScheme}
             description={data.description}
+            loading={data.loading}
           />
         ))}
       </SimpleGrid>

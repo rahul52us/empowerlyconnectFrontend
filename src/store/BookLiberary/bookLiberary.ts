@@ -8,6 +8,11 @@ class BookLiberary {
     data : 0
   }
 
+  bookCategoryCount = {
+    loading : false,
+    data : 0
+  }
+
   booksData = {
     loading : false,
     data : [],
@@ -18,8 +23,10 @@ class BookLiberary {
   constructor() {
     makeObservable(this, {
       booksCounts : observable,
+      bookCategoryCount : observable,
       booksData:observable,
       getBooksCounts:action,
+      getBooksCategoryCounts:action,
       getAllBooks:action
     });
   }
@@ -34,6 +41,19 @@ class BookLiberary {
       return Promise.reject(err?.response || err);
     } finally {
       this.booksCounts.loading = false;
+    }
+  };
+
+  getBooksCategoryCounts = async () => {
+    try {
+      this.bookCategoryCount.loading = true
+      const { data } = await axios.post("/liberary/book/category/total/counts",{company : [store.auth.getCurrentCompany()]});
+      this.bookCategoryCount.data = data?.data || 0;
+      return data.data
+    } catch (err: any) {
+      return Promise.reject(err?.response || err);
+    } finally {
+      this.bookCategoryCount.loading = false;
     }
   };
 

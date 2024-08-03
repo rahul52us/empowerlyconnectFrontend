@@ -1,9 +1,9 @@
-// SummaryWidget.tsx
 import {
   Box,
   Flex,
   HStack,
   Icon,
+  Spinner,
   Stat,
   StatLabel,
   StatNumber,
@@ -20,8 +20,8 @@ interface SummaryWidgetProps {
   icon: IconType;
   colorScheme: string;
   description: string;
-  change?: number;
-  link?:any
+  loading?: boolean;
+  link?: string;
 }
 
 const SummaryWidget: React.FC<SummaryWidgetProps> = ({
@@ -30,13 +30,14 @@ const SummaryWidget: React.FC<SummaryWidgetProps> = ({
   icon,
   colorScheme,
   description,
-  link
+  loading = false,
+  link,
 }) => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const bgColor = useColorModeValue("gray.50", "blackAlpha.300");
   const textColor = useColorModeValue("gray.700", "gray.200");
-  const itemShadow = useColorModeValue('md', 'dark-lg');
-
+  const itemShadow = useColorModeValue("md", "dark-lg");
+  // const overlayBgColor = useColorModeValue("rgba(255, 255, 255, 0.8)", "rgba(0, 0, 0, 0.8)");
 
   return (
     <Box
@@ -46,8 +47,32 @@ const SummaryWidget: React.FC<SummaryWidgetProps> = ({
       rounded={14}
       p={4}
       transition="all 0.3s"
+      position="relative"
+      overflow="hidden"
     >
-      <HStack spacing={6}>
+      {loading && (
+        <Flex
+          position="absolute"
+          top={0}
+          left={0}
+          width="100%"
+          height="100%"
+          alignItems="center"
+          justifyContent="center"
+          // bg={overlayBgColor}
+          zIndex={1}
+          // backdropFilter="blur(5px)"
+        >
+          <Spinner
+            thickness="4px"
+            speed="0.65s"
+            emptyColor="gray.200"
+            color={`${colorScheme}.500`}
+            size="xl"
+          />
+        </Flex>
+      )}
+      <HStack spacing={6} opacity={loading ? 0.5 : 1}>
         <Flex
           alignItems="center"
           justifyContent="center"
@@ -64,11 +89,17 @@ const SummaryWidget: React.FC<SummaryWidgetProps> = ({
         </Flex>
         <Box>
           <Stat>
-            <StatLabel cursor="pointer" fontSize="lg" fontWeight={700} color={textColor} onClick={() => {
-              if(link){
-                navigate(link)
-              }
-            }}>
+            <StatLabel
+              cursor="pointer"
+              fontSize="lg"
+              fontWeight={700}
+              color={textColor}
+              onClick={() => {
+                if (link) {
+                  navigate(link);
+                }
+              }}
+            >
               {label}
             </StatLabel>
             <StatNumber fontSize="3xl" fontWeight="bold" color={textColor}>
