@@ -10,12 +10,16 @@ import store from "../../../../../../store/store";
 import { employDropdownData, generateTableData } from "../utils/constant";
 import UserProfile from "./UserProfile";
 import CustomDrawer from "../../../../../../config/component/Drawer/CustomDrawer";
+import { useQueryParams } from "../../../../../../config/component/customHooks/useQuery";
 // import IndividualUsereDetails from "./IndividualUsereDetails";
 
 // User Table
 const UserDetailsTable = observer(() => {
   const navigate = useNavigate();
-  const [currentPage, setCurrentPage] = useState(1);
+  const { getQueryParam, setQueryParam } = useQueryParams();
+  const [currentPage, setCurrentPage] = useState(() =>
+    getQueryParam("page") ? Number(getQueryParam("page")) : 1
+  );
   const dropdowns = useState(employDropdownData)[0];
   const [selectedOptions, setSelectedOptions] = useState({});
   const [pageLimit, setPageLimit] = useState(tablePageLimit);
@@ -23,7 +27,7 @@ const UserDetailsTable = observer(() => {
   const debouncedSearchQuery = useDebounce(searchQuery, 1000);
   const [date, setDate] = useState<any>({
     startDate: new Date(),
-    endDate: new Date(),
+    endDate: new Date()
   });
 
   const [UsereId, setUsereId] = useState<any>();
@@ -82,9 +86,11 @@ const UserDetailsTable = observer(() => {
     setDate((prev: any) => ({ ...prev, [type]: e }));
   };
 
-  const handleChangePage = (page: number) => {
+  const handleChangePage = (page: any) => {
     setCurrentPage(page);
+    setQueryParam("page", page);
   };
+
 
   const resetTableData = () => {
     setCurrentPage(1);

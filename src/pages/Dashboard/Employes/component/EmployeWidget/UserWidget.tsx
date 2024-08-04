@@ -45,7 +45,7 @@ const UserWidget = observer(() => {
           description="desctiion for the users"
           colorScheme={item.colorScheme}
           value={UsersCounts.data}
-          // loading={UsersCounts.loading}
+          loading={UsersCounts.loading}
           icon={item.icon}
           link={item.link}
         />

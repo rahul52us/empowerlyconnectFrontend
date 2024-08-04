@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import TripCard from "../component/TripCard";
-import { Box, Center, Grid, Spinner } from "@chakra-ui/react";
+import { Box, Center, Flex, Grid, Spinner } from "@chakra-ui/react";
 import store from "../../../../../store/store";
 import { useEffect, useState } from "react";
 import CustomTable from "../../../../../config/component/CustomTable/CustomTable";
@@ -8,6 +8,9 @@ import { tablePageLimit } from "../../../../../config/constant/variable";
 import EditTripForm from "../component/forms/EditTripForm";
 import AddTripForm from "../component/forms/AddTripForm";
 import { getStatusType } from "../../../../../config/constant/statusCode";
+import MainPagePagination from "../../../../../config/component/pagination/MainPagePagination";
+import { useQueryParams } from "../../../../../config/component/customHooks/useQuery";
+
 const TripLayout = observer(
   ({
     setTripFormData,
@@ -23,9 +26,11 @@ const TripLayout = observer(
       },
       auth: { openNotification },
     } = store;
-
+    const { getQueryParam, setQueryParam } = useQueryParams();
     const [searchValue, setSearchValue] = useState("");
-    const [currentPage, setCurrentPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(() =>
+      getQueryParam("page") ? Number(getQueryParam("page")) : 1
+    );
     const [pageLimit, setPageLimit] = useState(tablePageLimit);
     const [date, setDate] = useState<any>({
       startDate: new Date(),
@@ -33,8 +38,8 @@ const TripLayout = observer(
     });
 
     useEffect(() => {
-      getAllTrip({ page: 1, limit: tablePageLimit })
-        .then(() => {})
+      setGripType({ loading: true, type: gridType });
+      getAllTrip({ page: currentPage, limit: pageLimit })
         .catch((err: any) => {
           openNotification({
             title: "Failed to get Department Categories",
@@ -43,11 +48,10 @@ const TripLayout = observer(
           });
         })
         .finally(() => {
-          setGripType({ loading: false, type: "grid" });
+          setGripType({ loading: false, type: gridType });
         });
-    }, [getAllTrip, openNotification, setGripType]);
+    }, [getAllTrip, openNotification, setGripType, currentPage, pageLimit, gridType]);
 
-    // function to get the data from backend on the page, limit, date and others
     const applyGetAllRecord = ({ page, limit, reset }: any) => {
       const query: any = {};
       if (reset) {
@@ -63,7 +67,6 @@ const TripLayout = observer(
         query["endDate"] = date?.endDate ? date?.endDate : undefined;
       }
       getAllTrip(query)
-        .then(() => {})
         .catch((err: any) => {
           openNotification({
             title: "Failed to get Department Categories",
@@ -77,9 +80,9 @@ const TripLayout = observer(
       setDate((prev: any) => ({ ...prev, [type]: e }));
     };
 
-    const handleChangePage = (page: number) => {
+    const handleChangePage = (page: any) => {
       setCurrentPage(page);
-      applyGetAllRecord({ page, limit: pageLimit });
+      setQueryParam("page", page);
     };
 
     const resetTableData = () => {
@@ -92,25 +95,6 @@ const TripLayout = observer(
       setSearchValue("");
       applyGetAllRecord({ reset: true });
     };
-
-    // const deleteRecord = (record: any) => {
-    //   deleteDepartmentCategory(record?._id)
-    //     .then(() => {
-    //       openNotification({
-    //         type: "success",
-    //         title: "Successfully Deleted",
-    //         message: "Record Deleted Successfully",
-    //       });
-    //       applyGetAllRecord({});
-    //     })
-    //     .catch((err : any) => {
-    //       openNotification({
-    //         type: "error",
-    //         title: "Failed to get Department Categories",
-    //         message: err?.message,
-    //       });
-    //     });
-    // };
 
     const columns = [
       {
@@ -136,7 +120,7 @@ const TripLayout = observer(
       {
         headerName: "Description",
         key: "description",
-        type : "tooltip",
+        type: "tooltip",
         props: {
           column: { textAlign: "left" },
         },
@@ -160,7 +144,7 @@ const TripLayout = observer(
       },
     ];
 
-    if (gridLoading === true) {
+    if (gridLoading) {
       return (
         <Center>
           <Box mt={20}>
@@ -173,26 +157,35 @@ const TripLayout = observer(
     return (
       <Box>
         {gridType === "grid" ? (
-          <Grid
-            templateColumns={{
-              base: "1fr",
-              sm: "1fr 1fr",
-              md: "1fr 1fr 1fr",
-              lg: "1fr 1fr 1fr 1fr",
-            }}
-            gap={4}
-            columnGap={3}
-          >
-            {data.map((item: any, index: number) => {
-              return (
-                <TripCard
-                  key={index}
-                  item={item}
-                  setTripFormData={setTripFormData}
-                />
-              );
-            })}
-          </Grid>
+          <>
+            <Grid
+              templateColumns={{
+                base: "1fr",
+                sm: "1fr 1fr",
+                md: "1fr 1fr 1fr",
+                lg: "1fr 1fr 1fr 1fr",
+              }}
+              gap={4}
+              columnGap={3}
+            >
+              {data.map((item: any, index: number) => {
+                return (
+                  <TripCard
+                    key={index}
+                    item={item}
+                    setTripFormData={setTripFormData}
+                  />
+                );
+              })}
+            </Grid>
+            <Flex justifyContent="center" mt={8}>
+              <MainPagePagination
+                currentPage={currentPage}
+                onPageChange={(page: any) => handleChangePage(page.selected)}
+                totalPages={totalPages}
+              />
+            </Flex>
+          </>
         ) : (
           <CustomTable
             title="Trips"
