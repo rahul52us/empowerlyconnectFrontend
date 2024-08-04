@@ -45,7 +45,7 @@ const ProjectForm = observer(
             handleSubmitForm({
               values: { ...values, ...sendDataObject },
               setSubmitting,
-              resetForm
+              resetForm,
             });
           }}
         >
@@ -61,7 +61,11 @@ const ProjectForm = observer(
                       isMulti={true}
                       accept="image/*"
                       onChange={(e: any) => {
-                        setFieldValue("logo", {...values.logo, file : e.target.files[0], isAdd : 1});
+                        setFieldValue("logo", {
+                          ...values.logo,
+                          file: e.target.files[0],
+                          isAdd: 1,
+                        });
                       }}
                       required={true}
                       showError={showError}
@@ -72,10 +76,11 @@ const ProjectForm = observer(
                       <ShowFileUploadFile
                         files={values.logo?.file}
                         removeFile={(_: any) => {
-                          setFieldValue(
-                            "logo",
-                            {...values.logo, file : removeDataByIndex(values.logo, 0), isDeleted : 1}
-                          );
+                          setFieldValue("logo", {
+                            ...values.logo,
+                            file: removeDataByIndex(values.logo, 0),
+                            isDeleted: 1,
+                          });
                         }}
                         edit={isEdit}
                       />
@@ -151,6 +156,17 @@ const ProjectForm = observer(
                       showError={showError}
                     />
                   </GridItem>
+                  <CustomInput
+                    name="tags"
+                    type="tags"
+                    label="Tags"
+                    placeholder="Add a tag and press Enter"
+                    value={values.tags}
+                    onChange={(e) => {
+                      setFieldValue("tags", e);
+                    }}
+                    showError={showError}
+                  />
                   <CustomInput
                     value={values.startDate}
                     error={errors.startDate}

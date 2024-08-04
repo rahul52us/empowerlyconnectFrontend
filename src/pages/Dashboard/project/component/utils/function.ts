@@ -12,7 +12,8 @@ export const generateProjectInitialValues = (values : any) => {
    startDate : values.startDate ? new Date(values.startDate) : new Date(),
    endDate : values.endDate ? new Date(values.endDate) : new Date(),
    dueDate : values.dueDate ? new Date(values.dueDate) : new Date(),
-   logo: values.logo?.url ? {file : values?.logo } : {file : []}
+   logo: values.logo?.url ? {file : values?.logo } : {file : []},
+   tags : values.tags || []
 }}
 
 export const generateProjectResponse = (values: any) => {

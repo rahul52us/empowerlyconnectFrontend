@@ -31,6 +31,7 @@ import {
 } from "../../../../../config/constant/dateUtils";
 import { generateProjectInitialValues } from "../utils/function";
 import { FaPeopleGroup } from "react-icons/fa6";
+import { BiTagAlt } from "react-icons/bi";
 
 const ProjectDetails = ({ selectedProject }: any) => {
   const {
@@ -92,18 +93,25 @@ const ProjectDetails = ({ selectedProject }: any) => {
             ml={3}
           />
         </Flex>
-        <Flex direction="column" align="center" mb={6}>
+        <Flex direction="column" align="center" mb={4} px={4} py={3}>
           <Image
             src={fetchProjectData?.data?.logo?.file?.url || placeholderImage}
             alt={fetchProjectData?.data?.logo?.file?.name || "Project Logo"}
             borderRadius="full"
             boxSize={{ base: "120px", md: "150px" }}
             objectFit="cover"
-            shadow="md"
-            mb={4}
+            mb={2}
           />
-          <Text fontWeight="bold" fontSize="3xl" color={textColor} mb={2}>
+          <Text
+            fontWeight="bold"
+            fontSize="3xl"
+            color={textColor}
+            textAlign="center"
+          >
             {fetchProjectData?.data?.project_name}
+          </Text>
+          <Text fontSize="md" color={labelColor} textAlign="center" mt={1}>
+            {fetchProjectData?.data?.subtitle}
           </Text>
         </Flex>
 
@@ -116,24 +124,34 @@ const ProjectDetails = ({ selectedProject }: any) => {
             borderColor={borderColor}
             pb={4}
             justifyContent="space-between"
-            flexDirection={{base : 'column', sm : 'row'}}
+            flexDirection={{ base: "column", sm: "row" }}
           >
             <Flex>
-            <Flex gap={2} align="center" color={labelColor} fontWeight="medium">
-              <Icon as={TbProgress} boxSize={5} />
-              <Text>Status :- </Text>
-            </Flex>
-            <Tag ml={2} colorScheme="yellow" rounded="full" w="fit-content">
-              {fetchProjectData?.data?.status?.value}
-            </Tag>
+              <Flex
+                gap={2}
+                align="center"
+                color={labelColor}
+                fontWeight="medium"
+              >
+                <Icon as={TbProgress} boxSize={5} />
+                <Text>Status :- </Text>
+              </Flex>
+              <Tag ml={2} colorScheme="yellow" rounded="full" w="fit-content">
+                {fetchProjectData?.data?.status?.value}
+              </Tag>
             </Flex>
             <Flex>
-            <Flex gap={2} align="center" color={labelColor} fontWeight="medium">
-              <Text>Create Date:-</Text>
-            </Flex>
-            <Tag ml={2} colorScheme="green" rounded="full" w="fit-content">
-              {formatDateTime(fetchProjectData?.data?.createdAt)}
-            </Tag>
+              <Flex
+                gap={2}
+                align="center"
+                color={labelColor}
+                fontWeight="medium"
+              >
+                <Text>Create Date:-</Text>
+              </Flex>
+              <Tag ml={2} colorScheme="green" rounded="full" w="fit-content">
+                {formatDateTime(fetchProjectData?.data?.createdAt)}
+              </Tag>
             </Flex>
           </Flex>
 
@@ -163,6 +181,39 @@ const ProjectDetails = ({ selectedProject }: any) => {
             <Text fontWeight="bold">
               {formatDate(fetchProjectData?.data?.dueDate, LONG_DATE_FORMAT)}
             </Text>
+          </Grid>
+
+          <Grid
+            templateColumns={{ base: "1fr", md: "1fr 3fr" }}
+            gap={6}
+            w="full"
+          >
+            <Flex gap={2} align="center" color={labelColor} fontWeight="medium">
+              <Icon as={BiTagAlt} boxSize={5} />
+              <Text>Tags</Text>
+            </Flex>
+            <Flex wrap="wrap" gap={2}>
+              {fetchProjectData?.data?.tags?.map(
+                (item: any, index: number) => (
+                  <Tag
+                    size="lg"
+                    colorScheme="teal"
+                    borderRadius="full"
+                    key={index}
+                  >
+                    <TagLabel>{item}</TagLabel>
+                  </Tag>
+                )
+              )}
+              <Button
+                leftIcon={<RiUserAddLine />}
+                variant="outline"
+                size="sm"
+                rounded="full"
+              >
+                Add New
+              </Button>
+            </Flex>
           </Grid>
 
           <Grid
@@ -299,7 +350,7 @@ const ProjectDetails = ({ selectedProject }: any) => {
 
         {/* Attachments */}
         <Box mt={2}>
-        <AttachmentSection />
+          <AttachmentSection />
         </Box>
         {/* Tasks Table */}
         <Box mt={3}>

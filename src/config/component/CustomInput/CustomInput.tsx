@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import {
   FormControl,
   FormErrorMessage,
@@ -16,9 +16,14 @@ import {
   InputGroup,
   useColorMode,
   useColorModeValue,
+  Box,
+  Wrap,
+  WrapItem,
+  Tag,
+  TagLabel,
+  TagCloseButton,
 } from "@chakra-ui/react";
 import { RiCloseFill, RiEyeLine, RiEyeOffLine } from "react-icons/ri";
-import { useState } from "react";
 import Select from "react-select";
 import { SingleDatepicker } from "chakra-dayzed-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -41,7 +46,8 @@ interface CustomInputProps {
     | "url"
     | "phone"
     | "dateAndTime"
-    | "file-drag"; // New type for file drag-and-drop
+    | "file-drag"
+    | "tags";
   label?: string;
   placeholder?: string;
   required?: boolean;
@@ -65,12 +71,11 @@ interface CustomInputProps {
   style?: any;
   phone?: string;
   accept?: any;
-  // Callback for file drop
   onFileDrop?: (files: FileList) => void;
   readOnly?: boolean;
   rest?: any;
   labelcolor?: any;
-  isPortal?:any
+  isPortal?: any;
 }
 
 const CustomInput: React.FC<CustomInputProps> = ({
@@ -104,6 +109,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
   // Added onFileDrop prop
   ...rest
 }) => {
+  const [inputValue, setInputValue] = useState("")
   const theme = useTheme();
   const { colorMode } = useColorMode();
   const [showPassword, setShowPassword] = useState(false);
@@ -122,6 +128,19 @@ const CustomInput: React.FC<CustomInputProps> = ({
     },
     [onFileDrop]
   );
+
+  const handleTagAdd = (e?: React.KeyboardEvent<HTMLInputElement>) => {
+    if ((!e || e.key === "Enter") && inputValue) {
+      const newTags = [...(value || []), inputValue];
+      onChange && onChange(newTags);
+      setInputValue("");
+    }
+  };
+
+  const handleTagRemove = (tagToRemove: string) => {
+    const newTags = (value || []).filter((tag: string) => tag !== tagToRemove);
+    onChange && onChange(newTags);
+  };
 
   const inputBg = useColorModeValue("transparent", "gray.700");
 
@@ -469,6 +488,49 @@ const CustomInput: React.FC<CustomInputProps> = ({
             _placeholder={{ fontSize: "12px" }}
             {...rest}
           />
+        );
+
+        case "tags":
+        return (
+          <Box>
+            <Input
+              style={style}
+              bg={inputBg}
+              placeholder={placeholder}
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              name={name}
+              disabled={disabled}
+              _placeholder={{ fontSize: "12px" }}
+              {...rest}
+            />
+            <Button
+              onClick={() => handleTagAdd()}
+              mt={2}
+              size="sm"
+              colorScheme="blue"
+            >
+              Add Tag
+            </Button>
+            <Wrap mt={2}>
+              {value &&
+                value.map((tag: string, index: number) => (
+                  <WrapItem key={index}>
+                    <Tag
+                      size="md"
+                      borderRadius="full"
+                      variant="solid"
+                      colorScheme="blue"
+                    >
+                      <TagLabel>{tag}</TagLabel>
+                      <TagCloseButton
+                        onClick={() => handleTagRemove(tag)}
+                      />
+                    </Tag>
+                  </WrapItem>
+                ))}
+            </Wrap>
+          </Box>
         );
       default:
         return (
