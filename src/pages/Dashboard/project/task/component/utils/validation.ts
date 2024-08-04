@@ -12,12 +12,12 @@ const TaskCreateValidation = Yup.object().shape({
   title: Yup.string().trim().required("Title is required."),
   subtitle: Yup.string().trim(),
   isActive: Yup.mixed().required("Active state is required"),
-  status: Yup.mixed().required("please select the status"),
+  status: Yup.mixed().required("Please select the status"),
   description: Yup.string()
     .trim()
     .min(2, "Description must have a minimum length of 2."),
   dueDate: Yup.date(),
-  startDate: Yup.date().typeError("start date is required"),
+  startDate: Yup.date().typeError("Start date is required"),
   endDate: Yup.date().min(
     Yup.ref("startDate"),
     "End date must be greater than or equal to the start date."
@@ -29,15 +29,14 @@ const TaskCreateValidation = Yup.object().shape({
     .transform((val, originalVal) => {
       return originalVal === "" ? null : val;
     })
-    .typeError("please select the team members"),
+    .typeError("Please select the team members"),
   attach_files: Yup.array().of(attach_files),
-  assigner: Yup.array()
-    .of(Yup.mixed())
+  assigner: Yup.mixed()
     .nullable()
     .transform((val, originalVal) => {
       return originalVal === "" ? null : val;
     })
-    .typeError("please select the team members"),
+    .typeError("Please select the assigner"),
 });
 
 export { TaskCreateValidation };

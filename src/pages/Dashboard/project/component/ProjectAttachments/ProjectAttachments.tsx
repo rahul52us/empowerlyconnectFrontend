@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Center,
   Flex,
   Grid,
   HStack,
@@ -25,43 +26,40 @@ import {
   FiUpload,
 } from "react-icons/fi";
 import { PiFilePptBold } from "react-icons/pi";
+import { HiDocumentRemove } from "react-icons/hi"; // For no documents icon
 
-const fileData = [
-  { name: "Document1.pdf", size: "2 MB", format: "pdf" },
-  { name: "Report.docx", size: "1.5 MB", format: "word" },
-  { name: "Data.xlsx", size: "3 MB", format: "excel" },
-  { name: "Image.png", size: "500 KB", format: "image" },
-  { name: "Presentation.pptx", size: "4 MB", format: "ppt" },
-  { name: "Archive.zip", size: "10 MB", format: "zip" },
-];
-
-const FileIcon = ({ format }: { format: string }) => {
+const FileIcon = ({ mimeType }: { mimeType: string }) => {
   const color = useColorModeValue("gray.600", "gray.300");
-  switch (format) {
-    case "pdf":
-      return <Icon as={FaFilePdf} color="red.500" />;
-    case "ppt":
-      return <Icon as={PiFilePptBold} color="orange.500" />;
-    case "word":
-      return <Icon as={FaFileWord} color="blue.500" />;
-    case "excel":
-      return <Icon as={FaFileExcel} color="green.500" />;
+
+  // Extract the file type from the MIME type
+  const type = mimeType.split("/")[0];
+
+  switch (type) {
+    case "application":
+      switch (mimeType) {
+        case "application/pdf":
+          return <Icon as={FaFilePdf} color="red.500" />;
+        case "application/vnd.ms-word":
+        case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+          return <Icon as={FaFileWord} color="blue.500" />;
+        case "application/vnd.ms-excel":
+        case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
+          return <Icon as={FaFileExcel} color="green.500" />;
+        case "application/vnd.ms-powerpoint":
+        case "application/vnd.openxmlformats-officedocument.presentationml.presentation":
+          return <Icon as={PiFilePptBold} color="orange.500" />;
+        default:
+          return <Icon as={FaFilePdf} color={color} />;
+      }
     case "image":
-      return <Icon as={FaFileImage} color={color} />;
+      return <Icon as={FaFileImage} color="purple.500" />;
     default:
       return <Icon as={FaFilePdf} color={color} />;
   }
 };
 
-const AttachmentItem = ({
-  name,
-  size,
-  format,
-}: {
-  name: string;
-  size: string;
-  format: string;
-}) => {
+
+const AttachmentItem = ({ file }: any) => {
   return (
     <WrapItem>
       <Flex
@@ -75,13 +73,13 @@ const AttachmentItem = ({
         bg={useColorModeValue("white", "gray.700")}
       >
         <HStack spacing={3}>
-          <FileIcon format={format} />
+          <FileIcon mimeType={file?.file[0]?.type || "application/pdf"} />
           <VStack align="flex-start" spacing={0}>
             <Text fontSize="sm" fontWeight="bold" isTruncated>
-              {name}
+              {file?.title || file?.file[0]?.name}
             </Text>
             <Text fontSize="xs" color="gray.500">
-              {size}
+              {file?.file[0]?.type || "Unknown Size"}
             </Text>
           </VStack>
         </HStack>
@@ -96,13 +94,19 @@ const AttachmentItem = ({
   );
 };
 
-const ProjectAttachments = () => {
+const ProjectAttachments = ({ attach_files = [] }: any) => {
   const [showAll, setShowAll] = useState(false);
 
-  const filesToShow = showAll ? fileData : fileData.slice(0, 5);
+  const filesToShow = showAll ? attach_files : attach_files.slice(0, 5);
 
   return (
-    <Box p={5} w="100%" bg={useColorModeValue("gray.50", "gray.800")} borderRadius="md" shadow="md">
+    <Box
+      p={5}
+      w="100%"
+      bg={useColorModeValue("gray.50", "gray.800")}
+      borderRadius="md"
+      shadow="md"
+    >
       <VStack spacing={4} align="stretch">
         <Flex
           justifyContent="space-between"
@@ -112,7 +116,7 @@ const ProjectAttachments = () => {
           <HStack>
             <Icon as={FiPaperclip} />
             <Text fontWeight="bold" fontSize="lg">
-              Attachments ({filesToShow.length})
+              Attachments ({attach_files.length})
             </Text>
           </HStack>
 
@@ -132,12 +136,24 @@ const ProjectAttachments = () => {
           templateColumns={{ base: "1fr", md: "1fr 1fr", lg: "1fr 1fr 1fr" }}
           gap={4}
         >
-          {filesToShow.map((file, index) => (
-            <AttachmentItem key={index} {...file} />
-          ))}
+          {filesToShow.length > 0
+            ? filesToShow.map((file: any, index: number) => (
+                <AttachmentItem key={index} file={file} />
+              ))
+            : null}
         </Grid>
-
-        {!showAll && fileData.length > 5 && (
+        {filesToShow.length === 0 && (
+          <Center w="100%" h="150px" flexDirection="column">
+            <Icon as={HiDocumentRemove} boxSize={12} color="gray.400" mb={2} />
+            <Text fontSize="lg" color="gray.500">
+              No Attachments Found
+            </Text>
+            <Text fontSize="sm" color="gray.400">
+              Upload files to attach them to this project.
+            </Text>
+          </Center>
+        )}
+        {!showAll && attach_files.length > 5 && (
           <Button
             leftIcon={<FiMoreHorizontal />}
             colorScheme="telegram"

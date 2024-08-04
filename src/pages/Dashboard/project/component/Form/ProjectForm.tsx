@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { Box, Flex, Grid, GridItem } from "@chakra-ui/react";
+import { Box, Button, Flex, Grid, GridItem, Text } from "@chakra-ui/react";
 import CustomInput from "../../../../../config/component/CustomInput/CustomInput";
-import { Form, Formik } from "formik";
+import { FieldArray, Form, Formik } from "formik";
 import { ProjectCreateValidation } from "../utils/validation";
 import { observer } from "mobx-react-lite";
 import store from "../../../../../store/store";
@@ -11,92 +11,102 @@ import { ProjectPrioties, projectStatus } from "../utils/constant";
 import { generateProjectResponse } from "../utils/function";
 import ShowFileUploadFile from "../../../../../config/component/common/ShowFileUploadFile/ShowFileUploadFile";
 import { removeDataByIndex } from "../../../../../config/constant/function";
+import NotFoundData from "../../../../../config/component/NotFound/NotFoundData";
 
 const ProjectForm = observer(
-  ({ initialValuesOfProjects, handleSubmitForm, isEdit }: any) => {
-    const [showError, setShowError] = useState(false);
-    const {
-      auth: { getCompanyUsers, companyUsers, openNotification },
-      Project: { setOpenProjectDrawer },
-    } = store;
+({ initialValuesOfProjects, handleSubmitForm, isEdit }: any) => {
+  const [showError, setShowError] = useState(false);
+  const {
+    auth: { getCompanyUsers, companyUsers, openNotification },
+    Project: { setOpenProjectDrawer },
+  } = store;
 
-    useEffect(() => {
-      getCompanyUsers({ page: 1 })
-        .then(() => {})
-        .catch((err) => {
-          openNotification({
-            message: err?.message,
-            title: "Fetch Users Failed",
-            type: "err",
-          });
+  useEffect(() => {
+    getCompanyUsers({ page: 1 })
+      .then(() => {})
+      .catch((err) => {
+        openNotification({
+          message: err?.message,
+          title: "Fetch Users Failed",
+          type: "err",
         });
-    }, [getCompanyUsers, openNotification]);
+      });
+  }, [getCompanyUsers, openNotification]);
 
-    return (
-      <div>
-        <Formik
-          initialValues={initialValuesOfProjects}
-          validationSchema={ProjectCreateValidation}
-          onSubmit={(
-            values: ProjectFormValuesI,
-            { setSubmitting, resetForm }
-          ) => {
-            const sendDataObject = generateProjectResponse(values);
-            handleSubmitForm({
-              values: { ...values, ...sendDataObject },
-              setSubmitting,
-              resetForm,
-            });
-          }}
-        >
-          {({ handleChange, values, errors, setFieldValue, isSubmitting }) => {
-            return (
-              <Form>
-                <Flex>
-                  {values?.logo?.file?.length === 0 ? (
-                    <CustomInput
-                      type="file-drag"
-                      name="logo"
-                      value={values.logo}
-                      isMulti={true}
-                      accept="image/*"
-                      onChange={(e: any) => {
+  const getAttachFilesError = (errors: any, type: string, index: number) => {
+    const errorTypes = ["title"];
+    if (errors.attach_files && errors.attach_files[index]) {
+      const errorTypeIndex = errorTypes.indexOf(type);
+      if (errorTypeIndex !== -1) {
+        return errors.attach_files[index][errorTypes[errorTypeIndex]];
+      }
+    }
+    return undefined;
+  };
+
+  return (
+    <div>
+      <Formik
+        initialValues={initialValuesOfProjects}
+        validationSchema={ProjectCreateValidation}
+        onSubmit={(
+          values: ProjectFormValuesI,
+          { setSubmitting, resetForm }
+        ) => {
+          const sendDataObject = generateProjectResponse(values);
+          handleSubmitForm({
+            values: { ...values, ...sendDataObject },
+            setSubmitting,
+            resetForm,
+          });
+        }}
+      >
+        {({ handleChange, values, errors, setFieldValue, isSubmitting }) => {
+          return (
+            <Form>
+              <Flex>
+                {values?.logo?.file?.length === 0 ? (
+                  <CustomInput
+                    type="file-drag"
+                    name="logo"
+                    value={values.logo}
+                    isMulti={true}
+                    accept="image/*"
+                    onChange={(e: any) => {
+                      setFieldValue("logo", {
+                        ...values.logo,
+                        file: e.target.files[0],
+                        isAdd: 1,
+                      });
+                    }}
+                    required={true}
+                    showError={showError}
+                    error={errors.logo}
+                  />
+                ) : (
+                  <Box mt={-5} width="100%">
+                    <ShowFileUploadFile
+                      files={values.logo?.file}
+                      removeFile={(_: any) => {
                         setFieldValue("logo", {
                           ...values.logo,
-                          file: e.target.files[0],
-                          isAdd: 1,
+                          file: removeDataByIndex(values.logo, 0),
+                          isDeleted: 1,
                         });
                       }}
-                      required={true}
-                      showError={showError}
-                      error={errors.logo}
+                      edit={isEdit}
                     />
-                  ) : (
-                    <Box mt={-5} width="100%">
-                      <ShowFileUploadFile
-                        files={values.logo?.file}
-                        removeFile={(_: any) => {
-                          setFieldValue("logo", {
-                            ...values.logo,
-                            file: removeDataByIndex(values.logo, 0),
-                            isDeleted: 1,
-                          });
-                        }}
-                        edit={isEdit}
-                      />
-                    </Box>
-                  )}
-                </Flex>
+                  </Box>
+                )}
+              </Flex>
+              <Box minH={"74vh"} maxH={"74vh"} overflowY={"auto"}>
                 <Grid
                   gridTemplateColumns={{
                     base: "repeat(1, 1fr)",
                     md: "repeat(2, 1fr)",
                     lg: "repeat(3, 1fr)",
                   }}
-                  overflowY={"auto"}
                   gap={2}
-                  minH={"81vh"}
-                  maxH={"81vh"}
                 >
                   <CustomInput
                     value={values.project_name}
@@ -287,24 +297,166 @@ const ProjectForm = observer(
                     />
                   </GridItem>
                 </Grid>
-                <Flex justifyContent={"end"}>
-                  <CustomSubmitBtn
-                    cancelFunctionality={{
-                      show: true,
-                      onClick: setOpenProjectDrawer,
-                    }}
-                    onClick={() => setShowError(true)}
-                    type="submit"
-                    loading={isSubmitting}
-                  />
-                </Flex>
-              </Form>
-            );
-          }}
-        </Formik>
-      </div>
-    );
-  }
+                <Box>
+                  <Box mt={5} mb={2}>
+                    <Text fontWeight={"bold"}>Add Attachments :- </Text>
+                  </Box>
+                  <Box>
+                    {values.attach_files?.length === 0 ? (
+                      <Box>
+                        <NotFoundData
+                          title="No Attachment Are Found"
+                          subTitle="Add New Attachment for the project description"
+                          btnText="Add New Attachment"
+                          onClick={() => {
+                            setFieldValue("attach_files", [
+                              {
+                                title: "",
+                                description: "",
+                                file: null,
+                              },
+                            ]);
+                          }}
+                        />
+                      </Box>
+                    ) : (
+                      <Grid columnGap={5} rowGap={3} mb={5}>
+                        <FieldArray name="attach_files">
+                          {({ push, remove }) => (
+                            <Box>
+                              {values.attach_files.map(
+                                (file: any, index: number) => {
+                                  console.log('the file are', file)
+                                  return(
+                                  <Box key={index} mb="20px">
+                                    <Grid
+                                      gridTemplateColumns={{ md: "1fr" }}
+                                      gap={2}
+                                    >
+                                      <Box width="100%">
+                                        {file.file ? (
+                                          <ShowFileUploadFile
+                                            edit={isEdit}
+                                            files={file.file[0]}
+                                            removeFile={() => {
+                                              const updatedFiles =
+                                                values.attach_files.map(
+                                                  (item: any, i: number) =>
+                                                    i === index
+                                                      ? {
+                                                          ...item,
+                                                          file: null,
+                                                          isDeleted: 1,
+                                                          isAdd: 0,
+                                                        }
+                                                      : item
+                                                );
+                                              setFieldValue(
+                                                "attach_files",
+                                                updatedFiles
+                                              );
+                                            }}
+                                            // Optionally, you can add functionality to remove files
+                                          />
+                                        ) : (
+                                          <CustomInput
+                                            name={`attach_files.${index}.file`}
+                                            type="file-drag"
+                                            placeholder="File"
+                                            label="File"
+                                            required
+                                            showError={showError}
+                                            onChange={(e: any) => {
+                                              setFieldValue(
+                                                `attach_files.${index}.file`,
+                                                e.target.files
+                                              );
+                                            }}
+                                          />
+                                        )}
+                                      </Box>
+                                      <CustomInput
+                                        name={`attach_files.${index}.title`}
+                                        type="text"
+                                        placeholder="Title"
+                                        label="Title"
+                                        value={file.title}
+                                        required
+                                        showError={showError}
+                                        onChange={handleChange}
+                                        error={getAttachFilesError(
+                                          errors,
+                                          "title",
+                                          index
+                                        )}
+                                      />
+                                      <CustomInput
+                                        name={`attach_files.${index}.description`}
+                                        type="textarea"
+                                        placeholder="Description"
+                                        label="Description"
+                                        value={file.description}
+                                        showError={showError}
+                                        onChange={handleChange}
+                                      />
+                                    </Grid>
+                                    {values.attach_files.length && (
+                                      <Button
+                                        colorScheme="red"
+                                        variant="outline"
+                                        size="sm"
+                                        mt="10px"
+                                        onClick={() => remove(index)}
+                                      >
+                                        Remove Section
+                                      </Button>
+                                    )}
+                                  </Box>
+                                )}
+                              )}
+                              <Button
+                                colorScheme="blue"
+                                variant="outline"
+                                display="block"
+                                size="sm"
+                                mb="10px"
+                                mt={5}
+                                onClick={() =>
+                                  push({
+                                    title: "",
+                                    description: "",
+                                    file: null,
+                                  })
+                                }
+                              >
+                                Add Section
+                              </Button>
+                            </Box>
+                          )}
+                        </FieldArray>
+                      </Grid>
+                    )}
+                  </Box>
+                </Box>
+              </Box>
+              <Flex justifyContent={"end"}>
+                <CustomSubmitBtn
+                  cancelFunctionality={{
+                    show: true,
+                    onClick: setOpenProjectDrawer,
+                  }}
+                  onClick={() => setShowError(true)}
+                  type="submit"
+                  loading={isSubmitting}
+                />
+              </Flex>
+            </Form>
+          );
+        }}
+      </Formik>
+    </div>
+  );
+}
 );
 
 export default ProjectForm;

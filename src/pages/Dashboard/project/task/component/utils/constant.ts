@@ -30,6 +30,7 @@ export const initialValuesOfTask : any = {
     dependencies:[],
     team_members: [],
     customers: [],
+    assigner:undefined,
     project_manager: [],
     status: taskStatus[0],
     attach_files : []

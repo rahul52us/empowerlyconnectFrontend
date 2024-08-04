@@ -1,5 +1,4 @@
 import { formatDate, YYYYMMDD_FORMAT } from "../../../../../../config/constant/dateUtils";
-import { getIdFromObject } from "../../../../../../config/constant/function";
 import { activeStatus, taskPrioties, taskStatus } from "./constant";
 
 export const generateSendTaskResponse = (values : any) => {
@@ -10,9 +9,9 @@ export const generateSendTaskResponse = (values : any) => {
           : taskPrioties[1].value,
         isActive : values.isActive ? values?.isActive?.value : activeStatus[1],
         status: values?.status ? values?.status?.value : taskStatus[0].value,
-        assigner: getIdFromObject(values.assigner),
-        team_members: getIdFromObject(values.team_members),
-        dependencies: getIdFromObject(values.dependencies),
+        team_members: values.team_members.map((item : any) => ({user : item?.user?._id, isActive : item.isActive  || true})),
+        assigner: values.assigner ? values.assigner?.user?._id : undefined,
+        dependencies: values.dependencies.map((item : any) => ({user : item?.user?._id, isActive : item.isActive  || true})),
         reminders : [values.reminders],
         startDate: values?.startDate
           ? formatDate(values?.startDate, YYYYMMDD_FORMAT)

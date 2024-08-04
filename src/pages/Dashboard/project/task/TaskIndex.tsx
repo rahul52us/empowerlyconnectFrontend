@@ -28,14 +28,15 @@ const TaskIndex = observer(() => {
       getSingleProject({ id: projectId })
         .then((data: any) => {
           setProjectDetails({ loading: false, data: data.data });
-          getTasks({id : projectId}).then(() => {
-          }).catch((err) => {
-            openNotification({
-              title: "Failed to Get",
-              message: err?.data?.message || "An error occurred",
-              type: getStatusType(err.status),
+          getTasks({ id: projectId })
+            .then(() => {})
+            .catch((err) => {
+              openNotification({
+                title: "Failed to Get",
+                message: err?.data?.message || "An error occurred",
+                type: getStatusType(err.status),
+              });
             });
-          })
         })
         .catch((err) => {
           openNotification({
@@ -84,7 +85,7 @@ const TaskIndex = observer(() => {
         title="CREATE NEW TASK"
         open={openTaskDrawer.open}
         close={() => setOpenTaskDrawer("create")}
-        width={'75vw'}
+        width={"75vw"}
       >
         <AddTask projectId={openTaskDrawer?.data?.projectId} />
       </CustomDrawer>

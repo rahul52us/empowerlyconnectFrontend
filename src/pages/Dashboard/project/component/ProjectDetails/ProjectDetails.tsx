@@ -350,7 +350,7 @@ const ProjectDetails = ({ selectedProject }: any) => {
 
         {/* Attachments */}
         <Box mt={2}>
-          <AttachmentSection />
+          <AttachmentSection attach_files={fetchProjectData.data?.attach_files || []}/>
         </Box>
         {/* Tasks Table */}
         <Box mt={3}>

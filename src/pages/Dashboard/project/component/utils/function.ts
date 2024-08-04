@@ -13,6 +13,7 @@ export const generateProjectInitialValues = (values : any) => {
    endDate : values.endDate ? new Date(values.endDate) : new Date(),
    dueDate : values.dueDate ? new Date(values.dueDate) : new Date(),
    logo: values.logo?.url ? {file : values?.logo } : {file : []},
+   attach_files : values?.attach_files?.map((it : any) => ({...it, file : [it.file]})),
    tags : values.tags || []
 }}
 

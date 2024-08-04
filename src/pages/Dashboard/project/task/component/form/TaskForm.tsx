@@ -181,11 +181,27 @@ const TaskForm = observer(
                       minDate={values.startDate}
                     />
                     <CustomInput
+                      name="assigner"
+                      label="Assigner"
+                      value={values.assigner}
+                      getOptionLabel={(option: any) => option?.user?.username}
+                      getOptionValue={(option: any) => option?.user?._id}
+                      options={companyUsers}
+                      placeholder="Select the Assigner"
+                      type="select"
+                      onChange={(e: any) => {
+                        setFieldValue("assigner", e);
+                      }}
+                      isSearchable
+                      error={errors.assigner}
+                      showError={showError}
+                    />
+                    <CustomInput
                       name="team_members"
                       label="Team"
                       value={values.team_members}
-                      getOptionLabel={(option: any) => option.username}
-                      getOptionValue={(option: any) => option._id}
+                      getOptionLabel={(option: any) => option.user?.username}
+                      getOptionValue={(option: any) => option.user?._id}
                       options={companyUsers}
                       placeholder="Select the Team Members"
                       type="select"
@@ -201,8 +217,8 @@ const TaskForm = observer(
                       name="dependencies"
                       label="Dependency Members"
                       value={values.dependencies}
-                      getOptionLabel={(option: any) => option.username}
-                      getOptionValue={(option: any) => option._id}
+                      getOptionLabel={(option: any) => option.user?.username}
+                      getOptionValue={(option: any) => option.user?._id}
                       options={companyUsers}
                       placeholder="Select the Dependency Members"
                       type="select"
@@ -215,6 +231,7 @@ const TaskForm = observer(
                       showError={showError}
                     />
                   </Grid>
+                  <Box>
                   <Box mt={5} mb={2}>
                     <Text fontWeight={"bold"}>Add Attachments :- </Text>
                   </Box>
@@ -351,6 +368,7 @@ const TaskForm = observer(
                         </FieldArray>
                       </Grid>
                     )}
+                  </Box>
                   </Box>
                 </Box>
                 <Flex justifyContent={"end"} mt={4}>

@@ -20,7 +20,7 @@ const DrawerLoader = observer(
         {loading ? (
           <Center height="100%">
             <Flex alignItems="center" justifyContent="center">
-              <Box p={4} mt={height}>
+              <Box p={4} mt={'40vh'}>
                 <SpinnerLoader />
               </Box>
             </Flex>

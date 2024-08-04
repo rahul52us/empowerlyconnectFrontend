@@ -13,6 +13,7 @@ const CreateProject = observer(() => {
 
   const handleSubmitForm = async({ values, setSubmitting, resetForm }: any) => {
     try {
+
       if (values.logo?.file && values.logo?.file?.length !== 0) {
         const buffer = await readFileAsBase64(values.logo?.file);
         const fileData = {
@@ -22,7 +23,28 @@ const CreateProject = observer(() => {
         };
         values.logo = fileData;
       }
-      createProject({...values})
+
+      let formData = {
+        ...values,
+        attach_files: values.attach_files.map((fileObj : any) => ({
+          ...fileObj,
+          file: fileObj.file ? [...fileObj.file] : null,
+        }))
+      };
+
+
+      for (const dt of formData.attach_files) {
+        if (dt.file) {
+          const file = await readFileAsBase64(dt.file[0]);
+          dt.file = {
+            buffer: file,
+            filename: dt.file[0].name,
+            type: dt.file[0].type,
+          };
+        }
+      }
+
+      createProject({...formData})
         .then((data) => {
           openNotification({
             title: "Successfully Created",
