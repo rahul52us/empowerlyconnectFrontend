@@ -4,6 +4,9 @@ import { dashboard } from "../constant/routes";
 const PersonalDetails = lazy(
   () => import("../../pages/Dashboard/Employes/PersonalDetails")
 );
+
+const ProfileIndex = lazy(() => import("../../pages/Dashboard/profile/ProfileIndex"))
+
 const PersonalDetailUsersChart = lazy(
   () =>
     import(
@@ -140,6 +143,11 @@ export const DashboardRoutes = [
   {
     element: <DashboardIndex />,
     path: dashboard.home,
+    privateRoutes: true,
+  },
+  {
+    element: <ProfileIndex />,
+    path: dashboard.profile,
     privateRoutes: true,
   },
   {

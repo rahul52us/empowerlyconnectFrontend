@@ -18,6 +18,10 @@ export const dashboard = {
   class: `/${dashboardName}/class`,
   course: `/${dashboardName}/courses`,
   quiz: `/${dashboardName}/quiz`,
+
+  // Profile
+
+  profile : `/${dashboardName}/profile`,
   student: {
     index: `/${dashboardName}/students`,
     table: `/${dashboardName}/students/:type`,
