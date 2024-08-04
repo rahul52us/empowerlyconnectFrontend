@@ -10,6 +10,7 @@ import {
   Text,
   VStack,
   Icon,
+  Portal,
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import store from "../../../../../../../store/store";
@@ -26,7 +27,7 @@ import {
 } from "react-icons/fa";
 
 const HeaderProfile = observer(() => {
-  const {pathname} = useLocation()
+  const { pathname } = useLocation();
   const {
     auth: { user, doLogout },
     themeStore: { setOpenThemeDrawer },
@@ -49,84 +50,88 @@ const HeaderProfile = observer(() => {
         size="sm"
         variant="ghost"
       />
-      <MenuList
-        minWidth="220px"
-        boxShadow="md"
-        borderRadius="md"
-        zIndex={10}
-        p={2}
-      >
-        <VStack spacing={2}>
-          <Box textAlign="center">
-            <Avatar src={user?.pic} size="lg" name={user?.name} />
-            <Text mt={2} fontWeight="bold">
-              {user?.name}
-            </Text>
-          </Box>
-          <Divider />
-          { user && pathname !== main.home &&
-            <MenuItem onClick={() => navigate(main.home)}>
-            <FaHome style={{ marginRight: "8px" }} /> Home
+      <Portal>
+        <MenuList
+          minWidth="220px"
+          boxShadow="md"
+          borderRadius="md"
+          zIndex={10}
+          p={2}
+        >
+          <VStack spacing={2}>
+            <Box textAlign="center">
+              <Avatar src={user?.pic} size="lg" name={user?.name} />
+              <Text mt={2} fontWeight="bold">
+                {user?.name}
+              </Text>
+            </Box>
+            <Divider />
+            {user && pathname !== main.home && (
+              <MenuItem onClick={() => navigate(main.home)}>
+                <FaHome style={{ marginRight: "8px" }} /> Home
+              </MenuItem>
+            )}
+            <MenuItem onClick={() => navigate(main.profile)}>
+              <FaCog style={{ marginRight: "8px" }} /> Profile Settings
             </MenuItem>
-          }
-          <MenuItem onClick={() => navigate(main.profile)}>
-            <FaCog style={{ marginRight: "8px" }} /> Profile Settings
-          </MenuItem>
-          <MenuItem onClick={() => navigate(main.changePassword)}>
-            <FaLock style={{ marginRight: "8px" }} /> Change Password
-          </MenuItem>
-          <MenuItem onClick={setOpenThemeDrawer}>
-            <FaPalette style={{ marginRight: "8px" }} /> Customize Theme
-          </MenuItem>
-          <Divider />
-          <MenuItem
-            onClick={() => {
-              doLogout();
-              navigate(authentication.login);
-            }}
-            // colorScheme="red"
-          >
-            <FaSignOutAlt style={{ marginRight: "8px" }} /> Logout
-          </MenuItem>
-        </VStack>
-      </MenuList>
+            <MenuItem onClick={() => navigate(main.changePassword)}>
+              <FaLock style={{ marginRight: "8px" }} /> Change Password
+            </MenuItem>
+            <MenuItem onClick={setOpenThemeDrawer}>
+              <FaPalette style={{ marginRight: "8px" }} /> Customize Theme
+            </MenuItem>
+            <Divider />
+            <MenuItem
+              onClick={() => {
+                doLogout();
+                navigate(authentication.login);
+              }}
+              // colorScheme="red"
+            >
+              <FaSignOutAlt style={{ marginRight: "8px" }} /> Logout
+            </MenuItem>
+          </VStack>
+        </MenuList>
+      </Portal>
     </Menu>
   ) : (
     <Menu closeOnSelect={false} placement="bottom-end">
-    <MenuButton
-      as={IconButton}
-      aria-label="User Menu"
-      icon={<Avatar size="sm" borderRadius="full" />}
-      size="sm"
-      variant="ghost"
-    />
-    <MenuList
-      minWidth="220px"
-      boxShadow="md"
-      borderRadius="md"
-      zIndex={10}
-      p={2}
-    >
-      <VStack spacing={2}>
-        <MenuItem
-          onClick={() => navigate(authentication.login)}
-          display="flex"
-          alignItems="center"
+      <MenuButton
+        as={IconButton}
+        aria-label="User Menu"
+        icon={<Avatar size="sm" borderRadius="full" />}
+        size="sm"
+        variant="ghost"
+      />
+      <Portal>
+        <MenuList
+          minWidth="220px"
+          boxShadow="md"
+          borderRadius="md"
+          zIndex={10}
+          p={2}
         >
-          <Icon as={FaUser} boxSize={6} mr={2} color="blue.500" />
-          <Text>Login</Text>
-        </MenuItem>
-        <MenuItem
-          onClick={() => navigate(authentication.createOrganisationStep1)}
-          display="flex"
-          alignItems="center"
-        >
-          <Icon as={FaKey} boxSize={6} mr={2} color="blue.500" />
-          <Text>Create New Account</Text>
-        </MenuItem>
-      </VStack>
-    </MenuList>
-  </Menu>
+          <VStack spacing={2}>
+            <MenuItem
+              onClick={() => navigate(authentication.login)}
+              display="flex"
+              alignItems="center"
+            >
+              <Icon as={FaUser} boxSize={6} mr={2} color="blue.500" />
+              <Text>Login</Text>
+            </MenuItem>
+            <MenuItem
+              onClick={() => navigate(authentication.createOrganisationStep1)}
+              display="flex"
+              alignItems="center"
+            >
+              <Icon as={FaKey} boxSize={6} mr={2} color="blue.500" />
+              <Text>Create New Account</Text>
+            </MenuItem>
+          </VStack>
+        </MenuList>
+      </Portal>
+    </Menu>
   );
 });
 
