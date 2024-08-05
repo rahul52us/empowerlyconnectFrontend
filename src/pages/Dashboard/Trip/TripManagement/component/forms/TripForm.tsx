@@ -68,7 +68,6 @@ return (
 		}}
 	>
 		{({ handleChange, setFieldValue, values, errors }) => {
-		console.log(errors);
 		return (
 			<Form>
 			<SimpleGrid columns={2} spacing={4}>
@@ -161,24 +160,26 @@ return (
 					}}
 					/>
 				</GridItem>
-				{values.type && values.type?.value === tripTypes[1].value && (
-					<GridItem>
+				<GridItem>
 					<CustomInput
-						type="select"
-						label="Participants"
-						placeholder="Select Participants"
-						name={`participants`}
-						options={participants}
-						value={values.participants}
-						getOptionLabel={(options: any) => options.username}
-						getOptionValue={(options: any) => options._id}
-						onChange={(e) => {
+					type="select"
+					label="Participants"
+					placeholder="Select Participants"
+					name={`participants`}
+					options={participants}
+					error={errors.participants}
+					value={values.participants}
+					getOptionLabel={(options: any) => options.username}
+					getOptionValue={(options: any) => options._id}
+					onChange={(e) => {
 						setFieldValue(`participants`, e);
-						}}
-						isMulti={true}
+					}}
+					required={true}
+					isMulti={
+						values.type?.value === tripTypes[1].value ? true : false
+					}
 					/>
-					</GridItem>
-				)}
+				</GridItem>
 				</Grid>
 			</Box>
 			{/* for the travels details */}

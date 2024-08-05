@@ -13,7 +13,6 @@ import styled from "styled-components";
 import { BiBookmark } from "react-icons/bi";
 import { useState } from "react";
 import { observer } from "mobx-react-lite";
-import { toJS } from "mobx";
 import { capitalizeString } from "../../../../../config/constant/function";
 
 const ThumbnailWrapper = styled(Box)`
@@ -53,8 +52,6 @@ const TripCard = observer(({ setTripFormData, item, handleClick }: any) => {
   const bookmarkColor = useColorModeValue("gray.600", "gray.500");
   const headingColor = useColorModeValue("black", "white");
   const { title, description, thumbnail } = item;
-
-  console.log("the item are", toJS(item));
 
   return (
     <Card
