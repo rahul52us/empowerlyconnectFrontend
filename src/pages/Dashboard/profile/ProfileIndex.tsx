@@ -1,4 +1,4 @@
-import { Tabs, TabList, TabPanels, Tab, TabPanel, Box, useBreakpointValue } from "@chakra-ui/react";
+import { Tabs, TabList, TabPanels, Tab, TabPanel, Box, useBreakpointValue, useColorMode } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useQueryParams } from "../../../config/component/customHooks/useQuery";
 import store from "../../../store/store";
@@ -22,6 +22,7 @@ const ProfileIndex = observer(() => {
   const [loading, setLoading] = useState(false);
   const [currentTab, setCurrentTab] = useState<string>('personal-details');
   const [userDetails, setUserDetails] = useState<any>(null);
+  const { colorMode } = useColorMode();
 
   const {
     User: { getUsersDetailsById },
@@ -68,6 +69,17 @@ const ProfileIndex = observer(() => {
     setQueryParam("tab", selectedTab);
   };
 
+  const tabStyles = {
+    _selected: { color: 'white', bg: 'teal.500' },
+    px: 4,
+    py: 2,
+    borderRadius: "md",
+    fontWeight: "bold",
+    fontSize: useBreakpointValue({ base: 'sm', md: 'md' }),
+  };
+
+  console.log(userDetails)
+
   return (
     <Box p={4}>
       <PageLoader loading={loading}>
@@ -81,110 +93,54 @@ const ProfileIndex = observer(() => {
             borderBottomWidth={2}
             borderColor="teal.300"
             mb={4}
-            bg="white"
+            bg={colorMode === 'dark' ? 'gray.700' : 'white'}
             borderRadius="md"
             boxShadow="lg"
             overflowX="auto"
-            overflow='hidden'
+            // overflow='hidden'
             display="flex"
-            justifyContent={'space-around'}
-            flexWrap="nowrap"
+            justifyContent={'space-between'}
+            flexWrap="wrap"
             p={3}
           >
-            <Tab
-              _selected={{ color: 'white', bg: 'teal.500' }}
-              px={4}
-              py={2}
-              borderRadius="md"
-              fontWeight="bold"
-              fontSize={useBreakpointValue({ base: 'sm', md: 'md' })}
-            >
-              <CalendarIcon style={{marginRight:'10px'}}/> Personal Info
+            <Tab {...tabStyles}>
+              <CalendarIcon style={{ marginRight: '10px' }} /> Personal Info
             </Tab>
-            <Tab
-              _selected={{ color: 'white', bg: 'teal.500' }}
-              px={4}
-              py={2}
-              borderRadius="md"
-              fontWeight="bold"
-              fontSize={useBreakpointValue({ base: 'sm', md: 'md' })}
-            >
-              <FaBuilding style={{marginRight:'10px'}}/> Company
+            <Tab {...tabStyles}>
+              <FaBuilding style={{ marginRight: '10px' }} /> Company
             </Tab>
-            <Tab
-              _selected={{ color: 'white', bg: 'teal.500' }}
-              px={4}
-              py={2}
-              borderRadius="md"
-              fontWeight="bold"
-              fontSize={useBreakpointValue({ base: 'sm', md: 'md' })}
-            >
-              <FaUsers style={{marginRight:'10px'}}/> Family
+            <Tab {...tabStyles}>
+              <FaUsers style={{ marginRight: '10px' }} /> Family
             </Tab>
-            <Tab
-              _selected={{ color: 'white', bg: 'teal.500' }}
-              px={4}
-              py={2}
-              borderRadius="md"
-              fontWeight="bold"
-              fontSize={useBreakpointValue({ base: 'sm', md: 'md' })}
-            >
-              <FaUsers style={{marginRight:'10px'}}/> Work Experience
+            <Tab {...tabStyles}>
+              <FaUsers style={{ marginRight: '10px' }} /> Work Experience
             </Tab>
-            <Tab
-              _selected={{ color: 'white', bg: 'teal.500' }}
-              px={4}
-              py={2}
-              borderRadius="md"
-              fontWeight="bold"
-              fontSize={useBreakpointValue({ base: 'sm', md: 'md' })}
-            >
-              <FaUsers style={{marginRight:'10px'}}/> Skill & Additional Info
+            <Tab {...tabStyles}>
+              <FaUsers style={{ marginRight: '10px' }} /> Skill & Additional Info
             </Tab>
-            <Tab
-              _selected={{ color: 'white', bg: 'teal.500' }}
-              px={4}
-              py={2}
-              borderRadius="md"
-              fontWeight="bold"
-              fontSize={useBreakpointValue({ base: 'sm', md: 'md' })}
-            >
-              <FaUsers style={{marginRight:'10px'}}/> Qualification
+            <Tab {...tabStyles}>
+              <FaUsers style={{ marginRight: '10px' }} /> Qualification
             </Tab>
-            <Tab
-              _selected={{ color: 'white', bg: 'teal.500' }}
-              px={4}
-              py={2}
-              borderRadius="md"
-              fontWeight="bold"
-              fontSize={useBreakpointValue({ base: 'sm', md: 'md' })}
-            >
-              <FaUsers style={{marginRight:'10px'}}/> Documents
+            <Tab {...tabStyles}>
+              <FaUsers style={{ marginRight: '10px' }} /> Documents
             </Tab>
-            <Tab
-              _selected={{ color: 'white', bg: 'teal.500' }}
-              px={4}
-              py={2}
-              borderRadius="md"
-              fontWeight="bold"
-              fontSize={useBreakpointValue({ base: 'sm', md: 'md' })}
-            >
-              <FaUsers style={{marginRight:'10px'}}/> Bank Account Details
+            <Tab {...tabStyles}>
+              <FaUsers style={{ marginRight: '10px' }} /> Bank Account Details
             </Tab>
           </TabList>
 
           <TabPanels>
             <TabPanel>
-              <PersonalInfo userDetails={userDetails} />
+             {userDetails?.profileDetails && <PersonalInfo personalDetails={userDetails?.profileDetails ? userDetails?.profileDetails : []} />}
             </TabPanel>
             <TabPanel>
               <CompanyDetails userDetails={userDetails} />
             </TabPanel>
             <TabPanel>
-              <FamilyDetails userDetails={userDetails} />
+              <FamilyDetails relations={userDetails?.familyDetails ? userDetails?.familyDetails[0]?.relations : []} />
             </TabPanel>
             <TabPanel>
-              <WorkExperience userDetails={userDetails} />
+              <WorkExperience experienceDetails={userDetails?.workExperience ? userDetails?.workExperience[0]?.experienceDetails : []}  />
             </TabPanel>
             <TabPanel>
               <SkillAndAdditionalInfo userDetails={userDetails} />
@@ -196,7 +152,7 @@ const ProfileIndex = observer(() => {
               <Documents userDetails={userDetails} />
             </TabPanel>
             <TabPanel>
-              <BankDetails userDetails={userDetails} />
+              <BankDetails bankDetails={userDetails?.bankDetails ? userDetails?.bankDetails[0] : {}} />
             </TabPanel>
           </TabPanels>
         </Tabs>
