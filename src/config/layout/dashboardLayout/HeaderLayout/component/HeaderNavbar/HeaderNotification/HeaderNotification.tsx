@@ -221,7 +221,12 @@ const NotificationComponent: React.FC = () => {
           isRound={true}
           position="relative"
           bg="transparent"
-          fontSize={"25px"}
+          variant="ghost"
+          fontSize="2xl"
+          color="white"
+          _hover={{ color: "blue.500", bg: "gray.700" }}
+          _active={{ bg: "gray.800" }}
+          aria-label="chat-message-icons"
           _focus={{ boxShadow: "outline" }}
           onClick={() => setDropdownOpen(!dropdownOpen)}
         />
