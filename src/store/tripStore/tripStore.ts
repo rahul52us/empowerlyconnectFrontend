@@ -22,16 +22,32 @@ class TripStore {
     hasFetch : false
   }
 
+  tripTypeCount : any = {
+    data : [],
+    loading : false,
+    hasFetch : false
+  }
+
+  userTripTypeCount : any = {
+    data : {},
+    loading : false,
+    hasFetch : false
+  }
+
   constructor() {
     makeObservable(this, {
       trips : observable,
       tripChartCount: observable,
       tripCount:observable,
+      userTripTypeCount:observable,
+      tripTypeCount:observable,
       createTrip: action,
       updateTrip:action,
       getTripChartCounts:action,
       getTripCounts:action,
-      getSingleTrip:action
+      getSingleTrip:action,
+      getUserTripTypeCounts:action,
+      getTripTypesCounts:action
     });
   }
 
@@ -101,6 +117,38 @@ class TripStore {
       this.tripCount.loading = false;
     }
   }
+
+  getTripTypesCounts = async () => {
+    try {
+      this.tripTypeCount.loading = true;
+      const { data } = await axios.post(`/trip/types/total/count`, { company: [store.auth.getCurrentCompany()] });
+        const transformedData = data?.data && data.data.reduce((acc : any, item : any) => {
+        acc[item.title] = item.count;
+        return acc;
+      }, {});
+      this.tripTypeCount.data = transformedData || {};
+      return data;
+    } catch (err : any) {
+      return Promise.reject(err?.response || err);
+    } finally {
+      this.tripTypeCount.loading = false;
+    }
+  }
+
+
+  getUserTripTypeCounts = async () => {
+    try {
+      this.userTripTypeCount.loading = true;
+      const { data } = await axios.post(`/trip/user/types/total/count`,{company : [store.auth.getCurrentCompany()]});
+      this.userTripTypeCount.data = data?.data || []
+      return data;
+    } catch (err: any) {
+      return Promise.reject(err?.response || err);
+    } finally {
+      this.userTripTypeCount.loading = false;
+    }
+  }
+
 }
 
 export default TripStore;

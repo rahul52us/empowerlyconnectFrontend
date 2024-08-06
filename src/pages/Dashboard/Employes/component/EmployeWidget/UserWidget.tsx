@@ -26,7 +26,7 @@ const UserWidget = observer(() => {
         openNotification({
           type: "error",
           title: "Failed to Position Count",
-          message: err?.message,
+          message: err?.message
         });
       });
   }, [getUsersCount, openNotification]);

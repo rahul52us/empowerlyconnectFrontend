@@ -10,6 +10,7 @@ import AddTripForm from "../component/forms/AddTripForm";
 import { getStatusType } from "../../../../../config/constant/statusCode";
 import MainPagePagination from "../../../../../config/component/pagination/MainPagePagination";
 import { useQueryParams } from "../../../../../config/component/customHooks/useQuery";
+import NotFoundData from "../../../../../config/component/NotFound/NotFoundData";
 
 const TripLayout = observer(
   ({
@@ -50,7 +51,14 @@ const TripLayout = observer(
         .finally(() => {
           setGripType({ loading: false, type: gridType });
         });
-    }, [getAllTrip, openNotification, setGripType, currentPage, pageLimit, gridType]);
+    }, [
+      getAllTrip,
+      openNotification,
+      setGripType,
+      currentPage,
+      pageLimit,
+      gridType,
+    ]);
 
     const applyGetAllRecord = ({ page, limit, reset }: any) => {
       const query: any = {};
@@ -66,14 +74,13 @@ const TripLayout = observer(
         query["startDate"] = date?.startDate ? date?.startDate : undefined;
         query["endDate"] = date?.endDate ? date?.endDate : undefined;
       }
-      getAllTrip(query)
-        .catch((err: any) => {
-          openNotification({
-            title: "Failed to get Department Categories",
-            message: err?.data?.message,
-            type: getStatusType(err.status),
-          });
+      getAllTrip(query).catch((err: any) => {
+        openNotification({
+          title: "Failed to get Department Categories",
+          message: err?.data?.message,
+          type: getStatusType(err.status),
         });
+      });
     };
 
     const onDateChange = (e: any, type: string) => {
@@ -156,7 +163,14 @@ const TripLayout = observer(
 
     return (
       <Box>
-        {gridType === "grid" ? (
+        {data.length === 0 && loading === false ? (
+          <NotFoundData
+          onClick={() => setTripFormData({ open: true, type: "add", data: null })}
+          btnText="TRIP PROJECT"
+            title="No Trip found"
+            subTitle="Start by creating a new trip to get started."
+          />
+        ) : gridType === "grid" ? (
           <>
             <Grid
               templateColumns={{
