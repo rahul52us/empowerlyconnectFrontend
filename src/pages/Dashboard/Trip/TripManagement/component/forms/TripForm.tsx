@@ -62,15 +62,15 @@ setIsFileDeleted,
 
 	useEffect(() => {
 		getCompanyUsers({ page: 1 })
-		  .then(() => {})
-		  .catch((err) => {
+		.then(() => {})
+		.catch((err) => {
 			openNotification({
-			  message: err?.message,
-			  title: "Fetch Users Failed",
-			  type: "err",
+			message: err?.message,
+			title: "Fetch Users Failed",
+			type: "err",
 			});
-		  });
-	  }, [getCompanyUsers, openNotification]);
+		});
+	}, [getCompanyUsers, openNotification]);
 return (
 	<Box>
 	<Formik<any>
@@ -84,6 +84,7 @@ return (
 		{({ handleChange, setFieldValue, values, errors }) => {
 		return (
 			<Form>
+			<Box minH={"80vh"} maxH={"80vh"} overflowY={"auto"}>
 			<SimpleGrid columns={2} spacing={4}>
 				<GridItem colSpan={2}>
 				<Flex>
@@ -619,7 +620,8 @@ return (
 				value={values.description}
 				/>
 			</GridItem>
-			<Flex justifyContent="end" mt={5} p={3}>
+			</Box>
+			<Flex justifyContent="end" mt={2} p={2}>
 				<Button
 				type="button"
 				onClick={onClose}

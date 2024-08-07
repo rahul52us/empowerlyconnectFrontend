@@ -64,7 +64,7 @@ const ProjectForm = observer(
           {({ handleChange, values, errors, setFieldValue, isSubmitting }) => {
             return (
               <Form>
-                <Box minH={"80vh"} maxH={"80vh"} overflowY={"auto"}>
+                <Box minH={"81vh"} maxH={"81vh"} overflowY={"auto"}>
                   <Flex>
                     {values?.logo?.file?.length === 0 ? (
                       <CustomInput

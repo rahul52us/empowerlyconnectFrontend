@@ -116,7 +116,7 @@ const ProjectWidget = observer(() => {
         ))}
       </SimpleGrid>
 
-      <Grid templateColumns={"1fr 1fr 1fr 1fr"}>
+      <Grid templateColumns={"1fr 1fr 1fr 1fr"} display="none">
         <TaskCard
           title={taskData.title}
           description={taskData.description}
