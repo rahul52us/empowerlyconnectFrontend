@@ -10,7 +10,7 @@ import {
   Tooltip,
 } from "@chakra-ui/react";
 import styled from "styled-components";
-import { BiBookmark } from "react-icons/bi";
+import { BiEdit } from "react-icons/bi";
 import { useState } from "react";
 import { observer } from "mobx-react-lite";
 import { capitalizeString } from "../../../../../config/constant/function";
@@ -47,7 +47,7 @@ const ThumbnailCard = styled(Image)`
   background-color: lightgray;
 `;
 
-const TripCard = observer(({ setTripFormData, item, handleClick }: any) => {
+const TripCard = observer(({ setTripFormData, item, handleClick, setSelectedRecord }: any) => {
   const [thumbnailLoadError, setThumbnailLoadError] = useState(false);
   const bookmarkColor = useColorModeValue("gray.600", "gray.500");
   const headingColor = useColorModeValue("black", "white");
@@ -74,19 +74,24 @@ const TripCard = observer(({ setTripFormData, item, handleClick }: any) => {
         )}
       </ThumbnailWrapper>
       <Flex mt={4} justify="space-between" alignItems="center">
-        <Tooltip label="Bookmark" aria-label="Bookmark Tooltip">
+        <Heading color="gray.500" fontSize="sm">
+          {capitalizeString(item.type)} Trip
+        </Heading>
+        <Tooltip label="edit" aria-label="edit Tooltip">
           <IconButton
-            icon={<BiBookmark />}
-            aria-label="Bookmark"
+            icon={<BiEdit />}
+            aria-label="edit"
             borderRadius="full"
             color={bookmarkColor}
             _hover={{ color: "blue.500" }}
             transition="0.3s"
+            onClick={() => {
+              handleClick && handleClick(item);
+              setTripFormData({ open: true, data: item, type: "edit" });
+            }}
           />
         </Tooltip>
-        <Heading color="gray.500" fontSize="sm">
-          {capitalizeString(item.type)} Trip
-        </Heading>
+
       </Flex>
       <Flex mt={3} justifyContent="space-between" alignItems="center">
         <Heading
@@ -96,8 +101,7 @@ const TripCard = observer(({ setTripFormData, item, handleClick }: any) => {
           _hover={{ color: "blue.500" }}
           transition="0.3s"
           onClick={() => {
-            handleClick && handleClick(item);
-            setTripFormData({ open: true, data: item, type: "edit" });
+            setSelectedRecord && setSelectedRecord({open : true , data : item});
           }}
         >
           {title}

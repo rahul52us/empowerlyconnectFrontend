@@ -11,6 +11,7 @@ import { getStatusType } from "../../../../../config/constant/statusCode";
 import MainPagePagination from "../../../../../config/component/pagination/MainPagePagination";
 import { useQueryParams } from "../../../../../config/component/customHooks/useQuery";
 import NotFoundData from "../../../../../config/component/NotFound/NotFoundData";
+import ViewTripData from "../component/forms/ViewTripData";
 
 const TripLayout = observer(
   ({
@@ -27,6 +28,10 @@ const TripLayout = observer(
       },
       auth: { openNotification },
     } = store;
+    const [selectedRecord, setSelectedRecord] = useState<any>({
+      open: false,
+      data: null,
+    });
     const { getQueryParam, setQueryParam } = useQueryParams();
     const [searchValue, setSearchValue] = useState("");
     const [currentPage, setCurrentPage] = useState(() =>
@@ -165,8 +170,10 @@ const TripLayout = observer(
       <Box>
         {data.length === 0 && loading === false ? (
           <NotFoundData
-          onClick={() => setTripFormData({ open: true, type: "add", data: null })}
-          btnText="TRIP PROJECT"
+            onClick={() =>
+              setTripFormData({ open: true, type: "add", data: null })
+            }
+            btnText="TRIP PROJECT"
             title="No Trip found"
             subTitle="Start by creating a new trip to get started."
           />
@@ -188,6 +195,7 @@ const TripLayout = observer(
                     key={index}
                     item={item}
                     setTripFormData={setTripFormData}
+                    setSelectedRecord={setSelectedRecord}
                   />
                 );
               })}
@@ -251,6 +259,13 @@ const TripLayout = observer(
           setTripFormData={setTripFormData}
           handleGetRecord={applyGetAllRecord}
         />
+        {selectedRecord.data && selectedRecord.open && (
+          <ViewTripData
+            item={selectedRecord.data}
+            open={selectedRecord.open}
+            onClose={() => setSelectedRecord({ open: false, data: null })}
+          />
+        )}
       </Box>
     );
   }
