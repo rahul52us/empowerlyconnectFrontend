@@ -334,7 +334,7 @@ class AuthStore {
 
   getCompanyUsers = async ({ page }: any) => {
     try {
-      const { data } = await axios(`auth/get/users?page=${page}`);
+      const { data } = await axios.post(`auth/get/users?page=${page}`,{company : [this.getCurrentCompany()]});
       this.companyUsers = data.data?.map((item : any) => ({user : {...item}}));
       return data;
     } catch (err: any) {

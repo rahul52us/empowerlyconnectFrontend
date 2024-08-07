@@ -20,13 +20,14 @@ removeDataByIndex,
 import ShowFileUploadFile from "../../../../../../config/component/common/ShowFileUploadFile/ShowFileUploadFile";
 import {
 categoryTypes,
-participants,
 travelModes,
 tripTypes,
 } from "../../utils/constant";
 import { TripFormI } from "../../utils/interface";
 import tripFormValidation from "../../utils/validation";
 import { generateFormError } from "../../utils/functions";
+import store from "../../../../../../store/store";
+import { useEffect } from "react";
 
 const AddDetailButton: React.FC<{ title: string; onClick: () => void }> = ({
 onClick,
@@ -57,6 +58,19 @@ isEdit,
 isFileDeleted,
 setIsFileDeleted,
 }: TripFormI) => {
+	const {auth : {getCompanyUsers, companyUsers, openNotification}} = store
+
+	useEffect(() => {
+		getCompanyUsers({ page: 1 })
+		  .then(() => {})
+		  .catch((err) => {
+			openNotification({
+			  message: err?.message,
+			  title: "Fetch Users Failed",
+			  type: "err",
+			});
+		  });
+	  }, [getCompanyUsers, openNotification]);
 return (
 	<Box>
 	<Formik<any>
@@ -166,7 +180,7 @@ return (
 					label="Participants"
 					placeholder="Select Participants"
 					name={`participants`}
-					options={participants}
+					options={companyUsers.map((item : any) => item.user)}
 					error={errors.participants}
 					value={values.participants}
 					getOptionLabel={(options: any) => options.username}
