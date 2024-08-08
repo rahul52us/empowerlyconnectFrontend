@@ -332,11 +332,11 @@ class AuthStore {
     }
   };
 
-  getCompanyUsers = async ({ page }: any) => {
+  getCompanyUsers = async (sendData : any = {}) => {
     try {
-      const { data } = await axios.post(`auth/get/users?page=${page}`,{company : [this.getCurrentCompany()]});
+      const { data } = await axios.post(`auth/get/users`,{company : [this.getCurrentCompany()]},{params : {...sendData}});
       this.companyUsers = data.data?.map((item : any) => ({user : {...item}}));
-      return data;
+      return this.companyUsers;
     } catch (err: any) {
       return Promise.reject(err?.response?.data || err);
     }

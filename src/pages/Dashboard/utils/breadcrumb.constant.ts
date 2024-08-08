@@ -36,6 +36,14 @@ const projectBreadCrumb = {
   }
 };
 
+const dashProfileBreadCrumb = {
+  index: [
+    { label: "Home", link: "/" },
+    { label: "Dashboard", link: dashboard.home },
+    { label: "Profile" },
+  ]
+};
+
 const UsersBreadCrumb = {
   index: [
     { label: "Home", link: "/" },
@@ -142,5 +150,6 @@ export {
   requestBreadCrumb,
   attendenceBreadCrumb,
   projectBreadCrumb,
-  liberaryBreadCrumb
+  liberaryBreadCrumb,
+  dashProfileBreadCrumb
 };

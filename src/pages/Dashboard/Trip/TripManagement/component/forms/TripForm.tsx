@@ -176,6 +176,7 @@ return (
 					/>
 				</GridItem>
 				<GridItem>
+					<CustomInput name="search-user" type="real-time-search" />
 					<CustomInput
 					type="select"
 					label="Participants"

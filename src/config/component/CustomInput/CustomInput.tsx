@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   FormControl,
   FormErrorMessage,
@@ -30,6 +30,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import AdvancedEditor from "../Editor/Editor";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
+import debounce from "lodash/debounce";
+import store from "../../../store/store";
 
 interface CustomInputProps {
   type?:
@@ -47,7 +49,8 @@ interface CustomInputProps {
     | "phone"
     | "dateAndTime"
     | "file-drag"
-    | "tags";
+    | "tags"
+    | "real-time-search";
   label?: string;
   placeholder?: string;
   required?: boolean;
@@ -109,14 +112,50 @@ const CustomInput: React.FC<CustomInputProps> = ({
   // Added onFileDrop prop
   ...rest
 }) => {
+  const isMounted = useRef(false);
   const [inputValue, setInputValue] = useState("")
   const theme = useTheme();
+  const [optionss, setOptions] = useState([]);
+
   const { colorMode } = useColorMode();
   const [showPassword, setShowPassword] = useState(false);
 
   const handleTogglePassword = () => {
     setShowPassword(!showPassword);
   };
+
+
+  const fetchSearchResults = useCallback(async (query: string) => {
+    if (query.trim() === "") {
+      return;
+    }
+
+    try {
+      const response: any = await store.auth.getCompanyUsers({ page: 1, searchValue: query });
+      setOptions(response.map((it: any) => ({ label: it.user.username, value: it.user._id })));
+    } catch (error) {
+      // console.error("Error fetching search results:", error);
+      // setOptions([]);
+    }
+  }, []);
+
+  const debouncedFetchSearchResults = useMemo(() => debounce(fetchSearchResults, 800), [fetchSearchResults]);
+
+
+  const handleSelectChange = (selectedOption: any) => {
+    if (onChange) {
+      onChange(selectedOption ? selectedOption.value : "");
+    }
+    setInputValue(selectedOption ? selectedOption.label : "");
+  };
+
+  useEffect(() => {
+    if (isMounted.current) {
+      debouncedFetchSearchResults(inputValue);
+    } else {
+      isMounted.current = true;
+    }
+  }, [inputValue, debouncedFetchSearchResults]);
 
   const handleFileDrop = useCallback(
     (event: React.DragEvent<HTMLDivElement>) => {
@@ -489,7 +528,6 @@ const CustomInput: React.FC<CustomInputProps> = ({
             {...rest}
           />
         );
-
         case "tags":
         return (
           <Box>
@@ -532,6 +570,29 @@ const CustomInput: React.FC<CustomInputProps> = ({
             </Wrap>
           </Box>
         );
+        case "real-time-search":
+          return (
+            <Select
+            // inputValue={inputValue}
+            onInputChange={(newValue) => setInputValue(newValue)}
+            options={optionss}
+            value={optionss.find((opt: any) => opt.value === value)}
+            onChange={(selectedOption) => {
+              handleSelectChange(selectedOption);
+              if (selectedOption) {
+                setInputValue(selectedOption.label);
+              }
+            }}
+            isDisabled={disabled}
+            isMulti={isMulti}
+            isSearchable={isSearchable}
+            getOptionLabel={getOptionLabel}
+            getOptionValue={getOptionValue}
+            placeholder={placeholder}
+
+            {...rest}
+          />
+          );
       default:
         return (
           <Input

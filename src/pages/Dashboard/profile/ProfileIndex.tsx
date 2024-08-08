@@ -1,4 +1,13 @@
-import { Tabs, TabList, TabPanels, Tab, TabPanel, Box, useBreakpointValue, useColorMode } from "@chakra-ui/react";
+import {
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
+  Box,
+  useBreakpointValue,
+  useColorMode,
+} from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useQueryParams } from "../../../config/component/customHooks/useQuery";
 import store from "../../../store/store";
@@ -16,11 +25,13 @@ import SkillAndAdditionalInfo from "./component/SkillAndAdditionalInfo";
 import Qualification from "./component/Qualification";
 import BankDetails from "./component/BankDetails";
 import Documents from "./component/Documents";
+import DashPageHeader from "../../../config/component/common/DashPageHeader/DashPageHeader";
+import { dashProfileBreadCrumb } from "../utils/breadcrumb.constant";
 
 const ProfileIndex = observer(() => {
   const { getQueryParam, setQueryParam } = useQueryParams();
   const [loading, setLoading] = useState(false);
-  const [currentTab, setCurrentTab] = useState<string>('personal-details');
+  const [currentTab, setCurrentTab] = useState<string>("personal-details");
   const [userDetails, setUserDetails] = useState<any>(null);
   const { colorMode } = useColorMode();
 
@@ -31,7 +42,7 @@ const ProfileIndex = observer(() => {
 
   useEffect(() => {
     const tab = getQueryParam("tab");
-    if (typeof tab === 'string' || typeof tab === 'number') {
+    if (typeof tab === "string" || typeof tab === "number") {
       setCurrentTab(tab.toString());
     }
   }, [getQueryParam]);
@@ -51,14 +62,14 @@ const ProfileIndex = observer(() => {
   }, [getUsersDetailsById, user]);
 
   const tabMapping: string[] = [
-    'personal-details',
-    'company-details',
-    'family-details',
-    'work-experience',
-    'skill-and-additional-info',
-    'qualification',
-    'documents',
-    'bank-details',
+    "personal-details",
+    "company-details",
+    "family-details",
+    "work-experience",
+    "skill-and-additional-info",
+    "qualification",
+    "documents",
+    "bank-details",
   ];
 
   const currentTabIndex = tabMapping.indexOf(currentTab);
@@ -70,18 +81,19 @@ const ProfileIndex = observer(() => {
   };
 
   const tabStyles = {
-    _selected: { color: 'white', bg: 'teal.500' },
+    _selected: { color: "white", bg: "teal.500" },
     px: 4,
     py: 2,
     borderRadius: "md",
     fontWeight: "bold",
-    fontSize: useBreakpointValue({ base: 'sm', md: 'md' }),
+    fontSize: useBreakpointValue({ base: "sm", md: "md" }),
   };
 
-  console.log(userDetails)
+  console.log(userDetails);
 
   return (
-    <Box p={4}>
+    <Box p={3} pt={2}>
+      <DashPageHeader title="Project" breadcrumb={dashProfileBreadCrumb.index} />{" "}
       <PageLoader loading={loading}>
         <Tabs
           variant="enclosed"
@@ -93,54 +105,75 @@ const ProfileIndex = observer(() => {
             borderBottomWidth={2}
             borderColor="teal.300"
             mb={4}
-            bg={colorMode === 'dark' ? 'gray.700' : 'white'}
+            bg={colorMode === "dark" ? "gray.700" : "white"}
             borderRadius="md"
             boxShadow="lg"
             overflowX="auto"
             // overflow='hidden'
             display="flex"
-            justifyContent={'space-between'}
+            justifyContent={"space-between"}
             flexWrap="wrap"
             p={3}
           >
             <Tab {...tabStyles}>
-              <CalendarIcon style={{ marginRight: '10px' }} /> Personal Info
+              <CalendarIcon style={{ marginRight: "10px" }} /> Personal Info
             </Tab>
             <Tab {...tabStyles}>
-              <FaBuilding style={{ marginRight: '10px' }} /> Company
+              <FaBuilding style={{ marginRight: "10px" }} /> Company
             </Tab>
             <Tab {...tabStyles}>
-              <FaUsers style={{ marginRight: '10px' }} /> Family
+              <FaUsers style={{ marginRight: "10px" }} /> Family
             </Tab>
             <Tab {...tabStyles}>
-              <FaUsers style={{ marginRight: '10px' }} /> Work Experience
+              <FaUsers style={{ marginRight: "10px" }} /> Work Experience
             </Tab>
             <Tab {...tabStyles}>
-              <FaUsers style={{ marginRight: '10px' }} /> Skill & Additional Info
+              <FaUsers style={{ marginRight: "10px" }} /> Skill & Additional
+              Info
             </Tab>
             <Tab {...tabStyles}>
-              <FaUsers style={{ marginRight: '10px' }} /> Qualification
+              <FaUsers style={{ marginRight: "10px" }} /> Qualification
             </Tab>
             <Tab {...tabStyles}>
-              <FaUsers style={{ marginRight: '10px' }} /> Documents
+              <FaUsers style={{ marginRight: "10px" }} /> Documents
             </Tab>
             <Tab {...tabStyles}>
-              <FaUsers style={{ marginRight: '10px' }} /> Bank Account Details
+              <FaUsers style={{ marginRight: "10px" }} /> Bank Account Details
             </Tab>
           </TabList>
 
           <TabPanels>
             <TabPanel>
-             {userDetails?.profileDetails && <PersonalInfo personalDetails={userDetails?.profileDetails ? userDetails?.profileDetails : []} />}
+              {userDetails?.profileDetails && (
+                <PersonalInfo
+                  personalDetails={
+                    userDetails?.profileDetails
+                      ? userDetails?.profileDetails
+                      : []
+                  }
+                />
+              )}
             </TabPanel>
             <TabPanel>
               <CompanyDetails userDetails={userDetails} />
             </TabPanel>
             <TabPanel>
-              <FamilyDetails relations={userDetails?.familyDetails ? userDetails?.familyDetails[0]?.relations : []} />
+              <FamilyDetails
+                relations={
+                  userDetails?.familyDetails
+                    ? userDetails?.familyDetails[0]?.relations
+                    : []
+                }
+              />
             </TabPanel>
             <TabPanel>
-              <WorkExperience experienceDetails={userDetails?.workExperience ? userDetails?.workExperience[0]?.experienceDetails : []}  />
+              <WorkExperience
+                experienceDetails={
+                  userDetails?.workExperience
+                    ? userDetails?.workExperience[0]?.experienceDetails
+                    : []
+                }
+              />
             </TabPanel>
             <TabPanel>
               <SkillAndAdditionalInfo userDetails={userDetails} />
@@ -152,7 +185,11 @@ const ProfileIndex = observer(() => {
               <Documents userDetails={userDetails} />
             </TabPanel>
             <TabPanel>
-              <BankDetails bankDetails={userDetails?.bankDetails ? userDetails?.bankDetails[0] : {}} />
+              <BankDetails
+                bankDetails={
+                  userDetails?.bankDetails ? userDetails?.bankDetails[0] : {}
+                }
+              />
             </TabPanel>
           </TabPanels>
         </Tabs>
