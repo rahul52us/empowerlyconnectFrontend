@@ -16,7 +16,7 @@ import CustomDrawer from "../../../../../config/component/Drawer/CustomDrawer";
 import ProjectDetails from "../../component/ProjectDetails/ProjectDetails";
 import NotFoundData from "../../../../../config/component/NotFound/NotFoundData";
 import { useQueryParams } from "../../../../../config/component/customHooks/useQuery";
-import TaskCard from "../../component/TaskCard/TaskCard";
+// import TaskCard from "../../component/TaskCard/TaskCard";
 
 const ProjectWidget = observer(() => {
   const {
@@ -85,20 +85,20 @@ const ProjectWidget = observer(() => {
     },
   ];
 
-  const taskData = {
-    title: "Admin Dashboard UI",
-    description:
-      "This is a task description of the task, it can be long or short.",
-    category: "Frontend",
-    avatars: [
-      { name: "Ryan Florence", src: "https://bit.ly/ryan-florence" },
-      { name: "Segun Adebayo", src: "https://bit.ly/sage-adebayo" },
-      { name: "Kent Dodds", src: "https://bit.ly/kent-c-dodds" },
-      { name: "Prosper Otemuyiwa", src: "https://bit.ly/prosper-baba" },
-      { name: "Christian Nwamba", src: "https://bit.ly/code-beast" },
-    ],
-    deadline: "6 Days Left",
-  };
+  // const taskData = {
+  //   title: "Admin Dashboard UI",
+  //   description:
+  //     "This is a task description of the task, it can be long or short.",
+  //   category: "Frontend",
+  //   avatars: [
+  //     { name: "Ryan Florence", src: "https://bit.ly/ryan-florence" },
+  //     { name: "Segun Adebayo", src: "https://bit.ly/sage-adebayo" },
+  //     { name: "Kent Dodds", src: "https://bit.ly/kent-c-dodds" },
+  //     { name: "Prosper Otemuyiwa", src: "https://bit.ly/prosper-baba" },
+  //     { name: "Christian Nwamba", src: "https://bit.ly/code-beast" },
+  //   ],
+  //   deadline: "6 Days Left",
+  // };
 
   return (
     <Box px={{ base: 4, md: 6 }} py={6}>
@@ -117,13 +117,13 @@ const ProjectWidget = observer(() => {
       </SimpleGrid>
 
       <Grid templateColumns={"1fr 1fr 1fr 1fr"} display="none">
-        <TaskCard
+        {/* <TaskCard
           title={taskData.title}
           description={taskData.description}
           category={taskData.category}
           avatars={taskData.avatars}
           deadline={taskData.deadline}
-        />
+        /> */}
       </Grid>
       <Heading
         display="flex"
