@@ -22,6 +22,7 @@ import {
   Tag,
   TagLabel,
   TagCloseButton,
+  Checkbox,
 } from "@chakra-ui/react";
 import { RiCloseFill, RiEyeLine, RiEyeOffLine } from "react-icons/ri";
 import Select from "react-select";
@@ -45,6 +46,7 @@ interface CustomInputProps {
     | "textarea"
     | "select"
     | "date"
+    | "checkbox"
     | "url"
     | "phone"
     | "dateAndTime"
@@ -318,6 +320,17 @@ const CustomInput: React.FC<CustomInputProps> = ({
             {...rest}
           />
         );
+      case "checkbox":
+          return (
+            <Checkbox
+              style={style}
+              name={name}
+              onChange={onChange}
+              isChecked={value}
+              readOnly={readOnly}
+              {...rest}
+            />
+          );
       case "select":
         return (
           <Select
