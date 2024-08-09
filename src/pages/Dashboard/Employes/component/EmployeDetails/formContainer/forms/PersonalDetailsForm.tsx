@@ -4,6 +4,8 @@ import { FieldArray, Form, Formik } from "formik";
 import CustomInput from "../../../../../../../config/component/CustomInput/CustomInput";
 import { titles } from "../../utils/constant";
 import CustomSubmitBtn from "../../../../../../../config/component/CustomSubmitBtn/CustomSubmitBtn";
+import ShowFileUploadFile from "../../../../../../../config/component/common/ShowFileUploadFile/ShowFileUploadFile";
+import { removeDataByIndex } from "../../../../../../../config/constant/function";
 
 const PersonalDetails = ({
   type,
@@ -54,6 +56,43 @@ const PersonalDetails = ({
                   Personal Information :-
                 </Heading>
                 <Divider />
+                <Flex>
+                    {values?.pic?.file?.length === 0 ? (
+                      <CustomInput
+                        type="file-drag"
+                        name="pic"
+                        value={values.pic}
+                        isMulti={true}
+                        accept="image/*"
+                        onChange={(e: any) => {
+                          setFieldValue("pic", {
+                            ...values.pic,
+                            file: e.target.files[0],
+                            isAdd: 1,
+                            isEdited : type === "edit" ? true : false
+                          });
+                        }}
+                        required={true}
+                        showError={showError}
+                        error={errors.logo}
+                      />
+                    ) : (
+                      <Box mt={-5} width="100%">
+                        <ShowFileUploadFile
+                          files={values.pic?.file}
+                          removeFile={(_: any) => {
+                            setFieldValue("pic", {
+                              ...values.pic,
+                              file: removeDataByIndex(values.pic, 0),
+                              isDeleted: 1,
+                              isEdited : type === "edit" ? true : false
+                            });
+                          }}
+                          edit={type === "edit" ? true : false}
+                        />
+                      </Box>
+                    )}
+                  </Flex>
                 <Grid
                   gridTemplateColumns={{ md: "1fr 1fr 1fr" }}
                   columnGap={4}

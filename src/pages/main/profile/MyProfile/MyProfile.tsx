@@ -81,7 +81,7 @@ const MyProfile: React.FC<any> = observer(({ userDetails, user }) => {
         >
           <Center>
             <Image
-              src="https://img.freepik.com/free-photo/young-beautiful-woman-pink-warm-sweater-natural-look-smiling-portrait-isolated-long-hair_285396-896.jpg?t=st=1721148140~exp=1721151740~hmac=91f40f580d0627e8d8ae8619d4065dbba6b61827bd559eca54fcdce3c18c8072&w=1060"
+              src={user?.pic?.url || "https://img.freepik.com/free-photo/young-beautiful-woman-pink-warm-sweater-natural-look-smiling-portrait-isolated-long-hair_285396-896.jpg?t=st=1721148140~exp=1721151740~hmac=91f40f580d0627e8d8ae8619d4065dbba6b61827bd559eca54fcdce3c18c8072&w=1060"}
               boxSize="200px"
               objectFit="cover"
               rounded="full"

@@ -1,5 +1,7 @@
 // import { manipulateDateWithMonth } from "../../../../../../config/constant/dateUtils";
 
+// import { readFileAsBase64 } from "../../../../../../config/constant/function";
+import { readFileAsBase64 } from "../../../../../../config/constant/function";
 import { transformPermissionsForForm } from "./function";
 
 export const defaultPermissions: any = {
@@ -40,7 +42,7 @@ export const titles: any = [
 ];
 
 export const eTypeOption = [
-  { label: "Staff", value: "staff" },
+  { label: "User", value: "user" },
   {
     label: "Manager",
     value: "manager",
@@ -66,7 +68,7 @@ export const UserInitialValues = (type: string, data: any) => {
         ? data?.language.map((item: any) => ({ label: item, value: item }))
         : [{ label: "english", value: "english" }],
       username: data?.username || "",
-      pic: data?.pic || "",
+      pic: data?.pic?.url ? {file : {...data?.pic}} : {file : []},
       dob: data.dob ? new Date(data?.dob) : new Date(),
       personalEmail: data?.personalEmail || "",
       nickName: data?.nickName || "",
@@ -243,7 +245,10 @@ export const UserInitialValues = (type: string, data: any) => {
   }
 };
 
-export const generateSubmitResponse = (data: any) => {
+export const generateSubmitResponse = async (datas: any) => {
+
+  const data = { ...datas };
+
   let dt: any = { ...data };
   dt.name = `${dt.firstName} ${dt.lastName}`;
   dt.title = dt.title?.value;
@@ -257,8 +262,50 @@ export const generateSubmitResponse = (data: any) => {
     dob: dt.dob,
     weddingDate: dt.weddingDate,
   };
+
+  if (dt?.pic?.isEdited === false) {
+    if (dt.pic?.file) {
+      try {
+        const fileBuffer = await readFileAsBase64(dt.pic.file);
+        const fileData = {
+          buffer: fileBuffer,
+          filename: dt.pic.file.name,
+          type: dt.pic.file.type,
+          isDeleted: dt.pic.isDeleted || 0,
+          isAdd: dt.pic.isAdd || 1,
+        };
+
+        dt.pic = fileData;
+      } catch (error) {
+        console.error('Error reading file:', error);
+      }
+    }
+  }
+  else {
+    if (dt.pic?.file) {
+      try {
+        const fileBuffer = await readFileAsBase64(dt.pic.file);
+        const fileData = {
+          buffer: fileBuffer,
+          filename: dt.pic.file.name,
+          type: dt.pic.file.type,
+          isAdd: dt.pic.isAdd || 1,
+          isDeleted : dt.pic.isDeleted
+        };
+        dt.pic = fileData;
+      } catch (error) {
+        console.error('Error reading file:', error);
+      }
+    }
+  }
+
+  console.log(data.pic)
   return dt;
+
 };
+
+
+
 
 export const generateTableData = (data: any[]) => {
   return data.map((item: any) => ({

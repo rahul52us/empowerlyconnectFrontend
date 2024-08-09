@@ -40,7 +40,7 @@ const HeaderProfile = observer(() => {
         aria-label="User Menu"
         icon={
           <Avatar
-            src={user?.pic}
+            src={user?.pic?.url || undefined}
             width="42px"
             height="42px"
             borderRadius={'full'}
@@ -59,7 +59,7 @@ const HeaderProfile = observer(() => {
       >
         <VStack spacing={2}>
           <Box textAlign="center">
-            <Avatar src={user?.pic} size="lg" name={user?.name} />
+            <Avatar src={user?.pic?.url || undefined} size="lg" name={user?.name} />
             <Text mt={2} fontWeight="bold">
               {user?.name}
             </Text>
