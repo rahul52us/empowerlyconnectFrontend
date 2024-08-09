@@ -61,17 +61,18 @@ interface TripData {
 }
 
 const TripDetails: React.FC<{ trip: TripData }> = ({ trip }) => {
-  const bgColor = useColorModeValue("gray.50", "gray.800");
+  const bgColor = useColorModeValue("white", "gray.800");
   const textColor = useColorModeValue("gray.700", "gray.200");
   const secondaryTextColor = useColorModeValue("gray.600", "gray.400");
-  const boxHoverBg = useColorModeValue("gray.100", "gray.900");
+  const boxHoverBg = useColorModeValue("gray.50", "gray.900");
 
   return (
     <Box
-      p={6}
-      borderWidth="1px"
-      borderRadius="lg"
-      boxShadow="md"
+      px={6}
+      py={2}
+      // borderWidth="1px"
+      // borderRadius="lg"
+      // boxShadow="md"
       bg={bgColor}
       w="100%"
     >
@@ -79,7 +80,7 @@ const TripDetails: React.FC<{ trip: TripData }> = ({ trip }) => {
         direction={{ base: "column", md: "row" }}
         gap={6}
         mb={2}
-        align={{ base: "center", md: "start" }}
+        align={'center'}
       >
         <Image
           borderRadius="md"
@@ -182,10 +183,7 @@ const TripDetails: React.FC<{ trip: TripData }> = ({ trip }) => {
           <Text fontSize="xl" fontWeight="bold" mb={4} color={textColor}>
             Additional Expenses
           </Text>
-          <Grid
-            templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }}
-            gap={4}
-          >
+          <Grid templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }} gap={4}>
             {trip?.additionalExpenses.map((expense) => (
               <Box
                 key={expense._id}

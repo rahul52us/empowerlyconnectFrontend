@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { SimpleGrid, Box } from "@chakra-ui/react";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import Column from "./Column";
+import TaskCard from "../../component/TaskCard/TaskCard";
+// import TaskCard from "../../component/TaskCard/TaskCard";
 
 interface Task {
   id: string;
@@ -14,7 +16,7 @@ interface Columns {
   tasks: Task[];
 }
 
-const Board: React.FC = () => {
+const Board: React.FC<any> = ({taskData}) => {
   const initialColumns: Columns[] = [
     {
       id: "column-1",
@@ -44,6 +46,8 @@ const Board: React.FC = () => {
       tasks: [{ id: "task-7", content: "Task 7" }],
     },
   ];
+
+ 
 
   const [columns, setColumns] = useState(initialColumns);
 
@@ -108,6 +112,9 @@ const Board: React.FC = () => {
           ))}
         </SimpleGrid>
       </Box>
+      {taskData?.map((task: any) => (
+      <TaskCard key={task._id} task={task} />
+    ))}
     </DragDropContext>
   );
 };
