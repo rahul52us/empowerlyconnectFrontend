@@ -16,7 +16,9 @@ const BookLiberary = observer(() => {
       getBooksCounts,
       booksCounts,
       bookCategoryCount,
+      bookUsersCount,
       getBooksCategoryCounts,
+      getBookUsersCounts
     },
     auth: { openNotification },
   } = store;
@@ -27,7 +29,7 @@ const BookLiberary = observer(() => {
     });
 
   useEffect(() => {
-    Promise.all([fetchData(getBooksCounts), fetchData(getBooksCategoryCounts)])
+    Promise.all([fetchData(getBooksCounts), fetchData(getBooksCategoryCounts), fetchData(getBookUsersCounts)])
       .then(() => {})
       .catch((err: any) => {
         openNotification({
@@ -36,7 +38,7 @@ const BookLiberary = observer(() => {
           type: getStatusType(err.status),
         });
       });
-  }, [getBooksCounts, getBooksCategoryCounts, openNotification]);
+  }, [getBooksCounts, getBooksCategoryCounts, getBookUsersCounts, openNotification]);
 
   const summaryData = [
     {
@@ -56,9 +58,9 @@ const BookLiberary = observer(() => {
       description: "Total No. of Books Counts",
     },
     {
-      label: "New Label Data",
-      value: booksCounts.data,
-      loading:booksCounts.loading,
+      label: "Total Users",
+      value: bookUsersCount.data,
+      loading:bookUsersCount.loading,
       icon: FaPersonCircleQuestion,
       colorScheme: "teal",
       description: "Here is an description for the users",
