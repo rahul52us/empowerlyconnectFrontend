@@ -3,11 +3,17 @@ import { FC } from "react";
 
 interface ShowDataProps {
   label: string;
-  value: string | string[]; // Accept both single string and array of strings
+  value: string | string[] | any; // Accept both single string and array of strings
   type?: "single" | "multi"; // Optional type prop
+  textTransform?: any;
 }
 
-const ShowData: FC<ShowDataProps> = ({ label, value, type = "single" }) => {
+const ShowData: FC<ShowDataProps> = ({
+  label,
+  value,
+  type = "single",
+  textTransform = "capitalize",
+}) => {
   const labelColor = useColorModeValue("gray", "gray.400");
   const textColor = useColorModeValue("black", "gray.200");
   return (
@@ -16,7 +22,11 @@ const ShowData: FC<ShowDataProps> = ({ label, value, type = "single" }) => {
         {label}
       </Text>
       {type === "single" ? (
-        <Text fontWeight={"semibold"} color={textColor}>
+        <Text
+          fontWeight={"semibold"}
+          color={textColor}
+          textTransform={textTransform}
+        >
           {value || "Na"}
         </Text>
       ) : (

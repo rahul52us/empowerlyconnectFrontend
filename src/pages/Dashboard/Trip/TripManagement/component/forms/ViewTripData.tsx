@@ -1,10 +1,11 @@
+import { Box } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
-import CustomDrawer from "../../../../../../config/component/Drawer/CustomDrawer";
-import store from "../../../../../../store/store";
 import { useEffect, useState } from "react";
-import { getStatusType } from "../../../../../../config/constant/statusCode";
+import CustomDrawer from "../../../../../../config/component/Drawer/CustomDrawer";
 import DrawerLoader from "../../../../../../config/component/Loader/DrawerLoader";
-import { Heading } from "@chakra-ui/react";
+import { getStatusType } from "../../../../../../config/constant/statusCode";
+import store from "../../../../../../store/store";
+import TripDetails from "../TridDetails/TripDetails";
 
 const ViewTripData = observer(({ item, open, onClose }: any) => {
   const {
@@ -38,7 +39,7 @@ const ViewTripData = observer(({ item, open, onClose }: any) => {
       open={open}
       title={item?.title}
       close={onClose}
-      width={"80vw"}
+      width={"70vw"}
     >
       <DrawerLoader
         loading={tripData.loading}
@@ -46,7 +47,9 @@ const ViewTripData = observer(({ item, open, onClose }: any) => {
       >
         {
             tripData?.data &&
-            <Heading fontSize="lg" textAlign="center">{tripData?.data?.title}</Heading>
+            <Box>
+              <TripDetails trip={tripData?.data} />
+            </Box>
         }
 
       </DrawerLoader>
