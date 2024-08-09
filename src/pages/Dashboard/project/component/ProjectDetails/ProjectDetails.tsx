@@ -39,6 +39,7 @@ const ProjectDetails = ({ selectedProject }: any) => {
     type: null,
     data: null,
     open: false,
+    title : null
   });
   const {
     Project: { setOpenProjectDrawer, getSingleProject },
@@ -270,7 +271,7 @@ const ProjectDetails = ({ selectedProject }: any) => {
                       key={index}
                     >
                       <Avatar
-                        src="https://bit.ly/sage-adebayo"
+                        src={item?.user?.pic?.url || undefined}
                         size="xs"
                         ml={-1}
                         mr={2}
@@ -285,7 +286,7 @@ const ProjectDetails = ({ selectedProject }: any) => {
                   size="sm"
                   rounded="full"
                   onClick={() =>
-                    setAddNewUser({ type: "manager", open: true, data: "user" })
+                    setAddNewUser({ type: "manager", open: true, data: "user", title : "Manager" })
                   }
                 >
                   Invite New
@@ -317,7 +318,7 @@ const ProjectDetails = ({ selectedProject }: any) => {
                       key={index}
                     >
                       <Avatar
-                        src="https://bit.ly/sage-adebayo"
+                        src={item?.user?.pic?.url || undefined}
                         size="xs"
                         ml={-1}
                         mr={2}
@@ -331,6 +332,9 @@ const ProjectDetails = ({ selectedProject }: any) => {
                   variant="outline"
                   size="sm"
                   rounded="full"
+                  onClick={() =>
+                    setAddNewUser({ type: "teamMember", open: true,data : 'user', title: "Team Member" })
+                  }
                 >
                   Invite New
                 </Button>
@@ -361,7 +365,7 @@ const ProjectDetails = ({ selectedProject }: any) => {
                       key={index}
                     >
                       <Avatar
-                        src="https://bit.ly/sage-adebayo"
+                        src={item?.user?.pic?.url || undefined}
                         size="xs"
                         ml={-1}
                         mr={2}
@@ -375,6 +379,9 @@ const ProjectDetails = ({ selectedProject }: any) => {
                   variant="outline"
                   size="sm"
                   rounded="full"
+                  onClick={() =>
+                    setAddNewUser({ type: "follower", open: true,data : 'user', title: "Follower" })
+                  }
                 >
                   Invite New
                 </Button>
@@ -418,6 +425,9 @@ const ProjectDetails = ({ selectedProject }: any) => {
           open={addNewUser.open}
           type={addNewUser.type}
           data={addNewUser.data}
+          title={addNewUser.title}
+          item={fetchProjectData?.data}
+          setFetchProjectData={setFetchProjectData}
           close={() => setAddNewUser({ open: false, data: null, type: null })}
         />
       )}

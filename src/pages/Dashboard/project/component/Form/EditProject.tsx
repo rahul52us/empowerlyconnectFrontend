@@ -80,7 +80,7 @@ const EditProject = observer((projectData: any) => {
         })
         .catch((err) => {
           openNotification({
-            title: "Create Failed",
+            title: "Update Failed",
             message: err?.data?.message,
             type: getStatusType(err.status),
           });

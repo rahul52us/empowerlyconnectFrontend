@@ -55,6 +55,7 @@ class ProjectStore {
       getSingleProject: action,
       updateProject:action,
       getProjectCounts:action,
+      addProjectMembers:action,
       // task
       task:observable,
       openTaskDrawer:observable,
@@ -74,6 +75,19 @@ class ProjectStore {
       return Promise.reject(err?.response || err);
     }
   };
+
+  addProjectMembers = async (sendData: any) => {
+    try {
+      const { data } = await axios.put(`/project/add/member/${sendData._id}`, {
+        ...sendData,
+        company: store.auth.getCurrentCompany(),
+      });
+      return data;
+    } catch (err: any) {
+      return Promise.reject(err?.response || err);
+    }
+  };
+
 
   createProject = async (sendData: any) => {
     try {

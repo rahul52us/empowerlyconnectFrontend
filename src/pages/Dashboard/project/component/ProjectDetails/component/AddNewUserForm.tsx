@@ -8,7 +8,7 @@ const validationSchema = Yup.object().shape({
   user: Yup.string()
     .required("Please select a user from the list")
     .min(1, "Please select a user from the list"),
-  check: Yup.boolean(),
+    isActive: Yup.boolean(),
 });
 
 const AddNewUserForm = observer(
@@ -39,11 +39,11 @@ const AddNewUserForm = observer(
                   showError={showError}
                 />
                 <CustomInput
-                  value={values.check}
+                  value={values.isActive}
                   type="checkbox"
-                  name="check"
+                  name="isActive"
                   label="Send Invitation Mail"
-                  onChange={(e) => setFieldValue("check", e.target.checked)}
+                  onChange={(e) => setFieldValue("isActive", e.target.checked)}
                 />
               </Flex>
               <Divider />
