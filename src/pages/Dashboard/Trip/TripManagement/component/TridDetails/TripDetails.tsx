@@ -8,6 +8,7 @@ import {
   Stack,
   Tag,
   Text,
+  useColorModeValue,
   VStack,
 } from "@chakra-ui/react";
 import React from "react";
@@ -36,59 +37,73 @@ interface TripData {
     role: string;
   }>;
   travelDetails: Array<{
-    fromState: string;
-    toState: string;
-    fromCity: string;
-    toCity: string;
+    fromState?: string;
+    toState?: string;
+    fromCity?: string;
+    toCity?: string;
     startDate: string;
     endDate: string;
     travelMode: string;
     travelCost: string;
     isCab: boolean;
     cabCost: string;
-    isAccommodation: boolean;
-    locality: string;
-    durationOfStay: number;
-    accommodationCost: string;
+    isAccommodation?: boolean;
+    locality?: string;
+    durationOfStay?: number;
+    accommodationCost?: string;
     _id: string;
   }>;
   additionalExpenses: Array<{
-    type: string;
-    amount: string;
-    _id: string;
+    type?: string;
+    amount?: string;
+    _id?: string;
   }>;
 }
 
 const TripDetails: React.FC<{ trip: TripData }> = ({ trip }) => {
+  const bgColor = useColorModeValue("gray.50", "gray.800");
+  const textColor = useColorModeValue("gray.700", "gray.200");
+  const secondaryTextColor = useColorModeValue("gray.600", "gray.400");
+  const boxHoverBg = useColorModeValue("gray.100", "gray.900");
+
   return (
     <Box
       p={6}
       borderWidth="1px"
       borderRadius="lg"
       boxShadow="md"
-      bg="white"
+      bg={bgColor}
       w="100%"
     >
-      <HStack spacing={6} mb={2}>
+      <Flex
+        direction={{ base: "column", md: "row" }}
+        gap={6}
+        mb={2}
+        align={{ base: "center", md: "start" }}
+      >
         <Image
           borderRadius="md"
-          boxSize="160px"
-          // h={{ base: "200px", md: "200px" }}
-          // w="50%"
+          boxSize={{ base: "120px", md: "160px" }}
           objectFit="contain"
           src={trip.thumbnail.url}
           alt={trip.thumbnail.name}
+          mb={{ base: 4, md: 0 }}
         />
         <VStack align="start" spacing={2} w="full">
-          <Text fontSize="2xl" fontWeight="bold">
+          <Text fontSize="2xl" fontWeight="bold" color={textColor}>
             {trip.title}
           </Text>
-          <Text color="gray.600">{trip.description}</Text>
+          <Text color={secondaryTextColor}>{trip.description}</Text>
           <HStack spacing={2}>
             <Tag rounded={"full"} colorScheme="purple">
               {trip.country}
             </Tag>
-            <Tag py={1} rounded={"full"} colorScheme="blue">
+            <Tag
+              textTransform={"capitalize"}
+              py={1}
+              rounded={"full"}
+              colorScheme="blue"
+            >
               {trip.type}
             </Tag>
             <Tag
@@ -99,18 +114,18 @@ const TripDetails: React.FC<{ trip: TripData }> = ({ trip }) => {
               {trip.isActive ? "Active" : "Inactive"}
             </Tag>
           </HStack>
-          <Text fontSize="sm" color="gray.500">
+          <Text fontSize="sm" color={secondaryTextColor}>
             Created by {trip.createdBy} on{" "}
             {new Date(trip.createdAt).toLocaleDateString()}
           </Text>
         </VStack>
-      </HStack>
+      </Flex>
 
-      <Divider my={2} />
+      <Divider my={4} />
 
       <Stack spacing={6}>
         <Box>
-          <Text fontSize="xl" fontWeight="bold" mb={2}>
+          <Text fontSize="xl" fontWeight="bold" mb={2} color={textColor}>
             Travel Details
           </Text>
           {trip.travelDetails.map((detail) => (
@@ -120,11 +135,11 @@ const TripDetails: React.FC<{ trip: TripData }> = ({ trip }) => {
               borderWidth="1px"
               borderRadius="xl"
               mb={4}
-              //   bg="gray.50"
+              bg={boxHoverBg}
               boxShadow="md"
             >
               <Stack spacing={2}>
-                <Text fontWeight="bold">
+                <Text fontWeight="bold" color={textColor}>
                   From {detail.fromCity}, {detail?.fromState} to {detail.toCity}
                   , {detail?.toState}
                 </Text>
@@ -133,8 +148,11 @@ const TripDetails: React.FC<{ trip: TripData }> = ({ trip }) => {
                   {new Date(detail?.endDate).toLocaleDateString()}
                 </Tag>
 
-                {/* <ShowData label='From Date' value={new Date(detail?.startDate).toLocaleDateString()} /> */}
-                <Grid mt={2} templateColumns={"1fr 1fr 1fr"} gap={4}>
+                <Grid
+                  mt={2}
+                  templateColumns={{ base: "1fr", md: "repeat(3, 1fr)" }}
+                  gap={4}
+                >
                   <ShowData label="Travel Mode" value={detail?.travelMode} />
                   <ShowData label="Travel Cost" value={detail?.travelCost} />
                   {detail.isCab && (
@@ -143,7 +161,7 @@ const TripDetails: React.FC<{ trip: TripData }> = ({ trip }) => {
 
                   {detail.isAccommodation && (
                     <ShowData
-                      label="Accommodation Cost (Rs)"
+                      label="Accommodation Cost"
                       value={detail?.accommodationCost}
                     />
                   )}
@@ -152,7 +170,7 @@ const TripDetails: React.FC<{ trip: TripData }> = ({ trip }) => {
                   {detail?.durationOfStay && (
                     <ShowData
                       label="Duration of Stay"
-                      value={detail?.durationOfStay}
+                      value={`${detail?.durationOfStay} days`}
                     />
                   )}
                 </Grid>
@@ -161,19 +179,20 @@ const TripDetails: React.FC<{ trip: TripData }> = ({ trip }) => {
           ))}
         </Box>
         <Box>
-          <Text fontSize="xl" fontWeight="bold" mb={4}>
+          <Text fontSize="xl" fontWeight="bold" mb={4} color={textColor}>
             Additional Expenses
           </Text>
-          <Grid templateColumns="1fr 1fr" gap={4}>
+          <Grid
+            templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }}
+            gap={4}
+          >
             {trip?.additionalExpenses.map((expense) => (
               <Box
                 key={expense._id}
                 p={3}
-                borderWidth={2}
-                borderColor="gray.200"
+                borderWidth={1}
                 borderRadius="xl"
-                bg="white"
-                // boxShadow="lg"
+                bg={boxHoverBg}
                 transition="all 0.3s ease"
                 _hover={{
                   transform: "translateY(-5px)",
@@ -185,11 +204,11 @@ const TripDetails: React.FC<{ trip: TripData }> = ({ trip }) => {
                     fontWeight="bold"
                     fontSize="lg"
                     textTransform={"capitalize"}
+                    color={textColor}
                   >
                     {expense?.type}
                   </Text>
-                  {/* <Text color="gray.600">Amount:</Text>   */}
-                  <Text fontSize={"lg"} fontWeight={500} colorScheme="green">
+                  <Text fontSize={"lg"} fontWeight={500} color="green.400">
                     {trip?.currency} {expense?.amount}
                   </Text>
                 </Flex>
@@ -199,22 +218,22 @@ const TripDetails: React.FC<{ trip: TripData }> = ({ trip }) => {
         </Box>
 
         <Box>
-          <Text fontSize="xl" fontWeight="bold">
+          <Text fontSize="xl" fontWeight="bold" color={textColor}>
             Participants
           </Text>
           {trip.participants.map((participant) => (
             <HStack
-              key={participant._id}
+              key={participant?._id}
               spacing={2}
               p={4}
               borderWidth="1px"
               borderRadius="md"
               mb={4}
-              bg="gray.50"
+              bg={boxHoverBg}
               boxShadow="sm"
             >
-              <Tag colorScheme="teal">{participant.role}</Tag>
-              <Text>{participant.username}</Text>
+              <Tag colorScheme="teal">{participant?.role}</Tag>
+              <Text color={textColor}>{participant?.username}</Text>
             </HStack>
           ))}
         </Box>
