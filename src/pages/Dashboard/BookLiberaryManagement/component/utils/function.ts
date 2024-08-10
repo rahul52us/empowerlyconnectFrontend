@@ -20,9 +20,23 @@ export const generateBookInitialValues = (data?: any) => {
   };
 };
 
+export const generateBookCategoryInitialValues = (data?: any) => {
+  return {
+    title: data?.title || "",
+    description: data?.description || undefined,
+    coverImage: data?.coverImage?.url ? {file : data.coverImage } : {file : []},
+  };
+};
+
 export const generateSendBookResponse = (data : any) => {
   return {
     ...data,
     language : data.language.map((it : any) => it.value)
+  }
+}
+
+export const generateSendBookCategoryResponse = (data : any) => {
+  return {
+    ...data
   }
 }

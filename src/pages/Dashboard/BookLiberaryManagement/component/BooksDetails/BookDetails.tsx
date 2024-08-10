@@ -13,11 +13,21 @@ import CustomDrawer from "../../../../../config/component/Drawer/CustomDrawer";
 import AddBook from "../forms/Book/AddBook";
 import EditBook from "../forms/Book/EditBook";
 import BookView from "../forms/Book/BookView";
+import AddBookCategory from "../forms/BookCategory/AddBookCategory";
+import EditBookCategory from "../forms/BookCategory/EditBookCategory";
+import BookCategoryView from "../forms/BookCategory/BookCategoryView";
 
 const BookDetails = observer(() => {
   const {
     auth: { openNotification },
-    bookLiberary: { getAllBooks, booksData, handleBookForm, bookForm },
+    bookLiberary: {
+      getAllBooks,
+      booksData,
+      handleBookForm,
+      bookForm,
+      handleBookCategoryForm,
+      bookCategoryForm,
+    },
   } = store;
 
   const { getQueryParam, setQueryParam } = useQueryParams();
@@ -61,20 +71,36 @@ const BookDetails = observer(() => {
           <Icon as={FaBook} boxSize={6} mr={2} />
           Books
         </Heading>
-        <Button
-          leftIcon={<FaPlus />}
-          colorScheme="teal"
-          variant="solid"
-          size="lg"
-          _hover={{ bg: "teal.600" }}
-          _active={{ bg: "teal.700" }}
-          _focus={{ boxShadow: "outline" }}
-          onClick={() =>
-            handleBookForm({ open: true, data: null, type: "add" })
-          }
-        >
-          Add Book
-        </Button>
+        <Flex columnGap={4}>
+          <Button
+            leftIcon={<FaPlus />}
+            colorScheme="teal"
+            variant="solid"
+            size="lg"
+            _hover={{ bg: "teal.600" }}
+            _active={{ bg: "teal.700" }}
+            _focus={{ boxShadow: "outline" }}
+            onClick={() =>
+              handleBookCategoryForm({ open: true, data: null, type: "add" })
+            }
+          >
+            Add Category
+          </Button>
+          <Button
+            leftIcon={<FaPlus />}
+            colorScheme="teal"
+            variant="solid"
+            size="lg"
+            _hover={{ bg: "teal.600" }}
+            _active={{ bg: "teal.700" }}
+            _focus={{ boxShadow: "outline" }}
+            onClick={() =>
+              handleBookForm({ open: true, data: null, type: "add" })
+            }
+          >
+            Add Book
+          </Button>
+        </Flex>
       </Flex>
       {booksData.data.length === 0 && !booksData.loading ? (
         <NotFoundData
@@ -89,7 +115,9 @@ const BookDetails = observer(() => {
             <BookCard
               book={{ ...item, ratings: item.ratings || [] }}
               key={index}
-              handleBookForm={(item : any, type : string) => handleBookForm({ open: true, data: item , type: type })}
+              handleBookForm={(item: any, type: string) =>
+                handleBookForm({ open: true, data: item, type: type })
+              }
             />
           ))}
         </SimpleGrid>
@@ -103,6 +131,7 @@ const BookDetails = observer(() => {
         />
       </Flex>
 
+      {/* Book Form Drawer */}
       <CustomDrawer
         open={bookForm.open}
         title={bookForm.type === "add" ? "CREATE NEW BOOK" : "UPDATE BOOK"}
@@ -110,7 +139,7 @@ const BookDetails = observer(() => {
         width={bookForm.type === "view" ? "75vw" : "90vw"}
       >
         {bookForm.type === "view" ? (
-          <BookView data={bookForm.data} />
+          <BookCategoryView data={bookForm.data} />
         ) : bookForm.type === "add" ? (
           <AddBook
             fetchRecords={fetchBooks}
@@ -119,11 +148,47 @@ const BookDetails = observer(() => {
             }
           />
         ) : (
-          <EditBook fetchRecords={fetchBooks}
-          data={bookForm.data}
-          close={() =>
-            handleBookForm({ open: false, type: "add", data: null })
-          }/>
+          <EditBook
+            fetchRecords={fetchBooks}
+            data={bookForm.data}
+            close={() =>
+              handleBookForm({ open: false, type: "add", data: null })
+            }
+          />
+        )}
+      </CustomDrawer>
+
+      {/* Book Category Form Drawer */}
+
+      <CustomDrawer
+        open={bookCategoryForm.open}
+        title={
+          bookCategoryForm.type === "add"
+            ? "CREATE NEW Category"
+            : "UPDATE Category"
+        }
+        close={() =>
+          handleBookCategoryForm({ open: false, type: "add", data: null })
+        }
+        width={bookCategoryForm.type === "view" ? "75vw" : "90vw"}
+      >
+        {bookCategoryForm.type === "view" ? (
+          <BookView data={bookCategoryForm.data} />
+        ) : bookCategoryForm.type === "add" ? (
+          <AddBookCategory
+            fetchRecords={fetchBooks}
+            close={() =>
+              handleBookCategoryForm({ open: false, type: "add", data: null })
+            }
+          />
+        ) : (
+          <EditBookCategory
+            fetchRecords={fetchBooks}
+            data={bookCategoryForm.data}
+            close={() =>
+              handleBookCategoryForm({ open: false, type: "add", data: null })
+            }
+          />
         )}
       </CustomDrawer>
     </Box>

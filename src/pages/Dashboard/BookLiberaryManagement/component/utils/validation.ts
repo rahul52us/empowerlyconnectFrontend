@@ -1,7 +1,7 @@
 import * as Yup from "yup";
 
 const BookValidationSchema = Yup.object().shape({
-    title: Yup.string().required("Title is required"),
+    title: Yup.string().trim().required("Title is required"),
     author: Yup.string().trim(),
     categories: Yup.array(),
     publisher: Yup.string().trim(),
@@ -17,4 +17,9 @@ const BookValidationSchema = Yup.object().shape({
     description: Yup.string().trim(),
 })
 
-export {BookValidationSchema}
+const BookCategoryValidationSchema = Yup.object().shape({
+    title: Yup.string().trim().required("Title is required"),
+    description: Yup.string().trim(),
+})
+
+export {BookValidationSchema, BookCategoryValidationSchema}

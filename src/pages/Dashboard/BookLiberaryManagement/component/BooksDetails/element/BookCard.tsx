@@ -83,7 +83,7 @@ const BookCard: React.FC<BookCardProps> = ({ book, handleBookForm }) => {
           >
             {book.title}
           </Heading>
-          <Tooltip label="Edit Project" aria-label="Edit Project">
+          <Tooltip label="Edit Book" aria-label="Edit Book">
             <IconButton
               icon={<EditIcon />}
               onClick={() => handleBookForm(book, "edit")}

@@ -14,6 +14,12 @@ class BookLiberary {
     open: false,
   };
 
+  bookCategoryForm = {
+    type : "add",
+    data : null,
+    open : false
+  }
+
   bookCategoryCount = {
     loading: false,
     data: 0,
@@ -38,6 +44,7 @@ class BookLiberary {
       bookUsersCount: observable,
       booksData: observable,
       bookForm: observable,
+      bookCategoryForm:observable,
       getBooksCounts: action,
       getBooksCategoryCounts: action,
       getBookUsersCounts: action,
@@ -45,7 +52,10 @@ class BookLiberary {
       handleBookForm:action,
       createBook:action,
       getSingleBook:action,
-      updateBook:action
+      updateBook:action,
+      handleBookCategoryForm:action,
+      createBookCategory:action,
+      updateBookCategory:action
     });
   }
 
@@ -107,6 +117,30 @@ class BookLiberary {
     }
   };
 
+  createBookCategory = async (sendData: any) => {
+    try {
+      const { data } = await axios.post("/liberary/book/category/create", {
+        ...sendData,
+        company: store.auth.getCurrentCompany(),
+      });
+      return data;
+    } catch (err: any) {
+      return Promise.reject(err?.response || err);
+    }
+  };
+
+  updateBookCategory = async (sendData: any) => {
+    try {
+      const { data } = await axios.put(`/liberary/book/category/${sendData._id}`, {
+        ...sendData,
+        company: store.auth.getCurrentCompany(),
+      });
+      return data;
+    } catch (err: any) {
+      return Promise.reject(err?.response || err);
+    }
+  };
+
   updateBook = async (sendData: any) => {
     try {
       const { data } = await axios.put(`/liberary/book/${sendData._id}`, {
@@ -157,6 +191,19 @@ class BookLiberary {
         this.bookForm.type = data.type;
       }
   };
+
+  handleBookCategoryForm = (data: any) => {
+    if (data.open === false) {
+      this.bookCategoryForm.data = null
+      this.bookCategoryForm.open = false
+      this.bookCategoryForm.type = "add";
+    } else {
+      this.bookCategoryForm.data = data.data;
+      this.bookCategoryForm.open = data.open;
+      this.bookCategoryForm.type = data.type;
+    }
+};
+
 }
 
 export default BookLiberary;

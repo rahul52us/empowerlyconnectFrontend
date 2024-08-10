@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import BookForm from "./BookForm";
+import BookForm from "./BookCategoryForm";
 import { useEffect, useState } from "react";
 import {
   generateBookInitialValues,
@@ -10,7 +10,7 @@ import store from "../../../../../../store/store";
 import { getStatusType } from "../../../../../../config/constant/statusCode";
 import DrawerLoader from "../../../../../../config/component/Loader/DrawerLoader";
 
-const EditBook = observer(({ close, data, fetchRecords }: any) => {
+const EditBookCategory = observer(({ close, data }: any) => {
   const {
     auth: { openNotification },
     bookLiberary: { getSingleBook, updateBook },
@@ -79,7 +79,6 @@ const EditBook = observer(({ close, data, fetchRecords }: any) => {
             message: `${data.message}`,
             type: "success",
           });
-          fetchRecords();
           close();
           resetForm();
         })
@@ -118,4 +117,4 @@ const EditBook = observer(({ close, data, fetchRecords }: any) => {
   );
 });
 
-export default EditBook;
+export default EditBookCategory;
