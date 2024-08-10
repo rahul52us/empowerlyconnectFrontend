@@ -33,6 +33,7 @@ import { generateProjectInitialValues } from "../utils/function";
 import { FaPeopleGroup } from "react-icons/fa6";
 import { BiTagAlt } from "react-icons/bi";
 import AddNewUser from "./component/AddNewUser";
+import AddTags from "./component/AddTags";
 
 const ProjectDetails = ({ selectedProject }: any) => {
   const [addNewUser, setAddNewUser] = useState<any>({
@@ -241,8 +242,9 @@ const ProjectDetails = ({ selectedProject }: any) => {
                   variant="outline"
                   size="sm"
                   rounded="full"
+                  onClick={() => setAddNewUser({data : fetchProjectData?.data?.tags, type : 'tags', title : 'Tags', open : true})}
                 >
-                  Add New
+                  Add Tags
                 </Button>
               </Flex>
             </Grid>
@@ -420,8 +422,19 @@ const ProjectDetails = ({ selectedProject }: any) => {
           </Box>
         </Box>
       </DrawerLoader>
-      {addNewUser.open && addNewUser.data && (
+      {addNewUser.open && addNewUser.data && !["tags"].includes(addNewUser.type) && (
         <AddNewUser
+          open={addNewUser.open}
+          type={addNewUser.type}
+          data={addNewUser.data}
+          title={addNewUser.title}
+          item={fetchProjectData?.data}
+          setFetchProjectData={setFetchProjectData}
+          close={() => setAddNewUser({ open: false, data: null, type: null })}
+        />
+      )}
+      {addNewUser.open && addNewUser.data && ["tags"].includes(addNewUser.type) && (
+        <AddTags
           open={addNewUser.open}
           type={addNewUser.type}
           data={addNewUser.data}

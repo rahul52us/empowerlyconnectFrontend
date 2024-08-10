@@ -61,9 +61,6 @@ export const UserInitialValues = (type: string, data: any) => {
       firstName: data?.name?.split(" ")[0] || "",
       lastName: data?.name?.split(" ")[1] || "",
       code: data?.code || "",
-      designation: Array.isArray(data?.designation)
-        ? data?.designation.map((item: any) => ({ label: item, value: item }))
-        : [{ label: "software developer", value: "software developer" }],
       language: Array.isArray(data?.language)
         ? data?.language.map((item: any) => ({ label: item, value: item }))
         : [{ label: "english", value: "english" }],

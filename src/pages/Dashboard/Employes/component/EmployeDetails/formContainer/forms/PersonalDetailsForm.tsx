@@ -170,39 +170,6 @@ const PersonalDetails = ({
                     // readOnly={type === "edit" ? true : false}
                   />
                   <CustomInput
-                    name="designation"
-                    type="select"
-                    placeholder="Select the designation"
-                    label="Designation"
-                    value={values?.designation}
-                    error={errors.designation}
-                    isMulti
-                    options={[
-                      {
-                        value: "software developer",
-                        label: "software developer",
-                      },
-                      {
-                        value: "Hr",
-                        label: "Hr",
-                      },
-                      {
-                        value: "financial admin",
-                        label: "Financial Admin",
-                      },
-                      {
-                        value: "UI Designer",
-                        label:"UI Designer",
-                      },
-                    ]}
-                    onChange={(e) => {
-                      setFieldValue('designation',e)
-                      console.log(e);
-                    }}
-                    showError={showError}
-                    readOnly={type === "edit" ? true : false}
-                  />
-                  <CustomInput
                     type="text"
                     label="Nick Name"
                     name="nickName"

@@ -52,7 +52,6 @@ export const UserCreateValidation = Yup.object().shape({
     phoneRegExp,
     "Emergency number is not valid"
   ),
-  designation:Yup.mixed().required('position is required'),
   username: Yup.string()
     .min(3, "Username should be at least 3 characters")
     .required("Username is required"),

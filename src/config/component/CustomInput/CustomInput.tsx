@@ -116,6 +116,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
 }) => {
   const isMounted = useRef(false);
   const [inputValue, setInputValue] = useState("")
+  const [searchInput, setSearchInput] = useState("")
   const theme = useTheme();
   const [optionss, setOptions] = useState([]);
 
@@ -148,16 +149,16 @@ const CustomInput: React.FC<CustomInputProps> = ({
     if (onChange) {
       onChange(selectedOption ? selectedOption.value : "");
     }
-    setInputValue(selectedOption ? selectedOption.label : "");
+    setSearchInput(selectedOption ? selectedOption.label : "");
   };
 
   useEffect(() => {
     if (isMounted.current) {
-      debouncedFetchSearchResults(inputValue);
+      debouncedFetchSearchResults(searchInput);
     } else {
       isMounted.current = true;
     }
-  }, [inputValue, debouncedFetchSearchResults]);
+  }, [searchInput, debouncedFetchSearchResults]);
 
   const handleFileDrop = useCallback(
     (event: React.DragEvent<HTMLDivElement>) => {
@@ -587,13 +588,13 @@ const CustomInput: React.FC<CustomInputProps> = ({
           return (
             <Select
             // inputValue={inputValue}
-            onInputChange={(newValue) => setInputValue(newValue)}
+            onInputChange={(newValue) => setSearchInput(newValue)}
             options={optionss}
             value={optionss.find((opt: any) => opt.value === value)}
             onChange={(selectedOption) => {
               handleSelectChange(selectedOption);
               if (selectedOption) {
-                setInputValue(selectedOption.label);
+                setSearchInput(selectedOption.label);
               }
             }}
             isDisabled={disabled}

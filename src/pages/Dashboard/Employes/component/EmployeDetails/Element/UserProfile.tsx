@@ -80,7 +80,7 @@ const UserProfile: React.FC<any> = ({ UsereId }) => {
           <HStack spacing={6}>
             <Avatar
               name={user?.name}
-              src="https://bit.ly/dan-abramov"
+              src={user?.pic?.url || undefined}
               boxSize={"85px"}
               size={"lg"}
             />

@@ -25,7 +25,7 @@ const ProjectWidget = observer(() => {
   } = store;
   const [selectedProject, setSelectedProject] = useState({
     open: false,
-    data: null
+    data: null,
   });
 
   const { getQueryParam, setQueryParam } = useQueryParams();
@@ -46,8 +46,8 @@ const ProjectWidget = observer(() => {
   }, [getProjects, openNotification, currentPage]);
 
   useEffect(() => {
-    getProjectCounts()
-  },[getProjectCounts])
+    getProjectCounts();
+  }, [getProjectCounts]);
 
   useEffect(() => {
     fetchProjectDetails();
@@ -65,7 +65,7 @@ const ProjectWidget = observer(() => {
       icon: FaProjectDiagram,
       colorScheme: "teal",
       description: "Total number of projects.",
-      loading:projectCount.loading
+      loading: projectCount.loading,
     },
     {
       label: "Total Tasks",
@@ -73,7 +73,7 @@ const ProjectWidget = observer(() => {
       icon: FaTasks,
       colorScheme: "blue",
       description: "Total number of tasks across all projects.",
-      loading:projectCount.loading
+      loading: projectCount.loading,
     },
     {
       label: "Team Members",
@@ -81,7 +81,7 @@ const ProjectWidget = observer(() => {
       icon: FaUsers,
       colorScheme: "purple",
       description: "The number of active team members.",
-      loading:projectCount.loading
+      loading: projectCount.loading,
     },
   ];
 
@@ -181,7 +181,7 @@ const ProjectWidget = observer(() => {
         title="Project Details"
         width="80vw"
       >
-          <ProjectDetails selectedProject={selectedProject.data} />
+        <ProjectDetails selectedProject={selectedProject.data} />
       </CustomDrawer>
     </Box>
   );
