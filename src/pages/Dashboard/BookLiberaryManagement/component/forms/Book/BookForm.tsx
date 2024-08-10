@@ -46,7 +46,7 @@ const BookForm = observer(
                         files={values.coverImage?.file}
                         removeFile={(_: any) => {
                           setFieldValue("coverImage", {
-                            ...values.logo,
+                            ...values.coverImage,
                             file: removeDataByIndex(values.coverImage, 0),
                             isDeleted: 1,
                           });

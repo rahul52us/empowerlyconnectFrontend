@@ -5,18 +5,18 @@ export const generateBookInitialValues = (data?: any) => {
     categories: [],
     publisher: data?.publisher || "",
     isbn: data?.publisher || "",
-    publishedDate: data?.publishedDate || undefined,
+    // publishedDate: data?.publishedDate || null,
     numberOfPages: data?.numberOfPages || undefined,
     availableCopies: data?.availableCopies || undefined,
     ratings: data?.ratings || undefined,
     totalCopies: data?.totalCopies || undefined,
-    language: [],
-    tags: [],
+    language: Array.isArray(data?.language)
+    ? data?.language?.map((item: any) => ({ label: item, value: item }))
+    : [],
+    tags: data?.tags ? data?.tags : [],
     edition: data?.edition || undefined,
     description: data?.description || undefined,
-    coverImage: {
-      file: [],
-    },
+    coverImage: data?.coverImage?.url ? {file : data.coverImage } : {file : []},
   };
 };
 

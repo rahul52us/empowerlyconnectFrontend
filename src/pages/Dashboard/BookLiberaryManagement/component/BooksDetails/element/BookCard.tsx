@@ -1,5 +1,5 @@
 // src/components/BookCard.tsx
-import React from 'react';
+import React from "react";
 import {
   Box,
   Image,
@@ -11,8 +11,11 @@ import {
   Flex,
   Spacer,
   useColorModeValue,
-} from '@chakra-ui/react';
-import StarRatingIcon from '../../../../../../config/component/StarRatingIcon/StarRatingIcon';
+  Tooltip,
+  IconButton,
+} from "@chakra-ui/react";
+import StarRatingIcon from "../../../../../../config/component/StarRatingIcon/StarRatingIcon";
+import { EditIcon } from "@chakra-ui/icons";
 
 interface Book {
   _id: string;
@@ -39,14 +42,15 @@ interface Book {
 
 interface BookCardProps {
   book: Book;
-  handleBookForm:any
+  handleBookForm: any;
 }
 
 const BookCard: React.FC<BookCardProps> = ({ book, handleBookForm }) => {
-  const bg = useColorModeValue('white', 'gray.800');
-  const shadow = useColorModeValue('md', 'dark-lg');
-  const hoverShadow = useColorModeValue('lg', 'dark-lg');
-  const placeholderImage = 'https://via.placeholder.com/300x400?text=No+thumbnail+found';
+  const bg = useColorModeValue("white", "gray.800");
+  const shadow = useColorModeValue("md", "dark-lg");
+  const hoverShadow = useColorModeValue("lg", "dark-lg");
+  const placeholderImage =
+    "https://via.placeholder.com/300x400?text=No+thumbnail+found";
 
   return (
     <Box
@@ -56,22 +60,39 @@ const BookCard: React.FC<BookCardProps> = ({ book, handleBookForm }) => {
       p="6"
       bg={bg}
       shadow={shadow}
-      maxW={{ base: '100%', md: '100%' }}
+      maxW={{ base: "100%", md: "100%" }}
       transition="all 0.3s"
       _hover={{ shadow: hoverShadow }}
     >
       <Image
         src={book?.coverImage?.url || placeholderImage}
-        alt={book?.coverImage?.name || 'No Image'}
+        alt={book?.coverImage?.name || "No Image"}
         borderRadius="md"
         objectFit="cover"
         w="100%"
-        h={{ base: '200px', md: '300px' }}
+        h={{ base: "200px", md: "300px" }}
       />
       <Stack mt="6" spacing="3">
-        <Heading as="h4" size="md" isTruncated onClick={() => handleBookForm(book,'view')} cursor="pointer">
-          {book.title}
-        </Heading>
+        <Flex justifyContent="space-between">
+          <Heading
+            as="h4"
+            size="md"
+            isTruncated
+            onClick={() => handleBookForm(book, "view")}
+            cursor="pointer"
+          >
+            {book.title}
+          </Heading>
+          <Tooltip label="Edit Project" aria-label="Edit Project">
+            <IconButton
+              icon={<EditIcon />}
+              onClick={() => handleBookForm(book, "edit")}
+              variant="ghost"
+              colorScheme="teal"
+              aria-label="Edit Project"
+            />
+          </Tooltip>
+        </Flex>
         <Text fontSize="sm" isTruncated>
           Author: {book.author}
         </Text>
@@ -85,11 +106,13 @@ const BookCard: React.FC<BookCardProps> = ({ book, handleBookForm }) => {
           <Badge colorScheme="green" mr="2">
             {book.availableCopies} Available / {book.totalCopies} Total
           </Badge>
-          {book.isReferenceOnly && <Badge colorScheme="red">Reference Only</Badge>}
+          {book.isReferenceOnly && (
+            <Badge colorScheme="red">Reference Only</Badge>
+          )}
           <Spacer />
-          <StarRatingIcon ratings={book.ratings || 0 } color="red"/>
+          <StarRatingIcon ratings={book.ratings || 0} color="red" />
         </Flex>
-        <Text fontSize="sm" noOfLines={[1, 2,3]} minHeight={12}>
+        <Text fontSize="sm" noOfLines={[1, 2, 3]} minHeight={12}>
           {book.description}
         </Text>
         <Flex wrap="wrap" minH={10}>

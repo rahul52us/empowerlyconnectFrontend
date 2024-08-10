@@ -44,7 +44,8 @@ class BookLiberary {
       getAllBooks: action,
       handleBookForm:action,
       createBook:action,
-      getSingleBook:action
+      getSingleBook:action,
+      updateBook:action
     });
   }
 
@@ -97,6 +98,18 @@ class BookLiberary {
   createBook = async (sendData: any) => {
     try {
       const { data } = await axios.post("/liberary/book/create", {
+        ...sendData,
+        company: store.auth.getCurrentCompany(),
+      });
+      return data;
+    } catch (err: any) {
+      return Promise.reject(err?.response || err);
+    }
+  };
+
+  updateBook = async (sendData: any) => {
+    try {
+      const { data } = await axios.put(`/liberary/book/${sendData._id}`, {
         ...sendData,
         company: store.auth.getCurrentCompany(),
       });

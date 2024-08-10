@@ -119,7 +119,11 @@ const BookDetails = observer(() => {
             }
           />
         ) : (
-          <EditBook />
+          <EditBook fetchRecords={fetchBooks}
+          data={bookForm.data}
+          close={() =>
+            handleBookForm({ open: false, type: "add", data: null })
+          }/>
         )}
       </CustomDrawer>
     </Box>
