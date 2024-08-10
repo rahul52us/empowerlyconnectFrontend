@@ -43,7 +43,8 @@ class BookLiberary {
       getBookUsersCounts: action,
       getAllBooks: action,
       handleBookForm:action,
-      createBook:action
+      createBook:action,
+      getSingleBook:action
     });
   }
 
@@ -99,6 +100,15 @@ class BookLiberary {
         ...sendData,
         company: store.auth.getCurrentCompany(),
       });
+      return data;
+    } catch (err: any) {
+      return Promise.reject(err?.response || err);
+    }
+  };
+
+  getSingleBook = async (sendData: any) => {
+    try {
+      const { data } = await axios.get(`/liberary/book/single/${sendData.id}`);
       return data;
     } catch (err: any) {
       return Promise.reject(err?.response || err);

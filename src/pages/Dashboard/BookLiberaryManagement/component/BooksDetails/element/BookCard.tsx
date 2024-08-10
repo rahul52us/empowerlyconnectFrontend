@@ -10,7 +10,6 @@ import {
   Tag,
   Flex,
   Spacer,
-  Button,
   useColorModeValue,
 } from '@chakra-ui/react';
 import StarRatingIcon from '../../../../../../config/component/StarRatingIcon/StarRatingIcon';
@@ -40,9 +39,10 @@ interface Book {
 
 interface BookCardProps {
   book: Book;
+  handleBookForm:any
 }
 
-const BookCard: React.FC<BookCardProps> = ({ book }) => {
+const BookCard: React.FC<BookCardProps> = ({ book, handleBookForm }) => {
   const bg = useColorModeValue('white', 'gray.800');
   const shadow = useColorModeValue('md', 'dark-lg');
   const hoverShadow = useColorModeValue('lg', 'dark-lg');
@@ -69,7 +69,7 @@ const BookCard: React.FC<BookCardProps> = ({ book }) => {
         h={{ base: '200px', md: '300px' }}
       />
       <Stack mt="6" spacing="3">
-        <Heading as="h4" size="md" isTruncated>
+        <Heading as="h4" size="md" isTruncated onClick={() => handleBookForm(book,'view')} cursor="pointer">
           {book.title}
         </Heading>
         <Text fontSize="sm" isTruncated>
@@ -100,9 +100,6 @@ const BookCard: React.FC<BookCardProps> = ({ book }) => {
           ))}
         </Flex>
       </Stack>
-      <Button mt="4" colorScheme="blue" size="sm" w="full">
-        Borrow
-      </Button>
     </Box>
   );
 };

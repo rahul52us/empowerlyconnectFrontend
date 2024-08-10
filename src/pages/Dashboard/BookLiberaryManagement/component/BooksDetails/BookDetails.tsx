@@ -12,6 +12,7 @@ import { FaPlus } from "react-icons/fa";
 import CustomDrawer from "../../../../../config/component/Drawer/CustomDrawer";
 import AddBook from "../forms/Book/AddBook";
 import EditBook from "../forms/Book/EditBook";
+import BookView from "../forms/Book/BookView";
 
 const BookDetails = observer(() => {
   const {
@@ -88,6 +89,7 @@ const BookDetails = observer(() => {
             <BookCard
               book={{ ...item, ratings: item.ratings || [] }}
               key={index}
+              handleBookForm={(item : any, type : string) => handleBookForm({ open: true, data: item , type: type })}
             />
           ))}
         </SimpleGrid>
@@ -107,7 +109,18 @@ const BookDetails = observer(() => {
         close={() => handleBookForm({ open: false, type: "add", data: null })}
         width="90vw"
       >
-        {bookForm.type === "add" ? <AddBook fetchRecords={fetchBooks} close={() => handleBookForm({ open: false, type: "add", data: null })}/> : <EditBook />}
+        {bookForm.type === "view" ? (
+          <BookView data={bookForm.data} />
+        ) : bookForm.type === "add" ? (
+          <AddBook
+            fetchRecords={fetchBooks}
+            close={() =>
+              handleBookForm({ open: false, type: "add", data: null })
+            }
+          />
+        ) : (
+          <EditBook />
+        )}
       </CustomDrawer>
     </Box>
   );
