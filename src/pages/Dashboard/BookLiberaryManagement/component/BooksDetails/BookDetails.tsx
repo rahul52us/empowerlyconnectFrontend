@@ -107,7 +107,7 @@ const BookDetails = observer(() => {
         open={bookForm.open}
         title={bookForm.type === "add" ? "CREATE NEW BOOK" : "UPDATE BOOK"}
         close={() => handleBookForm({ open: false, type: "add", data: null })}
-        width="90vw"
+        width={bookForm.type === "view" ? "75vw" : "90vw"}
       >
         {bookForm.type === "view" ? (
           <BookView data={bookForm.data} />

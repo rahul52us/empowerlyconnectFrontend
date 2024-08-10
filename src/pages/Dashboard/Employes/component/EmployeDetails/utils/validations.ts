@@ -113,7 +113,6 @@ export const UserUpdateProfileValidation = Yup.object().shape({
   username: Yup.string()
     .min(3, "Username should be at least 3 characters")
     .required("Username is required"),
-  designation:Yup.mixed().required('select the positions'),
   code: Yup.string()
     .min(4, "Code should be at least 4 characters")
     .required("Code is required")

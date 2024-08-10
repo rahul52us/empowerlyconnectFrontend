@@ -46,7 +46,7 @@ const PersonalDetails = ({
         setFieldValue,
         handleChange,
         handleSubmit,
-        isSubmitting,
+        isSubmitting
       }) => {
         return (
           <Form onSubmit={handleSubmit}>

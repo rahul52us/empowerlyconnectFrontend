@@ -63,7 +63,7 @@ export const UserInitialValues = (type: string, data: any) => {
       code: data?.code || "",
       language: Array.isArray(data?.language)
         ? data?.language.map((item: any) => ({ label: item, value: item }))
-        : [{ label: "english", value: "english" }],
+        : [],
       username: data?.username || "",
       pic: data?.pic?.url ? {file : {...data?.pic}} : {file : []},
       dob: data.dob ? new Date(data?.dob) : new Date(),
@@ -78,7 +78,7 @@ export const UserInitialValues = (type: string, data: any) => {
       insuranceCardNo: data?.insuranceCardNo || "",
       medicalCertificationDetails: data?.medicalCertificationDetails || "",
       refferedBy: data?.refferedBy || "",
-      weddingDate: data?.weddingDate ? new Date(data?.weddingDate) : new Date(),
+      weddingDate: data?.weddingDate ? new Date(data?.weddingDate) : undefined,
       mobileNo: data?.mobileNo || "",
       bio: data?.bio || "",
       password: "",
@@ -249,7 +249,6 @@ export const generateSubmitResponse = async (datas: any) => {
   let dt: any = { ...data };
   dt.name = `${dt.firstName} ${dt.lastName}`;
   dt.title = dt.title?.value;
-  dt.designation = dt.designation?.map((item: any) => item.value);
   dt.language = dt.language?.map((item: any) => item.value);
   delete dt.firstName;
   delete dt.lastName;
