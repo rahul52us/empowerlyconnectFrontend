@@ -18,7 +18,7 @@ const BookLiberary = observer(() => {
       bookCategoryCount,
       bookUsersCount,
       getBooksCategoryCounts,
-      getBookUsersCounts
+      getBookUsersCounts,
     },
     auth: { openNotification },
   } = store;
@@ -29,7 +29,11 @@ const BookLiberary = observer(() => {
     });
 
   useEffect(() => {
-    Promise.all([fetchData(getBooksCounts), fetchData(getBooksCategoryCounts), fetchData(getBookUsersCounts)])
+    Promise.all([
+      fetchData(getBooksCounts),
+      fetchData(getBooksCategoryCounts),
+      fetchData(getBookUsersCounts),
+    ])
       .then(() => {})
       .catch((err: any) => {
         openNotification({
@@ -38,13 +42,18 @@ const BookLiberary = observer(() => {
           type: getStatusType(err.status),
         });
       });
-  }, [getBooksCounts, getBooksCategoryCounts, getBookUsersCounts, openNotification]);
+  }, [
+    getBooksCounts,
+    getBooksCategoryCounts,
+    getBookUsersCounts,
+    openNotification,
+  ]);
 
   const summaryData = [
     {
       label: "Books Category",
       value: bookCategoryCount.data,
-      loading:bookCategoryCount.loading,
+      loading: bookCategoryCount.loading,
       icon: FaBookReader,
       colorScheme: "teal",
       description: "Here is an description for the users",
@@ -52,7 +61,7 @@ const BookLiberary = observer(() => {
     {
       label: "Total Books",
       value: booksCounts.data,
-      loading:booksCounts.loading,
+      loading: booksCounts.loading,
       icon: FaBookOpen,
       colorScheme: "teal",
       description: "Total No. of Books Counts",
@@ -60,7 +69,7 @@ const BookLiberary = observer(() => {
     {
       label: "Total Users",
       value: bookUsersCount.data,
-      loading:bookUsersCount.loading,
+      loading: bookUsersCount.loading,
       icon: FaPersonCircleQuestion,
       colorScheme: "teal",
       description: "Here is an description for the users",
@@ -68,7 +77,7 @@ const BookLiberary = observer(() => {
   ];
 
   return (
-    <Box px={{ base: 4, md: 6 }} py={2}>
+    <Box px={{ base: 2, md: 4 }}>
       <DashPageHeader
         title="Dashboard"
         breadcrumb={liberaryBreadCrumb.liberary}

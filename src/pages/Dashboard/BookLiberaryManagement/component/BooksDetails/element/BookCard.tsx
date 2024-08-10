@@ -89,10 +89,10 @@ const BookCard: React.FC<BookCardProps> = ({ book }) => {
           <Spacer />
           <StarRatingIcon ratings={book.ratings || 0 } color="red"/>
         </Flex>
-        <Text fontSize="sm" noOfLines={[1, 2, 3]} minH={12}>
+        <Text fontSize="sm" noOfLines={[1, 2,3]} minHeight={12}>
           {book.description}
         </Text>
-        <Flex wrap="wrap">
+        <Flex wrap="wrap" minH={10}>
           {book.tags.map((tag: string) => (
             <Tag key={tag} colorScheme="teal" mr="2" mb="2">
               {tag}

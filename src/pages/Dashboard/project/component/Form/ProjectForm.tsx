@@ -12,6 +12,7 @@ import { generateProjectResponse } from "../utils/function";
 import ShowFileUploadFile from "../../../../../config/component/common/ShowFileUploadFile/ShowFileUploadFile";
 import { removeDataByIndex } from "../../../../../config/constant/function";
 import NotFoundData from "../../../../../config/component/NotFound/NotFoundData";
+import DrawerFormHeightContainer from "../../../../../config/component/Drawer/DrawerFormHeightContainer";
 
 const ProjectForm = observer(
   ({ initialValuesOfProjects, handleSubmitForm, isEdit }: any) => {
@@ -64,7 +65,7 @@ const ProjectForm = observer(
           {({ handleChange, values, errors, setFieldValue, isSubmitting }) => {
             return (
               <Form>
-                <Box minH={"81vh"} maxH={"81vh"} overflowY={"auto"}>
+                <DrawerFormHeightContainer>
                   <Flex>
                     {values?.logo?.file?.length === 0 ? (
                       <CustomInput
@@ -439,7 +440,7 @@ const ProjectForm = observer(
                       )}
                     </Box>
                   </Box>
-                </Box>
+                </DrawerFormHeightContainer>
                 <Flex justifyContent={"end"}>
                   <CustomSubmitBtn
                     cancelFunctionality={{

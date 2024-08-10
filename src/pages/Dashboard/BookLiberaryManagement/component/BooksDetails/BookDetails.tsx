@@ -1,4 +1,4 @@
-import { Box, Heading, SimpleGrid, Flex, Icon } from "@chakra-ui/react";
+import { Box, Heading, SimpleGrid, Flex, Icon, Button } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useEffect, useState, useCallback } from "react";
 import { FaBook } from "react-icons/fa6";
@@ -8,11 +8,15 @@ import store from "../../../../../store/store";
 import BookCard from "./element/BookCard";
 import NotFoundData from "../../../../../config/component/NotFound/NotFoundData";
 import { useQueryParams } from "../../../../../config/component/customHooks/useQuery";
+import { FaPlus } from "react-icons/fa";
+import CustomDrawer from "../../../../../config/component/Drawer/CustomDrawer";
+import AddBook from "../forms/Book/AddBook";
+import EditBook from "../forms/Book/EditBook";
 
 const BookDetails = observer(() => {
   const {
     auth: { openNotification },
-    bookLiberary: { getAllBooks, booksData },
+    bookLiberary: { getAllBooks, booksData, handleBookForm, bookForm },
   } = store;
 
   const { getQueryParam, setQueryParam } = useQueryParams();
@@ -21,7 +25,7 @@ const BookDetails = observer(() => {
   );
 
   const fetchBooks = useCallback(
-    (page: number) => {
+    (page: number = currentPage) => {
       getAllBooks({ page, limit: 10 })
         .then(() => {})
         .catch((err: any) => {
@@ -32,7 +36,7 @@ const BookDetails = observer(() => {
           });
         });
     },
-    [getAllBooks, openNotification]
+    [getAllBooks, openNotification, currentPage]
   );
 
   useEffect(() => {
@@ -46,27 +50,45 @@ const BookDetails = observer(() => {
 
   return (
     <Box>
-      <Heading
-        display="flex"
-        alignItems="center"
-        mb={6}
-        fontSize={{ base: "xl", md: "2xl" }}
-        color="teal.600"
-      >
-        <Icon as={FaBook} boxSize={6} mr={2} />
-        Books
-      </Heading>
+      <Flex mb={6} justifyContent={"space-between"}>
+        <Heading
+          display="flex"
+          alignItems="center"
+          fontSize={{ base: "xl", md: "2xl" }}
+          color="teal.600"
+        >
+          <Icon as={FaBook} boxSize={6} mr={2} />
+          Books
+        </Heading>
+        <Button
+          leftIcon={<FaPlus />}
+          colorScheme="teal"
+          variant="solid"
+          size="lg"
+          _hover={{ bg: "teal.600" }}
+          _active={{ bg: "teal.700" }}
+          _focus={{ boxShadow: "outline" }}
+          onClick={() =>
+            handleBookForm({ open: true, data: null, type: "add" })
+          }
+        >
+          Add Book
+        </Button>
+      </Flex>
       {booksData.data.length === 0 && !booksData.loading ? (
         <NotFoundData
           onClick={() => {}}
-          btnText="CREATE First Book"
+          btnText="Add First Book"
           title="No Books found"
           subTitle="Start by creating a new book to get started."
         />
       ) : (
         <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6} mb={8}>
           {booksData.data.map((item: any, index: number) => (
-            <BookCard book={{ ...item, ratings: item.ratings || [] }} key={index} />
+            <BookCard
+              book={{ ...item, ratings: item.ratings || [] }}
+              key={index}
+            />
           ))}
         </SimpleGrid>
       )}
@@ -78,6 +100,15 @@ const BookDetails = observer(() => {
           totalPages={booksData.totalPages}
         />
       </Flex>
+
+      <CustomDrawer
+        open={bookForm.open}
+        title={bookForm.type === "add" ? "CREATE NEW BOOK" : "UPDATE BOOK"}
+        close={() => handleBookForm({ open: false, type: "add", data: null })}
+        width="90vw"
+      >
+        {bookForm.type === "add" ? <AddBook fetchRecords={fetchBooks} close={() => handleBookForm({ open: false, type: "add", data: null })}/> : <EditBook />}
+      </CustomDrawer>
     </Box>
   );
 });

@@ -464,7 +464,7 @@ return (
 								}
 							/>
 							{travel.isAccommodation === "true" && (
-								<Grid templateColumns="repeat(3, 1fr)" gap={4}>
+								<Grid templateColumns={{base : "1fr", sm : "repeat(3, 1fr)"}} gap={4}>
 								<CustomInput
 									type="text"
 									name={`travelDetails[${index}].locality`}

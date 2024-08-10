@@ -92,8 +92,9 @@ export const generateEditInitialValues = (data : any) => {
     })
 }) || [];
 
+  const {createdBy, ...rest} = data
   const updatedData = {
-    ...data,
+    ...rest,
     type: tripTypes.find((it : any) => it.value === data.type) || tripTypes[0],
     travelDetails: updatedTravelDetails,
     additionalExpenses: updatedAdditionalExpense,

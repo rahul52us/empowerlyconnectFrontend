@@ -80,7 +80,7 @@ const TaskIndex = observer(() => {
                 </Button>
               </Flex>
               <Box p={5}>
-                {/* <Board 
+                {/* <Board
                 taskData={taskData?.data}
                 /> */}
                 <TaskPage taskData={taskData?.data} />

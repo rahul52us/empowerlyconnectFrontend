@@ -9,6 +9,7 @@ import CustomInput from "../../../../../../config/component/CustomInput/CustomIn
 import { TaskCreateValidation } from "../utils/validation";
 import ShowFileUploadFile from "../../../../../../config/component/common/ShowFileUploadFile/ShowFileUploadFile";
 import NotFoundData from "../../../../../../config/component/NotFound/NotFoundData";
+import DrawerFormHeightContainer from "../../../../../../config/component/Drawer/DrawerFormHeightContainer";
 
 const TaskForm = observer(
   ({ type = "create", initialValues, handleSubmitForm }: any) => {
@@ -53,7 +54,7 @@ const TaskForm = observer(
           {({ handleChange, values, errors, setFieldValue, isSubmitting }) => {
             return (
               <Form>
-                <Box height="78vh" overflowY="auto" p={4}>
+                <DrawerFormHeightContainer>
                   <Grid
                     templateColumns={{
                       base: "repeat(1, 1fr)",
@@ -370,7 +371,7 @@ const TaskForm = observer(
                     )}
                   </Box>
                   </Box>
-                </Box>
+                </DrawerFormHeightContainer>
                 <Flex justifyContent={"end"} mt={4}>
                   <CustomSubmitBtn
                     cancelFunctionality={{
