@@ -1,4 +1,4 @@
-import { Box, Heading, SimpleGrid, Flex, Icon, Grid } from "@chakra-ui/react";
+import { Box, Heading, SimpleGrid, Flex, Icon, Grid, Button, IconButton, useBreakpointValue } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useEffect, useState, useCallback } from "react";
 import {
@@ -6,6 +6,7 @@ import {
   FaTasks,
   FaUsers,
   FaFolderOpen,
+  FaPlus,
 } from "react-icons/fa";
 import MainPagePagination from "../../../../../config/component/pagination/MainPagePagination";
 import { getStatusType } from "../../../../../config/constant/statusCode";
@@ -20,9 +21,10 @@ import { useQueryParams } from "../../../../../config/component/customHooks/useQ
 
 const ProjectWidget = observer(() => {
   const {
-    Project: { getProjects, projects, projectCount, getProjectCounts },
+    Project: { getProjects, projects, projectCount, getProjectCounts, setOpenProjectDrawer },
     auth: { openNotification },
   } = store;
+  const showIcon = useBreakpointValue({ base: true, md: false });
   const [selectedProject, setSelectedProject] = useState({
     open: false,
     data: null,
@@ -101,7 +103,7 @@ const ProjectWidget = observer(() => {
   // };
 
   return (
-    <Box px={{ base: 4, md: 6 }} py={6}>
+    <Box>
       <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6} mb={6}>
         {summaryData.map((data, index) => (
           <SummaryWidget
@@ -125,17 +127,39 @@ const ProjectWidget = observer(() => {
           deadline={taskData.deadline}
         /> */}
       </Grid>
+      <Flex justifyContent="space-between" alignItems="center" mb={4}>
       <Heading
         display="flex"
         alignItems="center"
-        mb={6}
         fontSize={{ base: "xl", md: "2xl" }}
         color="teal.600"
       >
         <Icon as={FaFolderOpen} boxSize={6} mr={2} />
         Projects
       </Heading>
-
+      {showIcon ? (
+            <IconButton
+              title="Create Project"
+              onClick={() => setOpenProjectDrawer("create")}
+              aria-label="Create Project"
+              icon={<FaPlus />}
+              colorScheme="teal"
+            />
+          ) : (
+            <Button
+            leftIcon={<FaPlus />}
+            colorScheme="teal"
+            variant="solid"
+            size="lg"
+            _hover={{ bg: "teal.600" }}
+            _active={{ bg: "teal.700" }}
+            _focus={{ boxShadow: "outline" }}
+              onClick={() => setOpenProjectDrawer("create")}
+            >
+              CREATE PROJECT
+            </Button>
+          )}
+        </Flex>
       {projects.data.length === 0 && projects.loading === false ? (
         <NotFoundData
           onClick={() => {}}
