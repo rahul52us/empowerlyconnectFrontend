@@ -13,6 +13,8 @@ import {
   useColorModeValue,
   Tooltip,
   IconButton,
+  Wrap,
+  WrapItem,
 } from "@chakra-ui/react";
 import StarRatingIcon from "../../../../../../config/component/StarRatingIcon/StarRatingIcon";
 import { EditIcon } from "@chakra-ui/icons";
@@ -25,7 +27,7 @@ interface Book {
   company: string;
   isbn: string;
   categories: string[];
-  language: string;
+  language: any;
   availableCopies: number;
   totalCopies: number;
   description: string;
@@ -99,9 +101,15 @@ const BookCard: React.FC<BookCardProps> = ({ book, handleBookForm }) => {
         <Text fontSize="sm" isTruncated>
           ISBN: {book.isbn}
         </Text>
-        <Text fontSize="sm" isTruncated>
-          Language: {book.language}
-        </Text>
+        <Wrap>
+          {book.language?.map((lang: string) => (
+            <WrapItem key={lang}>
+              <Tag colorScheme="blue" size="sm" variant="solid">
+                {lang}
+              </Tag>
+            </WrapItem>
+          ))}
+        </Wrap>
         <Flex align="center">
           <Badge colorScheme="green" mr="2">
             {book.availableCopies} Available / {book.totalCopies} Total

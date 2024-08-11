@@ -161,7 +161,7 @@ return (
     </Flex>
     {booksCategory.data.length === 0 && !booksCategory.loading ? (
         <NotFoundData
-        onClick={() => {}}
+        onClick={() => handleBookCategoryForm({ open: true, data: null, type: "add" })}
         btnText="Add First Book"
         title="No Books found"
         subTitle="Start by creating a new book to get started."

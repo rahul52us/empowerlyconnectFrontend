@@ -3,44 +3,61 @@ import {
   Grid,
   Avatar,
   Text,
-  //   Badge,
   useColorModeValue,
   Flex,
   Tag,
 } from "@chakra-ui/react";
+
 interface User {
   _id: string;
   username: string;
   name: string;
   code: string;
   title: string;
-  designation?: any;
-  pic?:any
+  designation?: { title: string }[];
+  pic?: { url?: string };
 }
+
 const CurrentUser = ({ userData }: { userData: User }) => {
-  //   console.log("userdata-", userData?.designation[0]?.title);
   return (
     <Box
-      maxW={"sm"}
+      maxW="md"
       p={4}
-      shadow={"rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;"}
-      rounded={12}
-      bg={useColorModeValue("gray.100", "gray.700")}
+      shadow="md"
+      rounded="lg"
+      bg={useColorModeValue("white", "gray.800")}
+      borderWidth={1}
+      borderColor={useColorModeValue("gray.200", "gray.600")}
+      transition="all 0.3s ease"
+      _hover={{
+        shadow: "lg",
+        borderColor: useColorModeValue("gray.300", "gray.500"),
+        transform: "scale(1.02)",
+      }}
     >
-      <Grid templateColumns={"1fr 3fr"} gap={4} alignItems={"center"}>
+      <Grid templateColumns="80px 1fr" gap={4} alignItems="center">
         <Avatar
-          size={"lg"}
-          name={userData?.name}
-          src={userData?.pic?.url || "https://via.placeholder.com/300x400?text=No+thumbnail+found"}
+          size="lg"
+          name={userData.name}
+          src={userData.pic?.url || "https://via.placeholder.com/80?text=No+Image"}
+          borderRadius="md"
         />
-        <Box textTransform={"capitalize"} fontSize={"sm"}>
-          <Text fontWeight="bold">{userData?.name}</Text>
-          <Text my={1}>{userData?.username}</Text>
-          <Flex gap={4} mt={2}>
-            <Tag colorScheme={"telegram"}>{userData?.code}</Tag>
-            <Tag colorScheme={"telegram"}>
-              {userData?.designation[0]?.title}
+        <Box>
+          <Text fontWeight="bold" fontSize="lg" color={useColorModeValue("gray.800", "gray.100")}>
+            {userData.name}
+          </Text>
+          <Text fontSize="sm" color={useColorModeValue("gray.600", "gray.400")}>
+            {userData.username}
+          </Text>
+          <Flex mt={2} gap={2}>
+            <Tag colorScheme="teal" size="md" variant="solid">
+              {userData.code}
             </Tag>
+            {userData.designation && userData.designation.length > 0 && (
+              <Tag colorScheme="teal" size="md" variant="solid">
+                {userData.designation[0]?.title}
+              </Tag>
+            )}
           </Flex>
         </Box>
       </Grid>
