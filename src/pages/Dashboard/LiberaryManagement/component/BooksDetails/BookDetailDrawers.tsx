@@ -1,12 +1,12 @@
 import { observer } from "mobx-react-lite";
 import store from "../../../../../store/store";
 import CustomDrawer from "../../../../../config/component/Drawer/CustomDrawer";
-import AddBook from "../forms/Book/AddBook";
-import EditBook from "../forms/Book/EditBook";
-import BookView from "../forms/Book/BookView";
-import AddBookCategory from "../forms/BookCategory/AddBookCategory";
-import EditBookCategory from "../forms/BookCategory/EditBookCategory";
-import BookCategoryView from "../forms/BookCategory/BookCategoryView";
+import AddBook from "./forms/AddBook";
+import EditBook from "./forms/EditBook";
+import BookView from "./forms/BookView";
+import AddBookCategory from "../BookCategoryDetails/forms/AddBookCategory";
+import EditBookCategory from "../BookCategoryDetails/forms/EditBookCategory";
+import BookCategoryView from "../BookCategoryDetails/forms/BookCategoryView";
 
 const BookDetailDrawer = observer(({ fetchBooks }: any) => {
   const {
