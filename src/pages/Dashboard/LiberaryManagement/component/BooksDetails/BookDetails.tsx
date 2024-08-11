@@ -9,7 +9,7 @@ import BookCard from "./element/BookCard";
 import NotFoundData from "../../../../../config/component/NotFound/NotFoundData";
 import { useQueryParams } from "../../../../../config/component/customHooks/useQuery";
 import { FaPlus } from "react-icons/fa";
-import BookDetailDrawer from "./BookDetailDrawers";
+import BookDetailDrawer from "../BookDetailDrawers";
 
 const BookDetails = observer(() => {
   const {
@@ -27,7 +27,7 @@ const BookDetails = observer(() => {
     getQueryParam("page") ? Number(getQueryParam("page")) : 1
   );
 
-  const fetchBooks = useCallback(
+  const fetchRecords = useCallback(
     (page: number = currentPage) => {
       getAllBooks({ page, limit: 10 })
         .then(() => {})
@@ -43,8 +43,8 @@ const BookDetails = observer(() => {
   );
 
   useEffect(() => {
-    fetchBooks(currentPage);
-  }, [currentPage, fetchBooks]);
+    fetchRecords(currentPage);
+  }, [currentPage, fetchRecords]);
 
   const handlePageChange = (page: any) => {
     setCurrentPage(page.selected);
@@ -121,7 +121,7 @@ const BookDetails = observer(() => {
           totalPages={booksData.totalPages}
         />
       </Flex>
-      <BookDetailDrawer fetchBooks={fetchBooks} />
+      <BookDetailDrawer fetchRecords={fetchRecords} />
     </Box>
   );
 });

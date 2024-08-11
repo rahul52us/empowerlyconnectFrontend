@@ -1,42 +1,39 @@
 import { observer } from "mobx-react-lite";
-import BookForm from "./BookCategoryForm";
-import { useEffect, useState } from "react";
-import {
-  generateBookInitialValues,
-  generateSendBookResponse,
-} from "../../utils/function";
-import { readFileAsBase64 } from "../../../../../../config/constant/function";
 import store from "../../../../../../store/store";
-import { getStatusType } from "../../../../../../config/constant/statusCode";
+import { useEffect, useState } from "react";
+import BookCategoryForm from "./BookCategoryForm";
+import {
+  generateBookCategoryInitialValues,
+  generateSendBookCategoryResponse,
+} from "../../utils/function";
 import DrawerLoader from "../../../../../../config/component/Loader/DrawerLoader";
+import { readFileAsBase64 } from "../../../../../../config/constant/function";
+import { getStatusType } from "../../../../../../config/constant/statusCode";
 
-const EditBookCategory = observer(({ close, data }: any) => {
-  const {
-    auth: { openNotification },
-    bookLiberary: { getSingleBook, updateBook },
-  } = store;
+const EditBookCategory = observer(({ data, fetchRecords, close }: any) => {
   const [showError, setShowError] = useState(false);
-
+  const {
+    bookLiberary: { getSingleBookCategory, updateBookCategory },
+    auth: { openNotification },
+  } = store;
   const [fetchBookData, setFetchBookData] = useState<any>({
     data: null,
     loading: true,
   });
 
   useEffect(() => {
-    setFetchBookData({ loading: true, data: null });
-    getSingleBook({ id: data?._id })
+    setFetchBookData({ data: null, loading: true });
+    getSingleBookCategory({ id: data._id })
       .then((data: any) => {
-        setFetchBookData({
-          loading: false,
-          data: data.data,
-        });
+        console.log(data);
+        setFetchBookData({ data: data?.data, loading: false });
       })
       .catch(() => {
-        setFetchBookData({ loading: false, data: null });
+        setFetchBookData({ data: null, loading: false });
       });
-  }, [getSingleBook, data]);
+  }, [data, getSingleBookCategory]);
 
-  const book = fetchBookData.data;
+  const book = fetchBookData?.data;
 
   const handleSubmitForm = async ({
     values,
@@ -44,7 +41,7 @@ const EditBookCategory = observer(({ close, data }: any) => {
     resetForm,
   }: any) => {
     try {
-      let formData : any = {
+      let formData: any = {
         ...values,
       };
 
@@ -59,7 +56,7 @@ const EditBookCategory = observer(({ close, data }: any) => {
           filename: formData?.coverImage?.file?.name,
           type: formData?.coverImage?.file?.type,
           isDeleted: formData?.coverImage?.isDeleted || 0,
-          isAdd: formData?.coverImage?.isAdd || 0
+          isAdd: formData?.coverImage?.isAdd || 0,
         };
         formData.coverImage = fileData;
       } else {
@@ -72,13 +69,18 @@ const EditBookCategory = observer(({ close, data }: any) => {
         }
       }
 
-      updateBook(generateSendBookResponse({ ...formData, _id : book?._id }))
+      updateBookCategory(
+        generateSendBookCategoryResponse({ ...formData, _id: book?._id })
+      )
         .then((data) => {
           openNotification({
             title: "Successfully Updated",
             message: `${data.message}`,
             type: "success",
           });
+          if (fetchRecords) {
+            fetchRecords();
+          }
           close();
           resetForm();
         })
@@ -104,13 +106,13 @@ const EditBookCategory = observer(({ close, data }: any) => {
       noRecordFoundText={!fetchBookData.data}
     >
       {book && (
-        <BookForm
-          initialValues={generateBookInitialValues(book)}
+        <BookCategoryForm
+          initialValues={generateBookCategoryInitialValues(book)}
           showError={showError}
-          setShowError={setShowError}
-          close={() => {}}
-          handleSubmit={handleSubmitForm}
           isEdit={true}
+          setShowError={setShowError}
+          close={close}
+          handleSubmit={handleSubmitForm}
         />
       )}
     </DrawerLoader>

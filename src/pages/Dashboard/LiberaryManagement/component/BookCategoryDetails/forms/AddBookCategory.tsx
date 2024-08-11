@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import BookForm from "./BookCategoryForm";
+import BookCategoryForm from "./BookCategoryForm";
 import { useState } from "react";
 import { generateBookCategoryInitialValues, generateSendBookCategoryResponse } from "../../utils/function";
 import { readFileAsBase64 } from "../../../../../../config/constant/function";
@@ -54,11 +54,11 @@ const AddBookCategory = observer(({close} :any) => {
   };
 
   return (
-    <BookForm
+    <BookCategoryForm
       initialValues={generateBookCategoryInitialValues()}
       showError={showError}
       setShowError={setShowError}
-      close={() => {}}
+      close={close}
       handleSubmit={handleSubmitForm}
     />
   );

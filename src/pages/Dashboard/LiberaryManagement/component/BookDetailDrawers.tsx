@@ -1,14 +1,14 @@
 import { observer } from "mobx-react-lite";
-import store from "../../../../../store/store";
-import CustomDrawer from "../../../../../config/component/Drawer/CustomDrawer";
-import AddBook from "./forms/AddBook";
-import EditBook from "./forms/EditBook";
-import BookView from "./forms/BookView";
-import AddBookCategory from "../BookCategoryDetails/forms/AddBookCategory";
-import EditBookCategory from "../BookCategoryDetails/forms/EditBookCategory";
-import BookCategoryView from "../BookCategoryDetails/forms/BookCategoryView";
+import store from "../../../../store/store";
+import CustomDrawer from "../../../../config/component/Drawer/CustomDrawer";
+import AddBook from "./BooksDetails/forms/AddBook";
+import EditBook from "./BooksDetails/forms/EditBook";
+import BookView from "./BooksDetails/forms/BookView";
+import AddBookCategory from "./BookCategoryDetails/forms/AddBookCategory";
+import EditBookCategory from "./BookCategoryDetails/forms/EditBookCategory";
+import BookCategoryView from "./BookCategoryDetails/forms/BookCategoryView";
 
-const BookDetailDrawer = observer(({ fetchBooks }: any) => {
+const BookDetailDrawer = observer(({ fetchRecords }: any) => {
   const {
     bookLiberary: {
       handleBookForm,
@@ -27,17 +27,17 @@ const BookDetailDrawer = observer(({ fetchBooks }: any) => {
         width={bookForm.type === "view" ? "75vw" : "90vw"}
       >
         {bookForm.type === "view" ? (
-          <BookCategoryView data={bookForm.data} />
+          <BookView data={bookForm.data} />
         ) : bookForm.type === "add" ? (
           <AddBook
-            fetchRecords={fetchBooks}
+            fetchRecords={fetchRecords}
             close={() =>
               handleBookForm({ open: false, type: "add", data: null })
             }
           />
         ) : (
           <EditBook
-            fetchRecords={fetchBooks}
+            fetchRecords={fetchRecords}
             data={bookForm.data}
             close={() =>
               handleBookForm({ open: false, type: "add", data: null })
@@ -61,17 +61,17 @@ const BookDetailDrawer = observer(({ fetchBooks }: any) => {
         width={bookCategoryForm.type === "view" ? "75vw" : "90vw"}
       >
         {bookCategoryForm.type === "view" ? (
-          <BookView data={bookCategoryForm.data} />
+          <BookCategoryView data={bookCategoryForm.data} />
         ) : bookCategoryForm.type === "add" ? (
           <AddBookCategory
-            fetchRecords={fetchBooks}
+            fetchRecords={fetchRecords}
             close={() =>
               handleBookCategoryForm({ open: false, type: "add", data: null })
             }
           />
         ) : (
           <EditBookCategory
-            fetchRecords={fetchBooks}
+            fetchRecords={fetchRecords}
             data={bookCategoryForm.data}
             close={() =>
               handleBookCategoryForm({ open: false, type: "add", data: null })

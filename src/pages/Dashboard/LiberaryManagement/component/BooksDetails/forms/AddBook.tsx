@@ -35,7 +35,9 @@ const AddBook = observer(({close, fetchRecords} :any) => {
             message: `${data.message}`,
             type: "success",
           });
-          fetchRecords()
+          if(fetchRecords){
+            fetchRecords()
+          }
           close()
           resetForm();
         })

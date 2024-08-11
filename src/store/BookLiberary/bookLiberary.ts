@@ -37,6 +37,13 @@ class BookLiberary {
     totalPages: 0,
   };
 
+  booksCategory = {
+    loading: false,
+    data: [],
+    currentPage: 1,
+    totalPages: 0,
+  };
+
   constructor() {
     makeObservable(this, {
       booksCounts: observable,
@@ -45,6 +52,7 @@ class BookLiberary {
       booksData: observable,
       bookForm: observable,
       bookCategoryForm:observable,
+      booksCategory : observable,
       getBooksCounts: action,
       getBooksCategoryCounts: action,
       getBookUsersCounts: action,
@@ -55,7 +63,9 @@ class BookLiberary {
       updateBook:action,
       handleBookCategoryForm:action,
       createBookCategory:action,
-      updateBookCategory:action
+      updateBookCategory:action,
+      getAllBooksCategory:action,
+      getSingleBookCategory:action
     });
   }
 
@@ -162,6 +172,15 @@ class BookLiberary {
     }
   };
 
+  getSingleBookCategory = async (sendData: any) => {
+    try {
+      const { data } = await axios.get(`/liberary/book/category/single/${sendData.id}`);
+      return data;
+    } catch (err: any) {
+      return Promise.reject(err?.response || err);
+    }
+  };
+
   getAllBooks = async (sendData: any) => {
     try {
       this.booksData.loading = true;
@@ -177,6 +196,24 @@ class BookLiberary {
       return Promise.reject(err?.response || err);
     } finally {
       this.booksData.loading = false;
+    }
+  };
+
+  getAllBooksCategory = async (sendData: any) => {
+    try {
+      this.booksCategory.loading = true;
+      const { data } = await axios.post(
+        "/liberary/book/category/get",
+        { company: [store.auth.getCurrentCompany()] },
+        { params: { ...sendData } }
+      );
+      this.booksCategory.data = data?.data?.data || [];
+      this.booksCategory.totalPages = data?.data?.totalPages || 0;
+      return data.data;
+    } catch (err: any) {
+      return Promise.reject(err?.response || err);
+    } finally {
+      this.booksCategory.loading = false;
     }
   };
 

@@ -44,7 +44,7 @@ const EditBook = observer(({ close, data, fetchRecords }: any) => {
     resetForm,
   }: any) => {
     try {
-      let formData : any = {
+      let formData: any = {
         ...values,
       };
 
@@ -59,7 +59,7 @@ const EditBook = observer(({ close, data, fetchRecords }: any) => {
           filename: formData?.coverImage?.file?.name,
           type: formData?.coverImage?.file?.type,
           isDeleted: formData?.coverImage?.isDeleted || 0,
-          isAdd: formData?.coverImage?.isAdd || 0
+          isAdd: formData?.coverImage?.isAdd || 0,
         };
         formData.coverImage = fileData;
       } else {
@@ -72,14 +72,16 @@ const EditBook = observer(({ close, data, fetchRecords }: any) => {
         }
       }
 
-      updateBook(generateSendBookResponse({ ...formData, _id : book?._id }))
+      updateBook(generateSendBookResponse({ ...formData, _id: book?._id }))
         .then((data) => {
           openNotification({
             title: "Successfully Updated",
             message: `${data.message}`,
             type: "success",
           });
-          fetchRecords();
+          if (fetchRecords) {
+            fetchRecords();
+          }
           close();
           resetForm();
         })
@@ -109,7 +111,7 @@ const EditBook = observer(({ close, data, fetchRecords }: any) => {
           initialValues={generateBookInitialValues(book)}
           showError={showError}
           setShowError={setShowError}
-          close={() => {}}
+          close={close}
           handleSubmit={handleSubmitForm}
           isEdit={true}
         />

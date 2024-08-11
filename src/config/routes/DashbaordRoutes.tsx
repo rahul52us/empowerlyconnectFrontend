@@ -139,6 +139,8 @@ const ManagerUserAttendence = lazy(
 );
 
 const LiberaryManagement = lazy(() => import("../../pages/Dashboard/LiberaryManagement/LiberaryManagement"))
+const LiberaryBookCategory = lazy(() => import("../../pages/Dashboard/LiberaryManagement/component/BookCategoryDetails/BookCategoryDetails"))
+
 export const DashboardRoutes = [
   {
     element: <DashboardIndex />,
@@ -327,6 +329,11 @@ export const DashboardRoutes = [
   {
     element : <LiberaryManagement />,
     path : dashboard.liberary.books.index,
+    privateRoutes: true
+  },
+  {
+    element : <LiberaryBookCategory />,
+    path : dashboard.liberary.books.category.index,
     privateRoutes: true
   },
 
