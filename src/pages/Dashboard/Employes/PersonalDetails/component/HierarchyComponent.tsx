@@ -121,6 +121,7 @@ const UserHierarchy: React.FC<ApiResponse> = ({ data }) => {
                         designation: designation,
                         department: department,
                         code: subordinate.userDetails?.code,
+                        pic: subordinate.userDetails?.pic
                       };
                     })
                   : []

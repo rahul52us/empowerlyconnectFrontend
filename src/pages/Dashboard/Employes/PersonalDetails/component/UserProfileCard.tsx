@@ -14,6 +14,7 @@ interface User {
   code: string;
   title: string;
   designation?: any;
+  pic?:any
 }
 const UserProfileCard = ({
   userData,
@@ -35,9 +36,9 @@ const UserProfileCard = ({
       <Grid templateColumns={"1fr 3fr"} alignItems={"center"}>
         <Avatar
           name={userData.name}
-          src={
-            "https://img.freepik.com/free-photo/indoor-shot-attractive-young-woman-with-glasses-posing-against-white-wall_273609-20347.jpg?t=st=1718643092~exp=1718646692~hmac=2c597a3db8b25f38bcb6f2b1413e32cb642bbbb1a1f91ccb9d1087dbbced49a4&w=1060"
-          }
+          mr={3}
+          src=
+            {userData?.pic?.url || "https://via.placeholder.com/300x400?text=No+thumbnail+found"}
         />
         <Box textTransform={"capitalize"} fontSize={"sm"}>
           <Text fontWeight="bold">{userData.name}</Text>
