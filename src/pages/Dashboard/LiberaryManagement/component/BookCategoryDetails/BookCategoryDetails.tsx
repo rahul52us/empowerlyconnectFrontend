@@ -169,13 +169,13 @@ return (
     ) : (
         <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={2} mb={8}>
         {booksCategory.data.map((item: any, index: number) => (
-            <BookCategory
+        <BookCategory
             item={item}
             key={index}
             onClick={(item: any, type: string) => {
                 handleBookCategoryForm({ open: true, data: item, type: type });
-            }}
-            />
+        }}
+        />
         ))}
         </SimpleGrid>
     )}

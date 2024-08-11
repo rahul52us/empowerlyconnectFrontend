@@ -31,6 +31,7 @@ const BookDetailDrawer = observer(({ fetchRecords }: any) => {
         ) : bookForm.type === "add" ? (
           <AddBook
             fetchRecords={fetchRecords}
+            data={bookForm.data}
             close={() =>
               handleBookForm({ open: false, type: "add", data: null })
             }
