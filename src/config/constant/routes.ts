@@ -74,9 +74,9 @@ export const dashboard = {
   },
   liberary: {
     books : {
-      index : `${dashboardName}/liberary/books`,
+      index : `/${dashboardName}/liberary/books`,
       category : {
-        index : `${dashboardName}/liberary/books/category`
+        index : `/${dashboardName}/liberary/books/category`
       }
     }
   },

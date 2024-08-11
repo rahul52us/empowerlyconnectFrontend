@@ -1,71 +1,149 @@
 import { Box, Heading, SimpleGrid, Flex, Icon, Button } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useEffect, useState, useCallback } from "react";
-import { FaBook } from "react-icons/fa6";
+import { FaBook, FaPersonCircleQuestion } from "react-icons/fa6";
 import MainPagePagination from "../../../../../config/component/pagination/MainPagePagination";
 import { getStatusType } from "../../../../../config/constant/statusCode";
 import store from "../../../../../store/store";
 import NotFoundData from "../../../../../config/component/NotFound/NotFoundData";
 import { useQueryParams } from "../../../../../config/component/customHooks/useQuery";
-import { FaPlus } from "react-icons/fa";
+import { FaBookOpen, FaBookReader, FaPlus } from "react-icons/fa";
 import BookDetailDrawer from "../BookDetailDrawers";
 import BookCategory from "./element/BookCategory";
+import SummaryWidget from "../../../../../config/component/WigdetCard/SummaryWidget";
+import DashPageHeader from "../../../../../config/component/common/DashPageHeader/DashPageHeader";
+import { liberaryBreadCrumb } from "../../../utils/breadcrumb.constant";
 // import BookCard from "../BooksDetails/element/BookCard";
 
 const BookDetails = observer(() => {
-  const {
+const {
     auth: { openNotification },
     bookLiberary: {
-      getAllBooksCategory,
-      booksCategory,
-      handleBookForm,
-      handleBookCategoryForm,
+    getAllBooksCategory,
+    booksCategory,
+    handleBookCategoryForm,
+    getBooksCounts,
+    booksCounts,
+    bookCategoryCount,
+    bookUsersCount,
+    getBooksCategoryCounts,
+    getBookUsersCounts,
     },
-  } = store;
+} = store;
 
-  const { getQueryParam, setQueryParam } = useQueryParams();
-  const [currentPage, setCurrentPage] = useState(() =>
+const { getQueryParam, setQueryParam } = useQueryParams();
+const [currentPage, setCurrentPage] = useState(() =>
     getQueryParam("page") ? Number(getQueryParam("page")) : 1
-  );
+);
 
-  const fetchRecords = useCallback(
+const fetchRecords = useCallback(
     (page: number = currentPage) => {
-      getAllBooksCategory({ page, limit: 10 })
+    getAllBooksCategory({ page, limit: 10 })
         .then(() => {})
         .catch((err: any) => {
-          openNotification({
+        openNotification({
             title: "Failed to Retrieve Books Category",
             message: err?.data?.message,
             type: getStatusType(err.status),
-          });
+        });
         });
     },
     [getAllBooksCategory, openNotification, currentPage]
-  );
+);
 
-  useEffect(() => {
+useEffect(() => {
     fetchRecords(currentPage);
-  }, [currentPage, fetchRecords]);
+}, [currentPage, fetchRecords]);
 
-  const handlePageChange = (page: any) => {
+const handlePageChange = (page: any) => {
     setCurrentPage(page.selected);
     setQueryParam("page", page.selected);
-  };
+};
 
-  return (
-    <Box>
-      <Flex mb={6} justifyContent={"space-between"}>
+const fetchData = (getDataFn: any) =>
+    new Promise((resolve, reject) => {
+    getDataFn().then(resolve).catch(reject);
+    });
+
+useEffect(() => {
+    Promise.all([
+    fetchData(getBooksCounts),
+    fetchData(getBooksCategoryCounts),
+    fetchData(getBookUsersCounts),
+    ])
+    .then(() => {})
+    .catch((err: any) => {
+        openNotification({
+        title: "Failed to Retrieve Counts",
+        message: err?.data?.message,
+        type: getStatusType(err.status),
+        });
+    });
+}, [
+    getBooksCounts,
+    getBooksCategoryCounts,
+    getBookUsersCounts,
+    openNotification,
+]);
+
+const summaryData = [
+    {
+    label: "Books Category",
+    value: bookCategoryCount.data,
+    loading: bookCategoryCount.loading,
+    icon: FaBookReader,
+    colorScheme: "teal",
+    description: "Here is an description for the users",
+    },
+    {
+    label: "Total Books",
+    value: booksCounts.data,
+    loading: booksCounts.loading,
+    icon: FaBookOpen,
+    colorScheme: "teal",
+    description: "Total No. of Books Counts",
+    },
+    {
+    label: "Total Users",
+    value: bookUsersCount.data,
+    loading: bookUsersCount.loading,
+    icon: FaPersonCircleQuestion,
+    colorScheme: "teal",
+    description: "Here is an description for the users",
+    },
+];
+
+return (
+    <Box px={{ base: 2, md: 4 }}>
+    <DashPageHeader
+        title="Dashboard"
+        breadcrumb={liberaryBreadCrumb.liberary}
+    />
+    <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6} mb={6}>
+        {summaryData.map((data, index) => (
+        <SummaryWidget
+            key={index}
+            label={data.label}
+            value={data.value}
+            icon={data.icon}
+            colorScheme={data.colorScheme}
+            description={data.description}
+            loading={data.loading}
+        />
+        ))}
+    </SimpleGrid>
+    <Flex mb={6} justifyContent={"space-between"}>
         <Heading
-          display="flex"
-          alignItems="center"
-          fontSize={{ base: "xl", md: "2xl" }}
-          color="teal.600"
+        display="flex"
+        alignItems="center"
+        fontSize={{ base: "xl", md: "2xl" }}
+        color="teal.600"
         >
-          <Icon as={FaBook} boxSize={6} mr={2} />
-          Books Category
+        <Icon as={FaBook} boxSize={6} mr={2} />
+        Books Category
         </Heading>
         <Flex columnGap={4}>
-          <Button
+        <Button
             leftIcon={<FaPlus />}
             colorScheme="teal"
             variant="solid"
@@ -74,55 +152,43 @@ const BookDetails = observer(() => {
             _active={{ bg: "teal.700" }}
             _focus={{ boxShadow: "outline" }}
             onClick={() =>
-              handleBookCategoryForm({ open: true, data: null, type: "add" })
+            handleBookCategoryForm({ open: true, data: null, type: "add" })
             }
-          >
+        >
             Add Category
-          </Button>
-          <Button
-            leftIcon={<FaPlus />}
-            colorScheme="teal"
-            variant="solid"
-            size="lg"
-            _hover={{ bg: "teal.600" }}
-            _active={{ bg: "teal.700" }}
-            _focus={{ boxShadow: "outline" }}
-            onClick={() =>
-              handleBookForm({ open: true, data: null, type: "add" })
-            }
-          >
-            Add Book
-          </Button>
+        </Button>
         </Flex>
-      </Flex>
-      {booksCategory.data.length === 0 && !booksCategory.loading ? (
+    </Flex>
+    {booksCategory.data.length === 0 && !booksCategory.loading ? (
         <NotFoundData
-          onClick={() => {}}
-          btnText="Add First Book"
-          title="No Books found"
-          subTitle="Start by creating a new book to get started."
+        onClick={() => {}}
+        btnText="Add First Book"
+        title="No Books found"
+        subTitle="Start by creating a new book to get started."
         />
-      ) : (
+    ) : (
         <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={2} mb={8}>
-          {booksCategory.data.map((item: any, index: number) => (
-            <BookCategory item={item} key={index}
+        {booksCategory.data.map((item: any, index: number) => (
+            <BookCategory
+            item={item}
+            key={index}
             onClick={(item: any, type: string) => {
-                handleBookCategoryForm({ open: true, data: item, type: type })
-              }}
+                handleBookCategoryForm({ open: true, data: item, type: type });
+            }}
             />
-          ))}
+        ))}
         </SimpleGrid>
-      )}
-      <Flex justifyContent="center" mt={8}>
+    )}
+    <Flex justifyContent="center" mt={8}>
         <MainPagePagination
-          currentPage={currentPage}
-          onPageChange={handlePageChange}
-          totalPages={booksCategory.totalPages}
+        currentPage={currentPage}
+        onPageChange={handlePageChange}
+        totalPages={booksCategory.totalPages}
         />
-      </Flex>
-      <BookDetailDrawer fetchRecords={fetchRecords} />
+    </Flex>
+    <BookDetailDrawer fetchRecords={fetchRecords} />
     </Box>
-  );
+);
 });
 
 export default BookDetails;

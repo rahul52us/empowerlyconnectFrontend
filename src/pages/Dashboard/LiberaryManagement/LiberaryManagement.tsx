@@ -9,6 +9,7 @@ import { FaPersonCircleQuestion } from "react-icons/fa6";
 import { getStatusType } from "../../../config/constant/statusCode";
 import BookDetails from "./component/BooksDetails/BookDetails";
 import { FaBookOpen, FaBookReader } from "react-icons/fa";
+import { dashboard } from "../../../config/constant/routes";
 
 const BookLiberary = observer(() => {
   const {
@@ -57,6 +58,7 @@ const BookLiberary = observer(() => {
       icon: FaBookReader,
       colorScheme: "teal",
       description: "Here is an description for the users",
+      link:dashboard.liberary.books.category.index
     },
     {
       label: "Total Books",
@@ -91,6 +93,7 @@ const BookLiberary = observer(() => {
             icon={data.icon}
             colorScheme={data.colorScheme}
             description={data.description}
+            link={data.link}
             loading={data.loading}
           />
         ))}
