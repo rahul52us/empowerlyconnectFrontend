@@ -101,15 +101,17 @@ const BookCard: React.FC<BookCardProps> = ({ book, handleBookForm }) => {
         <Text fontSize="sm" isTruncated>
           ISBN: {book.isbn}
         </Text>
-        <Wrap>
-          {book.language?.map((lang: string) => (
-            <WrapItem key={lang}>
-              <Tag colorScheme="blue" size="sm" variant="solid">
-                {lang}
-              </Tag>
-            </WrapItem>
-          ))}
-        </Wrap>
+        {Array.isArray(book.language) && (
+          <Wrap>
+            {book.language?.map((lang: string) => (
+              <WrapItem key={lang}>
+                <Tag colorScheme="blue" size="sm" variant="solid">
+                  {lang}
+                </Tag>
+              </WrapItem>
+            ))}
+          </Wrap>
+        )}
         <Flex align="center">
           <Badge colorScheme="green" mr="2">
             {book.availableCopies} Available / {book.totalCopies} Total
@@ -123,13 +125,15 @@ const BookCard: React.FC<BookCardProps> = ({ book, handleBookForm }) => {
         <Text fontSize="sm" noOfLines={[1, 2, 3]} minHeight={12}>
           {book.description}
         </Text>
-        <Flex wrap="wrap" minH={10}>
-          {book.tags.map((tag: string) => (
-            <Tag key={tag} colorScheme="teal" mr="2" mb="2">
-              {tag}
-            </Tag>
-          ))}
-        </Flex>
+        {Array.isArray(book.tags) && (
+          <Flex wrap="wrap" minH={10}>
+            {book.tags.map((tag: string) => (
+              <Tag key={tag} colorScheme="teal" mr="2" mb="2">
+                {tag}
+              </Tag>
+            ))}
+          </Flex>
+        )}
       </Stack>
     </Box>
   );
