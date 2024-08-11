@@ -89,7 +89,7 @@ const BookCard: React.FC<BookCardProps> = ({ book, handleBookForm }) => {
               onClick={() => handleBookForm(book, "edit")}
               variant="ghost"
               colorScheme="teal"
-              aria-label="Edit Project"
+              aria-label="Edit Book"
             />
           </Tooltip>
         </Flex>

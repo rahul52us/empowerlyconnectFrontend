@@ -54,13 +54,13 @@ const BookCategory = observer(({ item, onClick }: any) => {
           >
             {item.title}
           </Heading>
-          <Tooltip label="Edit Book" aria-label="Edit Book">
+          <Tooltip label="Edit Category" aria-label="Edit Category">
             <IconButton
               icon={<EditIcon />}
               onClick={() => onClick(item, "edit")}
               variant="ghost"
               colorScheme="teal"
-              aria-label="Edit Project"
+              aria-label="Edit Category"
             />
           </Tooltip>
         </Flex>
