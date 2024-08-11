@@ -270,14 +270,14 @@ const sidebarDatas: SidebarItem[] = [
       id: 80,
       name: "Liberary",
       icon: <FaBuilding />,
-      url: dashboard.liberary.index,
+      url: dashboard.liberary.books.index,
       role: ["admin", "superadmin"],
       children: [
         {
           id: 81,
           name: "Liberay",
           icon: <FaUsers />,
-          url: dashboard.liberary.index,
+          url: dashboard.liberary.books.index,
           role: ["admin", "superadmin"],
         },
       ],

@@ -326,7 +326,7 @@ export const DashboardRoutes = [
   // Books Liberary
   {
     element : <BookLiberary />,
-    path : dashboard.liberary.index,
+    path : dashboard.liberary.books.index,
     privateRoutes: true
   },
 

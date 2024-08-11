@@ -73,7 +73,9 @@ export const dashboard = {
     project : `/${dashboardName}/project?page=1`
   },
   liberary: {
-    index : `${dashboardName}/liberary`
+    books : {
+      index : `${dashboardName}/liberary/books`
+    }
   },
   // project
   project : {
