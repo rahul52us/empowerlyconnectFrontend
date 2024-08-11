@@ -2,9 +2,9 @@
 export const generateBookInitialValues = (data: any = {}, categoryData?: any) => {
   const categories = categoryData
     ? [{ label: categoryData?.title, value: categoryData?._id }]
-    : Array.isArray(data?.categories)
-    ? data.categories
-    : [];
+    : data.categories ? Array.isArray(data?.categories)
+    ? data.categories.map((item : any) => ({label : item.title, value : item._id}))
+    : [] : [];
 
   return {
     title: data.title || "",

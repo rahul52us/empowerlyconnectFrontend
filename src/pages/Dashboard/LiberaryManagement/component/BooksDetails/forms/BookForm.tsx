@@ -88,7 +88,7 @@ const BookForm = observer(
                     placeholder="Category"
                     label="Category"
                     type="select"
-                    options={languages}
+                    options={[]}
                     onChange={(e) => setFieldValue("categories", e)}
                     value={values.categories}
                     isMulti={true}
