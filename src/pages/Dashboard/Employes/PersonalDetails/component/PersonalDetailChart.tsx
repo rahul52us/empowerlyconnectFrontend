@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Box, Text, VStack, HStack } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useParams } from "react-router-dom";
@@ -6,6 +6,7 @@ import store from "../../../../../store/store";
 import { getStatusType } from "../../../../../config/constant/statusCode";
 // import HierarchyComponent from "./HierarchyComponent";
 import UserHierarchy from "./HierarchyComponent";
+import PageLoader from "../../../../../config/component/Loader/PageLoader";
 
 const PersonalDetailUsersChart = observer(() => {
   const { id } = useParams();
@@ -15,7 +16,7 @@ const PersonalDetailUsersChart = observer(() => {
   } = store;
   const [treeData, setTreeData] = useState<any[]>([]);
 
-  const [data, setData] = useState<any>({});
+  const [data, setData] = useState<any>({ loading: false, data: {} });
 
   const transformDataToTree = (data: any) => {
     const userMap: Record<string, any> = {};
@@ -67,36 +68,41 @@ const PersonalDetailUsersChart = observer(() => {
       .map((user: any) => userMap[user._id]);
   };
 
-  const getUsersActionsDetails = async () => {
+  const getUsersActionsDetails = useCallback(async() => {
     try {
+      setData({ loading: true, data: {} });
       const { data } = await getUsersSubOrdinateActionsDetails({ id });
-      setData(data);
+      setData({ loading: false, data: data });
       // console.log(data);
       const tree = transformDataToTree(data);
       setTreeData(tree);
     } catch (err: any) {
-      console.log(err);
       openNotification({
         type: getStatusType(err.status),
         title: "Failed to get details",
         message: err?.message,
       });
+      setData({ loading: false, data: {} });
     }
-  };
+  },[getUsersSubOrdinateActionsDetails,id,openNotification]);
 
   useEffect(() => {
     getUsersActionsDetails();
-  }, [id]);
+  }, [id, getUsersActionsDetails]);
 
   return (
-    <>
-      <VStack align="start" spacing={4} display={'none'}>
+    <PageLoader
+      loading={data.loading}
+      noRecordFoundText={Object.keys(data.data).length === 0}
+      height="0vh"
+    >
+      <VStack align="start" spacing={4} display={"none"}>
         {treeData.map((manager) => (
           <TreeNode key={manager.id} node={manager} />
         ))}
       </VStack>
-      <UserHierarchy data={data} />
-    </>
+      <UserHierarchy data={data.data} />
+    </PageLoader>
   );
 });
 

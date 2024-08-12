@@ -32,7 +32,6 @@ const PersonalDetailContainer = observer(() => {
         username: values.username || undefined,
         code : values.code || undefined
       });
-      console.log(response);
       setSearchData((prev) => ({ ...prev, data: response.data }));
     } catch (err: any) {
       openNotification({

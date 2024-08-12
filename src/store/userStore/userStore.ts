@@ -116,7 +116,6 @@ class Userstore {
       return data;
     } catch (err: any) {
       return Promise.reject(err?.response || err);
-    } finally {
     }
   };
 
