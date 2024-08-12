@@ -11,9 +11,14 @@ import {
   useColorModeValue,
   VStack,
   Icon,
+  Avatar,
+  Button,
+  Tooltip,
+  useClipboard,
+  Badge,
 } from "@chakra-ui/react";
 import React from "react";
-import { MdLocationOn, MdEvent, MdAttachMoney } from "react-icons/md";
+import { MdLocationOn, MdEvent, MdAttachMoney, MdContentCopy } from "react-icons/md";
 import ShowData from "../../../../Employes/component/EmployeDetails/component/ShowData";
 
 interface TripData {
@@ -120,8 +125,8 @@ const TripDetails: React.FC<{ trip: TripData }> = ({ trip }) => {
             </Tag>
           </HStack>
           <Text fontSize="sm" color={secondaryTextColor}>
-          Created by {trip.createdBy && trip?.createdBy?.length > 0 && trip?.createdBy[0]?.username} on{" "}
-          {new Date(trip.createdAt).toLocaleDateString()}
+            Created by {trip.createdBy?.[0]?.username} on{" "}
+            {new Date(trip.createdAt).toLocaleDateString()}
           </Text>
         </VStack>
       </Flex>
@@ -251,22 +256,14 @@ const TripDetails: React.FC<{ trip: TripData }> = ({ trip }) => {
           <Text fontSize="2xl" fontWeight="bold" color={textColor} mb={6}>
             Participants
           </Text>
-          <Grid templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }} gap={6}>
-            {trip.participants.map((participant) => (
-              <HStack
-                key={participant?._id}
-                spacing={4}
-                p={5}
-                borderWidth="1px"
-                borderRadius="md"
-                bg={boxHoverBg}
-                boxShadow="sm"
-              >
-                <Tag colorScheme="teal" size="lg">
-                  {participant?.role}
-                </Tag>
-                <Text color={textColor}>{participant?.username}</Text>
-              </HStack>
+          <Grid templateColumns={{ base: "1fr", lg: "repeat(2, 1fr)" }} gap={6}>
+            {trip.participants.map((participant: any) => (
+              <ParticipantCard
+                key={participant?.user?._id}
+                participant={participant}
+                textColor={textColor}
+                boxHoverBg={boxHoverBg}
+              />
             ))}
           </Grid>
         </Box>
@@ -274,5 +271,66 @@ const TripDetails: React.FC<{ trip: TripData }> = ({ trip }) => {
     </Box>
   );
 };
+
+const ParticipantCard: React.FC<{ participant: any; textColor: string; boxHoverBg: string }> = ({
+  participant,
+  textColor,
+  boxHoverBg,
+}) => {
+  const { hasCopied, onCopy } = useClipboard(participant?.user?.username);
+
+  const statusColor = participant?.isActive ? "green" : "red";
+  const statusLabel = participant?.isActive ? "Active" : "Inactive";
+
+  return (
+    <HStack
+      spacing={4}
+      p={4}
+      borderWidth="1px"
+      borderRadius="lg"
+      bg={boxHoverBg}
+      boxShadow="base"
+      transition="all 0.3s ease"
+      _hover={{
+        transform: "translateY(-2px)",
+        boxShadow: "lg",
+      }}
+      align="center"
+    >
+      <Avatar
+        size="md"
+        src={participant?.user?.pic?.url || undefined}
+        name={participant?.user?.username}
+      />
+      <VStack align="start" spacing={1} w="full">
+        <HStack justify="space-between" w="full">
+          <Box>
+            <Text fontWeight="bold" color={textColor} fontSize="md">
+              {participant?.user?.name || participant?.user?.username}{" "}
+              <Text as="span" color="gray.500">
+                ({participant?.user?.code})
+              </Text>
+            </Text>
+            <Badge colorScheme={statusColor} mt={1}>
+              {statusLabel}
+            </Badge>
+          </Box>
+          <Tooltip label={hasCopied ? `Username copied!` : `${participant?.user?.username}`} placement="top">
+            <Button
+              size="xs"
+              onClick={onCopy}
+              variant="outline"
+              colorScheme={hasCopied ? "green" : "blue"}
+              leftIcon={<Icon as={MdContentCopy} />}
+            >
+              {hasCopied ? "Copied!" : "Copy"}
+            </Button>
+          </Tooltip>
+        </HStack>
+      </VStack>
+    </HStack>
+  );
+};
+
 
 export default TripDetails;

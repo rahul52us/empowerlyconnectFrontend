@@ -181,11 +181,11 @@ return (
 					label="Participants"
 					placeholder="Select Participants"
 					name={`participants`}
-					options={companyUsers.map((item : any) => item.user)}
+					options={companyUsers}
 					error={errors.participants}
 					value={values.participants}
-					getOptionLabel={(options: any) => options.username}
-					getOptionValue={(options: any) => options._id}
+					getOptionLabel={(options: any) => options?.user?.username}
+					getOptionValue={(options: any) => options?.user?._id}
 					onChange={(e) => {
 						setFieldValue(`participants`, e);
 					}}

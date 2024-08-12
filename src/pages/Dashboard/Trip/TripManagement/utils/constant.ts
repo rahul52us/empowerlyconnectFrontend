@@ -89,6 +89,6 @@ export const getInitialValues = (data : any) => {
         amount: "",
       },
     ],
-    participants: [{ label: "", value: "" }],
+    participants: [],
   };
 };

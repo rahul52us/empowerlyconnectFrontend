@@ -43,12 +43,12 @@ export const generateTripResponse = async (data: any) => {
   let updatedParticipants : any = []
   if(type === tripTypes[0].value && data?.participants)
   {
-    updatedParticipants = Array.isArray(data?.participants) ? data?.participants?.length ? [data?.participants[0]?._id] : [] : [data?.participants._id]
+    updatedParticipants = Array.isArray(data?.participants) ? data?.participants?.length ? [{user : data?.participants[0]?.user?._id, isActive : true}] : [] : [{user : data?.participants.user?._id, isActive : true}]
   }
   else
   {
     updatedParticipants = data.participants?.map(
-      (item: any) => item.value || item._id
+      (item: any) => ({user : item.user?.value || item.user?._id, isActive : true})
     ) || [];
   }
   const updatedAdditionalExpense = data.additionalExpenses?.map(
