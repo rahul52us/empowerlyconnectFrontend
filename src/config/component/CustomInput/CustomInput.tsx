@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   FormControl,
   FormErrorMessage,
@@ -115,8 +121,8 @@ const CustomInput: React.FC<CustomInputProps> = ({
   ...rest
 }) => {
   const isMounted = useRef(false);
-  const [inputValue, setInputValue] = useState("")
-  const [searchInput, setSearchInput] = useState("")
+  const [inputValue, setInputValue] = useState("");
+  const [searchInput, setSearchInput] = useState("");
   const theme = useTheme();
   const [optionss, setOptions] = useState([]);
 
@@ -127,23 +133,32 @@ const CustomInput: React.FC<CustomInputProps> = ({
     setShowPassword(!showPassword);
   };
 
-
   const fetchSearchResults = useCallback(async (query: string) => {
     if (query.trim() === "") {
       return;
     }
 
     try {
-      const response: any = await store.auth.getCompanyUsers({ page: 1, searchValue: query });
-      setOptions(response.map((it: any) => ({ label: it.user.username, value: it.user._id })));
+      const response: any = await store.auth.getCompanyUsers({
+        page: 1,
+        searchValue: query,
+      });
+      setOptions(
+        response.map((it: any) => ({
+          label: it.user.username,
+          value: it.user._id,
+        }))
+      );
     } catch (error) {
       // console.error("Error fetching search results:", error);
       // setOptions([]);
     }
   }, []);
 
-  const debouncedFetchSearchResults = useMemo(() => debounce(fetchSearchResults, 800), [fetchSearchResults]);
-
+  const debouncedFetchSearchResults = useMemo(
+    () => debounce(fetchSearchResults, 800),
+    [fetchSearchResults]
+  );
 
   const handleSelectChange = (selectedOption: any) => {
     if (onChange) {
@@ -322,16 +337,16 @@ const CustomInput: React.FC<CustomInputProps> = ({
           />
         );
       case "checkbox":
-          return (
-            <Checkbox
-              style={style}
-              name={name}
-              onChange={onChange}
-              isChecked={value}
-              readOnly={readOnly}
-              {...rest}
-            />
-          );
+        return (
+          <Checkbox
+            style={style}
+            name={name}
+            onChange={onChange}
+            isChecked={value}
+            readOnly={readOnly}
+            {...rest}
+          />
+        );
       case "select":
         return (
           <Select
@@ -355,14 +370,41 @@ const CustomInput: React.FC<CustomInputProps> = ({
                 backgroundColor: colorMode === "light" ? "white" : "#2D3748",
                 fontSize: "14px",
               }),
-              option: (styles, { isSelected }) => ({
+              option: (styles, { isSelected, isFocused }) => ({
                 ...styles,
                 backgroundColor:
                   colorMode === "light"
                     ? isSelected
-                      ? "blue"
+                      ? "#4299e1"
+                      : isFocused
+                      ? "gray.100"
                       : "white"
+                    : isSelected
+                    ? "#2b6cb0"
+                    : isFocused
+                    ? "gray.700"
                     : "#2D3748",
+                color: colorMode === "light" ? "black" : "white",
+                border: "none", // Remove the border to avoid white lines
+                padding: "8px 12px",
+                ":hover": {
+                  backgroundColor:
+                    colorMode === "light" ? "#bee3f8" : "#2b6cb0",
+                },
+              }),
+              menu: (baseStyles) => ({
+                ...baseStyles,
+                backgroundColor: colorMode === "light" ? "white" : "#2D3748",
+                borderColor: colorMode === "light" ? "gray.200" : "#4A5568", // Match the border color to the dark mode
+              }),
+              multiValue: (styles) => ({
+                ...styles,
+                backgroundColor: colorMode === "light" ? "#bee3f8" : "#2b6cb0", // Blue with transparency
+                color: colorMode === "light" ? "black" : "white",
+              }),
+              multiValueLabel: (styles) => ({
+                ...styles,
+                color: "blue.400", // Blue color for the label
               }),
             }}
             components={{
@@ -371,11 +413,11 @@ const CustomInput: React.FC<CustomInputProps> = ({
                 <div className="chakra-select__dropdown-indicator" />
               ),
             }}
-            menuPosition={isPortal ? 'fixed' : undefined}
+            menuPosition={isPortal ? "fixed" : undefined}
           />
         );
-      case 'dateAndTime':
-        return(
+      case "dateAndTime":
+        return (
           <Input
             readOnly={readOnly}
             style={style}
@@ -389,7 +431,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
             _placeholder={{ fontSize: "12px" }}
             {...rest}
           />
-        )
+        );
       case "date":
         return (
           <div style={{ position: "relative" }}>
@@ -402,7 +444,6 @@ const CustomInput: React.FC<CustomInputProps> = ({
               disabled={disabled}
               disabledDates={disabledDates}
               usePortal={false}
-
               configs={{
                 dateFormat: "dd-MM-yyyy",
               }}
@@ -542,7 +583,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
             {...rest}
           />
         );
-        case "tags":
+      case "tags":
         return (
           <Box>
             <Input
@@ -575,18 +616,16 @@ const CustomInput: React.FC<CustomInputProps> = ({
                       colorScheme="blue"
                     >
                       <TagLabel>{tag}</TagLabel>
-                      <TagCloseButton
-                        onClick={() => handleTagRemove(tag)}
-                      />
+                      <TagCloseButton onClick={() => handleTagRemove(tag)} />
                     </Tag>
                   </WrapItem>
                 ))}
             </Wrap>
           </Box>
         );
-        case "real-time-search":
-          return (
-            <Select
+      case "real-time-search":
+        return (
+          <Select
             // inputValue={inputValue}
             onInputChange={(newValue) => setSearchInput(newValue)}
             options={optionss}
@@ -603,10 +642,9 @@ const CustomInput: React.FC<CustomInputProps> = ({
             getOptionLabel={getOptionLabel}
             getOptionValue={getOptionValue}
             placeholder={placeholder}
-
             {...rest}
           />
-          );
+        );
       default:
         return (
           <Input

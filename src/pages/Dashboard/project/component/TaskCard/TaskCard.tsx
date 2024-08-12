@@ -30,10 +30,14 @@ const getAvatarUrl = (userId: string) => {
   const { title, description, priority, team_members, endDate } = task;
 
   // Mapping team members to avatars
-  const avatars = team_members.map((member: any) => ({
+  const avatars = team_members?.map((member: any) => ({
     name: `User ${member?.user}`, // Replace with actual user names if available
     src: getAvatarUrl(member?.user),
   }));
+
+  if(!task){
+    return<>ne tasks created</>
+  }
 
   return (
     <Box
@@ -61,7 +65,7 @@ const getAvatarUrl = (userId: string) => {
       </Text>
       <Flex align={"center"} justify={"space-between"} mt={2}>
         <AvatarGroup size="sm" max={3}>
-          {avatars.map((avatar: any, index: number) => (
+          {avatars?.map((avatar: any, index: number) => (
             <Avatar key={index} name={avatar?.name} src={avatar?.src} />
           ))}
         </AvatarGroup>
