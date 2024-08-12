@@ -3,35 +3,34 @@ import FormModel from "../../../../../../config/component/common/FormModel/FormM
 import { useState } from "react";
 import store from "../../../../../../store/store";
 import { getStatusType } from "../../../../../../config/constant/statusCode";
-import { generateProjectInitialValues } from "../../utils/function";
 import AddNewUserForm from "../../../../../../config/component/common/AddNewUserModel/AddNewUserModel";
 
 const AddNewUser = observer(
-  ({ type, title, open, close, item, setFetchProjectData }: any) => {
+  ({ type, title, open, close, item , setFetchData}: any) => {
     const {
-      Project: { addProjectMembers, getSingleProject },
+      tripStore: { addTripMembers, getSingleTrip },
       auth: { openNotification },
     } = store;
     const [showError, setShowError] = useState([]);
 
     const handleSubmit = ({ setSubmitting, values }: any) => {
-      addProjectMembers({ _id: item?._id, ...values, type: type })
-        .then((data: any) => {
-          getSingleProject({ id: item?._id })
-            .then((data: any) => {
-              setFetchProjectData({
-                data: generateProjectInitialValues(data.data),
+      addTripMembers({ _id: item?._id, ...values, type: type })
+        .then((data) => {
+          getSingleTrip({ _id: item?._id })
+            .then((dt) => {
+              setFetchData({
+                data: dt,
               });
+              close();
             })
             .catch(() => {
-              setFetchProjectData({ loading: false, data: null });
+              setFetchData({ loading: false, data: null });
             });
           openNotification({
             title: "Successfully Updated",
             message: `${data.message}`,
             type: "success",
           });
-          close();
         })
         .catch((err) => {
           openNotification({

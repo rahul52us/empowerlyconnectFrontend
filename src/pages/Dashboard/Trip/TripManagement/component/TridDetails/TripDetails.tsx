@@ -17,9 +17,16 @@ import {
   useClipboard,
   Badge,
 } from "@chakra-ui/react";
-import React from "react";
-import { MdLocationOn, MdEvent, MdAttachMoney, MdContentCopy } from "react-icons/md";
+import React, { useState } from "react";
+import {
+  MdLocationOn,
+  MdEvent,
+  MdAttachMoney,
+  MdContentCopy,
+} from "react-icons/md";
 import ShowData from "../../../../Employes/component/EmployeDetails/component/ShowData";
+import { RiUserAddLine } from "react-icons/ri";
+import AddNewUser from "./AddNewUser";
 
 interface TripData {
   _id: string;
@@ -67,11 +74,18 @@ interface TripData {
   }>;
 }
 
-const TripDetails: React.FC<{ trip: TripData }> = ({ trip }) => {
+const TripDetails: React.FC<{ trip: TripData,setTripData: any }> = ({ trip, setTripData }) => {
   const bgColor = useColorModeValue("white", "gray.800");
   const textColor = useColorModeValue("gray.700", "gray.200");
   const secondaryTextColor = useColorModeValue("gray.500", "gray.400");
   const boxHoverBg = useColorModeValue("gray.50", "gray.700");
+
+  const [addNewUser, setAddNewUser] = useState<any>({
+    type: null,
+    data: null,
+    open: false,
+    title : null
+  });
 
   return (
     <Box
@@ -92,8 +106,8 @@ const TripDetails: React.FC<{ trip: TripData }> = ({ trip }) => {
           borderRadius="lg"
           boxSize={{ base: "150px", lg: "200px" }}
           objectFit="cover"
-          src={trip.thumbnail.url}
-          alt={trip.thumbnail.name}
+          src={trip.thumbnail?.url}
+          alt={trip.thumbnail?.name}
           mb={{ base: 4, lg: 0 }}
           boxShadow="md"
         />
@@ -253,9 +267,22 @@ const TripDetails: React.FC<{ trip: TripData }> = ({ trip }) => {
         )}
 
         <Box>
-          <Text fontSize="2xl" fontWeight="bold" color={textColor} mb={6}>
-            Participants
-          </Text>
+          <Flex justifyContent="space-between">
+            <Text fontSize="2xl" fontWeight="bold" color={textColor} mb={6}>
+              Participants
+            </Text>
+            <Button
+              leftIcon={<RiUserAddLine />}
+              variant="outline"
+              size="sm"
+              rounded="full"
+              onClick={
+                () => setAddNewUser({ type: "participants", open: true, data : 'user', title: "New Member" })
+              }
+            >
+              Invite New
+            </Button>
+          </Flex>
           <Grid templateColumns={{ base: "1fr", lg: "repeat(2, 1fr)" }} gap={6}>
             {trip.participants.map((participant: any) => (
               <ParticipantCard
@@ -268,15 +295,26 @@ const TripDetails: React.FC<{ trip: TripData }> = ({ trip }) => {
           </Grid>
         </Box>
       </Stack>
+      {addNewUser.open && addNewUser.data && (
+        <AddNewUser
+          open={addNewUser.open}
+          type={addNewUser.type}
+          data={addNewUser.data}
+          title={addNewUser.title}
+          item={trip}
+          setFetchData={setTripData}
+          close={() => setAddNewUser({ open: false, data: null, type: null, title : 'user' })}
+        />
+      )}
     </Box>
   );
 };
 
-const ParticipantCard: React.FC<{ participant: any; textColor: string; boxHoverBg: string }> = ({
-  participant,
-  textColor,
-  boxHoverBg,
-}) => {
+const ParticipantCard: React.FC<{
+  participant: any;
+  textColor: string;
+  boxHoverBg: string;
+}> = ({ participant, textColor, boxHoverBg }) => {
   const { hasCopied, onCopy } = useClipboard(participant?.user?.username);
 
   const statusColor = participant?.isActive ? "green" : "red";
@@ -315,7 +353,12 @@ const ParticipantCard: React.FC<{ participant: any; textColor: string; boxHoverB
               {statusLabel}
             </Badge>
           </Box>
-          <Tooltip label={hasCopied ? `Username copied!` : `${participant?.user?.username}`} placement="top">
+          <Tooltip
+            label={
+              hasCopied ? `Username copied!` : `${participant?.user?.username}`
+            }
+            placement="top"
+          >
             <Button
               size="xs"
               onClick={onCopy}
@@ -331,6 +374,5 @@ const ParticipantCard: React.FC<{ participant: any; textColor: string; boxHoverB
     </HStack>
   );
 };
-
 
 export default TripDetails;

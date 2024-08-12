@@ -48,7 +48,7 @@ const ViewTripData = observer(({ item, open, onClose }: any) => {
         {
             tripData?.data &&
             <Box>
-              <TripDetails trip={tripData?.data} />
+              <TripDetails trip={tripData?.data} setTripData={setTripData}/>
             </Box>
         }
 

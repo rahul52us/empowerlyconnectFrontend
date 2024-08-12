@@ -47,9 +47,22 @@ class TripStore {
       getTripCounts:action,
       getSingleTrip:action,
       getUserTripTypeCounts:action,
-      getTripTypesCounts:action
+      getTripTypesCounts:action,
+      addTripMembers:action
     });
   }
+
+  addTripMembers = async (sendData: any) => {
+    try {
+      const { data } = await axios.put(`/trip/add/member/${sendData._id}`, {
+        ...sendData,
+        company: store.auth.getCurrentCompany(),
+      });
+      return data;
+    } catch (err: any) {
+      return Promise.reject(err?.response || err);
+    }
+  };
 
   createTrip = async (sendData : any) => {
     try {
