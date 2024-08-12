@@ -120,7 +120,7 @@ const BookCard: React.FC<BookCardProps> = ({ book, handleBookForm }) => {
             <Badge colorScheme="red">Reference Only</Badge>
           )}
           <Spacer />
-          <StarRatingIcon ratings={book.ratings || 0} color="red" />
+          <StarRatingIcon rating={book.ratings || 0} />
         </Flex>
         <Text fontSize="sm" noOfLines={[1, 2, 3]} minHeight={12}>
           {book.description}
