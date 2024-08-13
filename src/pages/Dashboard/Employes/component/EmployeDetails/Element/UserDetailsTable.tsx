@@ -129,9 +129,9 @@ const UserDetailsTable = observer(() => {
       key: "designation",
       type: "component",
       metaData: {
-        component: () => (
+        component: (dt : any) => (
           <Box m={1}>
-            <Avatar src="" />
+            <Avatar src={dt?.pic?.url || undefined} name={dt?.name}/>
           </Box>
         ),
       },
