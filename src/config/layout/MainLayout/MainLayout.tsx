@@ -1,6 +1,6 @@
 import { Suspense, useEffect } from "react";
 import { Outlet, useLocation } from "react-router-dom";
-import Footer from "./FooterLayout/FooterLayout";
+// import Footer from "./FooterLayout/FooterLayout";
 import HeaderLayout from "./HeaderLayout/HeaderLayout";
 import Loader from "../../component/Loader/Loader";
 import {
@@ -12,6 +12,7 @@ import { observer } from "mobx-react-lite";
 import { useColorModeValue, useMediaQuery, useTheme } from "@chakra-ui/react";
 import styled from "styled-components";
 import { main } from "../../constant/routes";
+import Footer2 from "./FooterLayout/Footer2";
 
 const MainLayout = observer(() => {
   const theme = useTheme();
@@ -34,7 +35,8 @@ const MainLayout = observer(() => {
         <Suspense fallback={<Loader height="90vh" />}>
           <Outlet />
         </Suspense>
-        {location.pathname !== main.profile && <Footer />}
+        {/* {location.pathname !== main.profile && <Footer />} */}
+        {location.pathname !== main.profile && <Footer2 />}
       </ContentContainer>
     </div>
   );
