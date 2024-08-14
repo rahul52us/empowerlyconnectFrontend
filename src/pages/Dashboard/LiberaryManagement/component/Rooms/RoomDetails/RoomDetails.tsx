@@ -14,7 +14,7 @@ import { MdRoomPreferences } from "react-icons/md";
 const RoomDetails = observer(() => {
   const {
     auth: { openNotification },
-    bookLiberary: { getAllRooms, roomData, handleRoomForm },
+    bookLiberary: { getAllRooms, roomData, handleRoomForm, handleRoomSeatForm },
   } = store;
 
   const { getQueryParam, setQueryParam } = useQueryParams();
@@ -93,6 +93,9 @@ const RoomDetails = observer(() => {
               handleForm={(item: any, type: string) =>
                 handleRoomForm({ open: true, data: item, type: type })
               }
+              handleAddSeat={(item :any, type : string) => {
+                handleRoomSeatForm({ open: true, data: item, type: type })
+              }}
             />
           ))}
         </SimpleGrid>

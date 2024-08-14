@@ -14,12 +14,12 @@ import RoomDetails from "./RoomDetails";
 const BookLiberary = observer(() => {
   const {
     bookLiberary: {
-      getBooksCounts,
-      booksCounts,
+      getRoomsCounts,
+      roomsCounts,
       bookCategoryCount,
-      bookUsersCount,
+      roomSeatCounts,
       getBooksCategoryCounts,
-      getBookUsersCounts,
+      getRoomsSeatCounts,
     },
     auth: { openNotification },
   } = store;
@@ -31,9 +31,9 @@ const BookLiberary = observer(() => {
 
   useEffect(() => {
     Promise.all([
-      fetchData(getBooksCounts),
+      fetchData(getRoomsCounts),
       fetchData(getBooksCategoryCounts),
-      fetchData(getBookUsersCounts),
+      fetchData(getRoomsSeatCounts),
     ])
       .then(() => {})
       .catch((err: any) => {
@@ -44,13 +44,21 @@ const BookLiberary = observer(() => {
         });
       });
   }, [
-    getBooksCounts,
+    getRoomsCounts,
     getBooksCategoryCounts,
-    getBookUsersCounts,
+    getRoomsSeatCounts,
     openNotification,
   ]);
 
   const summaryData = [
+    {
+      label: "Total Rooms",
+      value: roomsCounts.data,
+      loading: roomsCounts.loading,
+      icon: FaBookOpen,
+      colorScheme: "teal",
+      description: "Total No. of Room Counts",
+    },
     {
       label: "Books Category",
       value: bookCategoryCount.data,
@@ -61,20 +69,12 @@ const BookLiberary = observer(() => {
       link:dashboard.liberary.books.category.index
     },
     {
-      label: "Total Books",
-      value: booksCounts.data,
-      loading: booksCounts.loading,
-      icon: FaBookOpen,
-      colorScheme: "teal",
-      description: "Total No. of Books Counts",
-    },
-    {
-      label: "Total Users",
-      value: bookUsersCount.data,
-      loading: bookUsersCount.loading,
+      label: "Total Seats",
+      value: roomSeatCounts.data,
+      loading: roomSeatCounts.loading,
       icon: FaPersonCircleQuestion,
       colorScheme: "teal",
-      description: "Here is an description for the users",
+      description: "Here is an description for the Seats",
     },
   ];
 

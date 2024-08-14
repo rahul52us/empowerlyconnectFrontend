@@ -8,16 +8,34 @@ class BookLiberary {
     data: 0,
   };
 
+  roomsCounts = {
+    loading: false,
+    data: 0,
+  };
+
+  roomSeatCounts = {
+    loading: false,
+    data: 0,
+  };
+
   bookForm = {
     type: "add",
     data: null,
     open: false,
   };
 
+
   roomForm = {
     type: "add",
     data: null,
     open: false,
+  };
+
+  roomSeatForm = {
+    type: "add",
+    data: null,
+    open: false,
+    item:null
   };
 
   bookCategoryForm = {
@@ -66,8 +84,11 @@ class BookLiberary {
       bookForm: observable,
       roomData: observable,
       bookCategoryForm: observable,
+      roomsCounts:observable,
       booksCategory: observable,
+      roomSeatForm:observable,
       roomForm: observable,
+      roomSeatCounts:observable,
       getBooksCounts: action,
       getBooksCategoryCounts: action,
       getBookUsersCounts: action,
@@ -85,7 +106,11 @@ class BookLiberary {
       getAllRooms: action,
       createRoom:action,
       updateRoom:action,
-      getSingleRoom:action
+      getSingleRoom:action,
+      getRoomsCounts:action,
+      handleRoomSeatForm:action,
+      createRoomSeat:action,
+      getRoomsSeatCounts:action
     });
   }
 
@@ -186,18 +211,6 @@ class BookLiberary {
     }
   };
 
-  updateRoom = async (sendData: any) => {
-    try {
-      const { data } = await axios.put(`/liberary/room/${sendData._id}`, {
-        ...sendData,
-        company: store.auth.getCurrentCompany(),
-      });
-      return data;
-    } catch (err: any) {
-      return Promise.reject(err?.response || err);
-    }
-  };
-
   getSingleBook = async (sendData: any) => {
     try {
       const { data } = await axios.get(`/liberary/book/single/${sendData.id}`);
@@ -266,18 +279,6 @@ class BookLiberary {
     }
   };
 
-  handleRoomForm = (data: any) => {
-    if (data.open === false) {
-      this.roomForm.data = null;
-      this.roomForm.open = false;
-      this.roomForm.type = "add";
-    } else {
-      this.roomForm.data = data.data;
-      this.roomForm.open = data.open;
-      this.roomForm.type = data.type;
-    }
-  };
-
   handleBookCategoryForm = (data: any) => {
     if (data.open === false) {
       this.bookCategoryForm.data = null;
@@ -291,6 +292,30 @@ class BookLiberary {
   };
 
   // Room
+
+  handleRoomForm = (data: any) => {
+    if (data.open === false) {
+      this.roomForm.data = null;
+      this.roomForm.open = false;
+      this.roomForm.type = "add";
+    } else {
+      this.roomForm.data = data.data;
+      this.roomForm.open = data.open;
+      this.roomForm.type = data.type;
+    }
+  };
+
+  handleRoomSeatForm = (data: any) => {
+    if (data.open === false) {
+      this.roomSeatForm.data = null;
+      this.roomSeatForm.open = false;
+      this.roomSeatForm.type = "add";
+    } else {
+      this.roomSeatForm.data = data.data;
+      this.roomSeatForm.open = data.open;
+      this.roomSeatForm.type = data.type;
+    }
+  };
 
   getAllRooms = async (sendData: any) => {
     try {
@@ -310,6 +335,48 @@ class BookLiberary {
     }
   };
 
+  updateRoom = async (sendData: any) => {
+    try {
+      const { data } = await axios.put(`/liberary/room/${sendData._id}`, {
+        ...sendData,
+        company: store.auth.getCurrentCompany(),
+      });
+      return data;
+    } catch (err: any) {
+      return Promise.reject(err?.response || err);
+    }
+  };
+
+  getRoomsCounts = async () => {
+    try {
+      this.roomsCounts.loading = true;
+      const { data } = await axios.post("/liberary/room/total/counts", {
+        company: [store.auth.getCurrentCompany()],
+      });
+      this.roomsCounts.data = data?.data || 0;
+      return data.data;
+    } catch (err: any) {
+      return Promise.reject(err?.response || err);
+    } finally {
+      this.roomsCounts.loading = false;
+    }
+  };
+
+  getRoomsSeatCounts = async () => {
+    try {
+      this.roomSeatCounts.loading = true;
+      const { data } = await axios.post("/liberary/room/seat/total/counts", {
+        company: [store.auth.getCurrentCompany()],
+      });
+      this.roomSeatCounts.data = data?.data || 0;
+      return data.data;
+    } catch (err: any) {
+      return Promise.reject(err?.response || err);
+    } finally {
+      this.roomSeatCounts.loading = false;
+    }
+  };
+
   createRoom = async (sendData: any) => {
     try {
       const { data } = await axios.post("/liberary/room/create", {
@@ -325,6 +392,18 @@ class BookLiberary {
   getSingleRoom = async (sendData: any) => {
     try {
       const { data } = await axios.get(`/liberary/room/single/${sendData.id}`);
+      return data;
+    } catch (err: any) {
+      return Promise.reject(err?.response || err);
+    }
+  };
+
+  createRoomSeat = async (sendData: any) => {
+    try {
+      const { data } = await axios.post("/liberary/room/seat/create", {
+        ...sendData,
+        company: store.auth.getCurrentCompany(),
+      });
       return data;
     } catch (err: any) {
       return Promise.reject(err?.response || err);

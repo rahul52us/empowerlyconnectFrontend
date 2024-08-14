@@ -9,9 +9,10 @@ import {
   useColorModeValue,
   Tooltip,
   IconButton,
+  Button,
 } from "@chakra-ui/react";
 import StarRatingIcon from "../../../../../../../config/component/StarRatingIcon/StarRatingIcon";
-import { EditIcon } from "@chakra-ui/icons";
+import { AddIcon, EditIcon } from "@chakra-ui/icons";
 
 interface CoverImage {
   name: string;
@@ -30,9 +31,10 @@ interface Data {
 interface DataCardProps {
   data: Data;
   handleForm: (data: Data, action: string) => void;
+  handleAddSeat:(data : any, action : string) => void;
 }
 
-const RoomCard: React.FC<DataCardProps> = ({ data, handleForm }) => {
+const RoomCard: React.FC<DataCardProps> = ({ data, handleForm, handleAddSeat }) => {
   const bg = useColorModeValue("white", "gray.800");
   const shadow = useColorModeValue("md", "dark-lg");
   const hoverShadow = useColorModeValue("lg", "dark-lg");
@@ -88,11 +90,20 @@ const RoomCard: React.FC<DataCardProps> = ({ data, handleForm }) => {
           </Text>
           <Flex justifyContent="space-between" alignItems="center">
             <StarRatingIcon rating={data.ratings || 0} />
+            <Button
+              leftIcon={<AddIcon />}
+              size="sm"
+              colorScheme="teal"
+              onClick={() => handleAddSeat(data, 'add')}
+            >
+              Add Seat
+            </Button>
           </Flex>
         </Stack>
       </Flex>
     </Box>
   );
 };
+
 
 export default RoomCard;
