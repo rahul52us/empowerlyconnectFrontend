@@ -138,8 +138,12 @@ const ManagerUserAttendence = lazy(
   () => import("../../pages/Dashboard/Attendence/ManagerAttendence/index")
 );
 
+
+// Liberary Management
 const LiberaryManagement = lazy(() => import("../../pages/Dashboard/LiberaryManagement/LiberaryManagement"))
 const LiberaryBookCategory = lazy(() => import("../../pages/Dashboard/LiberaryManagement/component/Books/BookCategoryDetails/BookCategoryDetails"))
+const LiberaryRoomIndex = lazy(() => import("../../pages/Dashboard/LiberaryManagement/component/Rooms/RoomDetails/RoomIndex"))
+
 
 export const DashboardRoutes = [
   {
@@ -336,7 +340,11 @@ export const DashboardRoutes = [
     path : dashboard.liberary.books.category.index,
     privateRoutes: true
   },
-
+  {
+    element : <LiberaryRoomIndex />,
+    path : dashboard.liberary.room.index,
+    privateRoutes : true
+  },
   // Not found
   {
     element: <PageNotFound />,

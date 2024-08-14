@@ -295,6 +295,28 @@ const sidebarDatas: SidebarItem[] = [
           role: ["admin", "superadmin"],
         }]
         },
+        {
+          id: 84,
+          name: "Seat Management",
+          icon: <FaUsers />,
+          url: dashboard.liberary.room.index,
+          role: ["admin", "superadmin"],
+         children : [
+          {
+            id: 85,
+            name: "Room",
+            icon: <FaUsers />,
+            url: dashboard.liberary.room.index,
+            role: ["admin", "superadmin"],
+          },
+          {
+          id: 86,
+          name: "Sections",
+          icon: <FaUsers />,
+          url: dashboard.liberary.room.roomSections,
+          role: ["admin", "superadmin"],
+        }]
+        },
       ],
   },
   // Trip
