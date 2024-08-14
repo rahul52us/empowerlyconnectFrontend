@@ -7,7 +7,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 
-import { formatDate } from "../../../../Dashboard/Employes/PersonalDetails/component/utils/constant";
+import { formatDate } from "../../../../Dashboard/Users/PersonalDetails/component/utils/constant";
 
 type ProfileCardI = {
   user?: any;

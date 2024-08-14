@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 import store from "../../../../store/store";
 import CustomTable from "../../../../config/component/CustomTable/CustomTable";
 import { getStatusType } from "../../../../config/constant/statusCode";
-import { employDropdownData } from "../../Employes/component/EmployeDetails/utils/constant";
+import { employDropdownData } from "../../Users/component/UserDetails/utils/constant";
 import { toJS } from "mobx";
 import ViewCompany from "./component/element/form/ViewCompany";
 import CustomDrawer from "../../../../config/component/Drawer/CustomDrawer";

@@ -22,10 +22,10 @@ import {
 import { FaEnvelope, FaFileAlt, FaPhone } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
 import { HiIdentification } from "react-icons/hi";
-import ShowData from "../../../Dashboard/Employes/component/EmployeDetails/component/ShowData";
-import ShowTagData from "../../../Dashboard/Employes/component/EmployeDetails/component/ShowTagData";
-import BankDetailsCard from "../../../Dashboard/Employes/component/EmployeDetails/component/common/BankDetailCard";
-import WorkHistory from "../../../Dashboard/Employes/component/EmployeDetails/Element/component/WorkHistory/WorkHistory";
+import ShowData from "../../../Dashboard/Users/component/UserDetails/component/ShowData";
+import ShowTagData from "../../../Dashboard/Users/component/UserDetails/component/ShowTagData";
+import BankDetailsCard from "../../../Dashboard/Users/component/UserDetails/component/common/BankDetailCard";
+import WorkHistory from "../../../Dashboard/Users/component/UserDetails/Element/component/WorkHistory/WorkHistory";
 import { observer } from "mobx-react-lite";
 
 const employee = {

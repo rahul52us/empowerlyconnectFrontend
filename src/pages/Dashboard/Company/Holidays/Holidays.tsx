@@ -9,7 +9,7 @@ import EditHoliday from "./component/EditHoliday";
 import DeleteHoliday from "./component/DeleteHoliday";
 import { Button, Flex, Input } from "@chakra-ui/react";
 import { readFileAsBase64 } from "../../../../config/constant/function";
-import { employDropdownData } from "../../Employes/component/EmployeDetails/utils/constant";
+import { employDropdownData } from "../../Users/component/UserDetails/utils/constant";
 
 const HolidaysDetailTable = observer(() => {
   const inputRef = useRef<any>(null);

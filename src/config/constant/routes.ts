@@ -78,6 +78,10 @@ export const dashboard = {
       category : {
         index : `/${dashboardName}/liberary/books/category`
       }
+    },
+    room: {
+      index : `${dashboardName}/liberary/room`,
+      roomSections : `${dashboardName}/liberary/room/:id/section`,
     }
   },
   // project

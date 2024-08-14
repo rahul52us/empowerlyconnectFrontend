@@ -7,7 +7,7 @@ import EditCategory from "./Category/component/EditCategory";
 import { tablePageLimit } from "../../../../../config/constant/variable";
 import CustomTable from "../../../../../config/component/CustomTable/CustomTable";
 import store from "../../../../../store/store";
-import { employDropdownData } from "../../../Employes/component/EmployeDetails/utils/constant";
+import { employDropdownData } from "../../../Users/component/UserDetails/utils/constant";
 
 const DepartmentCategories = observer(() => {
   const [searchValue, setSearchValue] = useState("");

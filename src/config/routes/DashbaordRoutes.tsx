@@ -2,7 +2,7 @@ import { lazy } from "react";
 import { dashboard } from "../constant/routes";
 
 const PersonalDetails = lazy(
-  () => import("../../pages/Dashboard/Employes/PersonalDetails")
+  () => import("../../pages/Dashboard/Users/PersonalDetails")
 );
 
 const ProfileIndex = lazy(() => import("../../pages/Dashboard/profile/ProfileIndex"))
@@ -10,7 +10,7 @@ const ProfileIndex = lazy(() => import("../../pages/Dashboard/profile/ProfileInd
 const PersonalDetailUsersChart = lazy(
   () =>
     import(
-      "../../pages/Dashboard/Employes/PersonalDetails/component/PersonalDetailChart"
+      "../../pages/Dashboard/Users/PersonalDetails/component/PersonalDetailChart"
     )
 );
 const PageNotFound = lazy(
@@ -86,20 +86,20 @@ const TripManagementIndex = lazy(
 // Users
 
 const UsersManagementIndex = lazy(
-  () => import("../../pages/Dashboard/Employes")
+  () => import("../../pages/Dashboard/Users")
 );
 
 const UserDetails = lazy(
   () =>
     import(
-      "../../pages/Dashboard/Employes/component/EmployeDetails/UserDetails"
+      "../../pages/Dashboard/Users/component/UserDetails/UserDetails"
     )
 );
 
 const UserCreate = lazy(
   () =>
     import(
-      "../../pages/Dashboard/Employes/component/EmployeDetails/formContainer/UserFormContainer"
+      "../../pages/Dashboard/Users/component/UserDetails/formContainer/UserFormContainer"
     )
 );
 
