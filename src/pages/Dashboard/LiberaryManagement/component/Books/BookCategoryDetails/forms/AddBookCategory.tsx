@@ -2,9 +2,9 @@ import { observer } from "mobx-react-lite";
 import BookCategoryForm from "./BookCategoryForm";
 import { useState } from "react";
 import { generateBookCategoryInitialValues, generateSendBookCategoryResponse } from "../../utils/function";
-import { readFileAsBase64 } from "../../../../../../config/constant/function";
-import store from "../../../../../../store/store";
-import { getStatusType } from "../../../../../../config/constant/statusCode";
+import { readFileAsBase64 } from "../../../../../../../config/constant/function";
+import store from "../../../../../../../store/store";
+import { getStatusType } from "../../../../../../../config/constant/statusCode";
 
 const AddBookCategory = observer(({close} :any) => {
   const {auth : {openNotification}, bookLiberary : {createBookCategory}} = store

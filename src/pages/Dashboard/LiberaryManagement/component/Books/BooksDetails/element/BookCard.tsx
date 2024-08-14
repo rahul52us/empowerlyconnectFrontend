@@ -16,7 +16,7 @@ import {
   Wrap,
   WrapItem,
 } from "@chakra-ui/react";
-import StarRatingIcon from "../../../../../../config/component/StarRatingIcon/StarRatingIcon";
+import StarRatingIcon from "../../../../../../../config/component/StarRatingIcon/StarRatingIcon";
 import { EditIcon } from "@chakra-ui/icons";
 
 interface Book {

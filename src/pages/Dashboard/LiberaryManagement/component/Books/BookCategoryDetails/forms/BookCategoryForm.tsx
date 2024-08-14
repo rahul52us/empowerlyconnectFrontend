@@ -1,10 +1,10 @@
 import { Box, Button, Flex, Grid, GridItem } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import { observer } from "mobx-react-lite";
-import CustomInput from "../../../../../../config/component/CustomInput/CustomInput";
-import DrawerFormHeightContainer from "../../../../../../config/component/Drawer/DrawerFormHeightContainer";
-import ShowFileUploadFile from "../../../../../../config/component/common/ShowFileUploadFile/ShowFileUploadFile";
-import { removeDataByIndex } from "../../../../../../config/constant/function";
+import CustomInput from "../../../../../../../config/component/CustomInput/CustomInput";
+import DrawerFormHeightContainer from "../../../../../../../config/component/Drawer/DrawerFormHeightContainer";
+import ShowFileUploadFile from "../../../../../../../config/component/common/ShowFileUploadFile/ShowFileUploadFile";
+import { removeDataByIndex } from "../../../../../../../config/constant/function";
 import { BookCategoryValidationSchema } from "../../utils/validation";
 
 const BookCategoryForm = observer(

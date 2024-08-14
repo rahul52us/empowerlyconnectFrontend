@@ -1,39 +1,42 @@
 import { observer } from "mobx-react-lite";
-import store from "../../../../../../store/store";
+import BookForm from "./BookForm";
 import { useEffect, useState } from "react";
-import BookCategoryForm from "./BookCategoryForm";
 import {
-  generateBookCategoryInitialValues,
-  generateSendBookCategoryResponse,
+  generateBookInitialValues,
+  generateSendBookResponse,
 } from "../../utils/function";
-import DrawerLoader from "../../../../../../config/component/Loader/DrawerLoader";
-import { readFileAsBase64 } from "../../../../../../config/constant/function";
-import { getStatusType } from "../../../../../../config/constant/statusCode";
+import { readFileAsBase64 } from "../../../../../../../config/constant/function";
+import store from "../../../../../../../store/store";
+import { getStatusType } from "../../../../../../../config/constant/statusCode";
+import DrawerLoader from "../../../../../../../config/component/Loader/DrawerLoader";
 
-const EditBookCategory = observer(({ data, fetchRecords, close }: any) => {
-  const [showError, setShowError] = useState(false);
+const EditBook = observer(({ close, data, fetchRecords }: any) => {
   const {
-    bookLiberary: { getSingleBookCategory, updateBookCategory },
     auth: { openNotification },
+    bookLiberary: { getSingleBook, updateBook },
   } = store;
+  const [showError, setShowError] = useState(false);
+
   const [fetchBookData, setFetchBookData] = useState<any>({
     data: null,
     loading: true,
   });
 
   useEffect(() => {
-    setFetchBookData({ data: null, loading: true });
-    getSingleBookCategory({ id: data._id })
+    setFetchBookData({ loading: true, data: null });
+    getSingleBook({ id: data?._id })
       .then((data: any) => {
-        console.log(data);
-        setFetchBookData({ data: data?.data, loading: false });
+        setFetchBookData({
+          loading: false,
+          data: data.data,
+        });
       })
       .catch(() => {
-        setFetchBookData({ data: null, loading: false });
+        setFetchBookData({ loading: false, data: null });
       });
-  }, [data, getSingleBookCategory]);
+  }, [getSingleBook, data]);
 
-  const book = fetchBookData?.data;
+  const book = fetchBookData.data;
 
   const handleSubmitForm = async ({
     values,
@@ -69,9 +72,7 @@ const EditBookCategory = observer(({ data, fetchRecords, close }: any) => {
         }
       }
 
-      updateBookCategory(
-        generateSendBookCategoryResponse({ ...formData, _id: book?._id })
-      )
+      updateBook(generateSendBookResponse({ ...formData, _id: book?._id }))
         .then((data) => {
           openNotification({
             title: "Successfully Updated",
@@ -106,17 +107,17 @@ const EditBookCategory = observer(({ data, fetchRecords, close }: any) => {
       noRecordFoundText={!fetchBookData.data}
     >
       {book && (
-        <BookCategoryForm
-          initialValues={generateBookCategoryInitialValues(book)}
+        <BookForm
+          initialValues={generateBookInitialValues(book)}
           showError={showError}
-          isEdit={true}
           setShowError={setShowError}
           close={close}
           handleSubmit={handleSubmitForm}
+          isEdit={true}
         />
       )}
     </DrawerLoader>
   );
 });
 
-export default EditBookCategory;
+export default EditBook;

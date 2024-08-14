@@ -2,17 +2,17 @@ import { Box, Heading, SimpleGrid, Flex, Icon, Button } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useEffect, useState, useCallback } from "react";
 import { FaBook, FaPersonCircleQuestion } from "react-icons/fa6";
-import MainPagePagination from "../../../../../config/component/pagination/MainPagePagination";
-import { getStatusType } from "../../../../../config/constant/statusCode";
-import store from "../../../../../store/store";
-import NotFoundData from "../../../../../config/component/NotFound/NotFoundData";
-import { useQueryParams } from "../../../../../config/component/customHooks/useQuery";
+import MainPagePagination from "../../../../../../config/component/pagination/MainPagePagination";
+import { getStatusType } from "../../../../../../config/constant/statusCode";
+import store from "../../../../../../store/store";
+import NotFoundData from "../../../../../../config/component/NotFound/NotFoundData";
+import { useQueryParams } from "../../../../../../config/component/customHooks/useQuery";
 import { FaBookOpen, FaBookReader, FaPlus } from "react-icons/fa";
 import BookDetailDrawer from "../BookDetailDrawers";
 import BookCategory from "./element/BookCategory";
-import SummaryWidget from "../../../../../config/component/WigdetCard/SummaryWidget";
-import DashPageHeader from "../../../../../config/component/common/DashPageHeader/DashPageHeader";
-import { liberaryBreadCrumb } from "../../../utils/breadcrumb.constant";
+import SummaryWidget from "../../../../../../config/component/WigdetCard/SummaryWidget";
+import DashPageHeader from "../../../../../../config/component/common/DashPageHeader/DashPageHeader";
+import { liberaryBreadCrumb } from "../../../../utils/breadcrumb.constant";
 // import BookCard from "../BooksDetails/element/BookCard";
 
 const BookDetails = observer(() => {

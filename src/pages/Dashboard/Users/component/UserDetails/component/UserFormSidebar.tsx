@@ -18,7 +18,7 @@ import { RiBankLine } from "react-icons/ri";
 import { FaHome } from "react-icons/fa";
 import { MdOutlineAdminPanelSettings } from "react-icons/md";
 
-const EmployFormSidebar = observer(({ type }: any) => {
+const UserFormSidebar = observer(({ type }: any) => {
   const { colorMode } = useColorMode();
   const location = useLocation();
   const navigate = useNavigate();
@@ -97,4 +97,4 @@ const EmployFormSidebar = observer(({ type }: any) => {
   );
 });
 
-export default EmployFormSidebar;
+export default UserFormSidebar;

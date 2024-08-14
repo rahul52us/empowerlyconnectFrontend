@@ -2,9 +2,9 @@ import { observer } from "mobx-react-lite";
 import BookForm from "./BookForm";
 import { useState } from "react";
 import { generateBookInitialValues, generateSendBookResponse } from "../../utils/function";
-import { readFileAsBase64 } from "../../../../../../config/constant/function";
-import store from "../../../../../../store/store";
-import { getStatusType } from "../../../../../../config/constant/statusCode";
+import { readFileAsBase64 } from "../../../../../../../config/constant/function";
+import store from "../../../../../../../store/store";
+import { getStatusType } from "../../../../../../../config/constant/statusCode";
 
 const AddBook = observer(({close, fetchRecords, data} :any) => {
   const {auth : {openNotification}, bookLiberary : {createBook}} = store

@@ -23,8 +23,8 @@ import {
   FaLayerGroup,
   FaInfoCircle,
 } from "react-icons/fa";
-import DrawerLoader from "../../../../../../config/component/Loader/DrawerLoader";
-import store from "../../../../../../store/store";
+import DrawerLoader from "../../../../../../../config/component/Loader/DrawerLoader";
+import store from "../../../../../../../store/store";
 import { useEffect, useState } from "react";
 
 const BookView = observer(({ data }: any) => {

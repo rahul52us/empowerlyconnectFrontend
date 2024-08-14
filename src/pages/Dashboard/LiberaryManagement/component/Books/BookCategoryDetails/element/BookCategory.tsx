@@ -11,7 +11,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
-import store from "../../../../../../store/store";
+import store from "../../../../../../../store/store";
 
 const BookCategory = observer(({ item, onClick }: any) => {
   const {bookLiberary : {handleBookForm}} = store

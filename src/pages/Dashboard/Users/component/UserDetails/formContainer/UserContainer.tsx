@@ -2,7 +2,7 @@ import { Box, Button, Grid } from "@chakra-ui/react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import { dashboard } from "../../../../../../config/constant/routes";
-import EmployFormSidebar from "../component/EmployFormSidebar";
+import UserFormSidebar from "../component/UserFormSidebar";
 import PersonalCompanyDetails from "./forms/PersonalCompanyDetails";
 import PersonalDetails from "./forms/PersonalDetailsForm";
 import PersonalBankDetails from "./forms/PersonalBankDetails";
@@ -234,7 +234,7 @@ const UserContainer = observer(
       <Box p={{ base: 1.5, lg: 0 }}>
         <Grid gridTemplateColumns={{ lg: "0.25fr 1fr" }} gap={5} mt={3} mb={10}>
           <Box >
-            <EmployFormSidebar type={type} />
+            <UserFormSidebar type={type} />
           </Box>
           <Box border="1px solid #e9ecef" borderRadius={5}>
             {type === "edit"

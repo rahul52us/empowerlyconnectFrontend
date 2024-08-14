@@ -7,7 +7,7 @@ import { useEffect } from "react";
 import SummaryWidget from "../../../config/component/WigdetCard/SummaryWidget";
 import { FaPersonCircleQuestion } from "react-icons/fa6";
 import { getStatusType } from "../../../config/constant/statusCode";
-import BookDetails from "./component/BooksDetails/BookDetails";
+import BookDetails from "./component/Books/BooksDetails/BookDetails";
 import { FaBookOpen, FaBookReader } from "react-icons/fa";
 import { dashboard } from "../../../config/constant/routes";
 

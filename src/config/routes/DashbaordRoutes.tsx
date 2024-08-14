@@ -139,7 +139,7 @@ const ManagerUserAttendence = lazy(
 );
 
 const LiberaryManagement = lazy(() => import("../../pages/Dashboard/LiberaryManagement/LiberaryManagement"))
-const LiberaryBookCategory = lazy(() => import("../../pages/Dashboard/LiberaryManagement/component/BookCategoryDetails/BookCategoryDetails"))
+const LiberaryBookCategory = lazy(() => import("../../pages/Dashboard/LiberaryManagement/component/Books/BookCategoryDetails/BookCategoryDetails"))
 
 export const DashboardRoutes = [
   {

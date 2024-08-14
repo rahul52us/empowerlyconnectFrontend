@@ -2,12 +2,12 @@ import { Box, Heading, SimpleGrid, Flex, Icon, Button } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useEffect, useState, useCallback } from "react";
 import { FaBook } from "react-icons/fa6";
-import MainPagePagination from "../../../../../config/component/pagination/MainPagePagination";
-import { getStatusType } from "../../../../../config/constant/statusCode";
-import store from "../../../../../store/store";
+import MainPagePagination from "../../../../../../config/component/pagination/MainPagePagination";
+import { getStatusType } from "../../../../../../config/constant/statusCode";
+import store from "../../../../../../store/store";
 import BookCard from "./element/BookCard";
-import NotFoundData from "../../../../../config/component/NotFound/NotFoundData";
-import { useQueryParams } from "../../../../../config/component/customHooks/useQuery";
+import NotFoundData from "../../../../../../config/component/NotFound/NotFoundData";
+import { useQueryParams } from "../../../../../../config/component/customHooks/useQuery";
 import { FaPlus } from "react-icons/fa";
 import BookDetailDrawer from "../BookDetailDrawers";
 
