@@ -12,7 +12,7 @@ import { observer } from "mobx-react-lite";
 import { useColorModeValue, useMediaQuery, useTheme } from "@chakra-ui/react";
 import styled from "styled-components";
 import { main } from "../../constant/routes";
-import Footer2 from "./FooterLayout/Footer2";
+import FooterLayout from "./FooterLayout/FooterLayout";
 
 const MainLayout = observer(() => {
   const theme = useTheme();
@@ -36,7 +36,7 @@ const MainLayout = observer(() => {
           <Outlet />
         </Suspense>
         {/* {location.pathname !== main.profile && <Footer />} */}
-        {location.pathname !== main.profile && <Footer2 />}
+        {location.pathname !== main.profile && <FooterLayout />}
       </ContentContainer>
     </div>
   );

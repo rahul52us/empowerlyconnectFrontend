@@ -1,23 +1,23 @@
 import {
-    Box,
-    Button,
-    Flex,
-    Grid,
-    Heading,
-    HStack,
-    Icon,
-    Image,
-    Stack,
-    Text,
-    useColorModeValue,
-    VStack
+  Box,
+  Button,
+  Flex,
+  Grid,
+  Heading,
+  HStack,
+  Icon,
+  Image,
+  Stack,
+  Text,
+  useColorModeValue,
+  VStack,
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import {
-    FaArrowCircleRight,
-    FaEnvelope,
-    FaNewspaper,
-    FaPhone,
+  FaArrowCircleRight,
+  FaEnvelope,
+  FaNewspaper,
+  FaPhone,
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import LinkText from "../../../component/LinkText/LinkText";
@@ -25,7 +25,7 @@ import SocialMediaLink from "../../../component/SocialMediaLinkContainer/SocialM
 import { dashboard, main } from "../../../constant/routes";
 import FooterBottom from "./element/FooterBottom";
 
-const Footer2 = observer(() => {
+const Footer = observer(() => {
   const navigate = useNavigate();
   //   const bgColor = useColorModeValue("gray.800", "gray.900");
   const bgColor = useColorModeValue(
@@ -47,7 +47,7 @@ const Footer2 = observer(() => {
         pl={{ base: 5, md: 10 }}
         pr={{ base: 5, md: 10 }}
         pt={{ base: 5, md: 12 }}
-        pb={{ base: 5, md: 8 }}
+        // pb={{ base: 5, md: 8 }}
         bgGradient={bgColor}
         color={textColor}
       >
@@ -81,10 +81,20 @@ const Footer2 = observer(() => {
               <Button
                 borderRadius="full"
                 bgGradient={gradientBg}
-                mt={2}
+                mt={4}
                 color="white"
                 rightIcon={<FaArrowCircleRight />}
-                _hover={{ bgGradient: gradientBg }}
+                _hover={{
+                  bgGradient: "linear(to-r, blue.500, cyan.500)",
+                  transform: "scale(1.05)",
+                  boxShadow: "xl",
+                }}
+                _active={{
+                  transform: "scale(0.95)",
+                }}
+                _focus={{ boxShadow: "outline" }}
+                transition="all 0.3s ease"
+                onClick={() => navigate(main.contact)}
               >
                 Contact Us
               </Button>
@@ -180,4 +190,4 @@ const Footer2 = observer(() => {
   );
 });
 
-export default Footer2;
+export default Footer;
