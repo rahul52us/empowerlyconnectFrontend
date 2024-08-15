@@ -12,7 +12,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 import StarRatingIcon from "../../../../../../../config/component/StarRatingIcon/StarRatingIcon";
-import { AddIcon, EditIcon } from "@chakra-ui/icons";
+import { AddIcon, EditIcon, CalendarIcon } from "@chakra-ui/icons";
 
 interface CoverImage {
   name: string;
@@ -31,15 +31,15 @@ interface Data {
 interface DataCardProps {
   data: Data;
   handleForm: (data: Data, action: string) => void;
-  handleAddSeat:(data : any, action : string) => void;
+  handleAddSeat: (data: any, action: string) => void;
+  handleReserveSeat: (data: any, action: string) => void; // Added prop for reserve seat
 }
 
-const RoomCard: React.FC<DataCardProps> = ({ data, handleForm, handleAddSeat }) => {
+const RoomCard: React.FC<DataCardProps> = ({ data, handleForm, handleAddSeat, handleReserveSeat }) => {
   const bg = useColorModeValue("white", "gray.800");
   const shadow = useColorModeValue("md", "dark-lg");
   const hoverShadow = useColorModeValue("lg", "dark-lg");
-  const placeholderImage =
-    "https://via.placeholder.com/300x400?text=No+thumbnail+found";
+  const placeholderImage = "https://via.placeholder.com/300x400?text=No+thumbnail+found";
 
   return (
     <Box
@@ -90,20 +90,29 @@ const RoomCard: React.FC<DataCardProps> = ({ data, handleForm, handleAddSeat }) 
           </Text>
           <Flex justifyContent="space-between" alignItems="center">
             <StarRatingIcon rating={data.ratings || 0} />
-            <Button
-              leftIcon={<AddIcon />}
-              size="sm"
-              colorScheme="teal"
-              onClick={() => handleAddSeat(data, 'add')}
-            >
-              Add Seat
-            </Button>
+            <Stack direction="row" spacing={3}>
+              <Button
+                leftIcon={<AddIcon />}
+                size="sm"
+                colorScheme="teal"
+                onClick={() => handleAddSeat(data, 'add')}
+              >
+                Add Seat
+              </Button>
+              <Button
+                leftIcon={<CalendarIcon />}
+                size="sm"
+                colorScheme="blue"
+                onClick={() => handleReserveSeat(data, 'add')}
+              >
+                Reserve Seat
+              </Button>
+            </Stack>
           </Flex>
         </Stack>
       </Flex>
     </Box>
   );
 };
-
 
 export default RoomCard;

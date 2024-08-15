@@ -14,7 +14,7 @@ import { MdRoomPreferences } from "react-icons/md";
 const RoomDetails = observer(() => {
   const {
     auth: { openNotification },
-    bookLiberary: { getAllRooms, roomData, handleRoomForm, handleRoomSeatForm },
+    bookLiberary: { getAllRooms, roomData, handleRoomForm, handleRoomSeatForm, handleRoomReserveSeatForm },
   } = store;
 
   const { getQueryParam, setQueryParam } = useQueryParams();
@@ -95,6 +95,9 @@ const RoomDetails = observer(() => {
               }
               handleAddSeat={(item :any, type : string) => {
                 handleRoomSeatForm({ open: true, data: item, type: type })
+              }}
+              handleReserveSeat={(item :any, type : string) => {
+                handleRoomReserveSeatForm({ open: true, data: item, type: type })
               }}
             />
           ))}

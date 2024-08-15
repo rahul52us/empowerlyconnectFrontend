@@ -160,7 +160,7 @@ const SeatForm: React.FC<SeatFormProps> = ({ data }) => {
   };
 
   return (
-    <Box mt={2} p={6} borderWidth={1} borderRadius="lg" boxShadow="md">
+    <Box mt={2} p={6} borderWidth={1}>
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}

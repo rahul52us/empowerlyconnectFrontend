@@ -52,6 +52,7 @@ interface CustomInputProps {
     | "textarea"
     | "select"
     | "date"
+    | "time"
     | "checkbox"
     | "url"
     | "phone"
@@ -414,6 +415,22 @@ const CustomInput: React.FC<CustomInputProps> = ({
               ),
             }}
             menuPosition={isPortal ? "fixed" : undefined}
+          />
+        );
+      case "time":
+        return (
+          <Input
+            readOnly={readOnly}
+            style={style}
+            bg={inputBg}
+            type="time"
+            placeholder={placeholder}
+            value={value}
+            onChange={onChange}
+            name={name}
+            disabled={disabled}
+            _placeholder={{ fontSize: "12px" }}
+            {...rest}
           />
         );
       case "dateAndTime":

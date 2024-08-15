@@ -18,12 +18,19 @@ class BookLiberary {
     data: 0,
   };
 
+
   availableRoomSeatCounts = {
     loading: false,
     data: 0,
   }
 
   bookForm = {
+    type: "add",
+    data: null,
+    open: false,
+  };
+
+  roomReserveForm = {
     type: "add",
     data: null,
     open: false,
@@ -73,6 +80,13 @@ class BookLiberary {
     totalPages: 0,
   };
 
+  roomSeatData = {
+    loading: false,
+    data: [],
+    currentPage: 1,
+    totalPages: 0,
+  };
+
   booksCategory = {
     loading: false,
     data: [],
@@ -95,6 +109,8 @@ class BookLiberary {
       roomForm: observable,
       roomSeatCounts:observable,
       availableRoomSeatCounts:observable,
+      roomReserveForm:observable,
+      roomSeatData:observable,
       getBooksCounts: action,
       getBooksCategoryCounts: action,
       getBookUsersCounts: action,
@@ -117,7 +133,10 @@ class BookLiberary {
       handleRoomSeatForm:action,
       createRoomSeat:action,
       getRoomsSeatCounts:action,
-      getAvailableRoomSeatCounts:action
+      getAvailableRoomSeatCounts:action,
+      handleRoomReserveSeatForm:action,
+      getAllSeatRooms:action,
+      createReserveRoomSeat:action
     });
   }
 
@@ -420,6 +439,24 @@ class BookLiberary {
     }
   };
 
+  getAllSeatRooms = async (sendData: any) => {
+    try {
+      this.roomSeatData.loading = true;
+      const { data } = await axios.post(
+        "/liberary/room/seat",
+        { company: [store.auth.getCurrentCompany()] },
+        { params: { ...sendData } }
+      );
+      this.roomSeatData.data = data?.data || [];
+      return data.data;
+    } catch (err: any) {
+      return Promise.reject(err?.response || err);
+    } finally {
+      this.roomSeatData.loading = false;
+    }
+  };
+
+
   createRoomSeat = async (sendData: any) => {
     try {
       const { data } = await axios.post("/liberary/room/seat/create", {
@@ -429,6 +466,30 @@ class BookLiberary {
       return data;
     } catch (err: any) {
       return Promise.reject(err?.response || err);
+    }
+  };
+
+  createReserveRoomSeat = async (sendData: any) => {
+    try {
+      const { data } = await axios.post("/liberary/room/seat/reserve/create", {
+        ...sendData,
+        company: store.auth.getCurrentCompany(),
+      });
+      return data;
+    } catch (err: any) {
+      return Promise.reject(err?.response || err);
+    }
+  };
+
+  handleRoomReserveSeatForm = (data: any) => {
+    if (data.open === false) {
+      this.roomReserveForm.data = null;
+      this.roomReserveForm.open = false;
+      this.roomReserveForm.type = "add";
+    } else {
+      this.roomReserveForm.data = data.data;
+      this.roomReserveForm.open = data.open;
+      this.roomReserveForm.type = data.type;
     }
   };
 
