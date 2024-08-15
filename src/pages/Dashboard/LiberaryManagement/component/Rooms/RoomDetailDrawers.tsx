@@ -4,7 +4,8 @@ import store from "../../../../../store/store";
 import RoomView from "./RoomDetails/forms/RoomView";
 import AddRoom from "./RoomDetails/forms/AddRoom";
 import EditRoom from "./RoomDetails/forms/EditRoom";
-import SeatForm from "./SeatDetails/form/SeatForm";
+// import SeatForm from "./SeatDetails/form/SeatForm";
+import ReserveSeatForm from "./SeatDetails/form/ReserveSeatForm";
 
 const RoomDetailDrawer = observer(({ fetchRecords }: any) => {
   const {
@@ -48,7 +49,8 @@ const RoomDetailDrawer = observer(({ fetchRecords }: any) => {
         {roomSeatForm.type === "view" ? (
           <RoomView data={roomSeatForm.data} />
         ) : roomSeatForm.type === "add" ? (
-          <SeatForm data={roomSeatForm.data}/>
+          <ReserveSeatForm />
+          // <SeatForm data={roomSeatForm.data}/>
         ) : (
           <EditRoom
             fetchRecords={fetchRecords}

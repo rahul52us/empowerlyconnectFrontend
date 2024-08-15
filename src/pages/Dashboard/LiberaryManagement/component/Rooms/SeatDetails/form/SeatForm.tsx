@@ -2,17 +2,14 @@ import React, { useState, useEffect } from "react";
 import {
   Box,
   Button,
-  FormControl,
-  FormLabel,
-  Input,
-  Select,
-  VStack,
   Text,
   Divider,
   SimpleGrid,
-  Stack,
+  Grid,
+  GridItem,
+  Flex,
 } from "@chakra-ui/react";
-import { Formik, Field, Form, ErrorMessage } from "formik";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import store from "../../../../../../../store/store";
 import { getStatusType } from "../../../../../../../config/constant/statusCode";
@@ -20,7 +17,7 @@ import CustomInput from "../../../../../../../config/component/CustomInput/Custo
 
 // Define TypeScript interfaces for form values
 interface FormValues {
-  generationType: string;
+  generationType: { label: string; value: string };
   startValue: string;
   seatCount: number;
   room: string;
@@ -35,7 +32,7 @@ interface Seat {
 
 // Validation schema using Yup
 const validationSchema = Yup.object().shape({
-  generationType: Yup.string().required("Generation type is required"),
+  generationType: Yup.object().required("Generation type is required"),
   startValue: Yup.string().required("Start value is required"),
   seatCount: Yup.number()
     .required("Seat count is required")
@@ -53,13 +50,14 @@ const SeatForm: React.FC<SeatFormProps> = ({ data }) => {
     bookLiberary: { createRoomSeat },
     auth: { openNotification },
   } = store;
-  const [showError, setShowError] = useState(false)
+
+  const [showError, setShowError] = useState(false);
   const [seats, setSeats] = useState<Seat[]>([]);
   const [submitLoading, setSubmittingLoading] = useState(false);
 
   // Initialize initialValues with room and section from props
   const [initialValues, setInitialValues] = useState<FormValues>({
-    generationType: "numeric",
+    generationType: { label: "Numeric", value: "numeric" },
     startValue: "",
     seatCount: 10,
     room: data.title || "",
@@ -78,7 +76,7 @@ const SeatForm: React.FC<SeatFormProps> = ({ data }) => {
     const { generationType, startValue, seatCount, room, section } = values;
     const generatedSeats: Seat[] = [];
 
-    if (generationType === "numeric") {
+    if (generationType.value === "numeric") {
       for (let i = 0; i < seatCount; i++) {
         generatedSeats.push({
           seatNumber: parseInt(startValue, 10) + i,
@@ -86,7 +84,7 @@ const SeatForm: React.FC<SeatFormProps> = ({ data }) => {
           section,
         });
       }
-    } else if (generationType === "alphabetic") {
+    } else if (generationType.value === "alphabetic") {
       const generateAlphabeticSequence = (
         start: string,
         count: number
@@ -139,15 +137,15 @@ const SeatForm: React.FC<SeatFormProps> = ({ data }) => {
     setSubmittingLoading(true);
     createRoomSeat({
       room: data._id,
-      seats: seats.map((seat: any) => ({ seatNumber: seat.seatNumber })),
+      seats: seats.map((seat: Seat) => ({ seatNumber: seat.seatNumber })),
     })
-      .then((response) => {
+      .then((response: any) => {
         openNotification({
           title: "Successfully Created",
           message: response.message,
           type: "success",
         });
-        setShowError(false)
+        setShowError(false);
       })
       .catch((error: any) => {
         openNotification({
@@ -169,143 +167,146 @@ const SeatForm: React.FC<SeatFormProps> = ({ data }) => {
         enableReinitialize={true}
         onSubmit={(values) => handleGenerateSeats(values)}
       >
-        {({ values, errors , handleChange}: { values: FormValues, errors : any, handleChange:any }) => (
+        {({ values, errors, handleChange, setFieldValue }) => (
           <Form>
-            <VStack spacing={6} align="stretch">
-              <FormControl id="generationType">
-                <FormLabel fontWeight="semibold">
-                  Seat Generation Type
-                </FormLabel>
-                <Field
-                  as={Select}
-                  name="generationType"
-                  variant="filled"
-                  size="lg"
-                >
-                  <option value="numeric">Numeric</option>
-                  <option value="alphabetic">Alphabetic</option>
-                </Field>
-                <ErrorMessage name="generationType" component="div" />
-              </FormControl>
-
-              <Stack
-                direction={{ base: "column", md: "row" }}
-                spacing={6}
-                align="center"
-              >
+            <Grid gridTemplateColumns={{ base: "1fr", md: "1fr 1fr" }} gap={4}>
+              <GridItem colSpan={{base : 1, md : 2}}>
                 <CustomInput
-                  type="text"
-                  name="startValue"
-                  value={values.startValue}
-                  onChange={handleChange}
-                  placeholder={
-                    values.generationType === "numeric" ? "e.g. 1" : "e.g. A"
-                  }
-                  label={`Start
-                    ${
-                      values.generationType === "numeric" ? "Number" : "Letter"
-                    }`}
-                    error={errors.startValue}
-                    showError={showError}
+                  label="Seat Generation Type"
+                  type="select"
+                  name="generationType"
+                  value={values.generationType}
+                  options={[
+                    { label: "Numeric", value: "numeric" },
+                    { label: "Alphabetic", value: "alphabetic" },
+                  ]}
+                  onChange={(e: any) => setFieldValue("generationType", e)}
                 />
+              </GridItem>
+              <CustomInput
+                type="text"
+                name="startValue"
+                value={values.startValue}
+                onChange={handleChange}
+                placeholder={
+                  values.generationType.value === "numeric"
+                    ? "e.g. 1"
+                    : "e.g. A"
+                }
+                label={`Start ${
+                  values.generationType.value === "numeric"
+                    ? "Number"
+                    : "Letter"
+                }`}
+                error={errors.startValue}
+                showError={showError}
+              />
 
-                <FormControl id="seatCount" isRequired>
-                  <FormLabel fontWeight="semibold">Number of Seats</FormLabel>
-                  <Field
-                    as={Input}
-                    type="number"
-                    name="seatCount"
-                    placeholder="e.g. 10"
-                    variant="filled"
-                  />
-                  <ErrorMessage name="seatCount" component="div" />
-                </FormControl>
-              </Stack>
+              <CustomInput
+                type="number"
+                label="Number of seats"
+                name="seatCount"
+                placeholder="Seat Counts"
+                onChange={handleChange}
+                value={values.seatCount}
+                showError={showError}
+                error={errors.seatCount}
+              />
 
-              <Stack
-                direction={{ base: "column", md: "row" }}
-                spacing={6}
-                align="center"
+              <CustomInput
+                type="text"
+                name="room"
+                value={values.room}
+                onChange={handleChange}
+                placeholder="Room"
+                label="Room"
+                error={errors.room}
+                showError={showError}
+              />
+              <CustomInput
+                label="Section"
+                type="text"
+                name="section"
+                value={values.section}
+                onChange={handleChange}
+                placeholder="Section"
+                error={errors.section}
+                showError={showError}
+              />
+            </Grid>
+            <Flex mt={3} justifyContent="space-between" gap={4}>
+              <Button
+                colorScheme="teal"
+                size="lg"
+                type="submit"
+                onClick={() => setShowError(true)}
               >
-                <FormControl id="room" isRequired>
-                  <FormLabel fontWeight="semibold">Room</FormLabel>
-                  <Field
-                    as={Input}
-                    type="text"
-                    name="room"
-                    placeholder="e.g. Room A"
-                    value={values.room}
-                    readOnly
-                    variant="filled"
-                  />
-                  <ErrorMessage name="room" component="div" />
-                </FormControl>
-
-                <FormControl id="section" isRequired>
-                  <FormLabel fontWeight="semibold">Section</FormLabel>
-                  <Field
-                    as={Input}
-                    type="text"
-                    name="section"
-                    placeholder="e.g. Section 1"
-                    variant="filled"
-                  />
-                  <ErrorMessage name="section" component="div" />
-                </FormControl>
-              </Stack>
-
-              <Button colorScheme="teal" size="lg" type="submit">
                 Generate Seats
               </Button>
-
-              {seats.length > 0 && (
-                <>
-                  <Divider my={6} />
-                  <Text fontWeight="bold" fontSize="lg" textAlign="center">
-                    Preview Generated Seats
-                  </Text>
-                  <SimpleGrid
-                    columns={{ base: 1, md: 2, lg: 3 }}
-                    spacing={{ base: 4, md: 6 }}
-                  >
-                    {seats.map((seat, index) => (
-                      <Box
-                        key={index}
-                        p={4}
-                        borderWidth={1}
-                        borderRadius="md"
-                        textAlign="center"
-                        bg="white"
-                        borderColor="gray.200"
-                        boxShadow="md"
-                        transition="transform 0.2s, box-shadow 0.2s"
-                        _hover={{
-                          transform: "scale(1.05)",
-                          boxShadow: "lg",
-                        }}
-                      >
-                        <Text fontSize="lg" fontWeight="bold" color="teal.600">
-                          {seat.seatNumber}
-                        </Text>
-                        <Text fontSize="md" color="gray.600" mt={2}>
-                          {seat.room}/{seat.section}
-                        </Text>
-                      </Box>
-                    ))}
-                  </SimpleGrid>
-
+              <Button
+                colorScheme="blue"
+                size="lg"
+                onClick={() => {
+                  setShowError(true);
+                  handleCreateSeats();
+                }}
+                isDisabled={seats.length === 0 || Object.keys(errors).length > 0}
+                isLoading={submitLoading}
+              >
+                Create Seats
+              </Button>
+            </Flex>
+            {seats.length > 0 && (
+              <>
+                <Divider my={4} />
+                <Text fontWeight="bold" fontSize="lg" textAlign="center" mb={4}>
+                  Preview Generated Seats
+                </Text>
+                <SimpleGrid
+                  columns={{ base: 1, md: 2, lg: 3 }}
+                  spacing={{ base: 4, md: 6 }}
+                >
+                  {seats.map((seat, index) => (
+                    <Box
+                      key={index}
+                      p={4}
+                      borderWidth={1}
+                      borderRadius="md"
+                      textAlign="center"
+                      bg="white"
+                      borderColor="gray.200"
+                      boxShadow="md"
+                      transition="transform 0.2s, box-shadow 0.2s"
+                      _hover={{
+                        transform: "scale(1.05)",
+                        boxShadow: "lg",
+                      }}
+                    >
+                      <Text fontSize="lg" fontWeight="bold" color="teal.600">
+                        {seat.seatNumber}
+                      </Text>
+                      <Text fontSize="md" color="gray.600" mt={2}>
+                        {seat.room}/{seat.section}
+                      </Text>
+                    </Box>
+                  ))}
+                </SimpleGrid>
+                <Flex width="100%" justifyContent="end">
                   <Button
                     colorScheme="blue"
                     size="lg"
-                    onClick={handleCreateSeats}
+                    onClick={() => {
+                      setShowError(true);
+                      handleCreateSeats();
+                    }}
                     mt={6}
                     isLoading={submitLoading}
                   >
                     Create Seats
                   </Button>
-                </>
-              )}
-            </VStack>
+                </Flex>
+              </>
+            )}
           </Form>
         )}
       </Formik>

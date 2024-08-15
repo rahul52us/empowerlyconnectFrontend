@@ -74,13 +74,13 @@ const RoomCard: React.FC<DataCardProps> = ({ data, handleForm, handleAddSeat }) 
             >
               {data.title}
             </Heading>
-            <Tooltip label="Edit data" aria-label="Edit data">
+            <Tooltip label="Edit Room" aria-label="Edit Room">
               <IconButton
                 icon={<EditIcon />}
                 onClick={() => handleForm(data, "edit")}
                 variant="ghost"
                 colorScheme="teal"
-                aria-label="Edit data"
+                aria-label="Edit Room"
                 size="sm"
               />
             </Tooltip>

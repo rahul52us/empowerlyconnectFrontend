@@ -18,6 +18,11 @@ class BookLiberary {
     data: 0,
   };
 
+  availableRoomSeatCounts = {
+    loading: false,
+    data: 0,
+  }
+
   bookForm = {
     type: "add",
     data: null,
@@ -89,6 +94,7 @@ class BookLiberary {
       roomSeatForm:observable,
       roomForm: observable,
       roomSeatCounts:observable,
+      availableRoomSeatCounts:observable,
       getBooksCounts: action,
       getBooksCategoryCounts: action,
       getBookUsersCounts: action,
@@ -110,7 +116,8 @@ class BookLiberary {
       getRoomsCounts:action,
       handleRoomSeatForm:action,
       createRoomSeat:action,
-      getRoomsSeatCounts:action
+      getRoomsSeatCounts:action,
+      getAvailableRoomSeatCounts:action
     });
   }
 
@@ -374,6 +381,21 @@ class BookLiberary {
       return Promise.reject(err?.response || err);
     } finally {
       this.roomSeatCounts.loading = false;
+    }
+  };
+
+  getAvailableRoomSeatCounts = async () => {
+    try {
+      this.availableRoomSeatCounts.loading = true;
+      const { data } = await axios.post("/liberary/room/seat/available/total/counts", {
+        company: [store.auth.getCurrentCompany()],
+      });
+      this.availableRoomSeatCounts.data = data?.data || 0;
+      return data.data;
+    } catch (err: any) {
+      return Promise.reject(err?.response || err);
+    } finally {
+      this.availableRoomSeatCounts.loading = false;
     }
   };
 

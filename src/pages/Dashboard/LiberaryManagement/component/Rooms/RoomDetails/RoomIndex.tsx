@@ -15,10 +15,10 @@ const BookLiberary = observer(() => {
   const {
     bookLiberary: {
       getRoomsCounts,
+      getAvailableRoomSeatCounts,
       roomsCounts,
-      bookCategoryCount,
       roomSeatCounts,
-      getBooksCategoryCounts,
+      availableRoomSeatCounts,
       getRoomsSeatCounts,
     },
     auth: { openNotification },
@@ -32,7 +32,7 @@ const BookLiberary = observer(() => {
   useEffect(() => {
     Promise.all([
       fetchData(getRoomsCounts),
-      fetchData(getBooksCategoryCounts),
+      fetchData(getAvailableRoomSeatCounts),
       fetchData(getRoomsSeatCounts),
     ])
       .then(() => {})
@@ -45,7 +45,7 @@ const BookLiberary = observer(() => {
       });
   }, [
     getRoomsCounts,
-    getBooksCategoryCounts,
+    getAvailableRoomSeatCounts,
     getRoomsSeatCounts,
     openNotification,
   ]);
@@ -60,15 +60,6 @@ const BookLiberary = observer(() => {
       description: "Total No. of Room Counts",
     },
     {
-      label: "Books Category",
-      value: bookCategoryCount.data,
-      loading: bookCategoryCount.loading,
-      icon: FaBookReader,
-      colorScheme: "teal",
-      description: "Here is an description for the users",
-      link:dashboard.liberary.books.category.index
-    },
-    {
       label: "Total Seats",
       value: roomSeatCounts.data,
       loading: roomSeatCounts.loading,
@@ -76,6 +67,15 @@ const BookLiberary = observer(() => {
       colorScheme: "teal",
       description: "Here is an description for the Seats",
     },
+    {
+      label: "Available Seats",
+      value: availableRoomSeatCounts.data,
+      loading: availableRoomSeatCounts.loading,
+      icon: FaBookReader,
+      colorScheme: "teal",
+      description: "Here is an description for the Available Seats",
+      link:dashboard.liberary.books.category.index
+    }
   ];
 
   return (
