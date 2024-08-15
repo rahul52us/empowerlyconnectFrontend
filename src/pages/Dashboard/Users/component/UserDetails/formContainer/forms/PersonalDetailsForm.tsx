@@ -1,11 +1,24 @@
 import { useState } from "react";
-import { Box, Button, Divider, Flex, Grid, Heading } from "@chakra-ui/react";
+import {
+  Avatar,
+  Box,
+  Button,
+  Divider,
+  Flex,
+  Grid,
+  Heading,
+  IconButton,
+} from "@chakra-ui/react";
 import { FieldArray, Form, Formik } from "formik";
 import CustomInput from "../../../../../../../config/component/CustomInput/CustomInput";
 import { titles } from "../../utils/constant";
 import CustomSubmitBtn from "../../../../../../../config/component/CustomSubmitBtn/CustomSubmitBtn";
-import ShowFileUploadFile from "../../../../../../../config/component/common/ShowFileUploadFile/ShowFileUploadFile";
-import { removeDataByIndex } from "../../../../../../../config/constant/function";
+// import ShowFileUploadFile from "../../../../../../../config/component/common/ShowFileUploadFile/ShowFileUploadFile";
+import {
+  readFileAsBase64,
+  removeDataByIndex,
+} from "../../../../../../../config/constant/function";
+import { FiCamera, FiTrash } from "react-icons/fi";
 
 const PersonalDetails = ({
   type,
@@ -36,8 +49,8 @@ const PersonalDetails = ({
           setSubmitting,
           resetForm,
           setErrors,
-          setShowError
-      });
+          setShowError,
+        });
       }}
     >
       {({
@@ -46,7 +59,7 @@ const PersonalDetails = ({
         setFieldValue,
         handleChange,
         handleSubmit,
-        isSubmitting
+        isSubmitting,
       }) => {
         return (
           <Form onSubmit={handleSubmit}>
@@ -56,45 +69,108 @@ const PersonalDetails = ({
                   Personal Information :-
                 </Heading>
                 <Divider />
-                <Flex>
-                    {values?.pic?.file?.length === 0 ? (
-                      <CustomInput
-                        type="file-drag"
-                        name="pic"
-                        value={values.pic}
-                        isMulti={true}
-                        accept="image/*"
-                        onChange={(e: any) => {
-                          setFieldValue("pic", {
-                            ...values.pic,
-                            file: e.target.files[0],
-                            isAdd: 1,
-                            isEdited : type === "edit" ? true : false
-                          });
-                        }}
-                        required={true}
-                        showError={showError}
-                        error={errors.logo}
-                      />
-                    ) : (
-                      <Box mt={-5} width="100%">
-                        <ShowFileUploadFile
-                          files={values.pic?.file}
-                          removeFile={(_: any) => {
+
+                <Flex direction="column" align="center" p={1}>
+                  {values?.pic?.file?.length === 0 ? (
+                    <Box textAlign="center">
+                      <label htmlFor="pic-upload" style={{ cursor: "pointer" }}>
+                        <Box position="relative">
+                          <Avatar
+                            src={values.pic?.file?.url || values.pic?.url}
+                            width="160px"
+                            height="160px"
+                            cursor="pointer"
+                            aria-label={`${values.firstName} ${values.lastName}`}
+                            mb={4}
+                            borderRadius="full"
+                            boxShadow="sm"
+                          />
+                          <IconButton
+                            icon={<FiCamera />}
+                            aria-label="Upload Picture"
+                            size="sm"
+                            title="upload picture"
+                            colorScheme="teal"
+                            position="absolute"
+                            bottom={4}
+                            right={2}
+                            borderRadius="full"
+                            onClick={() => {
+                              const input = document.getElementById(
+                                "pic-upload"
+                              ) as HTMLInputElement;
+                              if (input) {
+                                input.click();
+                              }
+                            }}
+                          />
+                        </Box>
+                        <input
+                          id="pic-upload"
+                          type="file"
+                          accept="image/*"
+                          style={{ display: "none" }}
+                          onChange={async (e: any) => {
+                            const url = await readFileAsBase64(
+                              e.target.files[0]
+                            );
                             setFieldValue("pic", {
                               ...values.pic,
-                              file: removeDataByIndex(values.pic, 0),
-                              isDeleted: 1,
-                              isEdited : type === "edit" ? true : false
+                              file: e.target.files[0],
+                              isEdited: type === "edit" ? true : false,
+                              url: url,
                             });
                           }}
-                          edit={type === "edit" ? true : false}
                         />
-                      </Box>
-                    )}
-                  </Flex>
+                      </label>
+                    </Box>
+                  ) : (
+                    <Box position="relative">
+                      <Flex
+                        justify="center"
+                        align="center"
+                        direction="column"
+                        position="relative"
+                      >
+                        <Avatar
+                          width="160px"
+                          height="160px"
+                          src={values.pic?.url || values?.pic?.file?.url}
+                          aria-label={`${values.firstName} ${values.lastName}`}
+                          mb={4}
+                          borderRadius="full"
+                          boxShadow="sm"
+                        />
+                        <Box position="absolute" bottom={3} right={0}>
+                          <IconButton
+                            icon={<FiTrash />}
+                            aria-label="Remove Picture"
+                            size="sm"
+                            title="remove picture"
+                            colorScheme="red"
+                            borderRadius="full"
+                            onClick={() => {
+                              setFieldValue("pic", {
+                                ...values.pic,
+                                file: removeDataByIndex(values.pic, 0),
+                                url: undefined,
+                                isDeleted: 1,
+                                isEdited: type === "edit" ? true : false,
+                              });
+                            }}
+                          />
+                        </Box>
+                      </Flex>
+                    </Box>
+                  )}
+                </Flex>
+
                 <Grid
-                  gridTemplateColumns={{ md: "1fr 1fr 1fr" }}
+                  gridTemplateColumns={{
+                    sm: "1fr 1fr",
+                    md: "1fr 1fr 1fr",
+                    xl: "1fr 1fr 1fr 1fr",
+                  }}
                   columnGap={4}
                   rowGap={2}
                   mb={5}
@@ -109,7 +185,7 @@ const PersonalDetails = ({
                     showError={showError}
                     options={titles}
                     onChange={(e) => {
-                      setFieldValue('title',e)
+                      setFieldValue("title", e);
                       console.log(e);
                     }}
                   />
@@ -308,7 +384,7 @@ const PersonalDetails = ({
                       setFieldValue("weddingDate", e);
                     }}
                   />
-                   <CustomInput
+                  <CustomInput
                     name="language"
                     type="select"
                     placeholder="Select the language"
@@ -327,7 +403,7 @@ const PersonalDetails = ({
                       },
                     ]}
                     onChange={(e) => {
-                      setFieldValue('language',e)
+                      setFieldValue("language", e);
                     }}
                     showError={showError}
                     readOnly={type === "edit" ? true : false}
@@ -504,9 +580,12 @@ const PersonalDetails = ({
                 </Grid>
               </Grid>
               <Flex justifyContent="end">
-              <CustomSubmitBtn loading={isSubmitting} onClick={() => {
-                setShowError(true)
-              }}/>
+                <CustomSubmitBtn
+                  loading={isSubmitting}
+                  onClick={() => {
+                    setShowError(true);
+                  }}
+                />
               </Flex>
             </Box>
           </Form>
