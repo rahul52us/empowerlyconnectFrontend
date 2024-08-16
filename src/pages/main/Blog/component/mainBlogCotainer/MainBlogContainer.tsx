@@ -10,7 +10,7 @@ const MainBlogContainer = observer(() => {
   } = store;
 
   useEffect(() => {
-    getBlogs()
+    getBlogs({page : 1, limit : 15})
       .then(() => {})
       .catch((err: any) => {
         openNotification({

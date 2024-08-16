@@ -37,7 +37,7 @@ class BlogStore {
 
   createBlog = async (sendData: any) => {
     try {
-      const { data } = await axios.post("/blog", sendData);
+      const { data } = await axios.post("/blog", {...sendData,company : store.auth.getCurrentCompany()});
       return data;
     } catch (err: any) {
       return Promise.reject(err?.response?.data || err);
@@ -61,10 +61,10 @@ class BlogStore {
     }
   };
 
-  getBlogs = async () => {
+  getBlogs = async (sendData : any) => {
     try {
       this.blogs.loading = true;
-      const { data } = await axios.post(`/blog/get`);
+      const { data } = await axios.post(`/blog/get`,{company : [store.auth.company]},{params : {...sendData}});
       this.blogs.data = data?.data?.data || [];
       this.blogs.TotalPages = data?.data?.totalPages || 0;
       return data.data;
