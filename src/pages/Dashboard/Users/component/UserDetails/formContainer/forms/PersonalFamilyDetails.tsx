@@ -28,7 +28,7 @@ const FamilyDetails = ({
 
   useEffect(() => {
     // Update the visibility of NotFoundData when relations change
-    // setShowNotFound(initialValues.relations?.length === 0);
+    setShowNotFound(initialValues.relations?.length === 0);
   }, [initialValues]);
 
   const handleAddRelation = () => {
