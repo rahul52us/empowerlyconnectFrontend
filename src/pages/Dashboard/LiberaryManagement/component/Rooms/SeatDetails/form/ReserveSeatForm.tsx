@@ -204,10 +204,10 @@ const ReserveSeatForm = observer(({ item, close }: any) => {
                 placeholder="Search Seat"
                 type="select"
                 value={values.seat}
-                options={roomSeatData.data.map((item: any) => ({
+                options={Array.isArray(roomSeatData.data) ? roomSeatData.data.map((item: any) => ({
                   label: item.seatNumber,
                   value: item._id,
-                }))}
+                })) : []}
                 onChange={(e) => setFieldValue("seat", e)}
                 required
                 showError={showError}

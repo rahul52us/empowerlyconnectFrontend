@@ -293,7 +293,15 @@ const sidebarDatas: SidebarItem[] = [
           icon: <FaUsers />,
           url: dashboard.liberary.books.category.index,
           role: ["admin", "superadmin"],
-        }]
+        },
+        {
+          id: 83,
+          name: "Users",
+          icon: <FaUsers />,
+          url: dashboard.liberary.books.users,
+          role: ["admin", "superadmin"],
+        }
+        ]
         },
         {
           id: 84,
@@ -311,9 +319,9 @@ const sidebarDatas: SidebarItem[] = [
           },
           {
           id: 86,
-          name: "Sections",
+          name: "Users",
           icon: <FaUsers />,
-          url: dashboard.liberary.room.roomSections,
+          url: dashboard.liberary.room.users,
           role: ["admin", "superadmin"],
         }]
         },

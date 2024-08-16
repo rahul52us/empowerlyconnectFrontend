@@ -136,7 +136,8 @@ class BookLiberary {
       getAvailableRoomSeatCounts:action,
       handleRoomReserveSeatForm:action,
       getAllSeatRooms:action,
-      createReserveRoomSeat:action
+      createReserveRoomSeat:action,
+      getUserReserveSeat:action
     });
   }
 
@@ -490,6 +491,23 @@ class BookLiberary {
       this.roomReserveForm.data = data.data;
       this.roomReserveForm.open = data.open;
       this.roomReserveForm.type = data.type;
+    }
+  };
+
+  getUserReserveSeat = async (sendData: any) => {
+    try {
+      this.roomSeatData.loading = true;
+      const { data } = await axios.post(
+        `/liberary/room/seat/reserve/details/user/${sendData.user}`,
+        { company: [store.auth.getCurrentCompany()] },
+        { params: { ...sendData } }
+      );
+      this.roomSeatData.data = data?.data || [];
+      return data.data;
+    } catch (err: any) {
+      return Promise.reject(err?.response || err);
+    } finally {
+      this.roomSeatData.loading = false;
     }
   };
 

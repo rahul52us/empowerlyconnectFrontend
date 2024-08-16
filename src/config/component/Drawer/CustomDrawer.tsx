@@ -9,9 +9,11 @@ import {
   Text,
   useBreakpointValue,
   useColorMode,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { useRef } from "react";
 import DrawerLoader from "../Loader/DrawerLoader";
+import store from "../../../store/store";
 
 interface CustomDrawerProps {
   open: boolean;
@@ -19,9 +21,9 @@ interface CustomDrawerProps {
   close: any;
   children: any;
   size?: string;
-  props?:any;
-  width?:any;
-  loading?:boolean
+  props?: any;
+  width?: any;
+  loading?: boolean;
 }
 
 const CustomDrawer: React.FC<CustomDrawerProps> = ({
@@ -32,13 +34,19 @@ const CustomDrawer: React.FC<CustomDrawerProps> = ({
   children,
   width,
   loading = false,
-  props
+  props,
 }) => {
+  const {
+    themeStore: { themeConfig },
+  } = store;
   const drawerRef = useRef<HTMLDivElement>(null);
   const { colorMode } = useColorMode();
-  const isDesktop = useBreakpointValue({base : false , md : true})
+  const isDesktop = useBreakpointValue({ base: false, md: true });
 
-  const headerBgColor = colorMode === "dark" ? "blue.900" : "blue.500";
+  const headerBgColor = useColorModeValue(
+    themeConfig.colors.custom.light.primary,
+    themeConfig.colors.custom.dark.primary
+  );
   const headerTextColor = colorMode === "dark" ? "white" : "white";
   const handleCloseDrawer = () => {
     close();
@@ -56,12 +64,12 @@ const CustomDrawer: React.FC<CustomDrawerProps> = ({
       <DrawerOverlay />
       <DrawerContent
         css={{
-          width:width ? isDesktop ? width : undefined : undefined,
-          maxWidth:width ? isDesktop ? width : undefined : undefined,
+          width: width ? (isDesktop ? width : undefined) : undefined,
+          maxWidth: width ? (isDesktop ? width : undefined) : undefined,
           transition: "transform 0.1s ease-out",
-          padding:0,
+          padding: 0,
           transform: open ? "translateX(0)" : "translateX(100%)",
-          ...props
+          ...props,
         }}
       >
         {title && (
@@ -76,17 +84,19 @@ const CustomDrawer: React.FC<CustomDrawerProps> = ({
             <DrawerCloseButton
               color={headerTextColor}
               bg="red.500"
-              _hover={{color : '#00000'}}
+              _hover={{ color: "#00000" }}
               size="lg"
               mt={1}
             />
           </Flex>
         )}
         <Divider />
-        <DrawerBody style={{ overflowY: "auto",padding:isDesktop ? '15px' : '6px'  }}>
-        <DrawerLoader loading={loading}>
-        <div style={{ maxHeight: "calc(100vh - 245px)" }}>{children}</div>
-        </DrawerLoader>
+        <DrawerBody
+          style={{ overflowY: "auto", padding: isDesktop ? "15px" : "6px" }}
+        >
+          <DrawerLoader loading={loading}>
+            <div style={{ maxHeight: "calc(100vh - 245px)" }}>{children}</div>
+          </DrawerLoader>
         </DrawerBody>
       </DrawerContent>
     </Drawer>

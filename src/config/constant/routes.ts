@@ -77,11 +77,12 @@ export const dashboard = {
       index : `/${dashboardName}/liberary/books`,
       category : {
         index : `/${dashboardName}/liberary/books/category`
-      }
+      },
+      users : `/${dashboardName}/liberay/books/users`
     },
     room: {
       index : `${dashboardName}/liberary/room`,
-      roomSections : `${dashboardName}/liberary/room/:id/section`,
+      users :  `${dashboardName}/liberary/room/users`
     }
   },
   // project
