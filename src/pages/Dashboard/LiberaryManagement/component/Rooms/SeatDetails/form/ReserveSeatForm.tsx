@@ -1,4 +1,4 @@
-import { Button, Checkbox, Flex, FormControl, Grid } from "@chakra-ui/react";
+import { Checkbox, FormControl, Grid } from "@chakra-ui/react";
 import { Formik, Form, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import CustomInput from "../../../../../../../config/component/CustomInput/CustomInput";
@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import store from "../../../../../../../store/store";
 import { getStatusType } from "../../../../../../../config/constant/statusCode";
 import { observer } from "mobx-react-lite";
+import CustomSubmitBtn from "../../../../../../../config/component/CustomSubmitBtn/CustomSubmitBtn";
 
 // Define the schema for validation
 const validationSchema = Yup.object({
@@ -355,16 +356,16 @@ const ReserveSeatForm = observer(({ user, room, close }: any) => {
                 </FormControl>
               </Grid>
             </DrawerFormHeightContainer>
-            <Flex justifyContent="end">
-              <Button
-                type="submit"
-                colorScheme="blue"
-                isLoading={isSubmitting}
-                onClick={() => setShowError(true)}
-              >
-                Submit
-              </Button>
-            </Flex>
+            <CustomSubmitBtn
+              onClick={() => setShowError(true)}
+              buttonText="Submit"
+              loading={isSubmitting}
+              cancelFunctionality={{
+                show: true,
+                text: "Cancel",
+                onClick: () => close(),
+              }}
+            />
           </Form>
         );
       }}

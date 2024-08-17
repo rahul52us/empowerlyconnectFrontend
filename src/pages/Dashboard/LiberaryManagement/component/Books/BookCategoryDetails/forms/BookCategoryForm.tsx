@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Grid, GridItem } from "@chakra-ui/react";
+import { Box, Flex, Grid, GridItem } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import { observer } from "mobx-react-lite";
 import CustomInput from "../../../../../../../config/component/CustomInput/CustomInput";
@@ -6,6 +6,7 @@ import DrawerFormHeightContainer from "../../../../../../../config/component/Dra
 import ShowFileUploadFile from "../../../../../../../config/component/common/ShowFileUploadFile/ShowFileUploadFile";
 import { removeDataByIndex } from "../../../../../../../config/constant/function";
 import { BookCategoryValidationSchema } from "../../utils/validation";
+import CustomSubmitBtn from "../../../../../../../config/component/CustomSubmitBtn/CustomSubmitBtn";
 
 const BookCategoryForm = observer(
   ({
@@ -88,24 +89,16 @@ const BookCategoryForm = observer(
                   </GridItem>
                 </Grid>
               </DrawerFormHeightContainer>
-              <Flex
-                justifyContent="flex-end"
-                p={2}
-                columnGap={4}
-                alignItems="center"
-              >
-                <Button variant="outline" onClick={close} colorScheme="gray">
-                  Cancel
-                </Button>
-                <Button
-                  isLoading={isSubmitting}
-                  colorScheme="blue"
-                  type="submit"
-                  onClick={() => setShowError(true)}
-                >
-                  Submit
-                </Button>
-              </Flex>
+              <CustomSubmitBtn
+                onClick={() => setShowError(true)}
+                buttonText="Submit"
+                loading={isSubmitting}
+                cancelFunctionality={{
+                  show: true,
+                  text: "Cancel",
+                  onClick: close
+                }}
+              />
             </Form>
           );
         }}

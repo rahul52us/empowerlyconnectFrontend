@@ -97,13 +97,11 @@ const PersonalDetailsChangePassword = ({ changePassword }: ProfileChangePassword
                 />
               </Grid>
             </Box>
-            <Flex justifyContent={"flex-end"} mt={5}>
               <CustomSubmitBtn
                 loading={isSubmitting}
                 type="submit"
                 onClick={() => setShowError(true)}
               />
-            </Flex>
           </Flex>
         </Form>
       )}

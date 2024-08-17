@@ -28,6 +28,7 @@ import tripFormValidation from "../../utils/validation";
 import { generateFormError } from "../../utils/functions";
 import store from "../../../../../../store/store";
 import { useEffect } from "react";
+import CustomSubmitBtn from "../../../../../../config/component/CustomSubmitBtn/CustomSubmitBtn";
 
 const AddDetailButton: React.FC<{ title: string; onClick: () => void }> = ({
 onClick,
@@ -621,26 +622,16 @@ return (
 				/>
 			</GridItem>
 			</Box>
-			<Flex justifyContent="end" mt={2} p={2}>
-				<Button
-				type="button"
-				onClick={onClose}
-				mr={4}
-				variant="outline"
-				>
-				Cancel
-				</Button>
-				<Button
-				type="submit"
-				colorScheme="blue"
-				isLoading={loading}
-				onClick={() => {
-					setShowError(true);
-				}}
-				>
-				{isEdit ? "Update" : "Create"}
-				</Button>
-			</Flex>
+			<CustomSubmitBtn
+              onClick={() => setShowError(true)}
+              buttonText="Submit"
+              loading={loading}
+              cancelFunctionality={{
+                show: true,
+                text: "Cancel",
+                onClick: () => onClose(),
+              }}
+            />
 			</Form>
 		);
 		}}

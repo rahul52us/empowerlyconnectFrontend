@@ -1,12 +1,12 @@
-import { Button, Flex } from "@chakra-ui/react";
+import { Box, Button, Divider, Flex } from "@chakra-ui/react";
 
 interface CustomBtnI {
   loading: boolean;
   onClick?: any;
-  buttonText?:string;
+  buttonText?: string;
   cancelFunctionality?: any;
-  rest?:any;
-  type?:string
+  rest?: any;
+  type?: string;
 }
 
 const CustomSubmitBtn = ({
@@ -15,11 +15,25 @@ const CustomSubmitBtn = ({
   buttonText,
   cancelFunctionality,
   type,
-  rest
+  rest,
 }: CustomBtnI) => {
   return (
-    <Flex mt={3} gap={4}>
-
+    <Box width="100%">
+    <Divider />
+    <Flex gap={4} justifyContent="end" mt={3}>
+      {cancelFunctionality && cancelFunctionality.show && (
+        <Button
+          onClick={() => {
+            if (cancelFunctionality.onClick) {
+              cancelFunctionality.onClick();
+            }
+          }}
+          {...cancelFunctionality.rest}
+          colorScheme="red"
+        >
+          {cancelFunctionality.text ? cancelFunctionality.text : "Cancel"}
+        </Button>
+      )}
       <Button
         type={type ? type : "submit"}
         isLoading={loading}
@@ -31,21 +45,10 @@ const CustomSubmitBtn = ({
         colorScheme="blue"
         {...rest}
       >
-        {buttonText ? buttonText : 'Submit'}
+        {buttonText ? buttonText : "Submit"}
       </Button>
-      {
-        cancelFunctionality && cancelFunctionality.show &&
-      <Button
-        onClick={() => {
-          if (cancelFunctionality.onClick) {
-            cancelFunctionality.onClick();
-          }
-        }}
-        {...cancelFunctionality.rest}
-      >
-        {cancelFunctionality.text ?  cancelFunctionality.text : 'Cancel'}
-      </Button>}
     </Flex>
+    </Box>
   );
 };
 

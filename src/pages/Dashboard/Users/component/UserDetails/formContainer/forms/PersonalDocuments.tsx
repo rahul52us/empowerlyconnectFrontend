@@ -73,11 +73,9 @@ const PersonalDocuments = ({
                 </Flex>
               )})}
             </Grid>
-            <Flex justifyContent="end">
               <CustomSubmitBtn loading={isSubmitting} onClick={() => {
                 setShowError(true)
               }}/>
-              </Flex>
           </Box>
         </Form>
       )}}

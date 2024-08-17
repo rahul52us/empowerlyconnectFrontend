@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Grid, GridItem } from "@chakra-ui/react";
+import { Box, Flex, Grid, GridItem } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import { observer } from "mobx-react-lite";
 import CustomInput from "../../../../../../../config/component/CustomInput/CustomInput";
@@ -6,9 +6,17 @@ import DrawerFormHeightContainer from "../../../../../../../config/component/Dra
 import ShowFileUploadFile from "../../../../../../../config/component/common/ShowFileUploadFile/ShowFileUploadFile";
 import { removeDataByIndex } from "../../../../../../../config/constant/function";
 import { RoomValidationSchema } from "../utils/validation";
+import CustomSubmitBtn from "../../../../../../../config/component/CustomSubmitBtn/CustomSubmitBtn";
 
 const RoomForm = observer(
-  ({ initialValues, showError, setShowError, close, handleSubmit, isEdit }: any) => {
+  ({
+    initialValues,
+    showError,
+    setShowError,
+    close,
+    handleSubmit,
+    isEdit,
+  }: any) => {
     return (
       <Formik
         initialValues={initialValues}
@@ -36,7 +44,7 @@ const RoomForm = observer(
                           isAdd: 1,
                         });
                       }}
-                        showError={showError}
+                      showError={showError}
                       error={errors.coverImage}
                     />
                   ) : (
@@ -89,7 +97,7 @@ const RoomForm = observer(
                       name="description"
                       placeholder="Description"
                       label="Description"
-                        onChange={handleChange}
+                      onChange={handleChange}
                       value={values.description}
                       error={errors.description}
                       showError={showError}
@@ -97,24 +105,16 @@ const RoomForm = observer(
                   </GridItem>
                 </Grid>
               </DrawerFormHeightContainer>
-              <Flex
-                justifyContent="flex-end"
-                p={2}
-                columnGap={4}
-                alignItems="center"
-              >
-                <Button variant="outline" onClick={close} colorScheme="gray">
-                  Cancel
-                </Button>
-                <Button
-                  isLoading={isSubmitting}
-                  colorScheme="blue"
-                  type="submit"
-                  onClick={() => setShowError(true)}
-                >
-                  Submit
-                </Button>
-              </Flex>
+              <CustomSubmitBtn
+                onClick={() => setShowError(true)}
+                buttonText="Submit"
+                loading={isSubmitting}
+                cancelFunctionality={{
+                  show: true,
+                  text: "Cancel",
+                  onClick: close,
+                }}
+              />
             </Form>
           );
         }}

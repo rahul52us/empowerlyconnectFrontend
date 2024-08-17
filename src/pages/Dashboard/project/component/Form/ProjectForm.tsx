@@ -445,7 +445,7 @@ const ProjectForm = observer(
                   <CustomSubmitBtn
                     cancelFunctionality={{
                       show: true,
-                      onClick: setOpenProjectDrawer,
+                      onClick: () => setOpenProjectDrawer("create"),
                     }}
                     onClick={() => setShowError(true)}
                     type="submit"

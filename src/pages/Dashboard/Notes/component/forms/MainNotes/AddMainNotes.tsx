@@ -11,7 +11,7 @@ import { NotesCategoryFormDto } from "../../../utils/dto";
 import { insertUniqueFile, readFileAsBase64, removeDataByIndex } from "../../../../../../config/constant/function";
 import CustomInput from "../../../../../../config/component/CustomInput/CustomInput";
 import ShowFileUploadFile from "../../../../../../config/component/common/ShowFileUploadFile/ShowFileUploadFile";
-import CustomSubmitBtn from "../../../../../../config/component/Button/CustomSubmitBtn";
+import CustomSubmitBtn from "../../../../../../config/component/CustomSubmitBtn/CustomSubmitBtn";
 
 const FormComponent = observer(({ formData }: any) => {
   const [thumbnail, setThumbnail] = useState<any>([]);
@@ -232,14 +232,12 @@ const FormComponent = observer(({ formData }: any) => {
                 </Grid>
               </Grid>
             </Box>
-            <Flex justifyContent="flex-end" mt={5} mr={5}>
               <CustomSubmitBtn
                 loading={isSubmitting}
                 type="submit"
                 onClick={() => setShowError(true)}
               />
             </Flex>
-          </Flex>
         </Form>
       )}
     </Formik>

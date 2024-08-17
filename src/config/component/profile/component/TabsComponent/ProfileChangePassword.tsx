@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Box, Flex, Grid, Heading } from "@chakra-ui/react";
 import CustomInput from "../../../CustomInput/CustomInput";
-import CustomSubmitBtn from "../../../Button/CustomSubmitBtn";
 import { Form, Formik } from "formik";
 import { ChangePasswordValidation } from "../../utils/validation";
 import store from "../../../../../store/store";
+import CustomSubmitBtn from "../../../CustomSubmitBtn/CustomSubmitBtn";
 
 interface ProfileChangePasswordI {
   changePassword?: any;
@@ -97,13 +97,11 @@ const ProfileChangePassword = ({ changePassword }: ProfileChangePasswordI) => {
                 />
               </Grid>
             </Box>
-            <Flex justifyContent={"flex-end"} mt={5}>
               <CustomSubmitBtn
                 loading={isSubmitting}
                 type="submit"
                 onClick={() => setShowError(true)}
               />
-            </Flex>
           </Flex>
         </Form>
       )}

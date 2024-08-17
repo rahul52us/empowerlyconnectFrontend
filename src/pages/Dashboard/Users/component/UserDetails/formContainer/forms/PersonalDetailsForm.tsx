@@ -579,14 +579,12 @@ const PersonalDetails = ({
                   </FieldArray>
                 </Grid>
               </Grid>
-              <Flex justifyContent="end">
                 <CustomSubmitBtn
                   loading={isSubmitting}
                   onClick={() => {
                     setShowError(true);
                   }}
                 />
-              </Flex>
             </Box>
           </Form>
         );

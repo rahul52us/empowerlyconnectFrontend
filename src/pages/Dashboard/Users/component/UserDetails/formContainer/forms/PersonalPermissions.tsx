@@ -1,14 +1,19 @@
 import { useState } from "react";
-import { Box, Divider, Flex, Grid, Heading, Checkbox, FormLabel, useColorModeValue } from "@chakra-ui/react";
+import {
+  Box,
+  Divider,
+  Grid,
+  Heading,
+  Checkbox,
+  FormLabel,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import CustomSubmitBtn from "../../../../../../../config/component/CustomSubmitBtn/CustomSubmitBtn";
 import { transformPermissionsForDB } from "../../utils/function";
 import { defaultPermissions } from "../../utils/constant";
 
-const PersonalPermissions = ({
-  handleSubmitProfile,
-  initialValues,
-}: any) => {
+const PersonalPermissions = ({ handleSubmitProfile, initialValues }: any) => {
   const [, setShowError] = useState(false);
 
   const boxBg = useColorModeValue("white", "gray.800");
@@ -21,7 +26,9 @@ const PersonalPermissions = ({
       initialValues={initialValues}
       onSubmit={(values, { setSubmitting, resetForm, setErrors }) => {
         handleSubmitProfile({
-          values: {permissions : transformPermissionsForDB(values.permissions)},
+          values: {
+            permissions: transformPermissionsForDB(values.permissions),
+          },
           setSubmitting,
           resetForm,
           setErrors,
@@ -31,9 +38,26 @@ const PersonalPermissions = ({
     >
       {({ values, handleChange, handleSubmit, isSubmitting }) => (
         <Form onSubmit={handleSubmit}>
-          <Box maxHeight="77vh" display="flex" flexDirection="column" overflowY="auto">
-            <Box flex="1" p={6} borderRadius="md" boxShadow="sm" bg={boxBg} overflowY="auto">
-              <Heading color={headingColor} fontSize="2xl" mb={4} textAlign="center">
+          <Box
+            maxHeight="77vh"
+            display="flex"
+            flexDirection="column"
+            overflowY="auto"
+          >
+            <Box
+              flex="1"
+              p={6}
+              borderRadius="md"
+              boxShadow="sm"
+              bg={boxBg}
+              overflowY="auto"
+            >
+              <Heading
+                color={headingColor}
+                fontSize="2xl"
+                mb={4}
+                textAlign="center"
+              >
                 Permissions Management
               </Heading>
               <Divider mb={4} />
@@ -43,40 +67,48 @@ const PersonalPermissions = ({
                     {moduleKey.charAt(0).toUpperCase() + moduleKey.slice(1)}
                   </Heading>
                   <Grid
-                    gridTemplateColumns={{ sm: "1fr 1fr", md: "1fr 1fr 1fr 1fr" }}
+                    gridTemplateColumns={{
+                      sm: "1fr 1fr",
+                      md: "1fr 1fr 1fr 1fr",
+                    }}
                     gap={4}
                   >
-                    {Object.keys(defaultPermissions[moduleKey]).map((permission) => (
-                      <Box
-                        key={permission}
-                        borderWidth="1px"
-                        borderRadius="md"
-                        p={2}
-                        boxShadow="sm"
-                        bg={itemBg}
-                      >
-                        <FormLabel htmlFor={`${moduleKey}.${permission}`}>
-                          {permission.charAt(0).toUpperCase() + permission.slice(1)}
-                        </FormLabel>
-                        <Checkbox
-                          id={`${moduleKey}.${permission}`}
-                          name={`permissions.${moduleKey}.${permission}`}
-                          isChecked={values.permissions[moduleKey][permission]}
-                          onChange={handleChange}
-                          colorScheme="teal"
-                        />
-                      </Box>
-                    ))}
+                    {Object.keys(defaultPermissions[moduleKey]).map(
+                      (permission) => (
+                        <Box
+                          key={permission}
+                          borderWidth="1px"
+                          borderRadius="md"
+                          p={2}
+                          boxShadow="sm"
+                          bg={itemBg}
+                        >
+                          <FormLabel htmlFor={`${moduleKey}.${permission}`}>
+                            {permission.charAt(0).toUpperCase() +
+                              permission.slice(1)}
+                          </FormLabel>
+                          <Checkbox
+                            id={`${moduleKey}.${permission}`}
+                            name={`permissions.${moduleKey}.${permission}`}
+                            isChecked={
+                              values.permissions[moduleKey][permission]
+                            }
+                            onChange={handleChange}
+                            colorScheme="teal"
+                          />
+                        </Box>
+                      )
+                    )}
                   </Grid>
                 </Box>
               ))}
             </Box>
-            <Flex justifyContent="flex-end" p={3} borderTopWidth="0.5px">
-              <CustomSubmitBtn
-                loading={isSubmitting}
-                onClick={() => { setShowError(true); }}
-              />
-            </Flex>
+            <CustomSubmitBtn
+              loading={isSubmitting}
+              onClick={() => {
+                setShowError(true);
+              }}
+            />
           </Box>
         </Form>
       )}

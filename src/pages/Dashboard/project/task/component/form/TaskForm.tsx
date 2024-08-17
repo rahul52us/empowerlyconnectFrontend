@@ -376,7 +376,7 @@ const TaskForm = observer(
                   <CustomSubmitBtn
                     cancelFunctionality={{
                       show: true,
-                      onClick: setOpenTaskDrawer,
+                      onClick: () => setOpenTaskDrawer('create'),
                     }}
                     onClick={() => setShowError(true)}
                     type="submit"

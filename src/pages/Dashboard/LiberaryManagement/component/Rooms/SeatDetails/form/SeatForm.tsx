@@ -14,6 +14,7 @@ import * as Yup from "yup";
 import store from "../../../../../../../store/store";
 import { getStatusType } from "../../../../../../../config/constant/statusCode";
 import CustomInput from "../../../../../../../config/component/CustomInput/CustomInput";
+import CustomSubmitBtn from "../../../../../../../config/component/CustomSubmitBtn/CustomSubmitBtn";
 
 // Define TypeScript interfaces for form values
 interface FormValues {
@@ -43,9 +44,10 @@ const validationSchema = Yup.object().shape({
 
 interface SeatFormProps {
   data: any;
+  close : any
 }
 
-const SeatForm: React.FC<SeatFormProps> = ({ data }) => {
+const SeatForm: React.FC<SeatFormProps> = ({ data,close }) => {
   const {
     bookLiberary: { createRoomSeat },
     auth: { openNotification },
@@ -291,20 +293,16 @@ const SeatForm: React.FC<SeatFormProps> = ({ data }) => {
                     </Box>
                   ))}
                 </SimpleGrid>
-                <Flex width="100%" justifyContent="end">
-                  <Button
-                    colorScheme="blue"
-                    size="lg"
-                    onClick={() => {
-                      setShowError(true);
-                      handleCreateSeats();
-                    }}
-                    mt={6}
-                    isLoading={submitLoading}
-                  >
-                    Create Seats
-                  </Button>
-                </Flex>
+                <CustomSubmitBtn
+                onClick={() => setShowError(true)}
+                buttonText="Submit"
+                loading={submitLoading}
+                cancelFunctionality={{
+                  show: true,
+                  text: "Cancel",
+                  onClick: close()
+                }}
+              />
               </>
             )}
           </Form>

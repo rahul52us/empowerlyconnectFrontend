@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { Box, Divider, Flex, Grid, Heading } from "@chakra-ui/react";
+import { Box, Divider, Grid, Heading } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import CustomInput from "../../../../../../../config/component/CustomInput/CustomInput";
 import { observer } from "mobx-react-lite";
@@ -10,10 +10,6 @@ import CustomSubmitBtn from "../../../../../../../config/component/CustomSubmitB
 const PersonalCompanyDetails = observer(
   ({ handleSubmitProfile, initialValues, validations }: any) => {
     const [formInitialValues, setFormInitialValues] = useState(initialValues);
-
-
-    console.log('the initialValues are', initialValues)
-
 
     const {
       auth: { user, openNotification },
@@ -384,14 +380,12 @@ const PersonalCompanyDetails = observer(
                     showError={showError}
                   />
                 </Grid>
-                <Flex justifyContent="end">
                   <CustomSubmitBtn
                     loading={isSubmitting}
                     onClick={() => {
                       setShowError(true);
                     }}
                   />
-                </Flex>
               </Box>
             </Form>
           );

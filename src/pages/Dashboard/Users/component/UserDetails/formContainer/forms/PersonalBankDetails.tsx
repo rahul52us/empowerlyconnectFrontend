@@ -24,8 +24,8 @@ const PersonalBankDetails = ({
           setSubmitting,
           resetForm,
           setErrors,
-          setShowError
-      });
+          setShowError,
+        });
       }}
     >
       {({ values, errors, handleChange, handleSubmit, isSubmitting }) => {
@@ -144,11 +144,12 @@ const PersonalBankDetails = ({
                   />
                 </Grid>
               </Grid>
-              <Flex justifyContent="end">
-              <CustomSubmitBtn loading={isSubmitting} onClick={() => {
-                setShowError(true)
-              }}/>
-              </Flex>
+              <CustomSubmitBtn
+                loading={isSubmitting}
+                onClick={() => {
+                  setShowError(true);
+                }}
+              />
             </Box>
           </Form>
         );

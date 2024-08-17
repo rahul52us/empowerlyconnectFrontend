@@ -285,12 +285,10 @@ const FamilyDetails = ({
                 </>
               )}
             </FieldArray>
-            <Flex justifyContent="flex-end" mt={8}>
               <CustomSubmitBtn
                 loading={isSubmitting}
                 onClick={() => setShowError(true)}
               />
-            </Flex>
           </Form>
         )}
       </Formik>

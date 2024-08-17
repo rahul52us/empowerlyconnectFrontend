@@ -13,7 +13,6 @@ import {
 import CustomInput from "../../../../../config/component/CustomInput/CustomInput";
 import { observer } from "mobx-react-lite";
 import { QuizCategoryPara } from "./utils/dto";
-import CustomSubmitBtn from "../../../../../config/component/Button/CustomSubmitBtn";
 import store from "../../../../../store/store";
 import { BiQuestionMark } from "react-icons/bi";
 import QuizCreateValidation from "./utils/validation";
@@ -22,6 +21,7 @@ import {
   insertUniqueFile,
   removeDataByIndex,
 } from "../../../../../config/constant/function";
+import CustomSubmitBtn from "../../../../../config/component/CustomSubmitBtn/CustomSubmitBtn";
 
 const QuizCategoryForm = observer(
   ({ submitForm, initialValues, loading }: QuizCategoryPara) => {
@@ -288,13 +288,11 @@ const QuizCategoryForm = observer(
                       </FieldArray>
                     </Grid>
                   </Box>
-                  <Flex justifyContent="flex-end" mt={5} mr={5}>
                     <CustomSubmitBtn
                       loading={loading}
                       type="submit"
                       onClick={() => setShowError(true)}
                     />
-                  </Flex>
                 </Flex>
               </Form>
             );

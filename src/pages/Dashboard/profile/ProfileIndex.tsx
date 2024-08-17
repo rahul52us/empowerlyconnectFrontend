@@ -141,7 +141,6 @@ const ProfileIndex = observer(() => {
               <FaUsers style={{ marginRight: "10px" }} /> Bank Account Details
             </Tab>
           </TabList>
-
           <TabPanels>
             <TabPanel>
               {userDetails?.profileDetails && (
