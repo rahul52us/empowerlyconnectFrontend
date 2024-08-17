@@ -142,6 +142,7 @@ const ManagerUserAttendence = lazy(
 // Liberary Management
 const LiberaryManagement = lazy(() => import("../../pages/Dashboard/LiberaryManagement/LiberaryManagement"))
 const LiberaryBookCategory = lazy(() => import("../../pages/Dashboard/LiberaryManagement/component/Books/BookCategoryDetails/BookCategoryDetails"))
+const BookUserDetails = lazy(() => import("../../pages/Dashboard/LiberaryManagement/component/Books/BookUserDetails/BookUserDetails"));
 const LiberaryRoomIndex = lazy(() => import("../../pages/Dashboard/LiberaryManagement/component/Rooms/RoomDetails/RoomIndex"))
 const LiberaryRoomUserDetails =lazy(() => import("../../pages/Dashboard/LiberaryManagement/component/Rooms/UserDetails/UserDetails"));
 
@@ -339,6 +340,11 @@ export const DashboardRoutes = [
     element : <LiberaryBookCategory />,
     path : dashboard.liberary.books.category.index,
     privateRoutes: true
+  },
+  {
+    element : <BookUserDetails />,
+    path : dashboard.liberary.books.users,
+    privateRoutes : true
   },
   {
     element : <LiberaryRoomIndex />,

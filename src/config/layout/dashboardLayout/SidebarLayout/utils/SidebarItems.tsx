@@ -295,7 +295,7 @@ const sidebarDatas: SidebarItem[] = [
           role: ["admin", "superadmin"],
         },
         {
-          id: 83,
+          id: 84,
           name: "Users",
           icon: <FaUsers />,
           url: dashboard.liberary.books.users,
@@ -304,21 +304,21 @@ const sidebarDatas: SidebarItem[] = [
         ]
         },
         {
-          id: 84,
+          id: 85,
           name: "Seat Management",
           icon: <FaUsers />,
           url: dashboard.liberary.room.index,
           role: ["admin", "superadmin"],
          children : [
           {
-            id: 85,
+            id: 86,
             name: "Room",
             icon: <FaUsers />,
             url: dashboard.liberary.room.index,
             role: ["admin", "superadmin"],
           },
           {
-          id: 86,
+          id: 87,
           name: "Users",
           icon: <FaUsers />,
           url: dashboard.liberary.room.users,
