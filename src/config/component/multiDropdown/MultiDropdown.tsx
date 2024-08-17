@@ -8,8 +8,8 @@ import {
   PopoverHeader,
   PopoverBody,
   VStack,
-
   Flex,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { debounce } from "lodash";
 import { MdFilterList } from "react-icons/md";
@@ -50,6 +50,12 @@ const MultiDropdown = ({
 }: MultiDropdownProps) => {
   const [inputValue, setInputValue] = useState(search?.searchValue || "");
   const [isPopoverOpen, setIsPopoverOpen] = useState<boolean>(false);
+
+  // Use useColorModeValue to set colors for light and dark modes
+  const popoverBg = useColorModeValue("white", "gray.900");
+  const borderColor = useColorModeValue("gray.300", "gray.600");
+  const buttonTextColor = useColorModeValue("teal.400", "teal.200");
+  const focusBorderColor = useColorModeValue("blue.500", "blue.300");
 
   useEffect(() => {
     const debouncedHandler = debounce((value: string) => {
@@ -95,25 +101,19 @@ const MultiDropdown = ({
           aria-label=""
           fontSize="md"
           onClick={() => setIsPopoverOpen(!isPopoverOpen)}
-          // border={"2px solid"}
-          // borderColor="teal.400"
-          // bg="transparent"
-          color="teal.400"
-          // _hover={{ bg: "teal.400", borderColor: "teal.400", color: "white" }}
+          color={buttonTextColor}
           size="md"
           leftIcon={<MdFilterList />}
         >
-          {/* <FaFilter title={title || undefined} /> */}
-          {/* <MdFilterList title={title || undefined} /> */}
           Filter
         </Button>
       </PopoverTrigger>
-      <PopoverContent p={3} bg="white" borderColor="gray.300" boxShadow="md">
+      <PopoverContent p={3} bg={popoverBg} borderColor={borderColor} boxShadow="md">
         <PopoverHeader
           mt={-1}
           fontWeight="bold"
           borderBottomWidth="1px"
-          color="teal.400"
+          color={buttonTextColor}
         >
           Select Options
         </PopoverHeader>
@@ -145,9 +145,9 @@ const MultiDropdown = ({
                 value={inputValue}
                 onChange={handleInputChange}
                 borderRadius="md"
-                bg="white"
-                borderColor="gray.300"
-                _focus={{ borderColor: "blue.500", boxShadow: "outline" }}
+                bg={popoverBg}
+                borderColor={borderColor}
+                _focus={{ borderColor: focusBorderColor, boxShadow: "outline" }}
               />
             )}
             {dropdowns.map((dropdown: Dropdown, index: number) => {
@@ -171,7 +171,6 @@ const MultiDropdown = ({
             })}
             <Button
               colorScheme="teal"
-              // _hover={{ bg: "blue.500" }}
               onClick={() => {
                 onApply();
                 handlePopoverClose();
@@ -185,12 +184,8 @@ const MultiDropdown = ({
                 variant="outline"
                 mt={1}
                 onClick={() => resetFilterss()}
-                // bg="white"
-                // color="teal.500"
                 border="2px solid"
-                // borderColor="teal.400"
                 colorScheme="red"
-                // _hover={{ bg: "teal.50" }}
               >
                 Reset Filter
               </Button>

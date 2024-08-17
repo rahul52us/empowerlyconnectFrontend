@@ -14,6 +14,7 @@ import {
   useBreakpointValue,
   Text,
   Box,
+  useColorModeValue,
 } from "@chakra-ui/react";
 
 interface CustomDateRangeProps {
@@ -37,6 +38,8 @@ export default function CustomDateRange({
   const formattedStartDate = format(startDate, "d MMM yyyy");
   const formattedEndDate = format(endDate, "d MMM yyyy");
 
+  const textColor = useColorModeValue("gray.700", "gray.300");
+
   return isMobile || !LargerThanMd ? (
     <Popover placement="auto-end">
       <PopoverTrigger>
@@ -49,7 +52,7 @@ export default function CustomDateRange({
           width={{ base: "14rem", lg: "14rem" }}
           textAlign="center"
         /> */}
-        <Box position="relative" width={{ base: "14.5rem", lg: "14.5rem" }}>
+        <Box position="relative" width={{ base: "14.5rem", lg: "16rem" }}>
           <Input
             name="datePicker"
             value=""
@@ -66,10 +69,16 @@ export default function CustomDateRange({
             alignItems="center"
             justifyContent="center"
           >
-            <Text as="span" fontWeight="600" color={"gray.700"}>{formattedStartDate}</Text>
-            <Text as="span" fontWeight="500" color={"gray.500"} mx={1}>to</Text>
-            <Text as="span" fontWeight="600" color={"gray.700"} mr={1}>{formattedEndDate}</Text>
-            <IoMdCalendar fontSize={"20px"} color={"gray"}/>
+            <Text as="span" fontWeight="600" color={textColor}>
+              {formattedStartDate}
+            </Text>
+            <Text as="span" fontWeight="500" color="gray.500" mx={1}>
+              to
+            </Text>
+            <Text as="span" fontWeight="600" color={textColor} mr={1}>
+              {formattedEndDate}
+            </Text>
+            <IoMdCalendar fontSize={"20px"} color={"gray"} />
           </Box>
         </Box>
       </PopoverTrigger>
