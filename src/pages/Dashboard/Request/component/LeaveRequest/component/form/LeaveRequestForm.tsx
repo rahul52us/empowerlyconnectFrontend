@@ -180,34 +180,34 @@ const LeaveRequestForm = observer(
                   showError={showError}
                 />
                 <Divider />
-                <Flex
-                  justifyContent="flex-end"
-                  p={4}
-                  columnGap={3}
-                  alignItems="center"
-                >
-                  <CustomSubmitBtn
-                    cancelFunctionality={{
-                      show: false,
-                      onClick: () => close(),
-                    }}
-                    loading={isSubmitting}
-                    type="submit"
-                    onClick={() => {
-                      setRequestType("pending");
-                      setShowError(true);
-                    }}
-                    buttonText="save"
-                  />
-                  <CustomSubmitBtn
-                    cancelFunctionality={{ show: true, onClick: () => close() }}
-                    loading={isSubmitting}
-                    type="submit"
-                    onClick={() => {
-                      setRequestType("submitted");
-                      setShowError(true);
-                    }}
-                  />
+                <Flex justifyContent="end" p={4} columnGap={3}>
+                  <Flex columnGap={4}>
+                    <CustomSubmitBtn
+                      cancelFunctionality={{
+                        show: true,
+                        onClick: () => close(),
+                      }}
+                      loading={isSubmitting}
+                      type="submit"
+                      onClick={() => {
+                        setRequestType("submitted");
+                        setShowError(true);
+                      }}
+                    />
+                    <CustomSubmitBtn
+                      cancelFunctionality={{
+                        show: false,
+                        onClick: () => close(),
+                      }}
+                      loading={isSubmitting}
+                      type="submit"
+                      onClick={() => {
+                        setRequestType("pending");
+                        setShowError(true);
+                      }}
+                      buttonText="save"
+                    />
+                  </Flex>
                 </Flex>
               </Form>
             );
