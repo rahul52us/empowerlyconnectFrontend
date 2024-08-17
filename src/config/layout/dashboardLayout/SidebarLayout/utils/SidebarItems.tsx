@@ -212,10 +212,10 @@ const sidebarDatas: SidebarItem[] = [
     children: [
       {
         id: 29,
-        name: "Useres Directory",
+        name: "Users Directory",
         icon: <FaUsers />,
         url: "/dashboard/Users",
-        role: ["user", "manager", "admin", "superadmin"],
+        role: ["admin", "superadmin"],
       },
       {
         id: 30,
@@ -235,14 +235,14 @@ const sidebarDatas: SidebarItem[] = [
   },
   {
     id: 32,
-    name: "Corp. Info.",
+    name: "Corp. Users Directory",
     icon: <FaBuilding />,
-    url: "/dashboard/class",
+    url: dashboard.Users.personalDetails,
     role: ["user", "manager", "admin", "superadmin"],
     children: [
       {
         id: 33,
-        name: "Useres Directory",
+        name: "User Directory",
         icon: <FaUsers />,
         url: dashboard.Users.personalDetails,
         role: ["user"],
