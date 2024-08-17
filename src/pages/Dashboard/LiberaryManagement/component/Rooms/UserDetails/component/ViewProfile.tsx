@@ -45,7 +45,6 @@ const ReservationCard = ({ reservation }: { reservation: Reservation }) => (
     overflow="hidden"
     p={5}
     boxShadow="md"
-    bg="white"
     _hover={{ boxShadow: "lg", transform: "scale(1.02)" }}
     transition="all 0.2s ease-in-out"
   >

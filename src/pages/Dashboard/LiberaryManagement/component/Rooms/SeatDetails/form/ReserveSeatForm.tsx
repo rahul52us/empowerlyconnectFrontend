@@ -7,13 +7,13 @@ import { useEffect, useState } from "react";
 import store from "../../../../../../../store/store";
 import { getStatusType } from "../../../../../../../config/constant/statusCode";
 import { observer } from "mobx-react-lite";
-import { toJS } from "mobx";
 
 // Define the schema for validation
 const validationSchema = Yup.object({
   startDate: Yup.date().required("Start date is required"),
   endDate: Yup.date().required("End date is required"),
   user: Yup.string().required("Select the User"),
+  room: Yup.object().required("Select the Room"),
   seat: Yup.object().required("Select the Seat"),
   startTime: Yup.string()
     .test("time-required", "Start time is required", function (value) {
@@ -40,8 +40,9 @@ const validationSchema = Yup.object({
 });
 
 // Define initial values
-const initialValues = {
+const defaultInitialValues = {
   user: undefined,
+  room: undefined,
   company: "",
   seat: undefined,
   startDate: new Date(),
@@ -52,24 +53,72 @@ const initialValues = {
   status: { value: "active", label: "Active" },
 };
 
-const ReserveSeatForm = observer(({ item, close }: any) => {
+const ReserveSeatForm = observer(({ user, room, close }: any) => {
+  const [roomSeatDatas, setRoomSeatDatas] = useState<any>([]);
+  const userOptions = useState<any>(
+    user ? [{ label: user.username, _id: user._id }] : []
+  )[0];
+  const [initialValues, setInitialValues] = useState(defaultInitialValues);
+  const [selectedRoom, setSelectedRoom] = useState<any>(room || null);
   const {
-    bookLiberary: { createReserveRoomSeat, getAllSeatRooms, roomSeatData },
+    bookLiberary: {
+      createReserveRoomSeat,
+      getAllSeatRooms,
+      getAllDropdownRooms,
+    },
     auth: { openNotification },
   } = store;
+  const [roomOptions, setRoomOptions] = useState<any>([]);
   const [showError, setShowError] = useState(false);
 
   useEffect(() => {
-    getAllSeatRooms({ room: item._id })
-      .then(() => {})
-      .catch((err: any) => {
-        openNotification({
-          title: "Failed to Get Seats",
-          message: err?.data?.message,
-          type: getStatusType(err.status),
+    if (selectedRoom) {
+      setInitialValues((prev: any) => ({
+        ...prev,
+        room: { title: selectedRoom.title, _id: selectedRoom._id },
+      }));
+      if (!user) {
+        setRoomOptions([{ title: selectedRoom.title, _id: selectedRoom._id }]);
+      }
+      getAllSeatRooms({ room: selectedRoom._id })
+        .then((dt) => {
+          setRoomSeatDatas(dt);
+        })
+        .catch((err: any) => {
+          openNotification({
+            title: "Failed to Get Seats",
+            message: err?.data?.message,
+            type: getStatusType(err.status),
+          });
         });
-      });
-  }, [getAllSeatRooms, openNotification, item]);
+    }
+    if (!selectedRoom) {
+      getAllDropdownRooms({})
+        .then((dt: any) => {
+          setRoomOptions(dt);
+        })
+        .catch((err) => {
+          openNotification({
+            title: "Failed to Get Rooms",
+            message: err?.data?.message,
+            type: getStatusType(err.status),
+          });
+        });
+    }
+
+    if (user) {
+      setInitialValues((prev: any) => ({
+        ...prev,
+        user: user._id,
+      }));
+    }
+  }, [
+    getAllSeatRooms,
+    openNotification,
+    selectedRoom,
+    user,
+    getAllDropdownRooms,
+  ]);
 
   const handleSubmit = (
     values: any,
@@ -128,7 +177,7 @@ const ReserveSeatForm = observer(({ item, close }: any) => {
         startTime: fullDay ? null : startDateTime.toISOString(),
         endTime: fullDay ? null : endDateTime.toISOString(),
         seat: values.seat.value,
-        room: item?._id,
+        room: values.room?._id,
         status: values.status.value,
       };
 
@@ -152,156 +201,173 @@ const ReserveSeatForm = observer(({ item, close }: any) => {
           setSubmitting(false);
         });
     } catch (error: any) {
-      setSubmitting(false); // Ensure submission state is reset
+      setSubmitting(false);
     } finally {
     }
   };
 
-  console.log(toJS(roomSeatData));
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
+      enableReinitialize={true}
       onSubmit={handleSubmit}
     >
-      {({ setFieldValue, values, errors, isSubmitting }) => (
-        <Form>
-          <DrawerFormHeightContainer>
-            <Grid gridTemplateColumns={{ base: "1fr", md: "1fr 1fr" }} gap={4}>
-              <CustomInput
-                type="text"
-                readOnly={true}
-                name="room"
-                value={item.title}
-                label="Room"
-                required
-                showError={showError}
-              />
-              <CustomInput
-                name="section"
-                type="select"
-                label="Section"
-                placeholder="Select the Section"
-                onChange={(e) => setFieldValue("section", e)}
-                options={[]}
-                showError={showError}
-              />
-              <CustomInput
-                label="Search User"
-                error={errors.user}
-                name="user"
-                placeholder="Search User"
-                type="real-time-search"
-                value={values.user}
-                onChange={(e) => setFieldValue("user", e)}
-                required
-                showError={showError}
-              />
-              <CustomInput
-                label="Search Seat"
-                error={errors.seat}
-                name="seat"
-                placeholder="Search Seat"
-                type="select"
-                value={values.seat}
-                options={Array.isArray(roomSeatData.data) ? roomSeatData.data.map((item: any) => ({
-                  label: item.seatNumber,
-                  value: item._id,
-                })) : []}
-                onChange={(e) => setFieldValue("seat", e)}
-                required
-                showError={showError}
-              />
+      {({ setFieldValue, values, errors, isSubmitting }) => {
+        return (
+          <Form>
+            <DrawerFormHeightContainer>
+              <Grid
+                gridTemplateColumns={{ base: "1fr", md: "1fr 1fr" }}
+                gap={4}
+              >
+                <CustomInput
+                  type="select"
+                  options={roomOptions}
+                  readOnly={true}
+                  name="room"
+                  value={values.room}
+                  getOptionLabel={(item: any) => item.title}
+                  getOptionValue={(item: any) => item._id}
+                  onChange={(e) => {
+                    setSelectedRoom(e);
+                    setFieldValue("room", e);
+                  }}
+                  label="Room"
+                  required
+                  error={errors.room}
+                  showError={showError}
+                  disabled={room ? true : false}
+                />
+                <CustomInput
+                  name="section"
+                  type="select"
+                  label="Section"
+                  placeholder="Select the Section"
+                  onChange={(e) => setFieldValue("section", e)}
+                  options={[]}
+                  showError={showError}
+                />
+                <CustomInput
+                  label="Search User"
+                  error={errors.user}
+                  name="user"
+                  placeholder="Search User"
+                  type="real-time-search"
+                  defaultUserOptions={userOptions}
+                  value={user ? user.value : undefined}
+                  onChange={(e) => setFieldValue("user", e)}
+                  required
+                  showError={showError}
+                  disabled={user ? true : false}
+                />
+                <CustomInput
+                  label="Search Seat"
+                  error={errors.seat}
+                  name="seat"
+                  placeholder="Search Seat"
+                  type="select"
+                  value={values.seat}
+                  options={roomSeatDatas.map((item: any) => ({
+                    label: item.seatNumber,
+                    value: item._id,
+                  }))}
+                  onChange={(e) => setFieldValue("seat", e)}
+                  required
+                  showError={showError}
+                />
 
-              <CustomInput
-                error={errors.startDate}
-                type="date"
-                name="startDate"
-                value={values.startDate}
-                onChange={(e) => {setFieldValue("startDate", e)
-                  setFieldValue("endDate",e)
-                }}
-                label="Start Date"
-                required
-                showError={showError}
-              />
-              <CustomInput
-                error={errors.endDate}
-                type="date"
-                name="endDate"
-                value={values.endDate}
-                onChange={(e) => setFieldValue("endDate",e)}
-                label="End Date"
-                required
-                showError={showError}
-                minDate={values.startDate}
-              />
+                <CustomInput
+                  error={errors.startDate}
+                  type="date"
+                  name="startDate"
+                  value={values.startDate}
+                  onChange={(e) => {
+                    setFieldValue("startDate", e);
+                    setFieldValue("endDate", e);
+                  }}
+                  label="Start Date"
+                  required
+                  showError={showError}
+                />
+                <CustomInput
+                  error={errors.endDate}
+                  type="date"
+                  name="endDate"
+                  value={values.endDate}
+                  onChange={(e) => setFieldValue("endDate", e)}
+                  label="End Date"
+                  required
+                  showError={showError}
+                  minDate={values.startDate}
+                />
 
-              {!values.fullDay && (
-                <>
-                  <CustomInput
-                    error={errors.startTime}
-                    type="time"
-                    name="startTime"
-                    value={values.startTime}
-                    onChange={(e) => {
-                      setFieldValue("startTime", e.target.value);
-                    }}
-                    label="Start Time"
-                    showError={showError}
-                    required={!values.fullDay ? true : false}
-                  />
-                  <CustomInput
-                    error={errors.endTime}
-                    type="time"
-                    name="endTime"
-                    value={values.endTime}
-                    onChange={(e) => setFieldValue("endTime", e.target.value)}
-                    label="End Time"
-                    showError={showError}
-                    required={!values.fullDay ? true : false}
-                  />
-                </>
-              )}
+                {!values.fullDay && (
+                  <>
+                    <CustomInput
+                      error={errors.startTime}
+                      type="time"
+                      name="startTime"
+                      value={values.startTime}
+                      onChange={(e) => {
+                        setFieldValue("startTime", e.target.value);
+                      }}
+                      label="Start Time"
+                      showError={showError}
+                      required={!values.fullDay ? true : false}
+                    />
+                    <CustomInput
+                      error={errors.endTime}
+                      type="time"
+                      name="endTime"
+                      value={values.endTime}
+                      onChange={(e) => setFieldValue("endTime", e.target.value)}
+                      label="End Time"
+                      showError={showError}
+                      required={!values.fullDay ? true : false}
+                    />
+                  </>
+                )}
 
-              <CustomInput
-                error={errors.status}
-                value={values.status}
-                label="Status"
-                name="status"
-                type="select"
-                placeholder="Select the Seat Status"
-                onChange={(e) => setFieldValue("status", e)}
-                options={[
-                  { label: "Active", value: "active" },
-                  { label: "Cancelled", value: "cancelled" },
-                ]}
-                showError={showError}
-              />
-              <FormControl>
-                <Checkbox
-                  id="fullDay"
-                  name="fullDay"
-                  isChecked={values.fullDay}
-                  onChange={(e) => setFieldValue("fullDay", e.target.checked)}
-                >
-                  Full Day
-                </Checkbox>
-              </FormControl>
-            </Grid>
-          </DrawerFormHeightContainer>
-          <Flex justifyContent="end">
-            <Button
-              type="submit"
-              colorScheme="blue"
-              isLoading={isSubmitting}
-              onClick={() => setShowError(true)}
-            >
-              Submit
-            </Button>
-          </Flex>
-        </Form>
-      )}
+                <CustomInput
+                  error={errors.status}
+                  value={values.status}
+                  label="Status"
+                  name="status"
+                  type="select"
+                  placeholder="Select the Seat Status"
+                  onChange={(e) => setFieldValue("status", e)}
+                  options={[
+                    { label: "Active", value: "active" },
+                    { label: "Cancelled", value: "cancelled" },
+                  ]}
+                  showError={showError}
+                />
+                <FormControl>
+                  <Checkbox
+                    id="fullDay"
+                    name="fullDay"
+                    isChecked={values.fullDay}
+                    onChange={(e) => setFieldValue("fullDay", e.target.checked)}
+                  >
+                    Full Day
+                  </Checkbox>
+                </FormControl>
+              </Grid>
+            </DrawerFormHeightContainer>
+            <Flex justifyContent="end">
+              <Button
+                type="submit"
+                colorScheme="blue"
+                isLoading={isSubmitting}
+                onClick={() => setShowError(true)}
+              >
+                Submit
+              </Button>
+            </Flex>
+          </Form>
+        );
+      }}
     </Formik>
   );
 });

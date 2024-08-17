@@ -87,6 +87,11 @@ class BookLiberary {
     totalPages: 0,
   };
 
+  dropDownRooms = {
+    loading : false,
+    data : []
+  }
+
   booksCategory = {
     loading: false,
     data: [],
@@ -111,6 +116,7 @@ class BookLiberary {
       availableRoomSeatCounts:observable,
       roomReserveForm:observable,
       roomSeatData:observable,
+      dropDownRooms:observable,
       getBooksCounts: action,
       getBooksCategoryCounts: action,
       getBookUsersCounts: action,
@@ -137,7 +143,8 @@ class BookLiberary {
       handleRoomReserveSeatForm:action,
       getAllSeatRooms:action,
       createReserveRoomSeat:action,
-      getUserReserveSeat:action
+      getUserReserveSeat:action,
+      getAllDropdownRooms:action
     });
   }
 
@@ -454,6 +461,23 @@ class BookLiberary {
       return Promise.reject(err?.response || err);
     } finally {
       this.roomSeatData.loading = false;
+    }
+  };
+
+  getAllDropdownRooms = async (sendData: any) => {
+    try {
+      this.dropDownRooms.loading = true;
+      const { data } = await axios.post(
+        "/liberary/room/dropdown",
+        { company: [store.auth.getCurrentCompany()] },
+        { params: { ...sendData } }
+      );
+      this.dropDownRooms = data.data || []
+      return data.data
+    } catch (err: any) {
+      return Promise.reject(err?.response || err);
+    } finally {
+      this.dropDownRooms.loading = false;
     }
   };
 

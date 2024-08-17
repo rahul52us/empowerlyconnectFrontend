@@ -88,6 +88,7 @@ interface CustomInputProps {
   rest?: any;
   labelcolor?: any;
   isPortal?: any;
+  defaultUserOptions?:any
 }
 
 const CustomInput: React.FC<CustomInputProps> = ({
@@ -118,6 +119,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
   readOnly,
   labelcolor,
   isPortal,
+  defaultUserOptions,
   // Added onFileDrop prop
   ...rest
 }) => {
@@ -125,7 +127,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
   const [inputValue, setInputValue] = useState("");
   const [searchInput, setSearchInput] = useState("");
   const theme = useTheme();
-  const [optionss, setOptions] = useState([]);
+  const [userOptions, setUserOptions] = useState(defaultUserOptions || []);
 
   const { colorMode } = useColorMode();
   const [showPassword, setShowPassword] = useState(false);
@@ -144,7 +146,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
         page: 1,
         searchValue: query,
       });
-      setOptions(
+      setUserOptions(
         response.map((it: any) => ({
           label: it.user.username,
           value: it.user._id,
@@ -662,8 +664,8 @@ const CustomInput: React.FC<CustomInputProps> = ({
         return (
           <Select
           onInputChange={(newValue) => setSearchInput(newValue)}
-          options={optionss}
-          value={optionss.find((opt: any) => opt.value === value)}
+          options={userOptions}
+          value={userOptions.find((opt: any) => opt.value === value)}
           onChange={(selectedOption) => {
             handleSelectChange(selectedOption);
             if (selectedOption) {

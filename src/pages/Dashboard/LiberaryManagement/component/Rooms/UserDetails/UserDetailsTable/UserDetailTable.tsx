@@ -1,4 +1,4 @@
-import { Avatar, Box, useDisclosure } from "@chakra-ui/react";
+import { Avatar, Box, Button } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useCallback, useEffect, useState } from "react";
 import useDebounce from "../../../../../../../config/component/customHooks/useDebounce";
@@ -10,12 +10,18 @@ import { useQueryParams } from "../../../../../../../config/component/customHook
 import ViewProfile from "../component/ViewProfile";
 import { generateTableData } from "../utils/function";
 import { userDropdownData } from "../utils/constant";
+import ReserveSeatForm from "../../SeatDetails/form/ReserveSeatForm";
 
 const UserDetailsTable = observer(() => {
   const { getQueryParam, setQueryParam } = useQueryParams();
   const [currentPage, setCurrentPage] = useState(() =>
     getQueryParam("page") ? Number(getQueryParam("page")) : 1
   );
+  const [reservationSeat, setReservationSeat] = useState({
+    open: false,
+    data: null,
+    type: "view",
+  });
   const dropdowns = useState(userDropdownData)[0];
   const [selectedOptions, setSelectedOptions] = useState({});
   const [pageLimit, setPageLimit] = useState(tablePageLimit);
@@ -25,10 +31,6 @@ const UserDetailsTable = observer(() => {
     startDate: new Date(),
     endDate: new Date(),
   });
-
-  const [UsereId, setUsereId] = useState<any>();
-
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     User: { getAllUsers, Users },
     auth: { openNotification },
@@ -99,6 +101,11 @@ const UserDetailsTable = observer(() => {
     applyGetAllUsers({ reset: true });
   };
 
+  const closeDrawer = () => {
+    setReservationSeat({open : false , type : 'view', data : null})
+  }
+
+
   const UserTableColumns = [
     {
       headerName: "Name",
@@ -132,7 +139,7 @@ const UserDetailsTable = observer(() => {
       },
     },
     {
-      headerName: "E-Code",
+      headerName: "Code",
       key: "code",
       props: { row: { minW: 100, textAlign: "center" } },
     },
@@ -158,6 +165,28 @@ const UserDetailsTable = observer(() => {
       key: "createdAt",
       type: "date",
       props: { row: { minW: 120, textAlign: "center" } },
+    },
+    {
+      headerName: "Add Seat",
+      key: "seat",
+      type: "component",
+      metaData: {
+        component: (dt: any) => (
+          <Box m={1}>
+            <Button
+              onClick={() => {
+                setReservationSeat({ open: true, data: dt, type: "addSeat" });
+              }}
+            >
+               Add Seat
+            </Button>
+          </Box>
+        ),
+      },
+      props: {
+        row: { minW: 120, textAlign: "center" },
+        column: { textAlign: "center" },
+      },
     },
     {
       headerName: "Actions",
@@ -195,21 +224,19 @@ const UserDetailsTable = observer(() => {
             addKey: {
               showAddButton: true,
               function: () => {
-                alert("This is new")
-             },
+                alert("This is new");
+              },
             },
             editKey: {
               showEditButton: false,
               function: () => {
-                 alert("alert")
+                alert("alert");
               },
             },
             viewKey: {
               showViewButton: true,
               function: (e: any) => {
-                setUsereId(e._id);
-                console.log("---------------", e._id);
-                onOpen();
+                setReservationSeat({ open: true, data: e._id, type: "view" });
               },
             },
             deleteKey: {
@@ -259,8 +286,17 @@ const UserDetailsTable = observer(() => {
         serial={{ show: false, text: "S.No.", width: "10px" }}
       />
 
-      <CustomDrawer title="Reservation Seats" open={isOpen} close={onClose} width={"75vw"}>
-        {isOpen && UsereId && <ViewProfile userId={UsereId} />}
+      <CustomDrawer
+        title="Reservation Seats"
+        open={reservationSeat.open}
+        close={closeDrawer}
+        width={"85vw"}
+      >
+        {reservationSeat.open &&
+          reservationSeat.data &&
+          reservationSeat.type === "view" ? (
+            <ViewProfile userId={reservationSeat.data} />
+          ) : <ReserveSeatForm user={reservationSeat.data} close={closeDrawer}/> }
       </CustomDrawer>
     </Box>
   );

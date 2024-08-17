@@ -87,7 +87,7 @@ const RoomDetailDrawer = observer(({ fetchRecords }: any) => {
         {roomReserveForm.type === "view" ? (
           <RoomView data={roomReserveForm.data} />
         ) : roomReserveForm.type === "add" ? (
-          <ReserveSeatForm item={roomReserveForm.data}
+          <ReserveSeatForm room={roomReserveForm.data}
           close={() =>
             handleRoomReserveSeatForm({ open: false, type: "add", data: null })
           }

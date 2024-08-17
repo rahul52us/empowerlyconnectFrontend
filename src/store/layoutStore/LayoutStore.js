@@ -54,7 +54,6 @@ class LayoutStore {
 
   openDashSidebarFun = (status) => {
     this.isCallapse = status;
-    console.log("the status are", status);
   };
 
   setOpenMobileSideDrawer = (status) => {
