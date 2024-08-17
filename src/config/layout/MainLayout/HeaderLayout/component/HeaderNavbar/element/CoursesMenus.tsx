@@ -1,30 +1,94 @@
-import { Box, Divider, Text, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Link as ChakraLink,
+  HStack,
+  Icon,
+  Text,
+  useColorModeValue,
+  VStack,
+} from "@chakra-ui/react";
+import { observer } from "mobx-react-lite";
+import {
+  FaBrain,
+  FaCode,
+  FaJsSquare,
+  FaLaptopCode,
+  FaPython,
+  FaReact,
+} from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { main } from "../../../../../../constant/routes";
 
 const CoursesMenus = () => {
-    return (
-      <Box>
-        <VStack align="stretch" spacing={4}>
-          <Text fontSize="lg" fontWeight="bold">
+  return (
+    <Box maxW="350px">
+      <VStack align="stretch" spacing={3}>
+        <VStack align="stretch" spacing={3}>
+          <Text fontWeight="bold" mt={1}>
             Popular Courses
           </Text>
-          <Divider />
-          <Link to={`${main.courses}`}>Introduction to React</Link>
-          <Link to={`${main.courses}`}>JavaScript Fundamentals</Link>
-          <Link to={`${main.courses}`}>Python for Beginners</Link>
+          <CourseLink
+            to={`${main.courses}`}
+            icon={FaReact}
+            label="Introduction to React"
+          />
+          <CourseLink
+            to={`${main.courses}`}
+            icon={FaJsSquare}
+            label="JavaScript Fundamentals"
+          />
+          <CourseLink
+            to={`${main.courses}`}
+            icon={FaPython}
+            label="Python for Beginners"
+          />
         </VStack>
-        <VStack align="stretch" spacing={4} mt={4}>
-          <Text fontSize="lg" fontWeight="bold">
-            Recent Courses
-          </Text>
-          <Divider />
-          <Link to={`${main.courses}`}>Data Structures and Algorithms</Link>
-          <Link to={`${main.courses}`}>Machine Learning Basics</Link>
-          <Link to={`${main.courses}`}>Web Development Bootcamp</Link>
+        <VStack align="stretch" spacing={3} mt={2}>
+          <Text fontWeight="bold">Recent Courses</Text>
+          <CourseLink
+            to={`${main.courses}`}
+            icon={FaLaptopCode}
+            label="Data Structures and Algorithms"
+          />
+          <CourseLink
+            to={`${main.courses}`}
+            icon={FaBrain}
+            label="Machine Learning Basics"
+          />
+          <CourseLink
+            to={`${main.courses}`}
+            icon={FaCode}
+            label="Web Development Bootcamp"
+          />
         </VStack>
-      </Box>
-    );
+      </VStack>
+    </Box>
+  );
 };
 
-export default CoursesMenus
+const CourseLink = ({ to, icon, label }: any) => {
+  const hoverBg = useColorModeValue("blue.50", "blue.900");
+  const borderWidth = useColorModeValue(1, 0);
+  return (
+    <ChakraLink
+      as={Link}
+      to={to}
+      _hover={{ textDecoration: "none", bg: hoverBg, transform: "scale(1.02)" }}
+      transition="0.3s"
+      bg="whiteAlpha.100"
+      p={2}
+      borderRadius="xl"
+      display="block"
+      boxShadow="sm"
+      borderWidth={borderWidth}
+      fontWeight="medium"
+    >
+      <HStack>
+        <Icon as={icon} boxSize={5} color="blue.300" />
+        <Text>{label}</Text>
+      </HStack>
+    </ChakraLink>
+  );
+};
+
+export default observer(CoursesMenus);
