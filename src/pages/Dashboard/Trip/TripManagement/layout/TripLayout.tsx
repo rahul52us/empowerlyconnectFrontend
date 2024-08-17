@@ -113,10 +113,10 @@ const TripLayout = observer(
         headerName: "title",
         key: "title",
         props: {
-          column: { textAlign: "left" },
+          column: { textAlign: "center" },
           row: {
             minW: 120,
-            textAlign: "left",
+            textAlign: "center",
             fontWeight: 500,
             textDecoration: "none",
           },
@@ -126,7 +126,10 @@ const TripLayout = observer(
         headerName: "Trip Type",
         key: "type",
         props: {
-          column: { textAlign: "left" },
+          column: { textAlign: "center" },
+          row : {
+            textAlign : 'center'
+          }
         },
       },
       {
@@ -134,7 +137,10 @@ const TripLayout = observer(
         key: "description",
         type: "tooltip",
         props: {
-          column: { textAlign: "left" },
+          column: { textAlign: "center" },
+          row : {
+            textAlign : "center"
+          }
         },
       },
       {
@@ -142,7 +148,10 @@ const TripLayout = observer(
         type: "date",
         key: "createdAt",
         props: {
-          column: { textAlign: "left", minW: 160 },
+          column: { textAlign: "center", minW: 160 },
+          row : {
+            textAlign : "center"
+          }
         },
       },
       {
@@ -150,13 +159,13 @@ const TripLayout = observer(
         key: "table-actions",
         type: "table-actions",
         props: {
-          row: { minW: 180, textAlign: "left" },
-          column: { textAlign: "left" },
+          row: { minW: 180, textAlign: "center" },
+          column: { textAlign: "center" },
         },
       },
     ];
 
-    if (gridLoading) {
+    if (gridLoading && gridType === "grid") {
       return (
         <Center>
           <Box mt={20}>
@@ -173,7 +182,7 @@ const TripLayout = observer(
             onClick={() =>
               setTripFormData({ open: true, type: "add", data: null })
             }
-            btnText="TRIP PROJECT"
+            btnText="TRIP"
             title="No Trip found"
             subTitle="Start by creating a new trip to get started."
           />
