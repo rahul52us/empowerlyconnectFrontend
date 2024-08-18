@@ -18,7 +18,7 @@ import {
 } from "react-icons/fa";
 import CustomButton from "../../../../config/component/Button/CustomButton";
 
-const BankDetails = observer(({ bankDetails, setSelectedTab }: any) => {
+const BankDetails = observer(({ bankDetails, setSelectedTab,isEditable }: any) => {
   const cardBg = useColorModeValue("white", "gray.800");
   const cardBorder = useColorModeValue("gray.200", "gray.700");
   const textColor = useColorModeValue("gray.800", "gray.200");
@@ -48,12 +48,12 @@ const BankDetails = observer(({ bankDetails, setSelectedTab }: any) => {
               Bank Details
             </Heading>
 
-            <CustomButton
+            {isEditable && <CustomButton
               onClick={() =>
                 setSelectedTab({ open: true, type: "bank-details" })
               }
               btnText="Edit"
-            />
+            />}
           </Flex>
           <Divider />
           <Flex align="center">

@@ -106,9 +106,11 @@ const PersonalInfo = observer(
   ({
     personalDetails,
     setSelectedTab,
+    isEditable
   }: {
     personalDetails: PersonalDetail[];
     setSelectedTab: any;
+    isEditable?:Boolean
   }) => {
     const textColor = useColorModeValue("gray.800", "gray.200");
     const cardBg = useColorModeValue("white", "gray.800");
@@ -127,12 +129,12 @@ const PersonalInfo = observer(
           <Heading fontSize={{ base: "sm", md: "2xl" }} fontWeight="bold" textAlign="center">
             Personal Details
           </Heading>
-          <CustomButton
+          {isEditable && <CustomButton
             onClick={() =>
               setSelectedTab({ open: true, type: "profile-details" })
             }
             btnText="Edit"
-          />
+          />}
         </HStack>
         <Divider />
         <Box p={3}>

@@ -8,9 +8,9 @@ import { dashboard } from "../../../../../../config/constant/routes";
 import { tablePageLimit } from "../../../../../../config/constant/variable";
 import store from "../../../../../../store/store";
 import { employDropdownData, generateTableData } from "../utils/constant";
-import UserProfile from "./UserProfile";
 import CustomDrawer from "../../../../../../config/component/Drawer/CustomDrawer";
 import { useQueryParams } from "../../../../../../config/component/customHooks/useQuery";
+import ProfileIndex from "../../../../profile/ProfileIndex";
 // import IndividualUsereDetails from "./IndividualUsereDetails";
 
 // User Table
@@ -279,8 +279,8 @@ const UserDetailsTable = observer(() => {
         serial={{ show: false, text: "S.No.", width: "10px" }}
       />
 
-      <CustomDrawer open={isOpen} close={onClose} width={'75vw'}>
-        {isOpen && UsereId && <UserProfile UsereId={UsereId} />}
+      <CustomDrawer title="profile details" open={isOpen} close={onClose} width={'95vw'}>
+        {isOpen && UsereId && <ProfileIndex userId={UsereId}/>}
       </CustomDrawer>
     </Box>
   );

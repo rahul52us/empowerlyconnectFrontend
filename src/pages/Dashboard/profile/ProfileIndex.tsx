@@ -29,7 +29,7 @@ import DashPageHeader from "../../../config/component/common/DashPageHeader/Dash
 import { dashProfileBreadCrumb } from "../utils/breadcrumb.constant";
 import ProfileEditIndex from "./ProfileEditIndex";
 
-const ProfileIndex = observer(() => {
+const ProfileIndex = observer(({userId} : any) => {
   const [selectedTab, setSelectedTab] = useState({
     open: false,
     type: "profile-details",
@@ -57,7 +57,7 @@ const ProfileIndex = observer(() => {
   useEffect(() => {
     if (user && !haveApiCall) {
       setLoading(true);
-      getUsersDetailsById(user._id)
+      getUsersDetailsById(userId || user._id)
         .then((data) => {
           setHaveApiCall(true);
           setUserDetails(data);
@@ -67,7 +67,7 @@ const ProfileIndex = observer(() => {
           setLoading(false);
         });
     }
-  }, [getUsersDetailsById, user, haveApiCall]);
+  }, [getUsersDetailsById, user, haveApiCall, userId]);
 
   const tabMapping: string[] = [
     "personal-details",
@@ -104,10 +104,10 @@ const ProfileIndex = observer(() => {
   return (
     <>
       <Box p={3} pt={2}>
-        <DashPageHeader
-          title="Project"
+        {!userId && <DashPageHeader
+          title="Profile"
           breadcrumb={dashProfileBreadCrumb.index}
-        />
+        />}
         <PageLoader loading={loading}>
           <Tabs
             variant="enclosed"
@@ -167,6 +167,7 @@ const ProfileIndex = observer(() => {
                         : []
                     }
                     setSelectedTab={setSelectedTab}
+                    isEditable={!userId}
                   />
                 )}
               </TabPanel>
@@ -174,6 +175,7 @@ const ProfileIndex = observer(() => {
                 <CompanyDetails
                   userDetails={userDetails}
                   setSelectedTab={setSelectedTab}
+                  isEditable={!userId}
                 />
               </TabPanel>
               <TabPanel m={{ base: -5, md: 3 }}>
@@ -184,6 +186,7 @@ const ProfileIndex = observer(() => {
                       : []
                   }
                   setSelectedTab={setSelectedTab}
+                  isEditable={!userId}
                 />
               </TabPanel>
               <TabPanel m={{ base: -5, md: 3 }}>
@@ -194,24 +197,28 @@ const ProfileIndex = observer(() => {
                       : []
                   }
                   setSelectedTab={setSelectedTab}
+                  isEditable={!userId}
                 />
               </TabPanel>
               <TabPanel m={{ base: -5, md: 0 }}>
                 <SkillAndAdditionalInfo
                   userDetails={userDetails}
                   setSelectedTab={setSelectedTab}
+                  isEditable={!userId}
                 />
               </TabPanel>
               <TabPanel m={{ base: -5, md: 0 }}>
                 <Qualification
                   userDetails={userDetails}
                   setSelectedTab={setSelectedTab}
+                  isEditable={!userId}
                 />
               </TabPanel>
               <TabPanel m={{ base: -5, md: 0 }}>
                 <Documents
                   userDetails={userDetails}
                   setSelectedTab={setSelectedTab}
+                  isEditable={!userId}
                 />
               </TabPanel>
               <TabPanel m={{ base: -5, md: 3 }}>
@@ -220,6 +227,7 @@ const ProfileIndex = observer(() => {
                     userDetails?.bankDetails ? userDetails?.bankDetails[0] : {}
                   }
                   setSelectedTab={setSelectedTab}
+                  isEditable={!userId}
                 />
               </TabPanel>
             </TabPanels>

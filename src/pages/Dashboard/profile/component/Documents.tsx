@@ -9,7 +9,7 @@ import {
 import { observer } from "mobx-react-lite";
 import CustomButton from "../../../../config/component/Button/CustomButton";
 
-const Documents = observer(({ setSelectedTab }: any) => {
+const Documents = observer(({ setSelectedTab, isEditable }: any) => {
   const cardBg = useColorModeValue("white", "gray.800");
   const cardBorder = useColorModeValue("gray.200", "gray.700");
   const textColor = useColorModeValue("gray.800", "gray.200");
@@ -37,13 +37,12 @@ const Documents = observer(({ setSelectedTab }: any) => {
             >
               Documents
             </Heading>
-
-            <CustomButton
+            {isEditable && <CustomButton
               onClick={() =>
                 setSelectedTab({ open: true, type: "documents" })
               }
               btnText="Edit"
-            />
+            />}
           </Flex>
           <Divider />
 

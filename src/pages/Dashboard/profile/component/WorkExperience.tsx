@@ -41,6 +41,7 @@ interface ExperienceDetail {
 interface WorkExperienceProps {
   experienceDetails: ExperienceDetail[];
   setSelectedTab: any;
+  isEditable?:boolean
 }
 
 // Key-to-Label mapping
@@ -70,7 +71,7 @@ const keyIcons: { [key: string]: JSX.Element } = {
 };
 
 const WorkExperience = observer(
-  ({ experienceDetails, setSelectedTab }: WorkExperienceProps) => {
+  ({ experienceDetails, setSelectedTab, isEditable }: WorkExperienceProps) => {
     // Chakra UI color modes
     const textColor = useColorModeValue("gray.800", "gray.200");
     const cardBg = useColorModeValue("white", "gray.800");
@@ -91,12 +92,12 @@ const WorkExperience = observer(
           <Heading textAlign={"center"} fontSize={{base: "sm", md: "2xl" }} fontWeight="bold">
             Work Experience
           </Heading>
-          <CustomButton
+          {isEditable && <CustomButton
             onClick={() =>
               setSelectedTab({ open: true, type: "work-experience" })
             }
             btnText="Edit"
-          />
+          />}
         </Flex>
         {experienceDetails.map((experience) => (
           <Box

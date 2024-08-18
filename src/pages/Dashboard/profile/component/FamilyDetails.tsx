@@ -28,7 +28,7 @@ const iconMap: any = {
   address: FaAddressCard,
 };
 
-const Relations = observer(({ relations, setSelectedTab }: any) => {
+const Relations = observer(({ relations, setSelectedTab, isEditable }: any) => {
   const cardBg = useColorModeValue("white", "gray.800");
   const cardBorder = useColorModeValue("gray.200", "gray.700");
   const textColor = useColorModeValue("gray.800", "gray.200");
@@ -49,10 +49,10 @@ const Relations = observer(({ relations, setSelectedTab }: any) => {
         <Heading as="h2" size="lg" color={textColor} fontSize={{base: "sm", md: "2xl" }}>
           Family Relations
         </Heading>
-        <CustomButton
+        {isEditable && <CustomButton
           onClick={() => setSelectedTab({ open: true, type: "family-details" })}
           btnText="Edit"
-        />
+        />}
       </Flex>
       <Divider mt={3}/>
       <Stack spacing={2} width="100%" mb={2}>

@@ -62,7 +62,7 @@ const UserFormSidebar = observer(({ type }: any) => {
           bgGradient="linear(to-r, blue.400, blue.600)"
           bgClip="text"
         >
-          Usere Details
+          User Details
         </Text>
         <VStack spacing={3} align="stretch">
           {sideTabs.map((item: any, index: number) => (
