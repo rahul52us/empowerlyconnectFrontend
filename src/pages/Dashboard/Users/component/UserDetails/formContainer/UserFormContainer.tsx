@@ -4,10 +4,10 @@ import DashPageHeader from "../../../../../../config/component/common/DashPageHe
 import { UsersBreadCrumb } from "../../../../utils/breadcrumb.constant";
 import UserContainer from "./UserContainer";
 import {
-  UserInitialValues,
+  getUserInitialValues,
   generateSubmitResponse,
 } from "../utils/constant";
-import { getValidation } from "../utils/validations";
+import { getUserValidation } from "../utils/validations";
 import store from "../../../../../../store/store";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -61,28 +61,6 @@ const UserFormContainer = observer(() => {
     }
   }, [id]);
 
-  useEffect(() => {
-    if (
-      userData &&
-      userData?.bankDetails &&
-      userData?.bankDetails[0] &&
-      userData?.bankDetails[0]?.cancelledCheque?.name
-    ) {
-      setFiles((files: any) => ({
-        ...files,
-        cancelledCheque: {
-          isDeleted: 0,
-          file: [
-            {
-              ...userData?.bankDetails[0].cancelledCheque,
-              file: userData?.bankDetails[0].cancelledCheque?.url,
-            },
-          ],
-        },
-      }));
-    }
-  }, [userData]);
-
   const navigateUser = (id : any) => {
     navigate(
       `${dashboard.Users.details}/edit/${id}?tab=company-details`
@@ -96,8 +74,32 @@ const UserFormContainer = observer(() => {
   } : any) => {
     if (type) {
       if (tab === "profile-details") {
-        const finalData = await generateSubmitResponse(values)
-        updateUserProfile(userId, { ...finalData, company : user?.companyDetail?.company })
+        let updatedValues = { ...values };
+
+        if (
+          updatedValues.pic?.file &&
+          updatedValues.pic?.file?.length !== 0 &&
+          updatedValues?.pic?.isAdd
+        ) {
+          const buffer = await readFileAsBase64(updatedValues.pic?.file);
+          const fileData = {
+            buffer: buffer,
+            filename: updatedValues.pic?.file?.name,
+            type: updatedValues.pic?.file?.type,
+            isDeleted: updatedValues?.pic?.isDeleted || 0,
+            isAdd: updatedValues?.pic?.isAdd || 0,
+          };
+          updatedValues.pic = fileData;
+        } else if (updatedValues?.pic?.isDeleted) {
+          const fileData = {
+            isDeleted: updatedValues?.pic?.isDeleted || 0,
+            isAdd: updatedValues?.pic?.isAdd || 0,
+          };
+          updatedValues.pic = fileData;
+        }
+
+        const finalData = await generateSubmitResponse(updatedValues);
+        updateUserProfile(userId, { ...finalData, company: user?.companyDetail?.company })
           .then(() => {
             setShowError(false);
             setErrors({});
@@ -150,31 +152,29 @@ const UserFormContainer = observer(() => {
           });
       }
       else if (tab === "bank-details") {
-        let bankDetails: any = values;
+        let bankDetails: any = {...values}
         if (
-          files?.cancelledCheque?.file &&
-          (files?.cancelledCheque?.isAdd || files.cancelledCheque?.isDeleted)
+          bankDetails.cancelledCheque?.file &&
+          bankDetails.cancelledCheque?.file?.length !== 0 &&
+          bankDetails?.cancelledCheque?.isAdd
         ) {
-          const buffer = await readFileAsBase64(files.cancelledCheque.file[0]);
+          const buffer = await readFileAsBase64(bankDetails.cancelledCheque?.file);
           const fileData = {
             buffer: buffer,
-            filename: files.cancelledCheque.file[0].name,
-            type: files.cancelledCheque.file[0].type,
-            isFileDeleted: files.cancelledCheque.isDeleted,
-            isAdd: files.cancelledCheque.isAdd,
+            filename: bankDetails.cancelledCheque?.file?.name,
+            type: bankDetails.cancelledCheque?.file?.type,
+            isDeleted: bankDetails?.cancelledCheque?.isDeleted || 0,
+            isAdd: bankDetails?.cancelledCheque?.isAdd || 0,
           };
-          bankDetails = {
-            ...bankDetails,
-            cancelledCheque: fileData,
-          };
+          bankDetails.cancelledCheque = fileData;
         } else {
-          bankDetails = {
-            ...bankDetails,
-            cancelledCheque: {
-              isFileDeleted: files.cancelledCheque.isDeleted,
-              isAdd: 0,
-            },
-          };
+          if (bankDetails?.cancelledCheque?.isDeleted) {
+            const fileData = {
+              isDeleted: bankDetails?.cancelledCheque?.isDeleted || 0,
+              isAdd: bankDetails?.cancelledCheque?.isAdd || 0,
+            };
+            bankDetails.cancelledCheque = fileData;
+          }
         }
         updateUserBankDetails(userId, bankDetails)
           .then(() => {
@@ -197,7 +197,8 @@ const UserFormContainer = observer(() => {
           .finally(() => {
             setSubmitting(false);
           });
-      } else if (tab === "family-details") {
+      }
+       else if (tab === "family-details") {
         updateFamilyDetails(userId, values)
           .then(() => {
             setShowError(false);
@@ -412,8 +413,8 @@ const UserFormContainer = observer(() => {
 
   const commonProps = {
     handleSubmitProfile,
-    initialValues: UserInitialValues(tab, userData),
-    validations: getValidation(tab, type ? "edit" : "create"),
+    initialValues: getUserInitialValues(tab, userData),
+    validations: getUserValidation(tab, type ? "edit" : "create"),
     type: type ? "edit" : "create",
     changePassword: () => alert("rahul"),
     files: files,

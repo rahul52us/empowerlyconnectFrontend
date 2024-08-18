@@ -8,6 +8,7 @@ import {
   useColorModeValue,
   Divider,
   Flex,
+  Button,
 } from "@chakra-ui/react";
 import { CalendarIcon, StarIcon, ExternalLinkIcon } from "@chakra-ui/icons";
 import { MdPerson, MdLocalActivity, MdAttachMoney, MdInfo } from "react-icons/md";
@@ -34,6 +35,7 @@ interface ExperienceDetail {
 // Define props type
 interface WorkExperienceProps {
   experienceDetails: ExperienceDetail[];
+  setSelectedTab : any
 }
 
 // Key-to-Label mapping
@@ -63,7 +65,7 @@ const keyIcons: { [key: string]: JSX.Element } = {
 };
 
 const WorkExperience = observer(
-  ({ experienceDetails }: WorkExperienceProps) => {
+  ({ experienceDetails, setSelectedTab }: WorkExperienceProps) => {
     // Chakra UI color modes
     const textColor = useColorModeValue("gray.800", "gray.200");
     const cardBg = useColorModeValue("white", "gray.800");
@@ -83,6 +85,8 @@ const WorkExperience = observer(
         <Heading mb={8} textAlign={"center"} fontSize="3xl" fontWeight="bold">
           Work Experience
         </Heading>
+                  <Button onClick={() => setSelectedTab({open : true, type : "work-experience"})}>Edit</Button>
+
         {experienceDetails.map((experience) => (
           <Box
             key={experience._id}

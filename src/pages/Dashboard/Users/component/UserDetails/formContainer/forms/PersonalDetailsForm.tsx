@@ -20,7 +20,7 @@ import {
 } from "../../../../../../../config/constant/function";
 import { FiCamera, FiTrash } from "react-icons/fi";
 
-const PersonalDetails = ({
+const PersonalDetailsForm = ({
   type,
   handleSubmitProfile,
   initialValues,
@@ -119,6 +119,7 @@ const PersonalDetails = ({
                               file: e.target.files[0],
                               isEdited: type === "edit" ? true : false,
                               url: url,
+                              isAdd : 1
                             });
                           }}
                         />
@@ -466,7 +467,7 @@ const PersonalDetails = ({
                   <FieldArray name="addressInfo">
                     {({ push, remove }) => (
                       <Box>
-                        {values.addressInfo.map((add: any, index: number) => (
+                        {values.addressInfo && values.addressInfo.map((add: any, index: number) => (
                           <div key={index}>
                             <Grid
                               gridTemplateColumns={{ md: "1fr 1fr 1fr" }}
@@ -593,4 +594,4 @@ const PersonalDetails = ({
   );
 };
 
-export default PersonalDetails;
+export default PersonalDetailsForm;

@@ -27,8 +27,15 @@ import BankDetails from "./component/BankDetails";
 import Documents from "./component/Documents";
 import DashPageHeader from "../../../config/component/common/DashPageHeader/DashPageHeader";
 import { dashProfileBreadCrumb } from "../utils/breadcrumb.constant";
+import ProfileEditIndex from "./ProfileEditIndex";
 
 const ProfileIndex = observer(() => {
+  const [selectedTab, setSelectedTab] = useState({
+    open: false,
+    type: "profile-details",
+  });
+  const [haveApiCall, setHaveApiCall] = useState(false);
+
   const { getQueryParam, setQueryParam } = useQueryParams();
   const [loading, setLoading] = useState(false);
   const [currentTab, setCurrentTab] = useState<string>("personal-details");
@@ -48,10 +55,11 @@ const ProfileIndex = observer(() => {
   }, [getQueryParam]);
 
   useEffect(() => {
-    if (user) {
+    if (user && !haveApiCall) {
       setLoading(true);
       getUsersDetailsById(user._id)
         .then((data) => {
+          setHaveApiCall(true);
           setUserDetails(data);
         })
         .catch(() => {})
@@ -59,7 +67,7 @@ const ProfileIndex = observer(() => {
           setLoading(false);
         });
     }
-  }, [getUsersDetailsById, user]);
+  }, [getUsersDetailsById, user, haveApiCall]);
 
   const tabMapping: string[] = [
     "personal-details",
@@ -92,108 +100,129 @@ const ProfileIndex = observer(() => {
   console.log(userDetails);
 
   return (
-    <Box p={3} pt={2}>
-      <DashPageHeader title="Project" breadcrumb={dashProfileBreadCrumb.index} />{" "}
-      <PageLoader loading={loading}>
-        <Tabs
-          variant="enclosed"
-          isLazy
-          index={currentTabIndex >= 0 ? currentTabIndex : 0}
-          onChange={handleTabChange}
-        >
-          <TabList
-            borderBottomWidth={2}
-            borderColor="teal.300"
-            mb={4}
-            bg={colorMode === "dark" ? "gray.700" : "white"}
-            borderRadius="md"
-            boxShadow="lg"
-            overflowX="auto"
-            // overflow='hidden'
-            display="flex"
-            justifyContent={"space-between"}
-            flexWrap="wrap"
-            p={3}
+    <>
+      <Box p={3} pt={2}>
+        <DashPageHeader
+          title="Project"
+          breadcrumb={dashProfileBreadCrumb.index}
+        />{" "}
+        <PageLoader loading={loading}>
+          <Tabs
+            variant="enclosed"
+            isLazy
+            index={currentTabIndex >= 0 ? currentTabIndex : 0}
+            onChange={handleTabChange}
           >
-            <Tab {...tabStyles}>
-              <CalendarIcon style={{ marginRight: "10px" }} /> Personal Info
-            </Tab>
-            <Tab {...tabStyles}>
-              <FaBuilding style={{ marginRight: "10px" }} /> Company
-            </Tab>
-            <Tab {...tabStyles}>
-              <FaUsers style={{ marginRight: "10px" }} /> Family
-            </Tab>
-            <Tab {...tabStyles}>
-              <FaUsers style={{ marginRight: "10px" }} /> Work Experience
-            </Tab>
-            <Tab {...tabStyles}>
-              <FaUsers style={{ marginRight: "10px" }} /> Skill & Additional
-              Info
-            </Tab>
-            <Tab {...tabStyles}>
-              <FaUsers style={{ marginRight: "10px" }} /> Qualification
-            </Tab>
-            <Tab {...tabStyles}>
-              <FaUsers style={{ marginRight: "10px" }} /> Documents
-            </Tab>
-            <Tab {...tabStyles}>
-              <FaUsers style={{ marginRight: "10px" }} /> Bank Account Details
-            </Tab>
-          </TabList>
-          <TabPanels>
-            <TabPanel>
-              {userDetails?.profileDetails && (
-                <PersonalInfo
-                  personalDetails={
-                    userDetails?.profileDetails
-                      ? userDetails?.profileDetails
+            <TabList
+              borderBottomWidth={2}
+              borderColor="teal.300"
+              mb={4}
+              bg={colorMode === "dark" ? "gray.700" : "white"}
+              borderRadius="md"
+              boxShadow="lg"
+              overflowX="auto"
+              // overflow='hidden'
+              display="flex"
+              justifyContent={"space-between"}
+              flexWrap="wrap"
+              p={3}
+            >
+              <Tab {...tabStyles}>
+                <CalendarIcon style={{ marginRight: "10px" }} /> Personal Info
+              </Tab>
+              <Tab {...tabStyles}>
+                <FaBuilding style={{ marginRight: "10px" }} /> Company
+              </Tab>
+              <Tab {...tabStyles}>
+                <FaUsers style={{ marginRight: "10px" }} /> Family
+              </Tab>
+              <Tab {...tabStyles}>
+                <FaUsers style={{ marginRight: "10px" }} /> Work Experience
+              </Tab>
+              <Tab {...tabStyles}>
+                <FaUsers style={{ marginRight: "10px" }} /> Skill & Additional
+                Info
+              </Tab>
+              <Tab {...tabStyles}>
+                <FaUsers style={{ marginRight: "10px" }} /> Qualification
+              </Tab>
+              <Tab {...tabStyles}>
+                <FaUsers style={{ marginRight: "10px" }} /> Documents
+              </Tab>
+              <Tab {...tabStyles}>
+                <FaUsers style={{ marginRight: "10px" }} /> Bank Account Details
+              </Tab>
+            </TabList>
+            <TabPanels>
+              <TabPanel>
+                {userDetails?.profileDetails && (
+                  <PersonalInfo
+                    personalDetails={
+                      userDetails?.profileDetails
+                        ? userDetails?.profileDetails
+                        : []
+                    }
+                    setSelectedTab={setSelectedTab}
+                  />
+                )}
+              </TabPanel>
+              <TabPanel>
+                <CompanyDetails userDetails={userDetails} />
+              </TabPanel>
+              <TabPanel>
+                <FamilyDetails
+                  relations={
+                    userDetails?.familyDetails
+                      ? userDetails?.familyDetails[0]?.relations
                       : []
                   }
+                  setSelectedTab={setSelectedTab}
                 />
-              )}
-            </TabPanel>
-            <TabPanel>
-              <CompanyDetails userDetails={userDetails} />
-            </TabPanel>
-            <TabPanel>
-              <FamilyDetails
-                relations={
-                  userDetails?.familyDetails
-                    ? userDetails?.familyDetails[0]?.relations
-                    : []
-                }
-              />
-            </TabPanel>
-            <TabPanel>
-              <WorkExperience
-                experienceDetails={
-                  userDetails?.workExperience
-                    ? userDetails?.workExperience[0]?.experienceDetails
-                    : []
-                }
-              />
-            </TabPanel>
-            <TabPanel>
-              <SkillAndAdditionalInfo userDetails={userDetails} />
-            </TabPanel>
-            <TabPanel>
-              <Qualification userDetails={userDetails} />
-            </TabPanel>
-            <TabPanel>
-              <Documents userDetails={userDetails} />
-            </TabPanel>
-            <TabPanel>
-              <BankDetails
-                bankDetails={
-                  userDetails?.bankDetails ? userDetails?.bankDetails[0] : {}
-                }
-              />
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
-      </PageLoader>
-    </Box>
+              </TabPanel>
+              <TabPanel>
+                <WorkExperience
+                  experienceDetails={
+                    userDetails?.workExperience
+                      ? userDetails?.workExperience[0]?.experienceDetails
+                      : []
+                  }
+                  setSelectedTab={setSelectedTab}
+                />
+              </TabPanel>
+              <TabPanel>
+                <SkillAndAdditionalInfo userDetails={userDetails} />
+              </TabPanel>
+              <TabPanel>
+                <Qualification
+                  userDetails={userDetails}
+                  setSelectedTab={setSelectedTab}
+                />
+              </TabPanel>
+              <TabPanel>
+                <Documents
+                  userDetails={userDetails}
+                  setSelectedTab={setSelectedTab}
+                />
+              </TabPanel>
+              <TabPanel>
+                <BankDetails
+                  bankDetails={
+                    userDetails?.bankDetails ? userDetails?.bankDetails[0] : {}
+                  }
+                  setSelectedTab={setSelectedTab}
+                />
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
+        </PageLoader>
+      </Box>
+      <ProfileEditIndex
+        setHaveApiCall={setHaveApiCall}
+        setSelectedTab={setSelectedTab}
+        selectedTab={selectedTab}
+        userDetails={userDetails}
+      />
+    </>
   );
 });
 

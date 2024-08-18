@@ -251,7 +251,7 @@ export const UserCompanyDetailsValidation = Yup.object().shape({
   description:Yup.string().trim()
 })
 
-export const getValidation = (type : string, mode : string) => {
+export const getUserValidation = (type : string, mode : string) => {
   if(type === "profile-details"){
     if(mode === "edit"){
       return UserUpdateProfileValidation
@@ -290,6 +290,14 @@ export const getValidation = (type : string, mode : string) => {
     }
     else {
       return UserCompanyDetailsValidation
+    }
+  }
+  else if(type === "permissions"){
+    if(mode === "edit"){
+      return {}
+    }
+    else {
+      return {}
     }
   }
   else {

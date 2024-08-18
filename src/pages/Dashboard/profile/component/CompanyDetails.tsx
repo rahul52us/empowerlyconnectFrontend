@@ -1,9 +1,17 @@
-import { observer } from "mobx-react-lite"
+import { Button } from "@chakra-ui/react";
+import { observer } from "mobx-react-lite";
 
-const CompanyDetails = observer(({} : any) => {
+const CompanyDetails = observer(({ setSelectedTab }: any) => {
   return (
-    <div>CompanyDetails</div>
-  )
-})
+    <div>
+      CompanyDetails
+      <Button
+        onClick={() => setSelectedTab({ open: true, type: "company-details" })}
+      >
+        Edit
+      </Button>
+    </div>
+  );
+});
 
-export default CompanyDetails
+export default CompanyDetails;

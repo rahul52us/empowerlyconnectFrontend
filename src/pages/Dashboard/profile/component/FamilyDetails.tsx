@@ -1,4 +1,4 @@
-import { Box, Text, Stack, Heading, Flex, useColorModeValue, Icon, Divider } from "@chakra-ui/react";
+import { Box, Text, Stack, Heading, Flex, useColorModeValue, Icon, Divider, Button } from "@chakra-ui/react";
 import { observer } from 'mobx-react-lite';
 import { FaUser, FaPhone, FaAddressCard, FaBriefcase } from "react-icons/fa";
 
@@ -18,7 +18,7 @@ const iconMap: any = {
   address: FaAddressCard,
 };
 
-const Relations = observer(({ relations }: any) => {
+const Relations = observer(({ relations , setSelectedTab}: any) => {
   const cardBg = useColorModeValue('white', 'gray.800');
   const cardBorder = useColorModeValue('gray.200', 'gray.700');
   const textColor = useColorModeValue('gray.800', 'gray.200');
@@ -39,6 +39,8 @@ const Relations = observer(({ relations }: any) => {
       <Heading as="h2" size="lg" color={textColor}>
         Family Relations
       </Heading>
+      <Button onClick={() => setSelectedTab({open : true, type : "family-details"})}>Edit</Button>
+
       <Flex width="100%" justify="center" wrap="wrap">
         {relations && relations.map((relation: any, index: number) => (
           <Box

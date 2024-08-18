@@ -4,14 +4,13 @@ import { Form, Formik } from "formik";
 import CustomInput from "../../../../../../../config/component/CustomInput/CustomInput";
 import ShowFileUploadFile from "../../../../../../../config/component/common/ShowFileUploadFile/ShowFileUploadFile";
 import CustomSubmitBtn from "../../../../../../../config/component/CustomSubmitBtn/CustomSubmitBtn";
+import { removeDataByIndex } from "../../../../../../../config/constant/function";
 
 const PersonalBankDetails = ({
   type,
   handleSubmitProfile,
   initialValues,
   validations,
-  files,
-  setFiles,
 }: any) => {
   const [showError, setShowError] = useState(false);
   return (
@@ -28,7 +27,7 @@ const PersonalBankDetails = ({
         });
       }}
     >
-      {({ values, errors, handleChange, handleSubmit, isSubmitting }) => {
+      {({ values, errors, handleChange, handleSubmit, isSubmitting, setFieldValue }) => {
         return (
           <Form onSubmit={handleSubmit}>
             <Box p={4} borderRadius="lg" boxShadow="md">
@@ -38,49 +37,40 @@ const PersonalBankDetails = ({
                 </Heading>
                 <Divider />
                 <Flex>
-                  {files.cancelledCheque?.file === null ? (
-                    <CustomInput
-                      type="file-drag"
-                      name="cancelledCheque"
-                      value={files.cancelledCheque}
-                      isMulti={false}
-                      accept="image/*"
-                      onChange={(e: any) => {
-                        setFiles((prev: any) => ({
-                          ...prev,
-                          cancelledCheque: {
-                            ...prev.cancelledCheque,
-                            file: e.target.files,
+                    {values?.cancelledCheque?.file?.length === 0 ? (
+                      <CustomInput
+                        type="file-drag"
+                        name="cancelledCheque"
+                        value={values.cancelledCheque}
+                        isMulti={true}
+                        accept="image/*"
+                        onChange={(e: any) => {
+                          setFieldValue("cancelledCheque", {
+                            ...values.cancelledCheque,
+                            file: e.target.files[0],
                             isAdd: 1,
-                          },
-                        }));
-                      }}
-                    />
-                  ) : (
-                    <Box mt={-5} width="100%">
-                      <ShowFileUploadFile
-                        isFileDeleted={files.cancelledCheque.isDeleted}
-                        edit={type === "edit" ? true : false}
-                        files={
-                          files?.cancelledCheque?.file
-                            ? files?.cancelledCheque.file[0]
-                            : []
-                        }
-                        removeFile={(_: any) => {
-                          setFiles((prev: any) => ({
-                            ...prev,
-                            cancelledCheque: {
-                              ...prev.cancelledCheque,
-                              file: null,
-                              isDeleted: 1,
-                              isAdd: 0,
-                            },
-                          }));
+                          });
                         }}
+                        required={true}
+                        showError={showError}
+                        error={errors.cancelledCheque}
                       />
-                    </Box>
-                  )}
-                </Flex>
+                    ) : (
+                      <Box mt={-5} width="100%">
+                        <ShowFileUploadFile
+                          files={values.cancelledCheque?.file}
+                          removeFile={(_: any) => {
+                            setFieldValue("cancelledCheque", {
+                              ...values.cancelledCheque,
+                              file: removeDataByIndex(values.cancelledCheque, 0),
+                              isDeleted: 1,
+                            });
+                          }}
+                          edit={type === "edit" ? true : false}
+                        />
+                      </Box>
+                    )}
+                  </Flex>
                 <Grid
                   gridTemplateColumns={{ md: "1fr 1fr 1fr" }}
                   columnGap={4}

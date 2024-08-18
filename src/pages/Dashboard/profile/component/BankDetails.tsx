@@ -1,8 +1,8 @@
-import { Box, Image, Text, Stack, Heading, Flex, useColorModeValue, Icon, Divider } from "@chakra-ui/react";
+import { Box, Image, Text, Stack, Heading, Flex, useColorModeValue, Icon, Divider, Button } from "@chakra-ui/react";
 import { observer } from 'mobx-react-lite';
 import { FaRegCreditCard, FaUniversity, FaFileInvoiceDollar, FaCheckCircle } from "react-icons/fa";
 
-const BankDetails = observer(({ bankDetails }: any) => {
+const BankDetails = observer(({ bankDetails , setSelectedTab}: any) => {
   const cardBg = useColorModeValue('white', 'gray.800');
   const cardBorder = useColorModeValue('gray.200', 'gray.700');
   const textColor = useColorModeValue('gray.800', 'gray.200');
@@ -24,6 +24,7 @@ const BankDetails = observer(({ bankDetails }: any) => {
           <Heading as="h2" size="xl" textAlign="center" color={textColor} mb={4}>
             Bank Details
           </Heading>
+          <Button onClick={() => setSelectedTab({open : true, type : "bank-details"})}>Edit</Button>
           <Divider />
           <Flex align="center">
             <Icon as={FaRegCreditCard} boxSize={6} color={iconColor} mr={3} />

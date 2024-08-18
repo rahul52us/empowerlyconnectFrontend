@@ -7,6 +7,7 @@ import {
   useColorModeValue,
   Divider,
   HStack,
+  Button,
 } from "@chakra-ui/react";
 import { CalendarIcon, InfoIcon, PhoneIcon, EmailIcon } from "@chakra-ui/icons";
 import { MdLocationOn, MdAccountCircle, MdLanguage } from "react-icons/md";
@@ -100,7 +101,7 @@ const formatValue = (key: string, value: any) => {
 };
 
 const PersonalInfo = observer(
-  ({ personalDetails }: { personalDetails: PersonalDetail[] }) => {
+  ({ personalDetails, setSelectedTab }: { personalDetails: PersonalDetail[], setSelectedTab : any }) => {
     // Chakra UI color modes
     const textColor = useColorModeValue("gray.800", "gray.200");
     const cardBg = useColorModeValue("white", "gray.800");
@@ -115,11 +116,12 @@ const PersonalInfo = observer(
         bg={cardBg}
         borderColor={cardBorder}
         boxShadow="lg"
-        p={6}
+        p={{base : 2, sm : 6}}
       >
         <Heading mb={8} textAlign={"center"} fontSize="3xl" fontWeight="bold">
           Personal Details
         </Heading>
+        <Button onClick={() => setSelectedTab({open : true, type : "profile-details"})}>Edit</Button>
         {personalDetails.map((detail) => (
           <Box
             key={detail._id}

@@ -22,6 +22,7 @@ export const dashboard = {
   // Profile
 
   profile : `/${dashboardName}/profile`,
+  profileEditIndex: `/${dashboardName}/profile/edit/:id`,
   student: {
     index: `/${dashboardName}/students`,
     table: `/${dashboardName}/students/:type`,

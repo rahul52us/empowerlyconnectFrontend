@@ -1,7 +1,6 @@
 // import { manipulateDateWithMonth } from "../../../../../../config/constant/dateUtils";
 
 // import { readFileAsBase64 } from "../../../../../../config/constant/function";
-import { readFileAsBase64 } from "../../../../../../config/constant/function";
 import { transformPermissionsForForm } from "./function";
 
 export const defaultPermissions: any = {
@@ -49,10 +48,9 @@ export const eTypeOption = [
   },
   { label: "admin", value: "admin" },
   { label: "SuperAdmin", value: "superadmin" },
-
 ];
 
-export const UserInitialValues = (type: string, data: any) => {
+export const getUserInitialValues = (type: string, data: any) => {
   if (type === "profile-details") {
     data = { ...data, ...data?.profileDetails[0] };
     let dt: any = {
@@ -65,7 +63,7 @@ export const UserInitialValues = (type: string, data: any) => {
         ? data?.language.map((item: any) => ({ label: item, value: item }))
         : [],
       username: data?.username || "",
-      pic: data?.pic?.url ? {file : {...data?.pic}} : {file : []},
+      pic:  data ? data.pic?.url ? {file : data.pic } : {file : []} : {file : []},
       dob: data.dob ? new Date(data?.dob) : new Date(),
       personalEmail: data?.personalEmail || "",
       nickName: data?.nickName || "",
@@ -103,12 +101,15 @@ export const UserInitialValues = (type: string, data: any) => {
     return { profileDetails: dt };
   } else if (type === "bank-details") {
     let bankDetail: any = {};
+    console.log(data)
     if (data) {
-      bankDetail = { ...data?.bankDetails[0] };
+      bankDetail = {
+        ...data?.bankDetails[0]
+      };
     }
     return {
       bankDetails: {
-        cancelledCheque: bankDetail?.cancelledCheque || {},
+        cancelledCheque:  data ? data.bankDetails[0].cancelledCheque?.url ? {file : data.bankDetails[0].cancelledCheque } : {file : []} : {file : []},
         nameAsPerBank: bankDetail?.nameAsPerBank || "",
         name: bankDetail?.name || "",
         accountNo: bankDetail?.accountNo || "",
@@ -234,7 +235,9 @@ export const UserInitialValues = (type: string, data: any) => {
   } else if (type === "permissions") {
     return {
       permissions: {
-        permissions: data ? transformPermissionsForForm(data?.permissions || defaultPermissions) : defaultPermissions,
+        permissions: data
+          ? transformPermissionsForForm(data?.permissions || defaultPermissions)
+          : defaultPermissions,
       },
     };
   } else {
@@ -243,7 +246,6 @@ export const UserInitialValues = (type: string, data: any) => {
 };
 
 export const generateSubmitResponse = async (datas: any) => {
-
   const data = { ...datas };
 
   let dt: any = { ...data };
@@ -258,50 +260,8 @@ export const generateSubmitResponse = async (datas: any) => {
     dob: dt.dob,
     weddingDate: dt.weddingDate,
   };
-
-  if (dt?.pic?.isEdited === false) {
-    if (dt.pic?.file) {
-      try {
-        const fileBuffer = await readFileAsBase64(dt.pic.file);
-        const fileData = {
-          buffer: fileBuffer,
-          filename: dt.pic.file.name,
-          type: dt.pic.file.type,
-          isDeleted: dt.pic.isDeleted || 0,
-          isAdd: dt.pic.isAdd || 1,
-        };
-
-        dt.pic = fileData;
-      } catch (error) {
-        console.error('Error reading file:', error);
-      }
-    }
-  }
-  else {
-    if (dt.pic?.file) {
-      try {
-        const fileBuffer = await readFileAsBase64(dt.pic.file);
-        const fileData = {
-          buffer: fileBuffer,
-          filename: dt.pic.file.name,
-          type: dt.pic.file.type,
-          isAdd: dt.pic.isAdd || 1,
-          isDeleted : dt.pic.isDeleted
-        };
-        dt.pic = fileData;
-      } catch (error) {
-        console.error('Error reading file:', error);
-      }
-    }
-  }
-
-  console.log(data.pic)
   return dt;
-
 };
-
-
-
 
 export const generateTableData = (data: any[]) => {
   return data.map((item: any) => ({
