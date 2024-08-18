@@ -20,7 +20,7 @@ import CustomButton from "../../../../config/component/Button/CustomButton";
 
 interface PersonalDetail {
   _id: string;
-  pic?:any;
+  pic?: any;
   user: string;
   language: string[];
   addressInfo: {
@@ -122,10 +122,9 @@ const PersonalInfo = observer(
         bg={cardBg}
         borderColor={cardBorder}
         boxShadow="lg"
-        // p={{ base: 2, sm: 6 }}
       >
-        <HStack justify="space-between" p={{base : 2, md : 4}}>
-          <Heading fontSize={{base: "sm", md: "2xl" }} fontWeight="bold" textAlign="center">
+        <HStack justify="space-between" p={{ base: 2, md: 4 }}>
+          <Heading fontSize={{ base: "sm", md: "2xl" }} fontWeight="bold" textAlign="center">
             Personal Details
           </Heading>
           <CustomButton
@@ -137,67 +136,67 @@ const PersonalInfo = observer(
         </HStack>
         <Divider />
         <Box p={3}>
-        {personalDetails.map((detail, index : number) => (
-          <Box
-            key={detail._id}
-            color={textColor}
-            borderRadius="md"
-            boxShadow="md"
-            p={6}
-            mb={6}
-            borderWidth="1px"
-            borderColor={cardBorder}
-          >
-            {index === 0 &&
-            <Flex justifyContent="center" mb={5}>
-               <Avatar src={personalDetails?.length ? personalDetails[0]?.pic?.url : undefined} width={{base : "120px", md : "160px"}} height={{base : "120px", md : "160px"}} />
-            </Flex>
-            }
-            <Grid justifyContent="space-between" templateColumns={{ base: "1fr", md: "1fr 1fr 1fr" }} gap={4}>
-              {Object.keys(detail).map((key) => {
-                if (['familyDetails','_id','createdAt','companyOrg','permissions','bankDetails','profileDetails','workExperience','is_active','user','__v','pic','designation','password','companyDetail','profile_details','documents'].includes(key))
-                  return null;
+          {personalDetails.map((detail, index: number) => (
+            <Box
+              key={detail._id}
+              color={textColor}
+              borderRadius="md"
+              boxShadow="md"
+              p={6}
+              mb={6}
+              borderWidth="1px"
+              borderColor={cardBorder}
+            >
+              {index === 0 && (
+                <Flex justifyContent="center" mb={5}>
+                  <Avatar src={personalDetails?.length ? personalDetails[0]?.pic?.url : undefined} width={{ base: "120px", md: "160px" }} height={{ base: "120px", md: "160px" }} />
+                </Flex>
+              )}
+              <Grid templateColumns={{ base: "1fr", md: "repeat(3, 1fr)" }} gap={6}>
+                {Object.keys(detail).map((key) => {
+                  if (['familyDetails', '_id', 'createdAt', 'companyOrg', 'permissions', 'bankDetails', 'profileDetails', 'workExperience', 'is_active', 'user', '__v', 'pic', 'designation', 'password', 'companyDetail', 'profile_details', 'documents'].includes(key))
+                    return null;
 
-                const value: any = detail[key as keyof PersonalDetail];
-                const label = keyLabels[key] || key;
-                const icon = keyIcons[key] || <InfoIcon boxSize="20px" />;
+                  const value: any = detail[key as keyof PersonalDetail];
+                  const label = keyLabels[key] || key;
+                  const icon = keyIcons[key] || <InfoIcon boxSize="20px" />;
 
-                return (
-                  <GridItem key={key}>
-                    <HStack spacing={3} align="center" mb={3}>
-                      <Tooltip label={label} aria-label={`${label} tooltip`}>
-                        <Box cursor="pointer">{icon}</Box>
-                      </Tooltip>
-                      <VStack align="start" spacing={1}>
-                        <Text fontSize="md" fontWeight="medium">
-                          {label}
-                        </Text>
-                        {Array.isArray(value) ? (
-                          key === "addressInfo" ? (
-                            formatAddressInfo(
-                              value as PersonalDetail["addressInfo"]
+                  return (
+                    <GridItem key={key}>
+                      <HStack spacing={3} align="end" mb={3}>
+                        <Tooltip label={label} aria-label={`${label} tooltip`}>
+                          <Box cursor="pointer">{icon}</Box>
+                        </Tooltip>
+                        <VStack align="start" spacing={1}>
+                          <Text fontSize="md" fontWeight="medium">
+                            {label}
+                          </Text>
+                          {Array.isArray(value) ? (
+                            key === "addressInfo" ? (
+                              formatAddressInfo(
+                                value as PersonalDetail["addressInfo"]
+                              )
+                            ) : (
+                              value.map((item, index) => (
+                                <Text key={index} fontSize="md">
+                                  {Array.isArray(item)
+                                    ? item.join(", ")
+                                    : item.toString()}
+                                </Text>
+                              ))
                             )
                           ) : (
-                            value.map((item, index) => (
-                              <Text key={index} fontSize="md">
-                                {Array.isArray(item)
-                                  ? item.join(", ")
-                                  : item.toString()}
-                              </Text>
-                            ))
-                          )
-                        ) : (
-                          <Text fontSize="md">{formatValue(key, value)}</Text>
-                        )}
-                      </VStack>
-                    </HStack>
-                  </GridItem>
-                );
-              })}
-            </Grid>
-            <Divider borderColor={cardBorder} mt={4} />
-          </Box>
-        ))}
+                            <Text fontSize="md">{formatValue(key, value)}</Text>
+                          )}
+                        </VStack>
+                      </HStack>
+                    </GridItem>
+                  );
+                })}
+              </Grid>
+              <Divider borderColor={cardBorder} mt={4} />
+            </Box>
+          ))}
         </Box>
       </Box>
     );
