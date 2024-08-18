@@ -4,7 +4,7 @@ import { observer } from "mobx-react-lite";
 import CustomInput from "../../../../../../../config/component/CustomInput/CustomInput";
 import store from "../../../../../../../store/store";
 import { useEffect, useState } from "react";
-import CustomSubmitBtn from "../../../../../../../config/component/CustomSubmitBtn/CustomSubmitBtn";
+import SubmitFormBtn from "../../../../../../../config/component/Button/SubmitFormBtn";
 import { LeaveRequestValidation } from "../../utils/validation";
 import { LeaveRequestI } from "../../utils/interface";
 import { leavesTypes } from "../../utils/constant";
@@ -182,7 +182,7 @@ const LeaveRequestForm = observer(
                 <Divider />
                 <Flex justifyContent="end" p={4} columnGap={3}>
                   <Flex columnGap={4}>
-                    <CustomSubmitBtn
+                    <SubmitFormBtn
                       cancelFunctionality={{
                         show: true,
                         onClick: () => close(),
@@ -194,7 +194,7 @@ const LeaveRequestForm = observer(
                         setShowError(true);
                       }}
                     />
-                    <CustomSubmitBtn
+                    <SubmitFormBtn
                       cancelFunctionality={{
                         show: false,
                         onClick: () => close(),

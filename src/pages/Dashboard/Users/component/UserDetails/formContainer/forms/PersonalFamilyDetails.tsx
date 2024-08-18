@@ -11,7 +11,7 @@ import {
   Collapse,
 } from "@chakra-ui/react";
 import CustomInput from "../../../../../../../config/component/CustomInput/CustomInput";
-import CustomSubmitBtn from "../../../../../../../config/component/CustomSubmitBtn/CustomSubmitBtn";
+import SubmitFormBtn from "../../../../../../../config/component/Button/SubmitFormBtn";
 import FormModel from "../../../../../../../config/component/common/FormModel/FormModel";
 import NotFoundData from "../../../../../../../config/component/NotFound/NotFoundData";
 
@@ -285,7 +285,7 @@ const FamilyDetails = ({
                 </>
               )}
             </FieldArray>
-              <CustomSubmitBtn
+              <SubmitFormBtn
                 loading={isSubmitting}
                 onClick={() => setShowError(true)}
               />

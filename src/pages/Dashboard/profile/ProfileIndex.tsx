@@ -89,15 +89,17 @@ const ProfileIndex = observer(() => {
   };
 
   const tabStyles = {
-    _selected: { color: "white", bg: "teal.500" },
-    px: 4,
+    _selected: {
+      color: colorMode === "dark" ? "white" : "teal.500",
+      bg: colorMode === "dark" ? "teal.600" : "teal.100",
+    },
+    px: useBreakpointValue({ base: 2, md: 4 }),
     py: 2,
     borderRadius: "md",
     fontWeight: "bold",
     fontSize: useBreakpointValue({ base: "sm", md: "md" }),
+    mb: useBreakpointValue({ base: 2, md: 0 }),
   };
-
-  console.log(userDetails);
 
   return (
     <>
@@ -105,7 +107,7 @@ const ProfileIndex = observer(() => {
         <DashPageHeader
           title="Project"
           breadcrumb={dashProfileBreadCrumb.index}
-        />{" "}
+        />
         <PageLoader loading={loading}>
           <Tabs
             variant="enclosed"
@@ -121,11 +123,10 @@ const ProfileIndex = observer(() => {
               borderRadius="md"
               boxShadow="lg"
               overflowX="auto"
-              // overflow='hidden'
               display="flex"
-              justifyContent={"space-between"}
-              flexWrap="wrap"
-              p={3}
+              flexDirection={{ base: "column", md: "row" }}
+              alignItems="flex-start"
+              p={useBreakpointValue({ base: 2, md: 3 })}
             >
               <Tab {...tabStyles}>
                 <CalendarIcon style={{ marginRight: "10px" }} /> Personal Info
@@ -154,25 +155,28 @@ const ProfileIndex = observer(() => {
               </Tab>
             </TabList>
             <TabPanels>
-              <TabPanel>
+              <TabPanel m={{ base: -5, md: 0 }}>
                 {userDetails?.profileDetails && (
                   <PersonalInfo
                     personalDetails={
-                      userDetails?.profileDetails
-                        ? userDetails?.profileDetails
+                      userDetails?.profileDetails?.length > 0
+                        ? userDetails?.profileDetails.map((it: any) => ({
+                            ...userDetails,
+                            ...it,
+                          }))
                         : []
                     }
                     setSelectedTab={setSelectedTab}
                   />
                 )}
               </TabPanel>
-              <TabPanel>
+              <TabPanel m={{ base: -5, md: 0 }}>
                 <CompanyDetails
                   userDetails={userDetails}
                   setSelectedTab={setSelectedTab}
                 />
               </TabPanel>
-              <TabPanel>
+              <TabPanel m={{ base: -5, md: 3 }}>
                 <FamilyDetails
                   relations={
                     userDetails?.familyDetails
@@ -182,7 +186,7 @@ const ProfileIndex = observer(() => {
                   setSelectedTab={setSelectedTab}
                 />
               </TabPanel>
-              <TabPanel>
+              <TabPanel m={{ base: -5, md: 3 }}>
                 <WorkExperience
                   experienceDetails={
                     userDetails?.workExperience
@@ -192,22 +196,25 @@ const ProfileIndex = observer(() => {
                   setSelectedTab={setSelectedTab}
                 />
               </TabPanel>
-              <TabPanel>
-                <SkillAndAdditionalInfo userDetails={userDetails} />
+              <TabPanel m={{ base: -5, md: 0 }}>
+                <SkillAndAdditionalInfo
+                  userDetails={userDetails}
+                  setSelectedTab={setSelectedTab}
+                />
               </TabPanel>
-              <TabPanel>
+              <TabPanel m={{ base: -5, md: 0 }}>
                 <Qualification
                   userDetails={userDetails}
                   setSelectedTab={setSelectedTab}
                 />
               </TabPanel>
-              <TabPanel>
+              <TabPanel m={{ base: -5, md: 0 }}>
                 <Documents
                   userDetails={userDetails}
                   setSelectedTab={setSelectedTab}
                 />
               </TabPanel>
-              <TabPanel>
+              <TabPanel m={{ base: -5, md: 3 }}>
                 <BankDetails
                   bankDetails={
                     userDetails?.bankDetails ? userDetails?.bankDetails[0] : {}

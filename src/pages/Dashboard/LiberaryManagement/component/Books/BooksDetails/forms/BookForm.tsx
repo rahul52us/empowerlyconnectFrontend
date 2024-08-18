@@ -7,7 +7,7 @@ import ShowFileUploadFile from "../../../../../../../config/component/common/Sho
 import { removeDataByIndex } from "../../../../../../../config/constant/function";
 import { BookValidationSchema } from "../../utils/validation";
 import { languages } from "../../utils/constant";
-import CustomSubmitBtn from "../../../../../../../config/component/CustomSubmitBtn/CustomSubmitBtn";
+import SubmitFormBtn from "../../../../../../../config/component/Button/SubmitFormBtn";
 
 const BookForm = observer(
   ({
@@ -214,7 +214,7 @@ const BookForm = observer(
                   </GridItem>
                 </Grid>
               </DrawerFormHeightContainer>
-              <CustomSubmitBtn
+              <SubmitFormBtn
                 onClick={() => setShowError(true)}
                 buttonText="Submit"
                 loading={isSubmitting}

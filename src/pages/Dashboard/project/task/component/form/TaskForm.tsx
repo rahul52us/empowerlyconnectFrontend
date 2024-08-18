@@ -4,7 +4,7 @@ import { FieldArray, Form, Formik } from "formik";
 import { observer } from "mobx-react-lite";
 import store from "../../../../../../store/store";
 import { activeStatus, taskPrioties, taskStatus } from "../utils/constant";
-import CustomSubmitBtn from "../../../../../../config/component/CustomSubmitBtn/CustomSubmitBtn";
+import SubmitFormBtn from "../../../../../../config/component/Button/SubmitFormBtn";
 import CustomInput from "../../../../../../config/component/CustomInput/CustomInput";
 import { TaskCreateValidation } from "../utils/validation";
 import ShowFileUploadFile from "../../../../../../config/component/common/ShowFileUploadFile/ShowFileUploadFile";
@@ -373,7 +373,7 @@ const TaskForm = observer(
                   </Box>
                 </DrawerFormHeightContainer>
                 <Flex justifyContent={"end"} mt={4}>
-                  <CustomSubmitBtn
+                  <SubmitFormBtn
                     cancelFunctionality={{
                       show: true,
                       onClick: () => setOpenTaskDrawer('create'),

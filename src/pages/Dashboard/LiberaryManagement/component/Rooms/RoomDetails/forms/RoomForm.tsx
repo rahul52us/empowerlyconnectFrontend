@@ -6,7 +6,7 @@ import DrawerFormHeightContainer from "../../../../../../../config/component/Dra
 import ShowFileUploadFile from "../../../../../../../config/component/common/ShowFileUploadFile/ShowFileUploadFile";
 import { removeDataByIndex } from "../../../../../../../config/constant/function";
 import { RoomValidationSchema } from "../utils/validation";
-import CustomSubmitBtn from "../../../../../../../config/component/CustomSubmitBtn/CustomSubmitBtn";
+import SubmitFormBtn from "../../../../../../../config/component/Button/SubmitFormBtn";
 
 const RoomForm = observer(
   ({
@@ -105,7 +105,7 @@ const RoomForm = observer(
                   </GridItem>
                 </Grid>
               </DrawerFormHeightContainer>
-              <CustomSubmitBtn
+              <SubmitFormBtn
                 onClick={() => setShowError(true)}
                 buttonText="Submit"
                 loading={isSubmitting}

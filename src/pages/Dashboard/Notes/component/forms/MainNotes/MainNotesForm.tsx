@@ -28,7 +28,7 @@ import {
   removeDataByIndex,
 } from "../../../../../../config/constant/function";
 import { BiQuestionMark } from "react-icons/bi";
-import CustomSubmitBtn from "../../../../../../config/component/CustomSubmitBtn/CustomSubmitBtn";
+import SubmitFormBtn from "../../../../../../config/component/Button/SubmitFormBtn";
 
 const MainNotesForm = observer(({ formData }: any) => {
   const [thumbnail, setThumbnail] = useState<any>([]);
@@ -356,7 +356,7 @@ const MainNotesForm = observer(({ formData }: any) => {
               </FieldArray>
             </Box>
           </Flex>
-            <CustomSubmitBtn
+            <SubmitFormBtn
               loading={isSubmitting}
               type="submit"
               onClick={() => setShowError(true)}

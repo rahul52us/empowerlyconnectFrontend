@@ -7,15 +7,20 @@ import {
   useColorModeValue,
   Divider,
   HStack,
-  Button,
+  Grid,
+  GridItem,
+  Tooltip,
+  Flex,
+  Avatar,
 } from "@chakra-ui/react";
 import { CalendarIcon, InfoIcon, PhoneIcon, EmailIcon } from "@chakra-ui/icons";
 import { MdLocationOn, MdAccountCircle, MdLanguage } from "react-icons/md";
 import { BiIdCard } from "react-icons/bi";
+import CustomButton from "../../../../config/component/Button/CustomButton";
 
-// Define the type for personal details
 interface PersonalDetail {
   _id: string;
+  pic?:any;
   user: string;
   language: string[];
   addressInfo: {
@@ -43,7 +48,6 @@ interface PersonalDetail {
   weddingDate: string;
 }
 
-// Key-to-Label mapping
 const keyLabels: { [key: string]: string } = {
   language: "Language",
   addressInfo: "Address Info",
@@ -64,7 +68,20 @@ const keyLabels: { [key: string]: string } = {
   weddingDate: "Wedding Date",
 };
 
-// Key-to-Icon mapping
+const formatAddressInfo = (addresses: PersonalDetail["addressInfo"]) =>
+  addresses.map((address, index) => (
+    <Text key={index} fontSize="md" noOfLines={1}>
+      {`${address.address}, ${address.city}, ${address.state}, ${address.country} - ${address.pinCode}`}
+    </Text>
+  ));
+
+const formatValue = (key: string, value: any) => {
+  if (key === "dob" || key === "weddingDate") {
+    return new Date(value).toLocaleDateString();
+  }
+  return value.toString();
+};
+
 const keyIcons: { [key: string]: JSX.Element } = {
   language: <MdLanguage size="20px" />,
   addressInfo: <MdLocationOn size="20px" />,
@@ -85,44 +102,42 @@ const keyIcons: { [key: string]: JSX.Element } = {
   weddingDate: <CalendarIcon boxSize="20px" />,
 };
 
-// Helper functions
-const formatAddressInfo = (addresses: PersonalDetail['addressInfo']) =>
-  addresses.map((address, index) => (
-    <Text key={index} fontSize="md" noOfLines={1}>
-      {`${address.address}, ${address.city}, ${address.state}, ${address.country} - ${address.pinCode}`}
-    </Text>
-  ));
-
-const formatValue = (key: string, value: any) => {
-  if (key === 'dob' || key === 'weddingDate') {
-    return new Date(value).toLocaleDateString();
-  }
-  return value.toString();
-};
-
 const PersonalInfo = observer(
-  ({ personalDetails, setSelectedTab }: { personalDetails: PersonalDetail[], setSelectedTab : any }) => {
-    // Chakra UI color modes
+  ({
+    personalDetails,
+    setSelectedTab,
+  }: {
+    personalDetails: PersonalDetail[];
+    setSelectedTab: any;
+  }) => {
     const textColor = useColorModeValue("gray.800", "gray.200");
     const cardBg = useColorModeValue("white", "gray.800");
     const cardBorder = useColorModeValue("gray.200", "gray.700");
 
     return (
       <Box
-        w={"100%"}
         borderWidth="1px"
         borderRadius="lg"
         overflow="hidden"
         bg={cardBg}
         borderColor={cardBorder}
         boxShadow="lg"
-        p={{base : 2, sm : 6}}
+        // p={{ base: 2, sm: 6 }}
       >
-        <Heading mb={8} textAlign={"center"} fontSize="3xl" fontWeight="bold">
-          Personal Details
-        </Heading>
-        <Button onClick={() => setSelectedTab({open : true, type : "profile-details"})}>Edit</Button>
-        {personalDetails.map((detail) => (
+        <HStack justify="space-between" p={{base : 2, md : 4}}>
+          <Heading fontSize={{base: "sm", md: "2xl" }} fontWeight="bold" textAlign="center">
+            Personal Details
+          </Heading>
+          <CustomButton
+            onClick={() =>
+              setSelectedTab({ open: true, type: "profile-details" })
+            }
+            btnText="Edit"
+          />
+        </HStack>
+        <Divider />
+        <Box p={3}>
+        {personalDetails.map((detail, index : number) => (
           <Box
             key={detail._id}
             color={textColor}
@@ -133,50 +148,57 @@ const PersonalInfo = observer(
             borderWidth="1px"
             borderColor={cardBorder}
           >
-            <VStack align="start" spacing={4}>
+            {index === 0 &&
+            <Flex justifyContent="center" mb={5}>
+               <Avatar src={personalDetails?.length ? personalDetails[0]?.pic?.url : undefined} width={{base : "120px", md : "160px"}} height={{base : "120px", md : "160px"}} />
+            </Flex>
+            }
+            <Grid justifyContent="space-between" templateColumns={{ base: "1fr", md: "1fr 1fr 1fr" }} gap={4}>
               {Object.keys(detail).map((key) => {
-                if (key === "_id" || key === "user" || key === "__v") return null; // Skip rendering the _id and user fields
+                if (['familyDetails','_id','createdAt','companyOrg','permissions','bankDetails','profileDetails','workExperience','is_active','user','__v','pic','designation','password','companyDetail','profile_details','documents'].includes(key))
+                  return null;
 
                 const value: any = detail[key as keyof PersonalDetail];
                 const label = keyLabels[key] || key;
                 const icon = keyIcons[key] || <InfoIcon boxSize="20px" />;
 
                 return (
-                  <HStack
-                    key={key}
-                    align="center"
-                    spacing={4}
-                    mb={3}
-                    wrap="wrap"
-                    w="full"
-                    display={'flex'}
-                  >
-                    {icon}
-                    <Box flex="1">
-                      <Text fontSize="md" fontWeight="medium" ml={3}>
-                        <strong>{label}:</strong> {Array.isArray(value) ? (
-                          key === 'addressInfo' ? (
-                            formatAddressInfo(value as PersonalDetail['addressInfo'])
+                  <GridItem key={key}>
+                    <HStack spacing={3} align="center" mb={3}>
+                      <Tooltip label={label} aria-label={`${label} tooltip`}>
+                        <Box cursor="pointer">{icon}</Box>
+                      </Tooltip>
+                      <VStack align="start" spacing={1}>
+                        <Text fontSize="md" fontWeight="medium">
+                          {label}
+                        </Text>
+                        {Array.isArray(value) ? (
+                          key === "addressInfo" ? (
+                            formatAddressInfo(
+                              value as PersonalDetail["addressInfo"]
+                            )
                           ) : (
                             value.map((item, index) => (
-                              <Text key={index} fontSize="md" ml={6}>
-                              {Array.isArray(item) ? item.join(', ') : item.toString()}
-                            </Text>
-
+                              <Text key={index} fontSize="md">
+                                {Array.isArray(item)
+                                  ? item.join(", ")
+                                  : item.toString()}
+                              </Text>
                             ))
                           )
                         ) : (
-                          formatValue(key, value)
+                          <Text fontSize="md">{formatValue(key, value)}</Text>
                         )}
-                      </Text>
-                    </Box>
-                  </HStack>
+                      </VStack>
+                    </HStack>
+                  </GridItem>
                 );
               })}
-              <Divider borderColor={cardBorder} />
-            </VStack>
+            </Grid>
+            <Divider borderColor={cardBorder} mt={4} />
           </Box>
         ))}
+        </Box>
       </Box>
     );
   }

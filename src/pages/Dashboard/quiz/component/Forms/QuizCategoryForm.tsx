@@ -21,7 +21,7 @@ import {
   insertUniqueFile,
   removeDataByIndex,
 } from "../../../../../config/constant/function";
-import CustomSubmitBtn from "../../../../../config/component/CustomSubmitBtn/CustomSubmitBtn";
+import SubmitFormBtn from "../../../../../config/component/Button/SubmitFormBtn";
 
 const QuizCategoryForm = observer(
   ({ submitForm, initialValues, loading }: QuizCategoryPara) => {
@@ -288,7 +288,7 @@ const QuizCategoryForm = observer(
                       </FieldArray>
                     </Grid>
                   </Box>
-                    <CustomSubmitBtn
+                    <SubmitFormBtn
                       loading={loading}
                       type="submit"
                       onClick={() => setShowError(true)}

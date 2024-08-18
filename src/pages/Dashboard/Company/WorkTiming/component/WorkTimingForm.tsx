@@ -8,7 +8,7 @@ import { getStatusType } from "../../../../../config/constant/statusCode";
 import { getInitialWorkTimingValues } from "../utils/functions";
 import { workTimingSchema } from "../utils/validation";
 import CustomInput from "../../../../../config/component/CustomInput/CustomInput";
-import CustomSubmitBtn from "../../../../../config/component/CustomSubmitBtn/CustomSubmitBtn";
+import SubmitFormBtn from "../../../../../config/component/Button/SubmitFormBtn";
 import { timeOptions, weekOptions } from "../utils/constant";
 
 const WorkTimingForm = observer(({ setFormData }: any) => {
@@ -143,7 +143,7 @@ const WorkTimingForm = observer(({ setFormData }: any) => {
               )}
             </FieldArray>
             <Flex justifyContent="flex-end" mt={6}>
-              <CustomSubmitBtn
+              <SubmitFormBtn
                 loading={isSubmitting}
                 onClick={() => setShowError(true)}
               />

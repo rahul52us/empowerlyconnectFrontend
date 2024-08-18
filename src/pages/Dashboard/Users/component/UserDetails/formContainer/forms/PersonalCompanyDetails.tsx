@@ -5,7 +5,7 @@ import CustomInput from "../../../../../../../config/component/CustomInput/Custo
 import { observer } from "mobx-react-lite";
 import store from "../../../../../../../store/store";
 import { eTypeOption } from "../../utils/constant";
-import CustomSubmitBtn from "../../../../../../../config/component/CustomSubmitBtn/CustomSubmitBtn";
+import SubmitFormBtn from "../../../../../../../config/component/Button/SubmitFormBtn";
 
 const PersonalCompanyDetails = observer(
   ({ handleSubmitProfile, initialValues, validations }: any) => {
@@ -380,7 +380,7 @@ const PersonalCompanyDetails = observer(
                     showError={showError}
                   />
                 </Grid>
-                  <CustomSubmitBtn
+                  <SubmitFormBtn
                     loading={isSubmitting}
                     onClick={() => {
                       setShowError(true);

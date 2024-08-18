@@ -20,7 +20,7 @@ import { FieldArray, Form, Formik } from "formik";
 import { observer } from "mobx-react-lite";
 import { ClassValidationSchema } from "../../utils/validation";
 import store from "../../../../../store/store";
-import CustomSubmitBtn from "../../../../../config/component/CustomSubmitBtn/CustomSubmitBtn";
+import SubmitFormBtn from "../../../../../config/component/Button/SubmitFormBtn";
 
 interface ClassFormI {
   formData?: any;
@@ -233,7 +233,7 @@ const ClassForm = observer(({ formData }: ClassFormI) => {
                   </Grid>
                 </Grid>
               </Box>
-                <CustomSubmitBtn
+                <SubmitFormBtn
                   loading={isSubmitting}
                   type="submit"
                   onClick={() => setShowError(true)}

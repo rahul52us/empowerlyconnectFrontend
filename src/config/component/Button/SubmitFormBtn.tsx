@@ -9,7 +9,7 @@ interface CustomBtnI {
   type?: string;
 }
 
-const CustomSubmitBtn = ({
+const SubmitFormBtn = ({
   loading,
   onClick,
   buttonText,
@@ -52,4 +52,4 @@ const CustomSubmitBtn = ({
   );
 };
 
-export default CustomSubmitBtn;
+export default SubmitFormBtn;

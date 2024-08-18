@@ -3,7 +3,7 @@ import { Form, Formik } from "formik";
 import { observer } from "mobx-react-lite";
 import * as Yup from "yup";
 import CustomInput from "../../CustomInput/CustomInput";
-import CustomSubmitBtn from "../../CustomSubmitBtn/CustomSubmitBtn";
+import SubmitFormBtn from "../../Button/SubmitFormBtn";
 
 const validationSchema = Yup.object().shape({
   user: Yup.string()
@@ -50,7 +50,7 @@ const AddNewUserForm = observer(
                   />
                 </Flex>
                 <Divider />
-                <CustomSubmitBtn
+                <SubmitFormBtn
                   onClick={() => setShowError(true)}
                   loading={isSubmitting}
                   cancelFunctionality={{

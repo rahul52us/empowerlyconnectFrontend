@@ -1,17 +1,33 @@
-import { Box, Image, Text, Stack, Heading, Flex, useColorModeValue, Icon, Divider, Button } from "@chakra-ui/react";
-import { observer } from 'mobx-react-lite';
-import { FaRegCreditCard, FaUniversity, FaFileInvoiceDollar, FaCheckCircle } from "react-icons/fa";
+import {
+  Box,
+  Image,
+  Text,
+  Stack,
+  Heading,
+  Flex,
+  useColorModeValue,
+  Icon,
+  Divider,
+} from "@chakra-ui/react";
+import { observer } from "mobx-react-lite";
+import {
+  FaRegCreditCard,
+  FaUniversity,
+  FaFileInvoiceDollar,
+  FaCheckCircle,
+} from "react-icons/fa";
+import CustomButton from "../../../../config/component/Button/CustomButton";
 
-const BankDetails = observer(({ bankDetails , setSelectedTab}: any) => {
-  const cardBg = useColorModeValue('white', 'gray.800');
-  const cardBorder = useColorModeValue('gray.200', 'gray.700');
-  const textColor = useColorModeValue('gray.800', 'gray.200');
-  const iconColor = useColorModeValue('teal.500', 'teal.300');
+const BankDetails = observer(({ bankDetails, setSelectedTab }: any) => {
+  const cardBg = useColorModeValue("white", "gray.800");
+  const cardBorder = useColorModeValue("gray.200", "gray.700");
+  const textColor = useColorModeValue("gray.800", "gray.200");
+  const iconColor = useColorModeValue("teal.500", "teal.300");
 
   return (
-    <Flex p={5} width="100%">
+    <Flex width="100%">
       <Box
-        w={'100%'}
+        w={"100%"}
         borderWidth="1px"
         borderRadius="lg"
         overflow="hidden"
@@ -21,10 +37,24 @@ const BankDetails = observer(({ bankDetails , setSelectedTab}: any) => {
         p={6}
       >
         <Stack spacing={6}>
-          <Heading as="h2" size="xl" textAlign="center" color={textColor} mb={4}>
-            Bank Details
-          </Heading>
-          <Button onClick={() => setSelectedTab({open : true, type : "bank-details"})}>Edit</Button>
+          <Flex justify="space-between" alignItems="center">
+            <Heading
+              as="h2"
+              size="xl"
+              textAlign="center"
+              color={textColor}
+              fontSize={{ base: "sm", md: "2xl" }}
+            >
+              Bank Details
+            </Heading>
+
+            <CustomButton
+              onClick={() =>
+                setSelectedTab({ open: true, type: "bank-details" })
+              }
+              btnText="Edit"
+            />
+          </Flex>
           <Divider />
           <Flex align="center">
             <Icon as={FaRegCreditCard} boxSize={6} color={iconColor} mr={3} />
@@ -39,7 +69,12 @@ const BankDetails = observer(({ bankDetails , setSelectedTab}: any) => {
             </Text>
           </Flex>
           <Flex align="center">
-            <Icon as={FaFileInvoiceDollar} boxSize={6} color={iconColor} mr={3} />
+            <Icon
+              as={FaFileInvoiceDollar}
+              boxSize={6}
+              color={iconColor}
+              mr={3}
+            />
             <Text fontSize="lg" color={textColor}>
               <strong>IFSC:</strong> {bankDetails?.ifsc}
             </Text>

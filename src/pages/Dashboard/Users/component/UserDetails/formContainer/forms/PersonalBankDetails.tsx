@@ -3,7 +3,7 @@ import { Box, Divider, Flex, Grid, Heading } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import CustomInput from "../../../../../../../config/component/CustomInput/CustomInput";
 import ShowFileUploadFile from "../../../../../../../config/component/common/ShowFileUploadFile/ShowFileUploadFile";
-import CustomSubmitBtn from "../../../../../../../config/component/CustomSubmitBtn/CustomSubmitBtn";
+import SubmitFormBtn from "../../../../../../../config/component/Button/SubmitFormBtn";
 import { removeDataByIndex } from "../../../../../../../config/constant/function";
 
 const PersonalBankDetails = ({
@@ -134,7 +134,7 @@ const PersonalBankDetails = ({
                   />
                 </Grid>
               </Grid>
-              <CustomSubmitBtn
+              <SubmitFormBtn
                 loading={isSubmitting}
                 onClick={() => {
                   setShowError(true);

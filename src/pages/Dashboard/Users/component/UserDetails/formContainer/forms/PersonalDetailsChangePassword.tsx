@@ -4,7 +4,7 @@ import { Form, Formik } from "formik";
 import store from "../../../../../../../store/store";
 import { ChangePasswordValidation } from "../../utils/validations";
 import CustomInput from "../../../../../../../config/component/CustomInput/CustomInput";
-import CustomSubmitBtn from "../../../../../../../config/component/CustomSubmitBtn/CustomSubmitBtn";
+import SubmitFormBtn from "../../../../../../../config/component/Button/SubmitFormBtn";
 
 interface ProfileChangePasswordI {
   changePassword?: any;
@@ -97,7 +97,7 @@ const PersonalDetailsChangePassword = ({ changePassword }: ProfileChangePassword
                 />
               </Grid>
             </Box>
-              <CustomSubmitBtn
+              <SubmitFormBtn
                 loading={isSubmitting}
                 type="submit"
                 onClick={() => setShowError(true)}

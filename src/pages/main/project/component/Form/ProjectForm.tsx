@@ -5,7 +5,7 @@ import { Form, Formik } from "formik";
 import { ProjectCreateValidation } from "../utils/validation";
 import { observer } from "mobx-react-lite";
 import store from "../../../../../store/store";
-import CustomSubmitBtn from "../../../../../config/component/CustomSubmitBtn/CustomSubmitBtn";
+import SubmitFormBtn from "../../../../../config/component/Button/SubmitFormBtn";
 import { debounce } from "lodash";
 import { ProjectFormValuesI } from "../utils/dto";
 import moment from "moment";
@@ -336,7 +336,7 @@ const ProjectForm = observer(() => {
                     </GridItem>
                   </Grid>
                 </Box>
-                <CustomSubmitBtn loading={isSubmitting} onClick={() => setShowError(true)}/>
+                <SubmitFormBtn loading={isSubmitting} onClick={() => setShowError(true)}/>
               </Flex>
             </Form>
           );

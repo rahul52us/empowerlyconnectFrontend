@@ -8,11 +8,16 @@ import {
   useColorModeValue,
   Divider,
   Flex,
-  Button,
 } from "@chakra-ui/react";
 import { CalendarIcon, StarIcon, ExternalLinkIcon } from "@chakra-ui/icons";
-import { MdPerson, MdLocalActivity, MdAttachMoney, MdInfo } from "react-icons/md";
+import {
+  MdPerson,
+  MdLocalActivity,
+  MdAttachMoney,
+  MdInfo,
+} from "react-icons/md";
 import { BiBriefcaseAlt } from "react-icons/bi";
+import CustomButton from "../../../../config/component/Button/CustomButton";
 
 // Define the type for experience details
 interface ExperienceDetail {
@@ -35,7 +40,7 @@ interface ExperienceDetail {
 // Define props type
 interface WorkExperienceProps {
   experienceDetails: ExperienceDetail[];
-  setSelectedTab : any
+  setSelectedTab: any;
 }
 
 // Key-to-Label mapping
@@ -80,13 +85,19 @@ const WorkExperience = observer(
         bg={cardBg}
         borderColor={cardBorder}
         boxShadow="lg"
-        p={6}
+        p={2}
       >
-        <Heading mb={8} textAlign={"center"} fontSize="3xl" fontWeight="bold">
-          Work Experience
-        </Heading>
-                  <Button onClick={() => setSelectedTab({open : true, type : "work-experience"})}>Edit</Button>
-
+        <Flex justifyContent="space-between" alignItems="center" p={{base : 2, md : 4}}>
+          <Heading textAlign={"center"} fontSize={{base: "sm", md: "2xl" }} fontWeight="bold">
+            Work Experience
+          </Heading>
+          <CustomButton
+            onClick={() =>
+              setSelectedTab({ open: true, type: "work-experience" })
+            }
+            btnText="Edit"
+          />
+        </Flex>
         {experienceDetails.map((experience) => (
           <Box
             key={experience._id}
@@ -128,7 +139,8 @@ const WorkExperience = observer(
                         />
                       </VStack>
                     ) : (
-                      value !== undefined && value !== null && (
+                      value !== undefined &&
+                      value !== null && (
                         <Flex align="center" mb={2} w="full">
                           {icon}
                           <Text
@@ -137,7 +149,8 @@ const WorkExperience = observer(
                             ml={3}
                             lineHeight="short"
                           >
-                            <strong>{label}:</strong> {key === "startDate" || key === "endDate"
+                            <strong>{label}:</strong>{" "}
+                            {key === "startDate" || key === "endDate"
                               ? new Date(value).toLocaleDateString()
                               : value}
                           </Text>

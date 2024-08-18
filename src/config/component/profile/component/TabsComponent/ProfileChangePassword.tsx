@@ -4,7 +4,7 @@ import CustomInput from "../../../CustomInput/CustomInput";
 import { Form, Formik } from "formik";
 import { ChangePasswordValidation } from "../../utils/validation";
 import store from "../../../../../store/store";
-import CustomSubmitBtn from "../../../CustomSubmitBtn/CustomSubmitBtn";
+import SubmitFormBtn from "../../../Button/SubmitFormBtn";
 
 interface ProfileChangePasswordI {
   changePassword?: any;
@@ -97,7 +97,7 @@ const ProfileChangePassword = ({ changePassword }: ProfileChangePasswordI) => {
                 />
               </Grid>
             </Box>
-              <CustomSubmitBtn
+              <SubmitFormBtn
                 loading={isSubmitting}
                 type="submit"
                 onClick={() => setShowError(true)}

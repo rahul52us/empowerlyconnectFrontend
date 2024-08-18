@@ -14,7 +14,7 @@ import * as Yup from "yup";
 import store from "../../../../../../../store/store";
 import { getStatusType } from "../../../../../../../config/constant/statusCode";
 import CustomInput from "../../../../../../../config/component/CustomInput/CustomInput";
-import CustomSubmitBtn from "../../../../../../../config/component/CustomSubmitBtn/CustomSubmitBtn";
+import SubmitFormBtn from "../../../../../../../config/component/Button/SubmitFormBtn";
 
 // Define TypeScript interfaces for form values
 interface FormValues {
@@ -293,7 +293,7 @@ const SeatForm: React.FC<SeatFormProps> = ({ data,close }) => {
                     </Box>
                   ))}
                 </SimpleGrid>
-                <CustomSubmitBtn
+                <SubmitFormBtn
                 onClick={() => setShowError(true)}
                 buttonText="Submit"
                 loading={submitLoading}

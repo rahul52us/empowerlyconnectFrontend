@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import store from "../../../../../../../store/store";
 import { getStatusType } from "../../../../../../../config/constant/statusCode";
 import { observer } from "mobx-react-lite";
-import CustomSubmitBtn from "../../../../../../../config/component/CustomSubmitBtn/CustomSubmitBtn";
+import SubmitFormBtn from "../../../../../../../config/component/Button/SubmitFormBtn";
 
 // Define the schema for validation
 const validationSchema = Yup.object({
@@ -356,7 +356,7 @@ const ReserveSeatForm = observer(({ user, room, close }: any) => {
                 </FormControl>
               </Grid>
             </DrawerFormHeightContainer>
-            <CustomSubmitBtn
+            <SubmitFormBtn
               onClick={() => setShowError(true)}
               buttonText="Submit"
               loading={isSubmitting}

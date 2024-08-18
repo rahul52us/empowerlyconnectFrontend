@@ -5,7 +5,7 @@ import { FieldArray, Form, Formik } from "formik";
 import { ProjectCreateValidation } from "../utils/validation";
 import { observer } from "mobx-react-lite";
 import store from "../../../../../store/store";
-import CustomSubmitBtn from "../../../../../config/component/CustomSubmitBtn/CustomSubmitBtn";
+import SubmitFormBtn from "../../../../../config/component/Button/SubmitFormBtn";
 import { ProjectFormValuesI } from "../utils/dto";
 import { ProjectPrioties, projectStatus } from "../utils/constant";
 import { generateProjectResponse } from "../utils/function";
@@ -442,7 +442,7 @@ const ProjectForm = observer(
                   </Box>
                 </DrawerFormHeightContainer>
                 <Flex justifyContent={"end"}>
-                  <CustomSubmitBtn
+                  <SubmitFormBtn
                     cancelFunctionality={{
                       show: true,
                       onClick: () => setOpenProjectDrawer("create"),

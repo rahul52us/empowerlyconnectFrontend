@@ -1,16 +1,23 @@
-import { Button } from "@chakra-ui/react";
+import { Box, Divider, Flex, Heading } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
+import CustomButton from "../../../../config/component/Button/CustomButton";
 
 const CompanyDetails = observer(({ setSelectedTab }: any) => {
   return (
-    <div>
-      CompanyDetails
-      <Button
-        onClick={() => setSelectedTab({ open: true, type: "company-details" })}
-      >
-        Edit
-      </Button>
-    </div>
+    <Box>
+      <Flex justifyContent="space-between" alignItems="center">
+          <Heading mb={8} textAlign={"center"} fontSize={{base: "sm", md: "2xl" }} fontWeight="bold">
+            Company Details
+          </Heading>
+          <CustomButton
+            onClick={() =>
+              setSelectedTab({ open: true, type: "work-experience" })
+            }
+            btnText="Edit"
+          />
+        </Flex>
+        <Divider />
+    </Box>
   );
 });
 

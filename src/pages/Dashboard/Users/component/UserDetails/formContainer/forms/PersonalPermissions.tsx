@@ -9,7 +9,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
-import CustomSubmitBtn from "../../../../../../../config/component/CustomSubmitBtn/CustomSubmitBtn";
+import SubmitFormBtn from "../../../../../../../config/component/Button/SubmitFormBtn";
 import { transformPermissionsForDB } from "../../utils/function";
 import { defaultPermissions } from "../../utils/constant";
 
@@ -103,7 +103,7 @@ const PersonalPermissions = ({ handleSubmitProfile, initialValues }: any) => {
                 </Box>
               ))}
             </Box>
-            <CustomSubmitBtn
+            <SubmitFormBtn
               loading={isSubmitting}
               onClick={() => {
                 setShowError(true);

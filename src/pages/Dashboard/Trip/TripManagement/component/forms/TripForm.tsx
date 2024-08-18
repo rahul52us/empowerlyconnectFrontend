@@ -28,7 +28,7 @@ import tripFormValidation from "../../utils/validation";
 import { generateFormError } from "../../utils/functions";
 import store from "../../../../../../store/store";
 import { useEffect } from "react";
-import CustomSubmitBtn from "../../../../../../config/component/CustomSubmitBtn/CustomSubmitBtn";
+import SubmitFormBtn from "../../../../../../config/component/Button/SubmitFormBtn";
 
 const AddDetailButton: React.FC<{ title: string; onClick: () => void }> = ({
 onClick,
@@ -622,7 +622,7 @@ return (
 				/>
 			</GridItem>
 			</Box>
-			<CustomSubmitBtn
+			<SubmitFormBtn
               onClick={() => setShowError(true)}
               buttonText="Submit"
               loading={loading}
