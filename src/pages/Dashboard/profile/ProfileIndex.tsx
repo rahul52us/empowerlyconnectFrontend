@@ -167,7 +167,10 @@ const ProfileIndex = observer(() => {
                 )}
               </TabPanel>
               <TabPanel>
-                <CompanyDetails userDetails={userDetails} />
+                <CompanyDetails
+                  userDetails={userDetails}
+                  setSelectedTab={setSelectedTab}
+                />
               </TabPanel>
               <TabPanel>
                 <FamilyDetails
