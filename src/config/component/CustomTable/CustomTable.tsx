@@ -18,6 +18,7 @@ import {
   MenuList,
   MenuItem,
   Input,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import TableLoader from "./TableLoader";
 import { formatDate } from "../../constant/dateUtils";
@@ -56,7 +57,7 @@ interface CustomTableProps {
   totalPages?: number;
   actions?: any;
   cells?: boolean;
-  tableProps?:any
+  tableProps?: any;
 }
 
 interface TableActionsProps {
@@ -76,7 +77,10 @@ const TableActions: React.FC<TableActionsProps> = ({
     actions = {};
   }
   const { actionBtn } = actions;
-  const cellProps = cells ? { border: "1px solid gray" } : {};
+  const cellProps = cells ? { border: "1px groove gray" } : {};
+
+  const iconColor = useColorModeValue("gray.700", "gray.200");
+  const deleteColor = useColorModeValue("red.500", "red.300");
 
   return (
     <Td
@@ -92,18 +96,14 @@ const TableActions: React.FC<TableActionsProps> = ({
         {actionBtn?.editKey?.showEditButton && (
           <IconButton
             size="lg"
-            bgColor={"transparent"}
-            color={"gray.700"}
+            bgColor="transparent"
+            color={iconColor}
             onClick={() => {
               if (actionBtn?.editKey?.function)
                 actionBtn?.editKey.function(row);
             }}
             aria-label=""
-            title={
-              actionBtn?.editKey?.title
-                ? actionBtn?.editKey?.title
-                : "Edit Data"
-            }
+            title={actionBtn?.editKey?.title || "Edit Data"}
           >
             <FaEdit />
           </IconButton>
@@ -111,17 +111,14 @@ const TableActions: React.FC<TableActionsProps> = ({
         {actionBtn?.viewKey?.showViewButton && (
           <IconButton
             size="lg"
-            bgColor={"transparent"}
-            color={"gray.700"}
+            bgColor="transparent"
+            color={iconColor}
             onClick={() => {
-              if (actionBtn?.addKey?.function) actionBtn?.viewKey.function(row);
+              if (actionBtn?.viewKey?.function)
+                actionBtn?.viewKey.function(row);
             }}
             aria-label=""
-            title={
-              actionBtn?.viewKey?.title
-                ? actionBtn?.viewKey?.title
-                : "View Data"
-            }
+            title={actionBtn?.viewKey?.title || "View Data"}
           >
             <FaEye />
           </IconButton>
@@ -129,18 +126,14 @@ const TableActions: React.FC<TableActionsProps> = ({
         {actionBtn?.deleteKey?.showDeleteButton && (
           <IconButton
             size="lg"
-            bgColor={"transparent"}
-            color={"red"}
+            bgColor="transparent"
+            color={deleteColor}
             onClick={() => {
               if (actionBtn?.deleteKey?.function)
                 actionBtn?.deleteKey.function(row);
             }}
             aria-label=""
-            title={
-              actionBtn?.deleteKey?.title
-                ? actionBtn?.deleteKey?.title
-                : "Delete Data"
-            }
+            title={actionBtn?.deleteKey?.title || "Delete Data"}
           >
             <MdDelete />
           </IconButton>
@@ -284,19 +277,32 @@ const CustomTable: React.FC<CustomTableProps> = ({
   loading,
   actions,
   cells = false,
-  tableProps = {}
+  tableProps = {},
   // isActions = false,
 }) => {
   const isMobile = useBreakpointValue({ base: true, md: false });
   const cellProps = cells ? { border: "1px solid gray" } : {};
+  const headerBg = useColorModeValue("gray.700", "gray.800");
+  const bodyBg = useColorModeValue("white", "gray.700");
 
+  const hoverBg = useColorModeValue("blue.100", "blue.700");
+  const menuItemHover = useColorModeValue("blue.100", "blue.700");
+  const menuListBg = useColorModeValue("white", "gray.700");
+
+  const boxBorder = useColorModeValue("gray.200", "gray.700");
   return (
-    <Box rounded={8} pb={2} boxShadow="rgb(0 0 0 / 20%) 0px 0px 8px" border={'1px solid lightgray'}>
+    <Box
+      rounded={12}
+      p={4}
+      boxShadow="rgb(0 0 0 / 20%) 0px 0px 8px"
+      border={"1px solid"}
+      borderColor={boxBorder}
+    >
       <Flex
         justifyContent="space-between"
         alignItems="center"
         p={title ? 3 : 0}
-        borderRadius="md"
+        // borderRadius="md"
         // columnGap={2}
       >
         {title ? (
@@ -310,7 +316,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
               value={actions?.search?.searchValue}
               onChange={actions?.search?.onSearchChange}
               borderRadius="5rem"
-              bg="white"
+              // bg="white"
               borderColor="gray.300"
               _focus={{ borderColor: "blue.500", boxShadow: "outline" }}
               maxW="25rem"
@@ -361,16 +367,16 @@ const CustomTable: React.FC<CustomTableProps> = ({
                 size="md"
                 variant="outline"
                 colorScheme="red"
-                w={{base : "6rem", md : '11rem'}}
-                textAlign={'center'}
+                w={{ base: "6rem", md: "11rem" }}
+                textAlign={"center"}
               >
                 Actions
               </MenuButton>
               <MenuList
                 zIndex={15}
-                bg="white"
+                bg={menuListBg}
                 border="1px solid"
-                borderColor="gray.200"
+                // borderColor={useColorModeValue("gray.200", "gray.600")}
                 boxShadow="md"
                 minW={"10rem"}
                 py={0}
@@ -380,7 +386,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
                     onClick={() =>
                       actions?.actionBtn?.addKey?.function?.("add")
                     }
-                    _hover={{ bg: "blue.100" }}
+                    _hover={{ bg: hoverBg }}
                     icon={<IoMdAdd fontSize={"20px"} />}
                     p={"0.7rem"}
                   >
@@ -391,7 +397,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
                   <MenuItem
                     onClick={actions?.resetData?.function}
                     icon={<FcClearFilters fontSize={"20px"} />}
-                    _hover={{ bg: "blue.100" }}
+                    _hover={{ bg: menuItemHover }}
                     p={"0.7rem"}
                   >
                     {actions?.resetData?.text || "Reset"}
@@ -403,10 +409,17 @@ const CustomTable: React.FC<CustomTableProps> = ({
         </Flex>
       </Flex>
 
-      <Box overflow="auto" className="customScrollBar" minH={'65vh'} maxH={"65vh"} {...tableProps.tableBox}>
+      <Box
+        overflow="auto"
+        className="customScrollBar"
+        minH={"65vh"}
+        maxH={"65vh"}
+        rounded={2}
+        {...tableProps.tableBox}
+      >
         <Table
           size={isMobile ? "xs" : "xs"}
-          borderWidth="1px"
+          // borderWidth="1px"
           borderRadius="lg"
           {...tableProps.table}
         >
@@ -430,8 +443,10 @@ const CustomTable: React.FC<CustomTableProps> = ({
                   {...column?.props?.column}
                   position={column?.props?.isSticky ? "sticky" : "relative"}
                   right={column?.props?.isSticky ? "0" : undefined}
-                  bgColor={column?.props?.isSticky ? "black" : undefined}
+                  bg={headerBg}
+                  // bgColor={column?.props?.isSticky ? "black" : undefined}
                   fontSize="xs"
+                  color={"white"}
                   {...cellProps}
                 >
                   {column.headerName}
@@ -440,7 +455,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
             </Tr>
           </Thead>
           <TableLoader loader={loading} show={data.length}>
-            <Tbody overflowY="auto">
+            <Tbody overflowY="auto" bg={bodyBg}>
               {data.map((row, rowIndex) => (
                 <Tr key={rowIndex}>
                   {serial?.show && (
@@ -448,6 +463,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
                       fontWeight="bold"
                       w={serial?.width || undefined}
                       border={cells ? "1px solid gray" : undefined}
+                      p={0}
                     >
                       {rowIndex + 1}
                     </Td>
