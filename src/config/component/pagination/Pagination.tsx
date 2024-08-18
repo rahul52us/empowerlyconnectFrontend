@@ -27,6 +27,7 @@ const Pagination = ({
       display="flex"
       alignItems="center"
       justifyContent="center"
+      mb={2}
       {...props}
     >
       <Flex alignItems="center" gridColumnGap="5px">
