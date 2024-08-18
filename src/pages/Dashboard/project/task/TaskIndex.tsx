@@ -23,8 +23,9 @@ import { FaPlus, FaTasks } from "react-icons/fa";
 
 const TaskIndex = observer(() => {
   const [projectDetails, setProjectDetails] = useState<any>({
-    loading: false,
+    loading: true,
     data: null,
+    secondApiCall: false,
   });
   const [taskData, setTaskData] = useState<any>([]);
   const {
@@ -37,10 +38,13 @@ const TaskIndex = observer(() => {
 
   const fetchRecords = useCallback(() => {
     if (projectId) {
-      setProjectDetails({ loading: true, data: null });
       getSingleProject({ id: projectId })
         .then((data: any) => {
-          setProjectDetails({ loading: false, data: data.data });
+          setProjectDetails({
+            loading: false,
+            data: data.data,
+            secondApiCall: true,
+          });
           getTasks({ id: projectId })
             .then((response) => {
               setTaskData(response?.data);
@@ -59,7 +63,11 @@ const TaskIndex = observer(() => {
             message: err?.data?.message || "An error occurred",
             type: getStatusType(err.status),
           });
-          setProjectDetails({ loading: false, data: null });
+          setProjectDetails({
+            loading: false,
+            data: null,
+            secondApiCall: false,
+          });
         });
     }
   }, [openNotification, getSingleProject, projectId, getTasks]);
@@ -76,8 +84,16 @@ const TaskIndex = observer(() => {
           breadcrumb={projectBreadCrumb.task.index}
         />
         <PageLoader
-          loading={projectDetails.loading}
-          noRecordFoundText={projectDetails.data === null ? true : false}
+          loading={
+            projectDetails.loading && projectDetails.secondApiCall === false
+          }
+          noRecordFoundText={
+            projectDetails.loading === false &&
+            projectDetails.data === null &&
+            projectDetails.secondApiCall === false
+              ? true
+              : false
+          }
         >
           {projectDetails.data && (
             <Box p={2}>
@@ -122,6 +138,7 @@ const TaskIndex = observer(() => {
                 <TaskPage
                   taskData={taskData?.data}
                   setActiveSelectedTask={setOpenTaskDrawer}
+                  fetchRecords={fetchRecords}
                 />
               </Box>
             </Box>

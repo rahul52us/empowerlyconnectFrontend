@@ -4,7 +4,7 @@ import TaskCard from "../../../component/TaskCard/TaskCard";
 import React, { useState } from "react";
 import ConfirmTaskModel from "./ConfirmTaskModel";
 
-const TaskPage = ({ taskData, setActiveSelectedTask }: any) => {
+const TaskPage = ({ taskData, setActiveSelectedTask, fetchRecords }: any) => {
   const [openConfirmModel, setOpenConfirmModel] = useState<any>({
     open: false,
     data: null,
@@ -135,6 +135,7 @@ const TaskPage = ({ taskData, setActiveSelectedTask }: any) => {
       <ConfirmTaskModel
         openConfirmModel={openConfirmModel}
         setOpenConfirmModel={setOpenConfirmModel}
+        fetchRecords={fetchRecords}
       />
     </React.Fragment>
   );

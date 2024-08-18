@@ -2,21 +2,49 @@ import { observer } from "mobx-react-lite";
 import SubmitFormBtn from "../../../../../../config/component/Button/SubmitFormBtn";
 import { Text, useColorModeValue, VStack } from "@chakra-ui/react";
 import FormModel from "../../../../../../config/component/common/FormModel/FormModel";
+import store from "../../../../../../store/store";
+import { useState } from "react";
+import { getStatusType } from "../../../../../../config/constant/statusCode";
 
 const ConfirmTaskModel = observer(
-  ({ openConfirmModel, setOpenConfirmModel }: any) => {
+  ({ openConfirmModel, setOpenConfirmModel,fetchRecords }: any) => {
+    const [isSubmitting, setSubmitting] = useState(false);
+    const {
+      Project: { updateTask },
+      auth: { openNotification },
+    } = store;
     const handleSubmit = () => {
       if (openConfirmModel.data) {
-        //   updateTaskStatus(
-        //     openConfirmModel.data._id,
-        //     openConfirmModel.destinationColumn
-        //   );
-        setOpenConfirmModel({
-          data: null,
-          open: false,
-          sourceColumn: "",
-          destinationColumn: "",
-        });
+        setSubmitting(true)
+        updateTask({
+          _id: openConfirmModel?.data?._id,
+          projectId: openConfirmModel.data.projectId,
+          status: openConfirmModel.destinationColumn,
+        })
+          .then((data: any) => {
+            fetchRecords()
+            openNotification({
+              title: "Successfully Updated",
+              message: `${data.message}`,
+              type: "success",
+            });
+            setOpenConfirmModel({
+              data: null,
+              open: false,
+              sourceColumn: "",
+              destinationColumn: "",
+            });
+          })
+          .catch((err) => {
+            openNotification({
+              title: "Update Failed",
+              message: err?.data?.message,
+              type: getStatusType(err.status),
+            });
+          })
+          .finally(() => {
+            setSubmitting(false);
+          });
       }
     };
 
@@ -74,7 +102,7 @@ const ConfirmTaskModel = observer(
             ?
           </Text>
           <SubmitFormBtn
-            loading={false}
+            loading={isSubmitting}
             onClick={() => handleSubmit()}
             buttonText="Confirm"
             cancelFunctionality={{

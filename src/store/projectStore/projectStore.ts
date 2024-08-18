@@ -60,7 +60,8 @@ class ProjectStore {
       task:observable,
       openTaskDrawer:observable,
       createTask:action,
-      setOpenTaskDrawer:action
+      setOpenTaskDrawer:action,
+      updateTask:action
     });
   }
 
@@ -166,6 +167,18 @@ class ProjectStore {
   createTask = async (sendData: any) => {
     try {
       const { data } = await axios.post(`/project/task/${sendData.projectId}/create`, {
+        ...sendData,
+        company: store.auth.getCurrentCompany(),
+      });
+      return data;
+    } catch (err: any) {
+      return Promise.reject(err?.response || err);
+    }
+  };
+
+  updateTask = async (sendData: any) => {
+    try {
+      const { data } = await axios.put(`/project/task/${sendData._id}`, {
         ...sendData,
         company: store.auth.getCurrentCompany(),
       });
