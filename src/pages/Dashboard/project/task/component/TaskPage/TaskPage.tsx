@@ -1,8 +1,16 @@
 import { Box, Flex, Text, useColorModeValue } from "@chakra-ui/react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import TaskCard from "../../../component/TaskCard/TaskCard";
+import React, { useState } from "react";
+import ConfirmTaskModel from "./ConfirmTaskModel";
 
-const TaskPage = ({ taskData }: any) => {
+const TaskPage = ({ taskData, setActiveSelectedTask }: any) => {
+  const [openConfirmModel, setOpenConfirmModel] = useState<any>({
+    open: false,
+    data: null,
+    sourceColumn: "",
+    destinationColumn: "",
+  });
   const statuses = ["backlog", "inProgress", "toDo", "done", "complete"];
 
   const gradient = [
@@ -30,11 +38,28 @@ const TaskPage = ({ taskData }: any) => {
 
   const borderColor = useColorModeValue("gray.200", "gray.600");
 
-  // Organize tasks by status
   const tasksByStatus = statuses.reduce((acc: any, status) => {
     acc[status] = taskData?.filter((task: any) => task.status === status);
     return acc;
   }, {});
+
+  const handleTaskMoved = (
+    draggableId: string,
+    sourceColumn: string,
+    destinationColumn: string
+  ) => {
+    const task = taskData.find((task: any) => task._id === draggableId);
+    if (task) {
+      setOpenConfirmModel({
+        open: true,
+        data: task,
+        sourceColumn,
+        destinationColumn,
+      });
+    } else {
+      console.log(`Task ${draggableId} not found`);
+    }
+  };
 
   const onDragEnd = (result: any) => {
     const { destination, source, draggableId } = result;
@@ -45,59 +70,73 @@ const TaskPage = ({ taskData }: any) => {
     const destinationColumn = destination.droppableId;
 
     if (sourceColumn !== destinationColumn) {
-      console.log(
-        `Task ${draggableId} moved from ${sourceColumn} to ${destinationColumn}`
-      );
+      handleTaskMoved(draggableId, sourceColumn, destinationColumn);
     }
   };
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <Flex gap={4} overflow={'auto'}>
-        {statuses?.map((status, index) => (
-          <Droppable droppableId={status} key={status}>
-            {(provided) => (
-              <Box
-                w="100%"
-                border={"2px solid"}
-                borderColor={borderColor}
-                borderStyle={"dashed"}
-                py={4}
-                px={2}
-                borderRadius="lg"
-                ref={provided.innerRef}
-                {...provided.droppableProps}
-              >
-                <Box mb={4} p={2} bgGradient={gradient[index]} rounded={"lg"}>
-                  <Text fontWeight={500} color={"white"}>
-                    {status?.charAt(0).toUpperCase() + status?.slice(1)}
-                  </Text>
+    <React.Fragment>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Flex
+          gap={4}
+          flexDirection={{ base: "column", xl: "row" }}
+          w="100%"
+          justifyContent="center"
+          p={4}
+        >
+          {statuses?.map((status, index) => (
+            <Droppable droppableId={status} key={status}>
+              {(provided) => (
+                <Box
+                  w={{ base: "100%", xl: `calc(100% / ${statuses.length})` }}
+                  minW={{ base: "100%", xl: `calc(100% / ${statuses.length})` }}
+                  border={"2px solid"}
+                  borderColor={borderColor}
+                  borderStyle={"dashed"}
+                  p={2}
+                  borderRadius="lg"
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                  mb={{ base: 4, md: 0 }}
+                >
+                  <Box mb={4} p={2} bgGradient={gradient[index]} rounded={"lg"}>
+                    <Text fontWeight={500} color={"white"}>
+                      {status?.charAt(0).toUpperCase() + status?.slice(1)}
+                    </Text>
+                  </Box>
+                  {tasksByStatus[status]?.map((task: any, index: number) => (
+                    <Draggable
+                      draggableId={task._id}
+                      index={index}
+                      key={task._id}
+                    >
+                      {(provided) => (
+                        <Box
+                          ref={provided.innerRef}
+                          {...provided?.draggableProps}
+                          {...provided?.dragHandleProps}
+                          mb={4}
+                        >
+                          <TaskCard
+                            task={task}
+                            setActiveSelectedTask={setActiveSelectedTask}
+                          />
+                        </Box>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided?.placeholder}
                 </Box>
-                {tasksByStatus[status]?.map((task: any, index: number) => (
-                  <Draggable
-                    draggableId={task._id}
-                    index={index}
-                    key={task._id}
-                  >
-                    {(provided) => (
-                      <Box
-                        ref={provided.innerRef}
-                        {...provided?.draggableProps}
-                        {...provided?.dragHandleProps}
-                        mb={4}
-                      >
-                        <TaskCard task={task} />
-                      </Box>
-                    )}
-                  </Draggable>
-                ))}
-                {provided?.placeholder}
-              </Box>
-            )}
-          </Droppable>
-        ))}
-      </Flex>
-    </DragDropContext>
+              )}
+            </Droppable>
+          ))}
+        </Flex>
+      </DragDropContext>
+      <ConfirmTaskModel
+        openConfirmModel={openConfirmModel}
+        setOpenConfirmModel={setOpenConfirmModel}
+      />
+    </React.Fragment>
   );
 };
 

@@ -1,8 +1,8 @@
 import { Box } from "@chakra-ui/react";
 
-const DrawerFormHeightContainer = ({ children }: any) => {
+const DrawerFormHeightContainer = ({ children, rest }: any) => {
   return (
-    <Box minH={"81vh"} maxH={"81vh"} overflowY={"auto"}>
+    <Box minH={"81vh"} maxH={"81vh"} overflowY={"auto"} {...rest}>
       {children}
     </Box>
   );

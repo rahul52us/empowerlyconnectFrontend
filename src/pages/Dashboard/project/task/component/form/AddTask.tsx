@@ -7,7 +7,7 @@ import { readFileAsBase64 } from "../../../../../../config/constant/function";
 import store from "../../../../../../store/store";
 import { getStatusType } from "../../../../../../config/constant/statusCode";
 
-const AddTask = observer(({projectId} : any) => {
+const AddTask = observer(({projectId, fetchRecords} : any) => {
   const {Project : {createTask, setOpenTaskDrawer}, auth : {openNotification}} = store
   const [showError, setShowError] = useState(false);
 
@@ -31,7 +31,6 @@ const AddTask = observer(({projectId} : any) => {
         };
       }
     }
-
     const response = generateSendTaskResponse(formData);
     createTask({...response,projectId}).then((data : any) => {
       openNotification({
@@ -39,6 +38,9 @@ const AddTask = observer(({projectId} : any) => {
         message: `${data.message}`,
         type: "success",
       });
+      if(fetchRecords){
+        fetchRecords()
+      }
       setShowError(false);
       resetForm()
       setOpenTaskDrawer('create')

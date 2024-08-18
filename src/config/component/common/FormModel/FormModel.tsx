@@ -56,9 +56,8 @@ function FormModel({
               <Text fontSize="xl">{title}</Text>
               <ModalCloseButton
                 color={headerTextColor}
-                bg="transparent"
-                _hover={{ bg: "transparent" }}
                 size="lg"
+                bg="red.500"
                 mt={1}
               />
             </Flex>

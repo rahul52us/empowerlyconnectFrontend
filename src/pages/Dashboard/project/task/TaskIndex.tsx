@@ -1,6 +1,14 @@
-import { Box, Button, Flex, Heading } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Icon,
+  IconButton,
+  useBreakpointValue,
+} from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import DashPageHeader from "../../../../config/component/common/DashPageHeader/DashPageHeader";
 import CustomDrawer from "../../../../config/component/Drawer/CustomDrawer";
@@ -10,20 +18,24 @@ import store from "../../../../store/store";
 import { projectBreadCrumb } from "../../utils/breadcrumb.constant";
 import AddTask from "./component/form/AddTask";
 import TaskPage from "./component/TaskPage/TaskPage";
+import EditTask from "./component/form/EditTask";
+import { FaPlus, FaTasks } from "react-icons/fa";
 
 const TaskIndex = observer(() => {
   const [projectDetails, setProjectDetails] = useState<any>({
     loading: false,
     data: null,
   });
-  const [taskData, setTaskData] = useState<any>();
+  const [taskData, setTaskData] = useState<any>([]);
   const {
     Project: { getSingleProject, setOpenTaskDrawer, openTaskDrawer, getTasks },
     auth: { openNotification },
   } = store;
+  const showIcon = useBreakpointValue({ base: true, md: false });
+
   const { projectId } = useParams();
 
-  useEffect(() => {
+  const fetchRecords = useCallback(() => {
     if (projectId) {
       setProjectDetails({ loading: true, data: null });
       getSingleProject({ id: projectId })
@@ -52,11 +64,13 @@ const TaskIndex = observer(() => {
     }
   }, [openNotification, getSingleProject, projectId, getTasks]);
 
-  // console.log("projectDetails", taskData?.data);
+  useEffect(() => {
+    fetchRecords();
+  }, [fetchRecords]);
 
   return (
     <React.Fragment>
-      <Box>
+      <Box p={2}>
         <DashPageHeader
           title="Project"
           breadcrumb={projectBreadCrumb.task.index}
@@ -66,36 +80,77 @@ const TaskIndex = observer(() => {
           noRecordFoundText={projectDetails.data === null ? true : false}
         >
           {projectDetails.data && (
-            <Box p={3}>
-              <Flex justifyContent="space-between" alignItems="center">
-                <Heading size={"sm"}>
+            <Box p={2}>
+              <Flex justifyContent="space-between" alignItems="center" mb={4}>
+                <Heading
+                  display="flex"
+                  alignItems="center"
+                  fontSize={{ base: "sm", md: "xl" }}
+                  color="teal.600"
+                >
+                  <Icon as={FaTasks} boxSize={6} mr={2} />
                   project :- {projectDetails.data.project_name}
                 </Heading>
-                <Button
-                  onClick={() =>
-                    setOpenTaskDrawer("create", { projectId: projectId })
-                  }
-                >
-                  CREATE TASK
-                </Button>
+                {showIcon ? (
+                  <IconButton
+                    title="Create Task"
+                    onClick={() =>
+                      setOpenTaskDrawer("create", { projectId: projectId })
+                    }
+                    aria-label="Create Task"
+                    icon={<FaPlus />}
+                    colorScheme="teal"
+                  />
+                ) : (
+                  <Button
+                    leftIcon={<FaPlus />}
+                    colorScheme="teal"
+                    variant="solid"
+                    size="lg"
+                    _hover={{ bg: "teal.600" }}
+                    _active={{ bg: "teal.700" }}
+                    _focus={{ boxShadow: "outline" }}
+                    onClick={() =>
+                      setOpenTaskDrawer("create", { projectId: projectId })
+                    }
+                  >
+                    CREATE Task
+                  </Button>
+                )}
               </Flex>
-              <Box p={5}>
-                {/* <Board
-                taskData={taskData?.data}
-                /> */}
-                <TaskPage taskData={taskData?.data} />
+              <Box p={{ base: 1, sm: 2 }}>
+                <TaskPage
+                  taskData={taskData?.data}
+                  setActiveSelectedTask={setOpenTaskDrawer}
+                />
               </Box>
             </Box>
           )}
         </PageLoader>
       </Box>
+
       <CustomDrawer
-        title="CREATE NEW TASK"
+        title={
+          openTaskDrawer.type === "edit"
+            ? openTaskDrawer?.data?.title
+            : "CREATE NEW TASK"
+        }
         open={openTaskDrawer.open}
         close={() => setOpenTaskDrawer("create")}
-        width={"75vw"}
+        width={"85vw"}
       >
-        <AddTask projectId={openTaskDrawer?.data?.projectId} />
+        {openTaskDrawer.type === "create" && (
+          <AddTask
+            projectId={openTaskDrawer?.data?.projectId}
+            fetchRecords={fetchRecords}
+          />
+        )}
+        {openTaskDrawer.type === "edit" && (
+          <EditTask
+            projectId={openTaskDrawer?.data?.projectId}
+            fetchRecords={fetchRecords}
+          />
+        )}
       </CustomDrawer>
     </React.Fragment>
   );

@@ -17,15 +17,12 @@ const getAvatarUrl = (userId: string) => {
   return `https://api.example.com/avatars/${userId}.jpg`;
 };
 
- const TaskCard = ({ task }: any) => {
+const TaskCard = ({ task, setActiveSelectedTask }: any) => {
   const bgColor = useColorModeValue(
     "rgba(255, 255, 255, 0.4)",
     "rgba(255, 255, 255, 0.055)"
   );
-  const borderColor = useColorModeValue(
-    "gray.200",
-    "rgba(255, 255, 255, 0.3)"
-  );
+  const borderColor = useColorModeValue("gray.200", "rgba(255, 255, 255, 0.3)");
 
   const { title, description, priority, team_members, endDate } = task;
 
@@ -35,8 +32,8 @@ const getAvatarUrl = (userId: string) => {
     src: getAvatarUrl(member?.user),
   }));
 
-  if(!task){
-    return<>ne tasks created</>
+  if (!task) {
+    return <>ne tasks created</>;
   }
 
   return (
@@ -57,10 +54,17 @@ const getAvatarUrl = (userId: string) => {
         </Tag>
         <Icon cursor={"pointer"} as={HiDotsHorizontal} boxSize={5} />
       </Flex>
-      <Text mt={1} fontSize={"xl"} fontWeight={"bold"}>
+      <Text
+        mt={1}
+        fontSize={"xl"}
+        fontWeight={"bold"}
+        cursor="pointer"
+        onClick={() => setActiveSelectedTask("edit", task)}
+        noOfLines={1}
+      >
         {title}
       </Text>
-      <Text fontSize={"sm"} color={"gray.500"}>
+      <Text fontSize={"sm"} color={"gray.500"} noOfLines={2}>
         {description}
       </Text>
       <Flex align={"center"} justify={"space-between"} mt={2}>
