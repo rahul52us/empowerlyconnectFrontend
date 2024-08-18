@@ -1,12 +1,15 @@
-import { Box, Flex, Image, Text } from "@chakra-ui/react";
+import { Avatar, Box, Flex, Text } from "@chakra-ui/react";
 import { getCustomTextDate } from "../../../../../../config/constant/dateUtils";
 
 const BlogViewDetail = ({item} : any) => {
   return (
     <Flex gap={3} mb={6}>
       <Box>
-        <Image
-          src="https://tse4.mm.bing.net/th?id=OIP.HxV79tFMPfBAIo0BBF-sOgHaEy&pid=Api&P=0&h=180"
+        <Avatar
+          src={item?.createdBy?.pic?.url || undefined}
+          aria-label={item?.createdBy?.name}
+          name={item?.createdBy?.name}
+          // alt={item?.createdBy?.name}
           style={{ width: "40px", height: "40px" }}
           borderRadius={5}
         />

@@ -346,6 +346,7 @@ const Home2 = () => {
           p={8}
           rounded={10}
           shadow={insetShadow}
+          display="none"
           // shadow="rgb(0 0 0 / 15%) 0px 0px 12px"
         >
           <CourseForm

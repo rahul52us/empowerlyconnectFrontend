@@ -12,7 +12,6 @@ import { FieldArray, Form, Formik } from "formik";
 import { observer } from "mobx-react-lite";
 import CustomInput from "../../../../../../config/component/CustomInput/CustomInput";
 import { mainCourseValidation } from "../../../utils/validation";
-import CustomSubmitBtn from "../../../../../../config/component/Button/CustomSubmitBtn";
 import store from "../../../../../../store/store";
 import { NotesCategoryFormDto } from "../../../utils/dto";
 import moment from "moment";
@@ -29,6 +28,7 @@ import {
   removeDataByIndex,
 } from "../../../../../../config/constant/function";
 import { BiQuestionMark } from "react-icons/bi";
+import SubmitFormBtn from "../../../../../../config/component/Button/SubmitFormBtn";
 
 const MainNotesForm = observer(({ formData }: any) => {
   const [thumbnail, setThumbnail] = useState<any>([]);
@@ -356,13 +356,11 @@ const MainNotesForm = observer(({ formData }: any) => {
               </FieldArray>
             </Box>
           </Flex>
-          <Flex justifyContent="flex-end" mt={5} mr={5}>
-            <CustomSubmitBtn
+            <SubmitFormBtn
               loading={isSubmitting}
               type="submit"
               onClick={() => setShowError(true)}
             />
-          </Flex>
         </Form>
       )}}
     </Formik>

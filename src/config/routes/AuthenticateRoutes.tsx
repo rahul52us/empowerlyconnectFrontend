@@ -48,7 +48,7 @@ export const AuthenticateRoutes = [
       path: authentication.verifyEmail,
     },
     {
-      element: <CreateOrganisation2 />,
+      element: <CreateOrganisation2 showLogo={true} />,
       path: authentication.createOrganisation2,
     },
     {

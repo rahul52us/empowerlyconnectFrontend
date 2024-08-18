@@ -7,8 +7,8 @@ const ProjectCreateValidation = Yup.object().shape({
   description: Yup.string()
     .trim()
     .min(2, "Description must have a minimum length of 2."),
-  logo: Yup.string(),
-  due_date: Yup.date(),
+  logo: Yup.mixed().required(),
+  dueDate: Yup.date(),
   priority: Yup.mixed().required(),
   project_manager: Yup.array()
     .of(Yup.mixed())
@@ -16,9 +16,9 @@ const ProjectCreateValidation = Yup.object().shape({
     .transform((val, originalVal) => {
       return originalVal === "" ? null : val;
     }),
-  start_date: Yup.date().typeError('start date is required'),
-  end_date: Yup.date().min(
-    Yup.ref("start_date"),
+  startDate: Yup.date().typeError('start date is required'),
+  endDate: Yup.date().min(
+    Yup.ref("startDate"),
     "End date must be greater than or equal to the start date."
   ),
   status: Yup.mixed().required('please select the status'),

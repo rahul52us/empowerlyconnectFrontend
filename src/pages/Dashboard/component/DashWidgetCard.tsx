@@ -11,7 +11,8 @@ const DashWidgetCard = observer(() => {
   const {
     auth: { openNotification },
     tripStore: { getTripCounts, tripCount },
-    Employe: { getEmployesCount, employesCounts },
+    User: { getUsersCount, UsersCounts },
+    Project : {getProjectCounts, projectCount}
   } = store;
 
   const fetchData = (getDataFn: any) =>
@@ -20,7 +21,7 @@ const DashWidgetCard = observer(() => {
     });
 
   useEffect(() => {
-    Promise.all([fetchData(getTripCounts), fetchData(getEmployesCount)])
+    Promise.all([fetchData(getTripCounts), fetchData(getUsersCount), fetchData(getProjectCounts)])
       .then(() => {})
       .catch((error: any) => {
         openNotification({
@@ -29,7 +30,7 @@ const DashWidgetCard = observer(() => {
           title: "Failed to get dashboard data",
         });
       });
-  }, [getTripCounts, getEmployesCount, openNotification]);
+  }, [getTripCounts, getUsersCount, getProjectCounts, openNotification]);
 
   return (
     <Grid
@@ -40,32 +41,31 @@ const DashWidgetCard = observer(() => {
         lg: "repeat(5, 1fr)",
       }}
       gap={4}
-      marginX="auto"
     >
       {[
         {
-          count: employesCounts.data,
+          count: UsersCounts.data,
           title: "Users",
-          link: dashboard.employes.index,
-          loading: employesCounts.loading,
+          link: dashboard.Users.index,
+          loading: UsersCounts.loading,
         },
         {
-          count: employesCounts.data,
+          count: UsersCounts.data,
           title: "Company",
           link: dashboard.company.index,
-          loading: employesCounts.loading,
+          loading: UsersCounts.loading,
         },
         {
           count: tripCount.data,
           title: "Total Trips",
           link: dashboard.tripManagement.index,
-          loading: tripCount.loading,
+          loading: tripCount.loading
         },
         {
-          count: 2000,
-          title: "Calender",
-          link: dashboard.calender,
-          loading: tripCount.loading,
+          count: projectCount.data,
+          title: "Projects",
+          link: dashboard.application.project,
+          loading: projectCount.loading
         },
         {
           count: 2000,

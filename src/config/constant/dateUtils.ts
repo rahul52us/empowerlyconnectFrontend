@@ -32,7 +32,13 @@ export const convertToReadableIST = (isoDate : string) => {
 };
 
 export function formatDate(date: Date, format?: string): string {
-  return moment(date).format(format || DDMMYYYY_FORMAT);
+  try
+  {
+    return moment(date).format(format || DDMMYYYY_FORMAT);
+  }
+  catch {
+    return "--"
+  }
 }
 
 export function manipulateDateWithMonth(date: Date, numberOfMonths: number, type: 'add' | 'sub'): string {

@@ -24,6 +24,8 @@ const CreateOrganisationPersonalDetails = observer(
     activeIndex,
     setActiveIndex,
     steps,
+    singleCompany,
+    isEdit
   }: any) => {
     const [showError, setShowError] = useState(false);
     const [organisationError, setOrganisationError] = useState("");
@@ -70,6 +72,7 @@ const CreateOrganisationPersonalDetails = observer(
         <Divider />
         <Formik
           initialValues={initialValues}
+          enableReinitialize={true}
           validationSchema={OrganisationCreateValidation}
           onSubmit={(values, { setSubmitting }) => {
             if (!organisationError) {
@@ -113,6 +116,8 @@ const CreateOrganisationPersonalDetails = observer(
                   organisationError={organisationError}
                   handleSearchChange={handleSearchChange}
                   setFieldValue={setFieldValue}
+                  singleCompany={singleCompany}
+                  isEdit={isEdit}
                 />
               </Box>
               <Box display={activeIndex === 2 ? undefined : "none"}>

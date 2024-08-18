@@ -7,7 +7,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 
-import { formatDate } from "../../../../Dashboard/Employes/PersonalDetails/component/utils/constant";
+import { formatDate } from "../../../../Dashboard/Users/PersonalDetails/component/utils/constant";
 
 type ProfileCardI = {
   user?: any;
@@ -33,10 +33,8 @@ function ProfileCard({ user }: ProfileCardI) {
               rounded={12}
               boxSize={{ base: "295px", md: "200px" }}
               objectFit={"cover"}
-              src={
-                "https://upload.wikimedia.org/wikipedia/commons/4/40/POS17_%40Kristsll-197_%2835166607974%29.jpg"
-              }
-              alt="Id Photo"
+              src={user?.pic?.url || "https://via.placeholder.com/300x400?text=No+thumbnail+found"}
+              alt={user?.name}
             />
             <Text
               textAlign={"center"}

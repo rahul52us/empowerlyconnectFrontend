@@ -5,7 +5,7 @@ import { Form, Formik } from "formik";
 import { ProjectCreateValidation } from "../utils/validation";
 import { observer } from "mobx-react-lite";
 import store from "../../../../../store/store";
-import CustomSubmitBtn from "../../../../../config/component/CustomSubmitBtn/CustomSubmitBtn";
+import SubmitFormBtn from "../../../../../config/component/Button/SubmitFormBtn";
 import { debounce } from "lodash";
 import { ProjectFormValuesI } from "../utils/dto";
 import moment from "moment";
@@ -16,7 +16,7 @@ const ProjectForm = observer(() => {
   const [showError, setShowError] = useState(false)
   const {
     auth: { getCompanyUsers, companyUsers, openNotification },
-    Project: { getFilterProject, createProject },
+    Project: { getProjects, createProject },
   } = store;
 
   useEffect(() => {
@@ -33,9 +33,9 @@ const ProjectForm = observer(() => {
 
   useEffect(() => {
     const searchDebounceProject = debounce((value) => {
-      getFilterProject(value)
+      getProjects(value)
         .then(() => {})
-        .catch((err) => {
+        .catch((err : any) => {
           console.log(err);
         });
     }, 2000);
@@ -45,7 +45,7 @@ const ProjectForm = observer(() => {
     return () => {
       searchDebounceProject.cancel();
     };
-  }, [searchProjectName, getFilterProject]);
+  }, [searchProjectName, getProjects]);
 
   return (
     <div>
@@ -336,7 +336,7 @@ const ProjectForm = observer(() => {
                     </GridItem>
                   </Grid>
                 </Box>
-                <CustomSubmitBtn loading={isSubmitting} onClick={() => setShowError(true)}/>
+                <SubmitFormBtn loading={isSubmitting} onClick={() => setShowError(true)}/>
               </Flex>
             </Form>
           );

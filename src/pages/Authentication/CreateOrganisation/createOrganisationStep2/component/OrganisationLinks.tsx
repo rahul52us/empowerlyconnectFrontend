@@ -5,7 +5,7 @@ import { FaTrash } from "react-icons/fa";
 const OrganisationLinks = ({ values, handleChange, errors, showError, setFieldValue }: any) => {
 
   return (
-    <Grid gap={2} gridTemplateColumns={{base : '1fr', md : '1fr 1fr'}}>
+    <Grid gap={2}>
       <CustomInput
         type="text"
         name="facebookLink"

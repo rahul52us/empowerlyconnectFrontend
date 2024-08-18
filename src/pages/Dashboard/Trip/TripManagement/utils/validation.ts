@@ -34,9 +34,10 @@ export interface TripFormValues {
 }
 
 const tripFormValidation: any = Yup.object().shape({
-  title: Yup.string().required('Title is required'),
-  description: Yup.string().required('Description is required'),
+  title: Yup.string().min(3,'Title must be of 3 characters').trim().required('Title is required'),
+  description: Yup.string().trim().required('Description is required'),
   country: Yup.string().required('Country is required'),
+  participants : Yup.mixed().required('select the participants '),
   travelDetails: Yup.array().of(
     Yup.object().shape({
       fromState: Yup.string().required('From State is required'),

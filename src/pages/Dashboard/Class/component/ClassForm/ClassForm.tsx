@@ -19,8 +19,8 @@ import { BiQuestionMark } from "react-icons/bi";
 import { FieldArray, Form, Formik } from "formik";
 import { observer } from "mobx-react-lite";
 import { ClassValidationSchema } from "../../utils/validation";
-import CustomSubmitBtn from "../../../../../config/component/Button/CustomSubmitBtn";
 import store from "../../../../../store/store";
+import SubmitFormBtn from "../../../../../config/component/Button/SubmitFormBtn";
 
 interface ClassFormI {
   formData?: any;
@@ -233,13 +233,11 @@ const ClassForm = observer(({ formData }: ClassFormI) => {
                   </Grid>
                 </Grid>
               </Box>
-              <Flex justifyContent="flex-end" mt={5} mr={5}>
-                <CustomSubmitBtn
+                <SubmitFormBtn
                   loading={isSubmitting}
                   type="submit"
                   onClick={() => setShowError(true)}
                 />
-              </Flex>
             </Flex>
           </Form>
         );

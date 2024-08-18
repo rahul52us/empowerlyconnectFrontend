@@ -7,11 +7,7 @@ const HeaderLogo = observer(() => {
   const isLargerThanXl = useBreakpointValue({ lg: true });
 
   const {
-    layout: {
-      fullScreenMode,
-      openDashSidebarFun,
-      isCallapse
-    },
+    layout: { fullScreenMode, openDashSidebarFun, isCallapse },
     auth: { closeSearchBar },
   } = store;
   return (
@@ -19,6 +15,12 @@ const HeaderLogo = observer(() => {
       {isLargerThanXl && (
         <Flex alignItems="center">
           <IconButton
+            variant="ghost"
+            aria-label="Arrow"
+            fontSize="2xl"
+            color="white"
+            _hover={{ color: "blue.500", bg: "gray.700" }}
+            _active={{ bg: "gray.800" }}
             icon={
               isCallapse ? (
                 <BiRightArrowAlt fontSize={25} />
@@ -26,12 +28,10 @@ const HeaderLogo = observer(() => {
                 <BiLeftArrowAlt fontSize={25} />
               )
             }
-            aria-label=""
-            variant="ghost"
             size="lg"
             style={{ marginRight: "1rem", marginTop: "2px" }}
             onClick={() => {
-              openDashSidebarFun()
+              openDashSidebarFun();
               // mediumScreenModeFun(!mediumScreenMode);
             }}
           />

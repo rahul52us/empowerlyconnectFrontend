@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
-import { employDropdownData } from "../../Employes/component/EmployeDetails/utils/constant";
 import store from "../../../../store/store";
 import CustomTable from "../../../../config/component/CustomTable/CustomTable";
 import AddHoliday from "./component/AddHoliday";
@@ -8,8 +7,13 @@ import { getStatusType } from "../../../../config/constant/statusCode";
 import { generateResponse } from "./utils/function";
 import EditHoliday from "./component/EditHoliday";
 import DeleteHoliday from "./component/DeleteHoliday";
+import { Button, Flex, Input } from "@chakra-ui/react";
+import { readFileAsBase64 } from "../../../../config/constant/function";
+import { employDropdownData } from "../../Users/component/UserDetails/utils/constant";
 
 const HolidaysDetailTable = observer(() => {
+  const inputRef = useRef<any>(null);
+  const [uploadLoading, setUploadLoading] = useState(false);
   const dropdowns = useState(employDropdownData)[0];
   const [selectedOptions, setSelectedOptions] = useState({});
   const [date, setDate] = useState<any>({
@@ -24,7 +28,7 @@ const HolidaysDetailTable = observer(() => {
   });
 
   const {
-    company: { getHolidays, holidays, updateHoliday },
+    company: { getHolidays, holidays, updateHoliday, updateHolidayByExcel },
     auth: { openNotification },
   } = store;
 
@@ -99,7 +103,7 @@ const HolidaysDetailTable = observer(() => {
       });
   };
 
-  const employeTableColumns = [
+  const UserTableColumns = [
     {
       headerName: "Title",
       key: "title",
@@ -156,16 +160,72 @@ const HolidaysDetailTable = observer(() => {
     },
   ];
 
+  const handleFileChange = (event: any) => {
+    const file = event.target.files[0];
+    if (file) {
+      uploadHolidayByExcel(file);
+    }
+  };
+
+  const uploadHolidayByExcel = async (file: any) => {
+    try {
+      setUploadLoading(true);
+      const data = await readFileAsBase64(file);
+      updateHolidayByExcel({ file: data })
+        .then((response) => {
+          if (response.status === "success") {
+            resetTableData();
+            openNotification({
+              type: "success",
+              title: "Uploaded Successfully",
+              message: "Holidays File Uploaded Successfully",
+            });
+          } else {
+            openNotification({
+              type: "error",
+              title: "Upload Failed",
+              message: "Failed to Upload holidays",
+            });
+          }
+        })
+        .catch((err) => {
+          openNotification({
+            title: "Uploaded Failed",
+            message: err?.data?.message,
+            type: getStatusType(err.status),
+          });
+        })
+        .finally(() => {
+          setUploadLoading(false);
+        });
+    } catch (err) {}
+  };
+
+  const handleButtonClick = () => {
+    inputRef.current.click();
+  };
+
   return (
     <>
+      <Flex mb={2} justifyContent={"end"}>
+        <Input
+          type="file"
+          ref={inputRef}
+          display="none"
+          onChange={handleFileChange}
+        />
+        <Button isLoading={uploadLoading} onClick={handleButtonClick}>
+          Upload Holiday Excel
+        </Button>
+      </Flex>
       <CustomTable
         cells={true}
         actions={{
-          search:{
+          search: {
             show: true,
-            placeholder:'Search by code and username',
-            searchValue: '',
-            onSearchChange:() => {},
+            placeholder: "Search by code and username",
+            searchValue: "",
+            onSearchChange: () => {},
           },
           applyFilter: {
             show: false,
@@ -251,7 +311,7 @@ const HolidaysDetailTable = observer(() => {
         }}
         title="Holidays"
         data={generateResponse(holidays.data)}
-        columns={employeTableColumns}
+        columns={UserTableColumns}
         loading={holidays.loading}
         serial={{ show: false, text: "S.No.", width: "10px" }}
       />

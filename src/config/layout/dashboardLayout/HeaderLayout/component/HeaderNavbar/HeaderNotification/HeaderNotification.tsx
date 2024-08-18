@@ -17,6 +17,7 @@ import {
   TabIndicator,
   TabPanel,
   Image,
+  Portal,
 } from "@chakra-ui/react";
 import { BellIcon, CheckIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import HandLike from '../../../../../../assets/icon_images/no-notifications.png'
@@ -220,7 +221,12 @@ const NotificationComponent: React.FC = () => {
           isRound={true}
           position="relative"
           bg="transparent"
-          fontSize={"25px"}
+          variant="ghost"
+          fontSize="2xl"
+          color="white"
+          _hover={{ color: "blue.500", bg: "gray.700" }}
+          _active={{ bg: "gray.800" }}
+          aria-label="chat-message-icons"
           _focus={{ boxShadow: "outline" }}
           onClick={() => setDropdownOpen(!dropdownOpen)}
         />
@@ -234,7 +240,8 @@ const NotificationComponent: React.FC = () => {
         >
           {notifications.length}
         </Badge>
-        <MenuList py={0} borderRadius={"10px"} mx={1} width={{base:"22rem", md:"24rem"}}>
+        <Portal>
+        <MenuList py={0} borderRadius={"10px"} mx={1} width={{base:"22rem", md:"24rem"}} zIndex={99999999}>
           <Flex p={2} gap="4" align={"center"} justify={"space-between"} borderBottom={"1px solid"} borderColor={"gray.200"}>
             <Text fontSize={"20px"} fontWeight="600" px={2}>Notifications</Text>
             <Menu placement="bottom-end">
@@ -300,6 +307,7 @@ const NotificationComponent: React.FC = () => {
             </TabPanels>
           </Tabs>
         </MenuList>
+        </Portal>
       </Menu>
     </Flex>
   );

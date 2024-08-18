@@ -14,7 +14,7 @@ const DisplayComment = ({ comment }: any) => {
       boxShadow="sm"
     >
       <Stack direction="row" alignItems="center" mb={2}>
-        <Avatar size="sm" src={""} name={comment?.user?.name} />
+        <Avatar size="sm" src={comment?.user?.pic?.url}  name={comment?.user?.name} />
         <Box>
         <Box display="flex" fontSize="sm" gap={1}>
           <Text fontWeight={700}>{comment?.user?.name}</Text>

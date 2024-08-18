@@ -61,6 +61,7 @@ class AuthStore {
     axios.defaults.baseURL = backendBaseUrl;
   };
 
+
   initiatAppOptions = () => {
     this.loading = true;
     this.setAppAxiosDefaults();
@@ -331,11 +332,11 @@ class AuthStore {
     }
   };
 
-  getCompanyUsers = async ({ page }: any) => {
+  getCompanyUsers = async (sendData : any = {}) => {
     try {
-      const { data } = await axios(`auth/get/users?page=${page}`);
-      this.companyUsers = data.data;
-      return data;
+      const { data } = await axios.post(`auth/get/users`,{company : [this.getCurrentCompany()]},{params : {...sendData}});
+      this.companyUsers = data.data?.map((item : any) => ({user : {...item}}));
+      return this.companyUsers;
     } catch (err: any) {
       return Promise.reject(err?.response?.data || err);
     }

@@ -20,21 +20,45 @@ const coursesBreadCrumb = [
   { label: "Courses" },
 ];
 
-const employesBreadCrumb = {
+const projectBreadCrumb = {
   index: [
     { label: "Home", link: "/" },
     { label: "Dashboard", link: dashboard.home },
-    { label: "Employes" },
+    { label: "project" },
+  ],
+  task : {
+    index: [
+      { label: "Home", link: "/" },
+      { label: "Dashboard", link: dashboard.home },
+      { label: "Project", link: dashboard.project.index },
+      { label: "Task" },
+    ],
+  }
+};
+
+const dashProfileBreadCrumb = {
+  index: [
+    { label: "Home", link: "/" },
+    { label: "Dashboard", link: dashboard.home },
+    { label: "Profile" },
+  ]
+};
+
+const UsersBreadCrumb = {
+  index: [
+    { label: "Home", link: "/" },
+    { label: "Dashboard", link: dashboard.home },
+    { label: "Users" },
   ],
   details: [
     { label: "Home", link: "/" },
-    { label: "employes", link: dashboard.employes.index },
+    { label: "Users", link: dashboard.Users.index },
     { label: "Details" },
   ],
-  new : [
+  new: [
     { label: "Home", link: "/" },
-  { label: "employes", link: dashboard.employes.details },
-  { label: "New" },
+    { label: "Users", link: dashboard.Users.details },
+    { label: "New" },
   ],
   personalDetails: [
     { label: "Home", link: "/" },
@@ -56,45 +80,63 @@ const departmentsBreadCrumb = [
 ];
 
 const companyBreadCrumb = {
-  index : [
-  { label: "Home", link: "/" },
-  { label: "Dashboard", link: dashboard.home },
-  { label: "Company" },
-],policy : [
-  { label: "Home", link: "/" },
-  { label: "Company", link: dashboard.company.index },
-  { label: "Policy" },
-]};
+  index: [
+    { label: "Home", link: "/" },
+    { label: "Dashboard", link: dashboard.home },
+    { label: "Company" },
+  ],
+  policy: [
+    { label: "Home", link: "/" },
+    { label: "Company", link: dashboard.company.index },
+    { label: "Policy" },
+  ],
+};
 
 const requestBreadCrumb = {
-  userIndex : [
+  userIndex: [
     { label: "Home", link: "/" },
     { label: "User List", link: dashboard.request.userList },
     { label: "Request" },
   ],
-  userList : [
+  userList: [
     { label: "Home", link: "/" },
     { label: "Dashboard", link: dashboard.home },
     { label: "User List" },
   ],
-  index : [
-  { label: "Home", link: "/" },
-  { label: "Dashboard", link: dashboard.home },
-  { label: "Request" },
-],
-leave : [
-  { label: "Home", link: "/" },
-  { label: "Request", link: dashboard.request.index },
-  { label: "Leave" },
-]};
+  index: [
+    { label: "Home", link: "/" },
+    { label: "Dashboard", link: dashboard.home },
+    { label: "Request" },
+  ],
+  leave: [
+    { label: "Home", link: "/" },
+    { label: "Request", link: dashboard.request.index },
+    { label: "Leave" },
+  ],
+};
 
 const attendenceBreadCrumb = {
-  attendence : [
+  attendence: [
     { label: "Home", link: "/" },
     { label: "Dashboard", link: dashboard.home },
     { label: "Attendence" },
+  ],
+  userList: [
+    { label: "Home", link: "/" },
+    { label: "Dashboard", link: dashboard.home },
+    { label: "User List" },
+  ],
+};
+
+
+const liberaryBreadCrumb = {
+
+  liberary: [
+    { label: "Home", link: "/" },
+    { label: "Dashboard", link: dashboard.home },
+    { label: "Liberay" },
   ]
-}
+};
 
 export {
   videoBreadCrumb,
@@ -102,9 +144,12 @@ export {
   quizBreadCrumb,
   dashBreadCrumb,
   tripBreadCrumb,
-  employesBreadCrumb,
+  UsersBreadCrumb,
   departmentsBreadCrumb,
   companyBreadCrumb,
   requestBreadCrumb,
-  attendenceBreadCrumb
+  attendenceBreadCrumb,
+  projectBreadCrumb,
+  liberaryBreadCrumb,
+  dashProfileBreadCrumb
 };

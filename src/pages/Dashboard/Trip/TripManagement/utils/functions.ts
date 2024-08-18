@@ -1,11 +1,9 @@
 import { YYYYMMDD_FORMAT, formatDate } from "../../../../../config/constant/dateUtils";
 import { readFileAsBase64 } from "../../../../../config/constant/function";
-import { categoryTypes, travelModes, tripTypes } from "./constant";
+import { categoryTypes,  travelModes, tripTypes } from "./constant";
 import {
   AdditionalExpense,
-  Participants,
   TravelDetails,
-  TripFormValues,
 } from "./interface";
 
 export const generateTableData = (data : any[]) => {
@@ -20,7 +18,7 @@ export const generateFormError = (errors: any, parent : any, type: string, index
   }
 }
 
-export const generateTripResponse = async (data: TripFormValues) => {
+export const generateTripResponse = async (data: any) => {
   if (Array.isArray(data?.thumbnail) && data.thumbnail?.length) {
     const buffer = await readFileAsBase64(data.thumbnail[0]);
     const fileData = {
@@ -31,29 +29,38 @@ export const generateTripResponse = async (data: TripFormValues) => {
     data.thumbnail = fileData;
   }
   const updatedTravelDetails = data.travelDetails.map(
-    (item: TravelDetails) => ({
+    (item: TravelDetails) => {
+      return({
       ...item,
       travelMode: item?.travelMode?.value || "",
       startDate: item?.startDate ? formatDate(item?.startDate,YYYYMMDD_FORMAT) : "",
       endDate: item?.endDate ? formatDate(item?.endDate,YYYYMMDD_FORMAT) : "",
-      isAccommodation:Boolean(item.isAccommodation),
-      isCab:Boolean(item.isCab)
-    })
+      isAccommodation:item.isAccommodation === "false" ? false : true,
+      isCab:item.isCab === "false" ? false : true
+    })}
   );
-  const type = data.type ? data.type.value : tripTypes[0].value;
-  const updatedParticipants = data.participants.map(
-    (item: Participants) => item.value
-  );
-  const updatedAdditionalExpense = data.additionalExpenses.map(
+  const type = data.type ? data?.type?.value : tripTypes[0].value;
+  let updatedParticipants : any = []
+  if(type === tripTypes[0].value && data?.participants)
+  {
+    updatedParticipants = Array.isArray(data?.participants) ? data?.participants?.length ? [{user : data?.participants[0]?.user?._id, isActive : true}] : [] : [{user : data?.participants.user?._id, isActive : true}]
+  }
+  else
+  {
+    updatedParticipants = data.participants?.map(
+      (item: any) => ({user : item.user?.value || item.user?._id, isActive : true})
+    ) || [];
+  }
+  const updatedAdditionalExpense = data.additionalExpenses?.map(
     (item: AdditionalExpense) => ({
       ...item,
       type: item?.type?.value || "",
     })
-  );
+  ) || [];
   const updatedData = {
     ...data,
     type: type,
-    participants: type === tripTypes[0].value ? [] : updatedParticipants,
+    participants: updatedParticipants,
     travelDetails: updatedTravelDetails,
     additionalExpenses: updatedAdditionalExpense,
   };
@@ -62,7 +69,7 @@ export const generateTripResponse = async (data: TripFormValues) => {
 
 
 export const generateEditInitialValues = (data : any) => {
-  const updatedTravelDetails = data.travelDetails.map(
+  const updatedTravelDetails = data?.travelDetails?.map(
     (item: TravelDetails) => {
       let td : any = travelModes.filter((it : any) => it.value === item.travelMode)
       return({
@@ -70,27 +77,28 @@ export const generateEditInitialValues = (data : any) => {
       travelMode: item?.travelMode ? td.length ? td[0] : undefined :  undefined,
       startDate: item?.startDate ? new Date(item?.startDate) : new Date(),
       endDate: item?.endDate ? new Date(item?.endDate) : new Date(),
-      isAccommodation:item.isAccommodation ? String(item.isAccommodation) : undefined,
+      isAccommodation:String(item.isAccommodation),
       isCab:String(item.isCab)
     })
-});
-  let types = tripTypes.filter((it : any) => it.value === data.type.value)
-  const type = data.type ? types.length ? types[0] : undefined : undefined;
+}) || [];
 
-  const updatedAdditionalExpense = data.additionalExpenses.map(
+
+  const updatedAdditionalExpense = data?.additionalExpenses?.map(
     (item: AdditionalExpense) => {
       let dt = categoryTypes.filter((it : any) => it.value === item.type)
       return ({
       ...item,
       type: dt.length ? dt[0] : undefined,
     })
-});
-  let trtype = tripTypes.filter((item : any) => item.value === type)
+}) || [];
+
+  const {createdBy, ...rest} = data
   const updatedData = {
-    ...data,
-    type: trtype.length ? trtype[0] : tripTypes[0] ,
+    ...rest,
+    type: tripTypes.find((it : any) => it.value === data.type) || tripTypes[0],
     travelDetails: updatedTravelDetails,
     additionalExpenses: updatedAdditionalExpense,
+    participants : data.participants || []
   };
   return updatedData;
 }

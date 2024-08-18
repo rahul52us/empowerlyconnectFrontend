@@ -1,8 +1,9 @@
-import { Spinner, Text, Box } from "@chakra-ui/react";
+import { Text, Box } from "@chakra-ui/react";
 import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement } from "chart.js";
 import { observer } from "mobx-react-lite";
 import { Pie } from "react-chartjs-2";
 import "./chart.css";
+import SpinnerLoader from "../Loader/SpinnerLoader";
 
 ChartJS.register(Title, Tooltip, ArcElement, Legend);
 
@@ -25,7 +26,7 @@ const PieChart = observer(
             alignItems="center"
             padding="20px"
           >
-            <Spinner color="blue.500" thickness="4px" size="lg" />
+            <SpinnerLoader />
             <Text
               color="#333"
               fontSize="sm"

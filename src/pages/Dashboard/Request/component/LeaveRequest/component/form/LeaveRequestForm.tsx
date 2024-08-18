@@ -4,7 +4,7 @@ import { observer } from "mobx-react-lite";
 import CustomInput from "../../../../../../../config/component/CustomInput/CustomInput";
 import store from "../../../../../../../store/store";
 import { useEffect, useState } from "react";
-import CustomSubmitBtn from "../../../../../../../config/component/CustomSubmitBtn/CustomSubmitBtn";
+import SubmitFormBtn from "../../../../../../../config/component/Button/SubmitFormBtn";
 import { LeaveRequestValidation } from "../../utils/validation";
 import { LeaveRequestI } from "../../utils/interface";
 import { leavesTypes } from "../../utils/constant";
@@ -23,7 +23,7 @@ const LeaveRequestForm = observer(
     const [managers, setManagers] = useState<any>({ loading: false, data: [] });
     const {
       auth: { user, openNotification },
-      Employe: { getManagersOfUsers },
+      User: { getManagersOfUsers },
     } = store;
 
     useEffect(() => {
@@ -44,7 +44,7 @@ const LeaveRequestForm = observer(
         });
     }, [getManagersOfUsers, openNotification, user]);
 
-    const employesOptions = managers.data.map((item: any) => ({
+    const UsersOptions = managers.data.map((item: any) => ({
       value: item?._id,
       label: item?.username,
     }));
@@ -109,7 +109,7 @@ const LeaveRequestForm = observer(
                     onChange={(e) => {
                       setFieldValue("sendTo", e);
                     }}
-                    options={employesOptions}
+                    options={UsersOptions}
                     showError={showError}
                     required={true}
                   />
@@ -180,34 +180,34 @@ const LeaveRequestForm = observer(
                   showError={showError}
                 />
                 <Divider />
-                <Flex
-                  justifyContent="flex-end"
-                  p={4}
-                  columnGap={3}
-                  alignItems="center"
-                >
-                  <CustomSubmitBtn
-                    cancelFunctionality={{
-                      show: false,
-                      onClick: () => close(),
-                    }}
-                    loading={isSubmitting}
-                    type="submit"
-                    onClick={() => {
-                      setRequestType("pending");
-                      setShowError(true);
-                    }}
-                    buttonText="save"
-                  />
-                  <CustomSubmitBtn
-                    cancelFunctionality={{ show: true, onClick: () => close() }}
-                    loading={isSubmitting}
-                    type="submit"
-                    onClick={() => {
-                      setRequestType("submitted");
-                      setShowError(true);
-                    }}
-                  />
+                <Flex justifyContent="end" p={4} columnGap={3}>
+                  <Flex columnGap={4}>
+                    <SubmitFormBtn
+                      cancelFunctionality={{
+                        show: true,
+                        onClick: () => close(),
+                      }}
+                      loading={isSubmitting}
+                      type="submit"
+                      onClick={() => {
+                        setRequestType("submitted");
+                        setShowError(true);
+                      }}
+                    />
+                    <SubmitFormBtn
+                      cancelFunctionality={{
+                        show: false,
+                        onClick: () => close(),
+                      }}
+                      loading={isSubmitting}
+                      type="submit"
+                      onClick={() => {
+                        setRequestType("pending");
+                        setShowError(true);
+                      }}
+                      buttonText="save"
+                    />
+                  </Flex>
                 </Flex>
               </Form>
             );

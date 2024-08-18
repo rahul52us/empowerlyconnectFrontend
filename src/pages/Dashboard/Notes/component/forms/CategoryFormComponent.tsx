@@ -5,7 +5,6 @@ import { observer } from "mobx-react-lite";
 import { EditorState } from "draft-js";
 import CustomInput from "../../../../../config/component/CustomInput/CustomInput";
 import CategoryValidation from "../../utils/validation";
-import CustomSubmitBtn from "../../../../../config/component/Button/CustomSubmitBtn";
 import store from "../../../../../store/store";
 import { NotesCategoryFormDto } from "../../utils/dto";
 import moment from "moment";
@@ -16,6 +15,7 @@ import {
   readFileAsBase64,
   removeDataByIndex,
 } from "../../../../../config/constant/function";
+import SubmitFormBtn from "../../../../../config/component/Button/SubmitFormBtn";
 
 const FormComponent = observer(({ formData }: any) => {
   const [thumbnail, setThumbnail] = useState<any>([]);
@@ -236,13 +236,11 @@ const FormComponent = observer(({ formData }: any) => {
                 </Grid>
               </Grid>
             </Box>
-            <Flex justifyContent="flex-end" mt={5} mr={5}>
-              <CustomSubmitBtn
+              <SubmitFormBtn
                 loading={isSubmitting}
                 type="submit"
                 onClick={() => setShowError(true)}
               />
-            </Flex>
           </Flex>
         </Form>
       )}

@@ -85,14 +85,17 @@ export const advancedSearch = (
   return filteredData;
 };
 
-export const getIdFromObject = (data: any) => {
+export const getIdFromObject = (data: any, property: string = "_id") => {
   var arr: any = [];
   if (Array.isArray(data)) {
     data.forEach((item: any) => {
-      arr.push(item._id);
+      arr.push(item[property]);
     });
-    return arr;
-  } else {
-    return arr;
   }
+  return arr;
+};
+
+export const capitalizeString = (str : string) => {
+  if (!str) return '';
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 };

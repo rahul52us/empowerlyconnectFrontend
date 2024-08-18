@@ -1,7 +1,79 @@
-const CreateProject = () => {
-  return (
-    <div>CreateProject</div>
-  )
-}
+import { observer } from "mobx-react-lite";
+import ProjectForm from "./ProjectForm";
+import { initialValuesOfProjects } from "../utils/constant";
+import store from "../../../../../store/store";
+import { getStatusType } from "../../../../../config/constant/statusCode";
+import { readFileAsBase64 } from "../../../../../config/constant/function";
 
-export default CreateProject
+const CreateProject = observer(() => {
+  const {
+    Project: { createProject, setOpenProjectDrawer, getProjects, projects },
+    auth: { openNotification },
+  } = store;
+
+  const handleSubmitForm = async({ values, setSubmitting, resetForm }: any) => {
+    try {
+
+      if (values.logo?.file && values.logo?.file?.length !== 0) {
+        const buffer = await readFileAsBase64(values.logo?.file);
+        const fileData = {
+          buffer: buffer,
+          filename: values.logo?.file?.name,
+          type: values.logo?.file?.type,
+        };
+        values.logo = fileData;
+      }
+
+      let formData = {
+        ...values,
+        attach_files: values.attach_files.map((fileObj : any) => ({
+          ...fileObj,
+          file: fileObj.file ? [...fileObj.file] : null,
+        }))
+      };
+
+
+      for (const dt of formData.attach_files) {
+        if (dt.file) {
+          const file = await readFileAsBase64(dt.file[0]);
+          dt.file = {
+            buffer: file,
+            filename: dt.file[0].name,
+            type: dt.file[0].type,
+          };
+        }
+      }
+
+      createProject({...formData})
+        .then((data) => {
+          openNotification({
+            title: "Successfully Created",
+            message: `${data.message}`,
+            type: "success",
+          });
+          getProjects({page : projects.currentPage, limit : projects.limit})
+          resetForm();
+          setOpenProjectDrawer("create");
+        })
+        .catch((err) => {
+          openNotification({
+            title: "Create Failed",
+            message: err?.data?.message,
+            type: getStatusType(err.status),
+          });
+        })
+        .finally(() => {
+          setSubmitting(false);
+        });
+    } catch (err: any) {}
+  };
+
+  return (
+    <ProjectForm
+      initialValuesOfProjects={initialValuesOfProjects}
+      handleSubmitForm={handleSubmitForm}
+    />
+  );
+});
+
+export default CreateProject;

@@ -11,8 +11,18 @@ import UserActivityFeed from "./UserActivityFeed";
 // import DynamicCalendar from "./Timeline";
 import CalendarApp from "./Timeline";
 import React from "react";
+import ProgressCard from "./ProgressCard/ProgressCard";
 
 const coursesData = [
+  {
+    name: "Figma",
+    imageUrl: "https://cdn-icons-png.flaticon.com/128/5968/5968705.png",
+    title: "Figma UI UX Design",
+    academy: "Abcd Academy",
+    completion: 64,
+    timeLeft: "3 hr 20 min left",
+    colorScheme: "purple",
+  },
   {
     name: "Figma",
     imageUrl: "https://cdn-icons-png.flaticon.com/128/5968/5968705.png",
@@ -54,7 +64,7 @@ const cardColor = ["purple", "orange", "green", "red"];
 export default function NewDash() {
   return (
     <Box>
-      <Grid templateColumns={"3.3fr 1fr"} columnGap={6}>
+      <Grid templateColumns={"3fr 1fr"} columnGap={6}>
         <Box>
           <Grid gap={4} templateColumns={"repeat(4, 1fr)"}>
             {[1, 2, 3, 4].map((item) => (
@@ -73,24 +83,29 @@ export default function NewDash() {
             ))}
           </Grid>
 
-          <Grid templateColumns={"1fr 1fr"}  mt={6} gap={4}>
+          <Grid templateColumns={"1fr 1fr"} mt={6} gap={4}>
             <StudentActivityChart />
             <QuizScoresChart quizScores={quizcore} />
           </Grid>
-
-
         </Box>
 
         <VStack align={"stretch"} spacing={4}>
           <CalendarApp />
+
+          <ProgressCard
+            title="Check your progress"
+            description="You have completed 67% of the given target"
+            progress={67}
+            linkText="Click Here"
+            linkUrl="#"
+          />
           <UserActivityFeed />
         </VStack>
       </Grid>
-      <Grid templateColumns={"1fr 1fr 1fr"} gap={4}  mt={6}>
+      <Grid templateColumns={"1fr 1fr 1fr 1fr"} gap={6} mt={6}>
         {coursesData.map((course, index) => (
           <MyCoursesCard key={index} course={course} />
         ))}
-        
       </Grid>
     </Box>
   );

@@ -12,6 +12,7 @@ const OrganisationInfo = ({
   handleSearchChange,
   organisationError,
   setFieldValue,
+  isEdit
 }: any) => {
   const getAddressError = (errors: any, type: string, index: number) => {
     const errorTypes = ["address", "country", "state", "city", "pinCode"];
@@ -27,7 +28,7 @@ const OrganisationInfo = ({
   return (
     <Grid height="68vh" overflowY="auto">
       <Flex>
-					{values.logo.length === 0 ? (
+					{values?.logo?.length === 0 ? (
 					<CustomInput
 						type="file-drag"
 						name="logo"
@@ -49,6 +50,7 @@ const OrganisationInfo = ({
 							setFieldValue('logo',removeDataByIndex(values.logo, 0))
 						}
 						}
+            edit={isEdit}
 						/>
 					</Box>
 					)}
@@ -66,6 +68,17 @@ const OrganisationInfo = ({
             handleChange(e);
           }}
           value={values.company_name}
+          showError={showError}
+        />
+        <CustomInput
+          type="text"
+          name="companyCode"
+          label="Company Code"
+          placeholder="Enter the Company Code"
+          required={true}
+          error={errors.companyCode}
+          onChange={handleChange}
+          value={values.companyCode}
           showError={showError}
         />
         <CustomInput

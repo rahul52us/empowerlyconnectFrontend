@@ -34,7 +34,7 @@ class RequestStore {
     loading : false
   }
 
-  employesCounts : any = {
+  UsersCounts : any = {
     data : 0,
     loading : false
   }

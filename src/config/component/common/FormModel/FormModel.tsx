@@ -9,17 +9,39 @@ import {
   ModalOverlay,
   Button,
   Divider,
+  useColorModeValue,
 } from "@chakra-ui/react";
+import store from "../../../../store/store";
 
-function FormModel({ open, close, isCentered, title, footer, children, ...rest }: any) {
+function FormModel({
+  open,
+  close,
+  isCentered,
+  title,
+  footer,
+  children,
+  ...rest
+}: any) {
+  const {
+    themeStore: { themeConfig },
+  } = store;
   const { colorMode } = useColorMode();
 
-  const headerBgColor = colorMode === "dark" ? "blue.900" : "blue.500";
+  const headerBgColor = useColorModeValue(
+    themeConfig.colors.custom.light.primary,
+    themeConfig.colors.custom.dark.primary
+  );
   const headerTextColor = colorMode === "dark" ? "white" : "white";
 
   return (
     <>
-      <Modal isCentered={isCentered} size="2xl" isOpen={open} onClose={close} {...rest}>
+      <Modal
+        isCentered={isCentered}
+        size="2xl"
+        isOpen={open}
+        onClose={close}
+        {...rest}
+      >
         <ModalOverlay style={{ backgroundColor: "rgba(0, 0, 0, 0.6)" }} />{" "}
         {/* Increase opacity */}
         <ModalContent>
@@ -45,9 +67,18 @@ function FormModel({ open, close, isCentered, title, footer, children, ...rest }
           {footer && (
             <>
               <Divider />
-              <Flex justifyContent="flex-end" p={4} columnGap={3} alignItems="center">
-                <Button variant="outline" onClick={close} colorScheme="gray">Cancel</Button>
-                <Button colorScheme="blue" onClick={() => {}}>Submit</Button>
+              <Flex
+                justifyContent="flex-end"
+                p={4}
+                columnGap={3}
+                alignItems="center"
+              >
+                <Button variant="outline" onClick={close} colorScheme="gray">
+                  Cancel
+                </Button>
+                <Button colorScheme="blue" onClick={() => {}}>
+                  Submit
+                </Button>
               </Flex>
             </>
           )}

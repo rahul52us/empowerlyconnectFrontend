@@ -1,8 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
-import {
-  employDropdownData,
-} from "../../Employes/component/EmployeDetails/utils/constant";
 import store from "../../../../store/store";
 import CustomTable from "../../../../config/component/CustomTable/CustomTable";
 import { getStatusType } from "../../../../config/constant/statusCode";
@@ -10,8 +7,13 @@ import { generateResponse } from "./utils/function";
 import AddWorkLocation from "./component/AddWorkLocation";
 import EditWorkLocation from "./component/EditWorkLocation";
 import DeleteWorkLocation from "./component/DeleteWorkLocation";
+import { Button, Flex, Input } from "@chakra-ui/react";
+import { readFileAsBase64 } from "../../../../config/constant/function";
+import { employDropdownData } from "../../Users/component/UserDetails/utils/constant";
 
 const WorkLocationDetails = observer(() => {
+  const inputRef = useRef<any>(null);
+  const [uploadLoading, setUploadLoading] = useState(false);
   const dropdowns = useState(employDropdownData)[0];
   const [selectedOptions, setSelectedOptions] = useState({});
   const [date, setDate] = useState<any>({
@@ -26,7 +28,7 @@ const WorkLocationDetails = observer(() => {
   });
 
   const {
-    company: { getWorkLocations, workLocations, updateWorkLocation },
+    company: { getWorkLocations, workLocations, updateWorkLocation, updateWorkLocationsByExcel },
     auth: { openNotification },
   } = store;
 
@@ -95,7 +97,7 @@ const WorkLocationDetails = observer(() => {
       })
   }
 
-  const employeTableColumns = [
+  const UserTableColumns = [
     {
       headerName: "Location",
       key: "locationName",
@@ -129,8 +131,67 @@ const WorkLocationDetails = observer(() => {
     },
   ];
 
+  const updateWorkLocationByExcel = async (file: any) => {
+    try {
+      setUploadLoading(true);
+      const data = await readFileAsBase64(file);
+      updateWorkLocationsByExcel({ file: data })
+        .then((response) => {
+
+          console.log('the response are', response)
+
+          if (response.status === "success") {
+            resetTableData();
+            openNotification({
+              type: "success",
+              title: "uploaded Successfully",
+              message: "WorkLocations File Uploaded Successfully",
+            });
+          } else {
+            openNotification({
+              type: "error",
+              title: "upload Failed",
+              message: "Failed to Upload WorkLocations",
+            });
+          }
+        })
+        .catch((err) => {
+          openNotification({
+            title: "Uploaded Failed",
+            message: err?.data?.message,
+            type: getStatusType(err.status),
+          });
+        })
+        .finally(() => {
+          setUploadLoading(false);
+        });
+    } catch (err) {}
+  };
+
+  const handleFileChange = (event: any) => {
+    const file = event.target.files[0];
+    if (file) {
+      updateWorkLocationByExcel(file);
+    }
+  };
+
+  const handleButtonClick = () => {
+    inputRef.current.click();
+  };
+
   return (
     <>
+    <Flex mb={2} justifyContent={"end"}>
+        <Input
+          type="file"
+          ref={inputRef}
+          display="none"
+          onChange={handleFileChange}
+        />
+        <Button isLoading={uploadLoading} onClick={handleButtonClick}>
+          Upload WorkLocations Excel
+        </Button>
+      </Flex>
       <CustomTable
         cells={true}
         actions={{
@@ -204,7 +265,7 @@ const WorkLocationDetails = observer(() => {
         }}
         title="Locations"
         data={generateResponse(workLocations.data)}
-        columns={employeTableColumns}
+        columns={UserTableColumns}
         loading={workLocations.loading}
         serial={{ show: false, text: "S.No.", width: "10px" }}
       />

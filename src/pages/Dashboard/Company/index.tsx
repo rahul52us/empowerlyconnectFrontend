@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import DashPageHeader from "../../../config/component/common/DashPageHeader/DashPageHeader";
 import { companyBreadCrumb } from "../utils/breadcrumb.constant";
 import WidgetCard from "../../../config/component/WigdetCard/WidgetCard";
-import { Grid, GridItem } from "@chakra-ui/react";
+import { Card, Grid, GridItem } from "@chakra-ui/react";
 import { dashboard } from "../../../config/constant/routes";
 import WorkTiming from "./WorkTiming/WorkTiming";
 import WorkLocationDetails from "./workLocation/WorkLocation";
@@ -10,6 +10,8 @@ import HolidaysDetailTable from "./Holidays/Holidays";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import store from "../../../store/store";
+import CompaniesTable from "./companies/CompaniesTable";
+import WorkTimingForm from "./WorkTiming/component/WorkTimingForm";
 
 const Company = observer(() => {
   const {
@@ -93,12 +95,24 @@ const Company = observer(() => {
           );
         })}
       </Grid>
+      <Grid mt={5}>
+        <GridItem overflowX="auto">
+          <CompaniesTable />
+        </GridItem>
+      </Grid>
       <Grid gridTemplateColumns={{ md: "1fr", xl: "1fr 1fr" }} gap={4} mt={5}>
         <GridItem overflowX="auto">
           <HolidaysDetailTable />
         </GridItem>
         <GridItem overflowX="auto">
           <WorkLocationDetails />
+        </GridItem>
+      </Grid>
+      <Grid gridTemplateColumns={{ base : '1fr', md: "2fr 1fr" }} mt={5}>
+        <GridItem>
+          <Card border={"1px solid gray"}>
+            <WorkTimingForm />
+          </Card>
         </GridItem>
       </Grid>
       <WorkTiming formData={workTimingForm} setFormData={setworkTimingForm} />

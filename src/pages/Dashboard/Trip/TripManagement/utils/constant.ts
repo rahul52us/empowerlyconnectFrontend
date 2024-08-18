@@ -19,8 +19,7 @@ export const travelModes = [
 ];
 
 export const participants = [
-  { label: "Rahul52us@gamil.com", value: "653c3ee413257078ac0d6a97" },
-  { label: "sanjana52us@gamil.com", value: "653c3ee413257078ac0d6a96" },
+  { username: "Rahul52us@gamil.com", _id: "669c8a97f04c9aed92c89695" }
 ];
 
 export const initialValues: TripFormValues = {
@@ -90,6 +89,6 @@ export const getInitialValues = (data : any) => {
         amount: "",
       },
     ],
-    participants: [{ label: "", value: "" }],
+    participants: [],
   };
 };

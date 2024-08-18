@@ -1,90 +1,39 @@
-import { useState, useEffect } from "react";
 import { observer } from "mobx-react-lite";
-import ProfileContainer from "../../../config/component/profile/ProfileContainer";
+import { useEffect, useState } from "react";
 import store from "../../../store/store";
-import { studentInitialValues } from "../../../config/component/profile/utils/constant";
-import { studentEditValidation } from "../../../config/component/profile/utils/validation";
-import { EditStudentSideTab } from "../../Dashboard/UserTypes/Student/utils/constant";
-import { currentYear, oneYearLater } from "../../../config/constant/dateUtils";
-import { main } from "../../../config/constant/routes";
+import MyProfile from "./MyProfile/MyProfile";
+import PageLoader from "../../../config/component/Loader/PageLoader";
 
 const ProfileIndex = observer(() => {
+  const [loading, setLoading] = useState(false);
+  const [userDetails, setUserDetails] = useState(null);
   const {
-    classStore: { getClasses, classes },
-    auth: { openNotification, changePasswordStore, user, updateProfile },
+    User: { getUsersDetailsById },
+    auth: { user },
   } = store;
-
-  const date = useState({
-    startYear: currentYear,
-    endYear: oneYearLater,
-  })[0];
 
   useEffect(() => {
     if (user) {
-      getClasses({ startYear: date.startYear, endYear: date.endYear })
+      setLoading(true);
+      getUsersDetailsById(user._id)
         .then((data) => {
-          console.log(data);
+          setUserDetails(data);
         })
-        .catch((err) => {
-          openNotification({
-            title: "Failed to Get Classes",
-            message: err.message,
-            type: "error",
-          });
-        });
-    }
-  }, [getClasses, openNotification, date, user]);
-
-  const handleSubmitProfile = (
-    values: any,
-    setSubmitting: any,
-    resetForm: any,
-    setErrors: any,
-    setShowError: any
-  ) => {
-    try {
-      updateProfile(values)
-        .then((data) => {
-          openNotification({
-            title: "UPDATE SUCCESSFULLY",
-            message: data.message,
-          });
-          setErrors({});
-          setShowError(false);
-          console.log(resetForm);
-        })
-        .catch((err) => {
-          openNotification({
-            title: "Failed to Update Profile",
-            message: err.message,
-            type: "error",
-          });
-        })
+        .catch(() => {})
         .finally(() => {
-          setSubmitting(false);
+          setLoading(false);
         });
-    } catch (err: any) {
-      openNotification({
-        title: "FAILED TO UPDATE",
-        message: err.message,
-        type: "error",
-      });
     }
-  };
+  }, [getUsersDetailsById, user]);
 
-  return user ? (
-    <ProfileContainer
-      initialValues={studentInitialValues(user)}
-      profileData={studentInitialValues(user)}
-      validations={studentEditValidation}
-      changePassword={changePasswordStore}
-      classes={classes.data}
-      sideTab={EditStudentSideTab}
-      editTabLink={`${main.profile}?`}
-      handleSubmitProfile={handleSubmitProfile}
-      type="edit"
-    />
-  ) : null;
+
+  return (
+    <PageLoader loading={loading} noRecordFoundText={!user}>
+      {userDetails && user && (
+        <MyProfile userDetails={userDetails} user={user} />
+      )}
+    </PageLoader>
+  );
 });
 
 export default ProfileIndex;

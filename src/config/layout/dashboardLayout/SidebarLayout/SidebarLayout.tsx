@@ -24,13 +24,15 @@ import {
   DrawerContent,
   DrawerOverlay,
   useBreakpointValue,
+  useColorMode,
 } from "@chakra-ui/react";
 import { ChevronDownIcon, ChevronRightIcon } from "@chakra-ui/icons";
-import { sidebarData, sidebarFooterData } from "./utils/SidebarItems";
+import { getSidebarDataByRole, sidebarFooterData } from "./utils/SidebarItems";
 import { observer } from "mobx-react-lite";
 import { useNavigate } from "react-router-dom";
 import SidebarLogo from "./component/SidebarLogo";
 import { mediumSidebarWidth, sidebarWidth } from "../../../constant/variable";
+import store from "../../../../store/store";
 
 export interface SidebarItem {
   id: number;
@@ -48,22 +50,24 @@ interface SidebarProps {
   setOpenMobileSideDrawer: any;
 }
 
-const renderIcon = (depth: number, icon: JSX.Element) => {
+const renderIcon = (depth: number, icon: JSX.Element, colorMode: string) => {
+  const iconColor = colorMode === "light" ? "gray.800" : "gray.200";
+
   if (depth === 1) {
     return (
-      <Text fontSize={"18px"} mr={2}>
+      <Text fontSize={"18px"} mr={2} color={iconColor}>
         -
       </Text>
     );
   }
   if (depth > 1) {
     return (
-      <Text fontSize={"18px"} mr={2}>
+      <Text fontSize={"18px"} mr={2} color={iconColor}>
         ◦
       </Text>
     );
   }
-  return <Icon as={icon.type} boxSize={5} />;
+  return <Icon as={icon.type} boxSize={5} color={iconColor} />;
 };
 
 const findPathToActiveItem = (
@@ -96,256 +100,327 @@ const findPathToActiveItem = (
   return path;
 };
 
-const SidebarPopover: React.FC<{
-  item: SidebarItem;
-  depth: number;
-  onClick: (item: SidebarItem) => void;
-  onLeafClick: (item: SidebarItem) => void;
-  isCollapsed: boolean;
-  activeItemId: number | null;
-}> = ({ item, depth, onClick, onLeafClick, isCollapsed, activeItemId }) => {
-  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+const SidebarPopover = observer(
+  ({
+    item,
+    depth,
+    onClick,
+    onLeafClick,
+    isCollapsed,
+    activeItemId,
+  }: {
+    item: SidebarItem;
+    depth: number;
+    onClick: (item: SidebarItem) => void;
+    onLeafClick: (item: SidebarItem) => void;
+    isCollapsed: boolean;
+    activeItemId: number | null;
+  }) => {
+    const {
+      themeStore: { themeConfig },
+    } = store;
+    const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+    const { colorMode } = useColorMode();
 
-  const handleMouseEnter = () => {
-    if (item.children && item.children.length > 0 && isCollapsed) {
-      setIsPopoverOpen(true);
-    }
-  };
+    const handleMouseEnter = () => {
+      if (item.children && item.children.length > 0 && isCollapsed) {
+        setIsPopoverOpen(true);
+      }
+    };
 
-  // const handleMouseLeave = () => {
-  //   setIsPopoverOpen(false);
-  // };
+    const handleItemClick = (e: React.MouseEvent) => {
+      e.stopPropagation();
+      setIsPopoverOpen(false);
+      if (!item.children) {
+        onLeafClick(item);
+      } else {
+        onClick(item);
+      }
+    };
 
-  const handleItemClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setIsPopoverOpen(false);
-    if (!item.children) {
-      onLeafClick(item);
-    } else {
-      onClick(item);
-    }
-  };
+    const isActive = (
+      item: SidebarItem,
+      activeItemId: number | null
+    ): boolean => {
+      if (item.id === activeItemId) {
+        return true;
+      }
+      if (item.children) {
+        return item.children.some((child) => isActive(child, activeItemId));
+      }
+      return false;
+    };
 
-  const isActive = (
-    item: SidebarItem,
-    activeItemId: number | null
-  ): boolean => {
-    if (item.id === activeItemId) {
-      return true;
-    }
-    if (item.children) {
-      return item.children.some((child) => isActive(child, activeItemId));
-    }
-    return false;
-  };
+    const itemIsActive = isActive(item, activeItemId);
 
-  const itemIsActive = isActive(item, activeItemId);
-
-  return (
-    <Popover
-      isOpen={isPopoverOpen}
-      onClose={() => setIsPopoverOpen(false)}
-      placement="right-start"
-      closeOnBlur={false}
-      trigger="hover"
-    >
-      <PopoverTrigger>
-        <Flex
-          align={"center"}
-          width={"100%"}
-          onMouseEnter={handleMouseEnter}
-          // onMouseLeave={handleMouseLeave}
-          onClick={handleItemClick}
-        >
+    return (
+      <Popover
+        isOpen={isPopoverOpen}
+        onClose={() => setIsPopoverOpen(false)}
+        placement="right-start"
+        closeOnBlur={false}
+        trigger="hover"
+      >
+        <PopoverTrigger>
           <Flex
-            align="center"
-            justify={depth === 0 ? "center" : "unset"}
+            align={"center"}
             width={"100%"}
-            cursor="pointer"
-            py={depth === 0 ? 3 : 1}
-            color={itemIsActive ? "teal.400" : "inherit"}
-            fontWeight={itemIsActive ? "600" : "inherit"}
-            _hover={{ color: "teal.400" }}
-          >
-            {renderIcon(depth, item.icon)}
-            {depth > 0 && (
-              <Flex flex={1} align={"center"} justify={"space-between"}>
-                <Text ml={2} fontSize={"sm"}>
-                  {item.name}
-                </Text>
-                {item.children && <ChevronRightIcon ml={2} />}
-              </Flex>
-            )}
-          </Flex>
-        </Flex>
-      </PopoverTrigger>
-      {item.children && (
-        <Portal>
-          <PopoverContent
-            zIndex={15}
-            w={"200px"}
             onMouseEnter={handleMouseEnter}
+            onClick={handleItemClick}
           >
-            <PopoverArrow />
-            <PopoverHeader bg={"blue.50"}>
-              <Flex
-                align="center"
-                justify="space-between"
-                width="100%"
-                pl={2}
-                my={0}
-                cursor="pointer"
-              >
-                <Flex align="center" py={0}>
-                  <Text
-                    color={"teal.700"}
-                    fontSize="sm"
-                    fontWeight={600}
-                    ml={depth === 0 ? 5 : 2}
-                  >
+            <Flex
+              align="center"
+              justify={depth === 0 ? "center" : "unset"}
+              width={"100%"}
+              cursor="pointer"
+              py={depth === 0 ? 3 : 1}
+              bg={
+                itemIsActive
+                  ? useColorModeValue("blue.50", "blue.900")
+                  : "transparent"
+              }
+              color={
+                itemIsActive
+                  ? useColorModeValue(
+                      themeConfig.colors.custom.light.primary,
+                      themeConfig.colors.custom.dark.primary
+                    )
+                  : "inherit"
+              }
+              fontWeight={itemIsActive ? "600" : "inherit"}
+              _hover={{
+                bg: useColorModeValue("blue.50", "blue.700"),
+                color: useColorModeValue(
+                  themeConfig.colors.custom.light.primary,
+                  themeConfig.colors.custom.dark.primary
+                ),
+              }}
+            >
+              {renderIcon(depth, item.icon, colorMode)}
+              {depth > 0 && (
+                <Flex flex={1} align={"center"} justify={"space-between"}>
+                  <Text ml={2} fontSize={"sm"}>
                     {item.name}
                   </Text>
+                  {item.children && (
+                    <ChevronRightIcon
+                      ml={2}
+                      color={colorMode === "light" ? "gray.800" : "gray.200"}
+                    />
+                  )}
                 </Flex>
-                {item.children && (
-                  <ChevronDownIcon
-                    color={"teal.700"}
-                    fontSize="19px"
-                    fontWeight={600}
-                  />
-                )}
-              </Flex>
-            </PopoverHeader>
-            <PopoverBody>
-              <VStack align="start" spacing={1}>
-                {item.children.map((child) => (
-                  <SidebarPopover
-                    key={child.id}
-                    item={child}
-                    depth={depth + 1}
-                    onClick={onClick}
-                    onLeafClick={onLeafClick}
-                    isCollapsed={isCollapsed}
-                    activeItemId={activeItemId}
-                  />
-                ))}
-              </VStack>
-            </PopoverBody>
-          </PopoverContent>
-        </Portal>
-      )}
-    </Popover>
-  );
-};
-
-const SidebarAccordion: React.FC<{
-  items: SidebarItem[];
-  depth?: number;
-  onClick: (item: SidebarItem) => void;
-  onLeafClick: (item: SidebarItem) => void;
-  activeItemId: number | null;
-  expandedPath: number[];
-}> = ({
-  items,
-  depth = 0,
-  onClick,
-  onLeafClick,
-  activeItemId,
-  expandedPath,
-}) => {
-  // Determine the index to expand based on the depth and expandedPath
-  const expandedIndex =
-    expandedPath.length > depth ? expandedPath[depth] : null;
-
-  console.log("the activeItemId are", activeItemId);
-
-  console.log("expanded path are", expandedPath);
-
-  const isActive = (item: SidebarItem): boolean => {
-    if (item.id === activeItemId) {
-      return true;
-    }
-    if (item.children) {
-      return item.children.some(isActive);
-    }
-    return false;
-  };
-
-  return (
-    <Accordion
-      width={"100%"}
-      px={3}
-      allowMultiple
-      defaultIndex={expandedIndex !== null ? [expandedIndex] : []}
-    >
-      {items.map((item) => {
-        const itemIsActive = isActive(item);
-        return (
-          <AccordionItem key={item.id} border="none" width={"100%"}>
-            {() => (
-              <>
-                <AccordionButton
-                  my={1.5}
-                  px={1}
-                  borderRadius={"10px"}
-                  bg={itemIsActive ? "blue.50" : "transparent"}
-                  color={itemIsActive ? "teal.700" : "inherit"}
-                  fontWeight={itemIsActive ? "600" : "inherit"}
-                  _hover={{
-                    bg: "blue.50",
-                    color: "teal.700",
-                    fontWeight: "600",
-                    boxShadow: "rgb(0 0 0 / 10%) 0px 0px 5px",
-                  }}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    if (!item.children) {
-                      onLeafClick(item);
-                    } else {
-                      onClick(item);
-                    }
-                  }}
+              )}
+            </Flex>
+          </Flex>
+        </PopoverTrigger>
+        {item.children && (
+          <Portal>
+            <PopoverContent
+              zIndex={15}
+              w={"200px"}
+              onMouseEnter={handleMouseEnter}
+              bg={useColorModeValue("white", "gray.800")}
+            >
+              <PopoverArrow />
+              <PopoverHeader bg={useColorModeValue("blue.50", "blue.900")}>
+                <Flex
+                  align="center"
+                  justify="space-between"
+                  width="100%"
+                  pl={2}
+                  my={0}
+                  cursor="pointer"
                 >
-                  <Flex
-                    align="center"
-                    justify="space-between"
-                    width="100%"
-                    pl={2}
-                    my={0}
-                    cursor="pointer"
-                    color={activeItemId === item.id ? "teal.400" : "inherit"}
-                    fontWeight={activeItemId === item.id ? "600" : "inherit"}
-                  >
-                    <Flex align="center">
-                      {renderIcon(depth, item.icon)}
-                      <Text fontSize="sm" ml={depth === 0 ? 5 : 2}>
-                        {item.name}
-                      </Text>
-                    </Flex>
-                    {item.children && <AccordionIcon />}
+                  <Flex align="center" py={0}>
+                    <Text
+                      color={useColorModeValue(
+                        themeConfig.colors.custom.light.primary,
+                        "gray.200"
+                      )}
+                      fontSize="sm"
+                      fontWeight={600}
+                      ml={depth === 0 ? 5 : 2}
+                    >
+                      {item.name}
+                    </Text>
                   </Flex>
-                </AccordionButton>
-                {item.children && (
-                  <AccordionPanel pl={4} pr={0} pb={0} mt={"-5px"}>
-                    <VStack align="start" spacing={0}>
-                      <SidebarAccordion
-                        items={item.children}
-                        depth={depth + 1}
-                        onClick={onClick}
-                        onLeafClick={onLeafClick}
-                        activeItemId={activeItemId}
-                        expandedPath={expandedPath}
-                      />
-                    </VStack>
-                  </AccordionPanel>
-                )}
-              </>
-            )}
-          </AccordionItem>
-        );
-      })}
-    </Accordion>
-  );
-};
+                  {item.children && (
+                    <ChevronDownIcon
+                      //  color={colorMode === "light" ? "gray.800" : "gray.200"}
+                      color={useColorModeValue(
+                        themeConfig.colors.custom.light.primary,
+                        "gray.200"
+                      )}
+                      fontSize="19px"
+                      fontWeight={600}
+                    />
+                  )}
+                </Flex>
+              </PopoverHeader>
+              <PopoverBody>
+                <VStack align="start" spacing={1}>
+                  {item.children.map((child) => (
+                    <SidebarPopover
+                      key={child.id}
+                      item={child}
+                      depth={depth + 1}
+                      onClick={onClick}
+                      onLeafClick={onLeafClick}
+                      isCollapsed={isCollapsed}
+                      activeItemId={activeItemId}
+                    />
+                  ))}
+                </VStack>
+              </PopoverBody>
+            </PopoverContent>
+          </Portal>
+        )}
+      </Popover>
+    );
+  }
+);
+
+const SidebarAccordion = observer(
+  ({
+    items,
+    depth = 0,
+    onClick,
+    onLeafClick,
+    activeItemId,
+    expandedPath,
+  }: {
+    items: SidebarItem[];
+    depth?: number;
+    onClick: (item: SidebarItem) => void;
+    onLeafClick: (item: SidebarItem) => void;
+    activeItemId: number | null;
+    expandedPath: number[];
+  }) => {
+    const {
+      themeStore: { themeConfig },
+    } = store;
+
+    const { colorMode } = useColorMode();
+
+    const activeBg = useColorModeValue(
+      themeConfig.colors.custom.light.primary,
+      "blue.900"
+    );
+    const hoverBg = useColorModeValue("blue.50", "blue.700");
+    const hoverColor = useColorModeValue("teal.700", "teal.300");
+    const primaryColor = useColorModeValue(
+      themeConfig.colors.custom.light.primary,
+      themeConfig.colors.custom.dark.primary
+    );
+
+    // Determine the index to expand based on the depth and expandedPath
+    const expandedIndex =
+      expandedPath.length > depth ? expandedPath[depth] : null;
+
+    const isActive = (item: SidebarItem): boolean => {
+      if (item.id === activeItemId) {
+        return true;
+      }
+      if (item.children) {
+        return item.children.some(isActive);
+      }
+      return false;
+    };
+
+    return (
+      <Accordion
+        width={"100%"}
+        px={3}
+        allowMultiple
+        defaultIndex={expandedIndex !== null ? [expandedIndex] : []}
+      >
+        {items.map((item) => {
+          const itemIsActive = isActive(item);
+          return (
+            <AccordionItem key={item.id} border="none" width={"100%"}>
+              {() => (
+                <>
+                  <AccordionButton
+                    my={1.5}
+                    px={1}
+                    borderRadius={"10px"}
+                    bg={itemIsActive ? activeBg : "transparent"}
+                    color={itemIsActive ? primaryColor : "inherit"}
+                    fontWeight={itemIsActive ? "600" : "inherit"}
+                    _hover={{
+                      bg: hoverBg,
+                      color: hoverColor,
+                      fontWeight: "600",
+                      boxShadow: "rgb(0 0 0 / 10%) 0px 0px 5px",
+                    }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (!item.children) {
+                        onLeafClick(item);
+                      } else {
+                        onClick(item);
+                      }
+                    }}
+                  >
+                    <Flex
+                      align="center"
+                      justify="space-between"
+                      width="100%"
+                      pl={2}
+                      my={0}
+                      cursor="pointer"
+                      color={
+                        activeItemId === item.id
+                          ? useColorModeValue(
+                              themeConfig.colors.custom.light.primary,
+                              themeConfig.colors.custom.dark.primary
+                            )
+                          : "inherit"
+                      }
+                      fontWeight={activeItemId === item.id ? "600" : "inherit"}
+                    >
+                      <Flex align="center">
+                        {renderIcon(depth, item.icon, colorMode)}
+                        <Text
+                          fontSize="sm"
+                          color={colorMode === "dark" ? "white" : "black"}
+                          ml={depth === 0 ? 5 : 2}
+                        >
+                          {item.name}
+                        </Text>
+                      </Flex>
+                      {item.children && (
+                        <AccordionIcon
+                          color={
+                            colorMode === "light" ? "gray.800" : "gray.200"
+                          }
+                        />
+                      )}
+                    </Flex>
+                  </AccordionButton>
+                  {item.children && (
+                    <AccordionPanel pl={4} pr={0} pb={0} mt={"-5px"}>
+                      <VStack align="start" spacing={0}>
+                        <SidebarAccordion
+                          items={item.children}
+                          depth={depth + 1}
+                          onClick={onClick}
+                          onLeafClick={onLeafClick}
+                          activeItemId={activeItemId}
+                          expandedPath={expandedPath}
+                        />
+                      </VStack>
+                    </AccordionPanel>
+                  )}
+                </>
+              )}
+            </AccordionItem>
+          );
+        })}
+      </Accordion>
+    );
+  }
+);
 
 const SidebarLayout: React.FC<SidebarProps> = observer(
   ({
@@ -355,15 +430,23 @@ const SidebarLayout: React.FC<SidebarProps> = observer(
     openMobileSideDrawer,
     setOpenMobileSideDrawer,
   }) => {
+    const {
+      auth: { user },
+    } = store;
     const navigate = useNavigate();
     const isMobile = useBreakpointValue({ base: true, lg: false }) ?? false;
     const borderColor = useColorModeValue("gray.200", "gray.700");
     const headerBgColor = useColorModeValue("gray.200", "gray.700");
-
+    const [sidebarData, setSidebarData] = useState<any>([]);
     const [activeItemId, setActiveItemId] = useState<number | null>(() => {
       const storedActiveItemId = localStorage.getItem("activeSidebarItemId");
       return storedActiveItemId ? parseInt(storedActiveItemId, 10) : 1;
     });
+    const { colorMode } = useColorMode();
+
+    useEffect(() => {
+      setSidebarData(getSidebarDataByRole(["user", user.role]));
+    }, [user]);
 
     useEffect(() => {
       if (activeItemId !== null) {
@@ -397,7 +480,15 @@ const SidebarLayout: React.FC<SidebarProps> = observer(
         >
           <DrawerOverlay />
           <DrawerContent>
-            <DrawerCloseButton />
+            <DrawerCloseButton
+              variant="ghost"
+              fontSize="xl"
+              color="white"
+              _hover={{ color: "blue.500", bg: "gray.700" }}
+              _active={{ bg: "gray.800" }}
+              mt={2}
+              _focus={{ boxShadow: "none" }}
+            />
             <SidebarLogo />
             <DrawerBody px={2} className="customScrollBar">
               <SidebarAccordion
@@ -421,7 +512,7 @@ const SidebarLayout: React.FC<SidebarProps> = observer(
             transition="width 0.3s"
             color="gray.700"
             zIndex={10}
-            bg={"white"}
+            bg={colorMode === "dark" ? "gray.800" : "white"}
             borderRight="1px"
             boxShadow="rgb(0 0 0 / 20%) 0px 0px 11px"
             borderRightColor={borderColor}

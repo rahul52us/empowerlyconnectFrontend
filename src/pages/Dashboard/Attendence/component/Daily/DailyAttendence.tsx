@@ -1,4 +1,13 @@
-import { Box, Button, Flex, Text, useColorModeValue } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Tab,
+  TabList,
+  Tabs,
+  Text,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import CustomInput from "../../../../../config/component/CustomInput/CustomInput";
 import { useCallback, useState } from "react";
@@ -7,8 +16,19 @@ import { format, addDays } from "date-fns";
 import NormalTable from "../../../../../config/component/Table/NormalTable/NormalTable";
 import { SearchIcon } from "@chakra-ui/icons";
 import { generatePunchResponse } from "../../../PunchAttendence/utils/function";
+import { useNavigate, useParams } from "react-router-dom";
+import { dashboard } from "../../../../../config/constant/routes";
+import useQuery from "../../../../../config/component/customHooks/useQuery";
+import { tabKeys } from "../../utils/constant";
 
 const DailyAttendance = observer(() => {
+  const { userId } = useParams();
+  const query: any = useQuery();
+  const [tabIndex] = useState<number>(
+    tabKeys.findIndex((item) => item === query.get("tab"))
+  );
+  const navigate = useNavigate();
+  const [attendenceRecord, setAttendenceRecord] = useState([]);
   const {
     AttendencePunch: { getRecentPunch, recentPunch },
   } = store;
@@ -20,14 +40,21 @@ const DailyAttendance = observer(() => {
   const fetchRecordsData = useCallback(() => {
     const selectedDatePlusOne = addDays(selectedDate, 1);
 
-    getRecentPunch({
+    let query: any = {
       startDate: formatDate(selectedDate),
       endDate: formatDate(selectedDatePlusOne),
-    })
-      .then(() => {})
+    };
+
+    if (userId) {
+      query = { ...query, user: userId };
+    }
+    getRecentPunch(query)
+      .then((data) => {
+        setAttendenceRecord(data);
+      })
       .catch(() => {})
       .finally(() => {});
-  }, [selectedDate, getRecentPunch]);
+  }, [selectedDate, getRecentPunch, userId]);
 
   const handleDateChange = (date: Date) => {
     if (date) {
@@ -49,6 +76,14 @@ const DailyAttendance = observer(() => {
   const borderColor = useColorModeValue("gray.200", "gray.600");
   const boxShadow = useColorModeValue("md", "dark-lg");
 
+  const handleTabChange = (index: number) => {
+    if (userId) {
+      navigate(`${dashboard.attendence.userList}/${userId}?tab=${tabKeys[index]}`);
+    } else {
+      navigate(`${dashboard.attendence.index}?tab=${tabKeys[index]}`);
+    }
+  };
+
   return (
     <Box
       borderWidth="1px"
@@ -58,7 +93,17 @@ const DailyAttendance = observer(() => {
       boxShadow={boxShadow}
       bg={bgColor}
     >
-      <Flex align="center" mb={6}>
+      <Tabs
+        onChange={(index: number) => handleTabChange(index)}
+        index={tabIndex}
+      >
+        <TabList>
+          <Tab>Daily</Tab>
+          <Tab>Monthly</Tab>
+          <Tab>Yearly</Tab>
+        </TabList>
+      </Tabs>
+      <Flex align="center" mb={3} mt={3}>
         <Text fontWeight="bold" mr={2}>
           Date:
         </Text>
@@ -75,14 +120,15 @@ const DailyAttendance = observer(() => {
           colorScheme="teal"
           onClick={fetchRecordsData}
           leftIcon={<SearchIcon />}
+          isLoading={recentPunch.loading}
         >
           Search
         </Button>
       </Flex>
-      <Flex justify="space-between" align="center" mb={6}>
+      <Flex justify="space-between" align="center" mb={4}>
         <Flex align="center" flex="1">
           <Text fontWeight="bold" mr={2}>
-            Employee:
+            Usere:
           </Text>
           <Text>Rahul Kushwah</Text>
         </Flex>
@@ -103,7 +149,7 @@ const DailyAttendance = observer(() => {
       >
         <NormalTable
           columns={columns}
-          data={generatePunchResponse(recentPunch.data)}
+          data={generatePunchResponse(attendenceRecord)}
           loading={recentPunch.loading}
           currentPage={0}
           totalPages={0}

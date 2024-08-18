@@ -18,6 +18,11 @@ export const dashboard = {
   class: `/${dashboardName}/class`,
   course: `/${dashboardName}/courses`,
   quiz: `/${dashboardName}/quiz`,
+
+  // Profile
+
+  profile : `/${dashboardName}/profile`,
+  profileEditIndex: `/${dashboardName}/profile/edit/:id`,
   student: {
     index: `/${dashboardName}/students`,
     table: `/${dashboardName}/students/:type`,
@@ -32,19 +37,19 @@ export const dashboard = {
   tripManagement: {
     index: `/${dashboardName}/trip`,
   },
-  employes: {
-    index: `/${dashboardName}/employes`,
-    details: `/${dashboardName}/employes/details`,
-    new: `/${dashboardName}/employes/details/new`,
-    edit: `/${dashboardName}/employes/details/edit/:id`,
-    personalDetails:`/${dashboardName}/employes/personal-details`,
-    personalDetailsUserChart:`/${dashboardName}/employes/personal-details/:id`
+  Users: {
+    index: `/${dashboardName}/Users`,
+    details: `/${dashboardName}/Users/details`,
+    new: `/${dashboardName}/Users/details/new`,
+    edit: `/${dashboardName}/Users/details/edit/:id`,
+    personalDetails:`/${dashboardName}/Users/personal-details`,
+    personalDetailsUserChart:`/${dashboardName}/Users/personal-details/:id`
   },
   department: {
     index: `/${dashboardName}/department`,
-    details: `/${dashboardName}/employes/details`,
-    new: `/${dashboardName}/employes/details/new`,
-    edit: `/${dashboardName}/employes/details/edit/:id`,
+    details: `/${dashboardName}/Users/details`,
+    new: `/${dashboardName}/Users/details/new`,
+    edit: `/${dashboardName}/Users/details/edit/:id`,
   },
   company: {
     index: `/${dashboardName}/company`,
@@ -62,7 +67,34 @@ export const dashboard = {
   attendence : {
     index : `/${dashboardName}/attendence`,
     leave : `/${dashboardName}/request/leave`,
+    userList : `/${dashboardName}/attendence/users`,
+    uniqueUser : `/${dashboardName}/attendence/users/:userId`
   },
+  application:{
+    project : `/${dashboardName}/project?page=1`
+  },
+  liberary: {
+    books : {
+      index : `/${dashboardName}/liberary/books`,
+      category : {
+        index : `/${dashboardName}/liberary/books/category`
+      },
+      users : `/${dashboardName}/liberay/books/users`
+    },
+    room: {
+      index : `${dashboardName}/liberary/room`,
+      users :  `${dashboardName}/liberary/room/users`
+    }
+  },
+  // project
+  project : {
+    index : `/${dashboardName}/project`,
+    task : {
+      index : `/${dashboardName}/project/:projectId/task`,
+      create : `/${dashboardName}/:projectId/task/create`,
+      edit:`/${dashboardName}/:projectId/task/edit/:taskId`
+    }
+  }
 };
 
 export const main = {

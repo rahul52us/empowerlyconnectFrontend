@@ -20,13 +20,15 @@ removeDataByIndex,
 import ShowFileUploadFile from "../../../../../../config/component/common/ShowFileUploadFile/ShowFileUploadFile";
 import {
 categoryTypes,
-participants,
 travelModes,
 tripTypes,
 } from "../../utils/constant";
 import { TripFormI } from "../../utils/interface";
 import tripFormValidation from "../../utils/validation";
 import { generateFormError } from "../../utils/functions";
+import store from "../../../../../../store/store";
+import { useEffect } from "react";
+import SubmitFormBtn from "../../../../../../config/component/Button/SubmitFormBtn";
 
 const AddDetailButton: React.FC<{ title: string; onClick: () => void }> = ({
 onClick,
@@ -55,13 +57,27 @@ thumbnail,
 setThumbnail,
 isEdit,
 isFileDeleted,
-setIsFileDeleted
+setIsFileDeleted,
 }: TripFormI) => {
+	const {auth : {getCompanyUsers, companyUsers, openNotification}} = store
+
+	useEffect(() => {
+		getCompanyUsers({ page: 1 })
+		.then(() => {})
+		.catch((err) => {
+			openNotification({
+			message: err?.message,
+			title: "Fetch Users Failed",
+			type: "err",
+			});
+		});
+	}, [getCompanyUsers, openNotification]);
 return (
 	<Box>
 	<Formik<any>
 		initialValues={initialValues}
 		validationSchema={tripFormValidation}
+		enableReinitialize={true}
 		onSubmit={(values, { resetForm }) => {
 		onSubmit(values, resetForm);
 		}}
@@ -69,6 +85,7 @@ return (
 		{({ handleChange, setFieldValue, values, errors }) => {
 		return (
 			<Form>
+			<Box minH={"80vh"} maxH={"80vh"} overflowY={"auto"}>
 			<SimpleGrid columns={2} spacing={4}>
 				<GridItem colSpan={2}>
 				<Flex>
@@ -95,12 +112,11 @@ return (
 						setIsFileDeleted={setIsFileDeleted}
 						isFileDeleted={isFileDeleted}
 						removeFile={(_: any, index: number) => {
-							setThumbnail(removeDataByIndex(thumbnail, index))
-							if(isEdit && isFileDeleted === 0){
-								setIsFileDeleted(1)
+							setThumbnail(removeDataByIndex(thumbnail, index));
+							if (isEdit && isFileDeleted === 0) {
+							setIsFileDeleted(1);
 							}
-						}
-						}
+						}}
 						/>
 					</Box>
 					)}
@@ -160,22 +176,26 @@ return (
 					}}
 					/>
 				</GridItem>
-				{values.type && values.type?.value === tripTypes[1].value && (
-					<GridItem>
+				<GridItem>
 					<CustomInput
-						type="select"
-						label="Participants"
-						placeholder="Select Participants"
-						name={`participants`}
-						options={participants}
-						value={values.participants}
-						onChange={(e) => {
+					type="select"
+					label="Participants"
+					placeholder="Select Participants"
+					name={`participants`}
+					options={companyUsers}
+					error={errors.participants}
+					value={values.participants}
+					getOptionLabel={(options: any) => options?.user?.username}
+					getOptionValue={(options: any) => options?.user?._id}
+					onChange={(e) => {
 						setFieldValue(`participants`, e);
-						}}
-						isMulti={true}
+					}}
+					required={true}
+					isMulti={
+						values.type?.value === tripTypes[1].value ? true : false
+					}
 					/>
-					</GridItem>
-				)}
+				</GridItem>
 				</Grid>
 			</Box>
 			{/* for the travels details */}
@@ -445,7 +465,7 @@ return (
 								}
 							/>
 							{travel.isAccommodation === "true" && (
-								<Grid templateColumns="repeat(3, 1fr)" gap={4}>
+								<Grid templateColumns={{base : "1fr", sm : "repeat(3, 1fr)"}} gap={4}>
 								<CustomInput
 									type="text"
 									name={`travelDetails[${index}].locality`}
@@ -601,30 +621,17 @@ return (
 				value={values.description}
 				/>
 			</GridItem>
-			<Flex justifyContent="end" mt={5} mr={3}>
-				<Button
-				type="button"
-				leftIcon={<FaTimes />}
-				onClick={onClose}
-				mr={4}
-				variant="outline"
-				size="sm"
-				>
-				Cancel
-				</Button>
-				<Button
-				type="submit"
-				leftIcon={<FaPlus />}
-				colorScheme="blue"
-				isLoading={loading}
-				size="sm"
-				onClick={() => {
-					setShowError(true);
-				}}
-				>
-				Create
-				</Button>
-			</Flex>
+			</Box>
+			<SubmitFormBtn
+              onClick={() => setShowError(true)}
+              buttonText="Submit"
+              loading={loading}
+              cancelFunctionality={{
+                show: true,
+                text: "Cancel",
+                onClick: () => onClose(),
+              }}
+            />
 			</Form>
 		);
 		}}

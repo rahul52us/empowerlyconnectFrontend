@@ -16,11 +16,12 @@ import ExamStore from "./examStore/examStore";
 import BlogStore from "./blogStore/blogStore";
 import StudentStore from "./userTypes/StudentStore";
 import TripStore from "./tripStore/tripStore";
-import EmployeStore from "./employeStore/employeStore";
 import DepartmentStore from "./departmentStore/departmentStore";
 import CompanyStore from "./companyStore/companyStore";
 import RequestStore from "./requestStore/requestStore";
 import AttendencePunchStore from "./attendenceStore/attendencePunchStore";
+import Userstore from "./userStore/userStore";
+import BookLiberary from "./BookLiberary/bookLiberary";
 
 configure({ enforceActions: "never" });
 
@@ -41,13 +42,15 @@ const store = {
   ExamStore: new ExamStore(),
   BlogStore: new BlogStore(),
   tripStore: new TripStore(),
+  bookLiberary: new BookLiberary(),
   // users
   company: new CompanyStore(),
   Student: new StudentStore(),
-  Employe: new EmployeStore(),
+  User: new Userstore(),
   DepartmentStore: new DepartmentStore(),
   requestStore: new RequestStore(),
   AttendencePunch: new AttendencePunchStore(),
+
 };
 
 export default store;
