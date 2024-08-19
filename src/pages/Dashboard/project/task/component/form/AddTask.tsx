@@ -7,7 +7,7 @@ import { readFileAsBase64 } from "../../../../../../config/constant/function";
 import store from "../../../../../../store/store";
 import { getStatusType } from "../../../../../../config/constant/statusCode";
 
-const AddTask = observer(({projectId, fetchRecords} : any) => {
+const AddTask = observer(({projectId, fetchRecords, close} : any) => {
   const {Project : {createTask, setOpenTaskDrawer}, auth : {openNotification}} = store
   const [showError, setShowError] = useState(false);
 
@@ -58,7 +58,7 @@ const AddTask = observer(({projectId, fetchRecords} : any) => {
 
   return (
     <TaskForm
-      close={() => {}}
+      close={close}
       handleSubmitForm={handleSubmit}
       initialValues={initialValuesOfTask}
       showError={showError}

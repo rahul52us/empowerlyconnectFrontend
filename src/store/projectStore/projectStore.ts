@@ -61,7 +61,8 @@ class ProjectStore {
       openTaskDrawer:observable,
       createTask:action,
       setOpenTaskDrawer:action,
-      updateTask:action
+      updateTask:action,
+      getSingleTask:action
     });
   }
 
@@ -163,6 +164,18 @@ class ProjectStore {
   }
 
   // Task Related function
+
+  getSingleTask = async (sendData: any) => {
+    try {
+      const { data } = await axios.get(`/project/task/single/${sendData.id}`, {
+        params: { company: store.auth.getCurrentCompany() },
+      });
+      return data;
+    } catch (err: any) {
+      return Promise.reject(err?.response || err);
+    }
+  };
+
 
   createTask = async (sendData: any) => {
     try {

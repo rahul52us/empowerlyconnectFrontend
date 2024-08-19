@@ -160,12 +160,15 @@ const TaskIndex = observer(() => {
           <AddTask
             projectId={openTaskDrawer?.data?.projectId}
             fetchRecords={fetchRecords}
+            close={() => setOpenTaskDrawer("create")}
           />
         )}
         {openTaskDrawer.type === "edit" && (
           <EditTask
+            task={openTaskDrawer?.data}
             projectId={openTaskDrawer?.data?.projectId}
             fetchRecords={fetchRecords}
+            close={() => setOpenTaskDrawer("create")}
           />
         )}
       </CustomDrawer>

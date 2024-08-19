@@ -53,6 +53,7 @@ const ConfirmTaskModel = observer(
         title="Confirm Status Change"
         isCentered
         open={openConfirmModel.open}
+        size="lg"
         close={() =>
           setOpenConfirmModel({
             data: null,

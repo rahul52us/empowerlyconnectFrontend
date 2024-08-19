@@ -20,6 +20,7 @@ function FormModel({
   title,
   footer,
   children,
+  size,
   ...rest
 }: any) {
   const {
@@ -37,7 +38,7 @@ function FormModel({
     <>
       <Modal
         isCentered={isCentered}
-        size="2xl"
+        size={size ? size : "2xl"}
         isOpen={open}
         onClose={close}
         {...rest}

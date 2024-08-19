@@ -15,7 +15,7 @@ const TaskForm = observer(
   ({ type = "create", initialValues, handleSubmitForm }: any) => {
     const [showError, setShowError] = useState(false);
     const {
-      auth: { getCompanyUsers, companyUsers, openNotification },
+      auth: { getCompanyUsers, openNotification },
       Project: { setOpenTaskDrawer },
     } = store;
 
@@ -46,6 +46,7 @@ const TaskForm = observer(
       <Box>
         <Formik
           initialValues={initialValues}
+          enableReinitialize={true}
           validationSchema={TaskCreateValidation}
           onSubmit={(values, { resetForm, setSubmitting }) => {
             handleSubmitForm({ values, resetForm, setSubmitting });
@@ -185,11 +186,13 @@ const TaskForm = observer(
                       name="assigner"
                       label="Assigner"
                       value={values.assigner}
-                      getOptionLabel={(option: any) => option?.user?.username}
-                      getOptionValue={(option: any) => option?.user?._id}
-                      options={companyUsers}
+                      options={
+                        type === "edit"
+                          ? [values.assigner]
+                          : []
+                      }
                       placeholder="Select the Assigner"
-                      type="select"
+                      type="real-time-search"
                       onChange={(e: any) => {
                         setFieldValue("assigner", e);
                       }}
@@ -201,11 +204,9 @@ const TaskForm = observer(
                       name="team_members"
                       label="Team"
                       value={values.team_members}
-                      getOptionLabel={(option: any) => option.user?.username}
-                      getOptionValue={(option: any) => option.user?._id}
-                      options={companyUsers}
+                      options={values.team_members}
                       placeholder="Select the Team Members"
-                      type="select"
+                      type="real-time-search"
                       onChange={(e: any) => {
                         setFieldValue("team_members", e);
                       }}
@@ -218,11 +219,9 @@ const TaskForm = observer(
                       name="dependencies"
                       label="Dependency Members"
                       value={values.dependencies}
-                      getOptionLabel={(option: any) => option.user?.username}
-                      getOptionValue={(option: any) => option.user?._id}
-                      options={companyUsers}
+                      options={values.dependencies}
                       placeholder="Select the Dependency Members"
-                      type="select"
+                      type="real-time-search"
                       onChange={(e: any) => {
                         setFieldValue("dependencies", e);
                       }}
@@ -390,4 +389,4 @@ const TaskForm = observer(
   }
 );
 
-export default TaskForm
+export default TaskForm;
