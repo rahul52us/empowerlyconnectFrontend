@@ -210,7 +210,7 @@ const TaskForm = observer(
                       onChange={(e: any) => {
                         setFieldValue("team_members", e);
                       }}
-                      isMulti
+                      isMulti={true}
                       isSearchable
                       error={errors.team_members}
                       showError={showError}
@@ -225,7 +225,7 @@ const TaskForm = observer(
                       onChange={(e: any) => {
                         setFieldValue("dependencies", e);
                       }}
-                      isMulti
+                      isMulti={true}
                       isSearchable
                       error={errors.dependencies}
                       showError={showError}
