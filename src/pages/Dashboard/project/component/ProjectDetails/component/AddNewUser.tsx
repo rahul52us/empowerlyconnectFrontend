@@ -15,7 +15,7 @@ const AddNewUser = observer(
     const [showError, setShowError] = useState([]);
 
     const handleSubmit = ({ setSubmitting, values }: any) => {
-      addProjectMembers({ _id: item?._id, ...values, type: type })
+      addProjectMembers({ _id: item?._id, user : values.user?.value, type: type })
         .then((data: any) => {
           getSingleProject({ id: item?._id })
             .then((data: any) => {

@@ -6,9 +6,8 @@ import CustomInput from "../../CustomInput/CustomInput";
 import SubmitFormBtn from "../../Button/SubmitFormBtn";
 
 const validationSchema = Yup.object().shape({
-  user: Yup.string()
-    .required("Please select a user from the list")
-    .min(1, "Please select a user from the list"),
+  user: Yup.mixed()
+    .required("Please select a user from the list"),
   isActive: Yup.boolean(),
 });
 

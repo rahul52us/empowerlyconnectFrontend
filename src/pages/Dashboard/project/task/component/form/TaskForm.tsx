@@ -191,7 +191,7 @@ const TaskForm = observer(
                           ? [values.assigner]
                           : []
                       }
-                      placeholder="Select the Assigner"
+                      placeholder="Search OR Select the Assigner"
                       type="real-time-search"
                       onChange={(e: any) => {
                         setFieldValue("assigner", e);
@@ -205,7 +205,7 @@ const TaskForm = observer(
                       label="Team"
                       value={values.team_members}
                       options={values.team_members}
-                      placeholder="Select the Team Members"
+                      placeholder="Search OR Select the Team Members"
                       type="real-time-search"
                       onChange={(e: any) => {
                         setFieldValue("team_members", e);
@@ -220,7 +220,7 @@ const TaskForm = observer(
                       label="Dependency Members"
                       value={values.dependencies}
                       options={values.dependencies}
-                      placeholder="Select the Dependency Members"
+                      placeholder="Search OR Select the Dependency Members"
                       type="real-time-search"
                       onChange={(e: any) => {
                         setFieldValue("dependencies", e);
