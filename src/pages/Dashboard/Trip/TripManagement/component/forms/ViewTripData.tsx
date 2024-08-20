@@ -39,7 +39,7 @@ const ViewTripData = observer(({ item, open, onClose }: any) => {
       open={open}
       title={item?.title}
       close={onClose}
-      width={"70vw"}
+      width={"85vw"}
     >
       <DrawerLoader
         loading={tripData.loading}

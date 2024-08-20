@@ -203,7 +203,7 @@ const ProjectWidget = observer(() => {
         open={selectedProject.open}
         close={() => setSelectedProject({ open: false, data: null })}
         title="Project Details"
-        width="80vw"
+        width="90vw"
       >
         <ProjectDetails selectedProject={selectedProject.data} />
       </CustomDrawer>
