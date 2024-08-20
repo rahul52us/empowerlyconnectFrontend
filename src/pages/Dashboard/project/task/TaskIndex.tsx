@@ -20,6 +20,7 @@ import AddTask from "./component/form/AddTask";
 import TaskPage from "./component/TaskPage/TaskPage";
 import EditTask from "./component/form/EditTask";
 import { FaPlus, FaTasks } from "react-icons/fa";
+import ViewTask from "./component/form/viewTask/ViewTask";
 
 const TaskIndex = observer(() => {
   const [projectDetails, setProjectDetails] = useState<any>({
@@ -148,19 +149,26 @@ const TaskIndex = observer(() => {
 
       <CustomDrawer
         title={
-          openTaskDrawer.type === "edit"
+          ['view','edit'].includes(openTaskDrawer.type)
             ? openTaskDrawer?.data?.title
             : "CREATE NEW TASK"
         }
         open={openTaskDrawer.open}
         close={() => setOpenTaskDrawer("create")}
-        width={"85vw"}
+        width={"90vw"}
       >
         {openTaskDrawer.type === "create" && (
           <AddTask
             projectId={openTaskDrawer?.data?.projectId}
             fetchRecords={fetchRecords}
             close={() => setOpenTaskDrawer("create")}
+          />
+        )}
+        {openTaskDrawer.type === "view" && (
+          <ViewTask
+            fetchRecords={fetchRecords}
+            close={() => setOpenTaskDrawer("create")}
+            task={openTaskDrawer?.data}
           />
         )}
         {openTaskDrawer.type === "edit" && (

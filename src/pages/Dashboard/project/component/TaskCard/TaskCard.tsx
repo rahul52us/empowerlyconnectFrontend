@@ -122,7 +122,7 @@ const TaskCard = ({ task, setActiveSelectedTask }: any) => {
           fontSize="xl"
           fontWeight="bold"
           cursor="pointer"
-          onClick={handleEditTask}
+          onClick={handleViewTask}
           noOfLines={1}
           color={textColor}
         >
