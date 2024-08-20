@@ -1,5 +1,3 @@
-import { toJS } from "mobx";
-
 export const makeChartResponse = (data: any, chartTitle: string, labelProp: string = "title", valueProp: string = "count", colors: string[] = []) => {
   const labels: string[] = [];
   const values: number[] = [];
@@ -9,9 +7,6 @@ export const makeChartResponse = (data: any, chartTitle: string, labelProp: stri
     labels.push(entry[labelProp]);
     values.push(entry[valueProp]);
   });
-
-  console.log(toJS(data))
-  console.log(values)
 
 
   const datasets = [{

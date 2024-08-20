@@ -1,6 +1,7 @@
 import axios from "axios";
 import { action, makeObservable, observable } from "mobx";
 import store from "../store";
+import { formatCurrency } from "../../config/constant/function";
 
 class TripStore {
   trips : any = {
@@ -180,7 +181,7 @@ class TripStore {
     try {
       this.tripTitleAmount.loading = true;
       const { data } = await axios.post(`/trip/calculate/title/amount`,{company : [store.auth.getCurrentCompany()]});
-      this.tripTitleAmount.data = data?.data || []
+      this.tripTitleAmount.data = data?.data.map((it : any) => ({...it, count : formatCurrency(it.amount)})) || []
       return data;
     } catch (err: any) {
       return Promise.reject(err?.response || err);

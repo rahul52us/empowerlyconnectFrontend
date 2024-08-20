@@ -4,7 +4,6 @@ import { useEffect } from "react";
 import store from "../../../../../../store/store";
 import { makeChartResponse } from "../../../../component/utils/common";
 import BarChart from "../../../../../../config/component/charts/BarChart";
-import { toJS } from "mobx";
 
 const TripChartContainer = observer(({addData} : any) => {
   const {
@@ -27,8 +26,6 @@ const TripChartContainer = observer(({addData} : any) => {
       });
   }, [getTripChartCounts,getTripTitleAmount]);
 
-  console.log(toJS(tripTitleAmount))
-
   const tripChartData = makeChartResponse(
     tripChartCount.data,
     "Trip Data",
@@ -41,7 +38,7 @@ const TripChartContainer = observer(({addData} : any) => {
     tripTitleAmount.data,
     "Trip Amounts",
     "title",
-    "count",
+    "amount",
     ["rgba(54, 162, 235, 0.5)", "rgba(255, 99, 132, 0.5)", "rgba(75, 192, 192, 0.5)", "rgba(75, 172, 195, 0.5)", "#FFD700"]
   );
 
