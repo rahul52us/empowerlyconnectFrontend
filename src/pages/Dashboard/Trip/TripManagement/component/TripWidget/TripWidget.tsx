@@ -67,7 +67,7 @@ const TripWidget = observer(() => {
       loading: tripTypeCount.loading,
     },
     {
-      label: "Total Trip Expenditure",
+      label: "Total Trip Expense",
       value: formatCurrency(totalTripAmount?.data),
       icon: FaUsers,
       colorScheme: "purple",
