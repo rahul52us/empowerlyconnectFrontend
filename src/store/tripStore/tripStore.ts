@@ -34,6 +34,16 @@ class TripStore {
     hasFetch : false
   }
 
+  tripTitleAmount : any = {
+    data : [],
+    loading : false
+  }
+
+  totalTripAmount : any = {
+    data : 0,
+    loading : false
+  }
+
   constructor() {
     makeObservable(this, {
       trips : observable,
@@ -41,6 +51,8 @@ class TripStore {
       tripCount:observable,
       userTripTypeCount:observable,
       tripTypeCount:observable,
+      tripTitleAmount:observable,
+      totalTripAmount:observable,
       createTrip: action,
       updateTrip:action,
       getTripChartCounts:action,
@@ -48,7 +60,9 @@ class TripStore {
       getSingleTrip:action,
       getUserTripTypeCounts:action,
       getTripTypesCounts:action,
-      addTripMembers:action
+      addTripMembers:action,
+      getTripTitleAmount:action,
+      getTotalTripAmount:action
     });
   }
 
@@ -159,6 +173,32 @@ class TripStore {
       return Promise.reject(err?.response || err);
     } finally {
       this.userTripTypeCount.loading = false;
+    }
+  }
+
+  getTripTitleAmount = async () => {
+    try {
+      this.tripTitleAmount.loading = true;
+      const { data } = await axios.post(`/trip/calculate/title/amount`,{company : [store.auth.getCurrentCompany()]});
+      this.tripTitleAmount.data = data?.data || []
+      return data;
+    } catch (err: any) {
+      return Promise.reject(err?.response || err);
+    } finally {
+      this.tripTitleAmount.loading = false;
+    }
+  }
+
+  getTotalTripAmount = async () => {
+    try {
+      this.totalTripAmount.loading = true;
+      const { data } = await axios.post(`/trip/calculate/amount`,{company : [store.auth.getCurrentCompany()]});
+      this.totalTripAmount.data = data?.data || []
+      return data;
+    } catch (err: any) {
+      return Promise.reject(err?.response || err);
+    } finally {
+      this.totalTripAmount.loading = false;
     }
   }
 

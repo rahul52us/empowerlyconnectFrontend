@@ -99,3 +99,17 @@ export const capitalizeString = (str : string) => {
   if (!str) return '';
   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 };
+
+export const formatCurrency = (amount: number, currency: string = '₹'): string => {
+  try {
+    if (typeof amount !== 'number' || isNaN(amount)) {
+      return `${currency} 0.00`;
+    }
+
+    // Format the amount with commas and two decimal places
+    return `${currency} ${amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`;
+  } catch (error) {
+    // Return a default value in case of error
+    return `${currency} 0.00`;
+  }
+};
