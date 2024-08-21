@@ -11,6 +11,11 @@ class TripStore {
     totalPages : 1
   }
 
+  searchModel = {
+    open : false,
+    type : 'trip'
+  }
+
   tripChartCount : any = {
     data : [],
     loading : false,
@@ -54,6 +59,7 @@ class TripStore {
       tripTypeCount:observable,
       tripTitleAmount:observable,
       totalTripAmount:observable,
+      searchModel:observable,
       createTrip: action,
       updateTrip:action,
       getTripChartCounts:action,
@@ -64,7 +70,8 @@ class TripStore {
       addTripMembers:action,
       getTripTitleAmount:action,
       getTotalTripAmount:action,
-      getIndividualTripAmount:action
+      getIndividualTripAmount:action,
+      setOpenSearchTrip:action
     });
   }
 
@@ -208,6 +215,15 @@ class TripStore {
     try {
       const { data } = await axios.post(`/trip/calculate/individual/amount`,{company : [store.auth.getCurrentCompany()],...sendData});
       return data?.data || []
+    } catch (err: any) {
+      return Promise.reject(err?.response || err);
+    }
+  }
+
+  setOpenSearchTrip = async (data : any) => {
+    try {
+      this.searchModel.open = data.open ? true : false
+      this.searchModel.type = data?.type ? data?.type : 'trip'
     } catch (err: any) {
       return Promise.reject(err?.response || err);
     }

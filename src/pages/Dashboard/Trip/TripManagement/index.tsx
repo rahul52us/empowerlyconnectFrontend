@@ -5,8 +5,15 @@ import TripChartContainer from "./component/TripChartContainer/TripChartContaine
 import TripLayout from "./layout/TripLayout";
 import { useState } from "react";
 import TripWidget from "./component/TripWidget/TripWidget";
-import { FaHome } from "react-icons/fa";
-import { Heading, Icon } from "@chakra-ui/react";
+import { FaHome, FaPlus } from "react-icons/fa";
+import {
+  Button,
+  Flex,
+  Heading,
+  Icon,
+  IconButton,
+  useBreakpointValue,
+} from "@chakra-ui/react";
 
 const TripManagement = observer(() => {
   const [gridType, setGripType] = useState({ loading: true, type: "grid" });
@@ -15,6 +22,8 @@ const TripManagement = observer(() => {
     type: "add",
     data: null,
   });
+  const showIcon = useBreakpointValue({ base: true, md: false });
+
   return (
     <div>
       <DashPageHeader
@@ -31,16 +40,43 @@ const TripManagement = observer(() => {
       <TripChartContainer
         addData={() => setTripFormData({ open: true, type: "add", data: null })}
       />
-      <Heading
-        display="flex"
-        alignItems="center"
-        mb={6}
-        fontSize={{ base: "xl", md: "2xl" }}
-        color="teal.600"
-      >
-        <Icon as={FaHome} boxSize={6} mr={2} />
-        Trips
-      </Heading>
+      <Flex justifyContent="space-between" alignItems="center" mb={2}>
+        <Heading
+          display="flex"
+          alignItems="center"
+          fontSize={{ base: "xl", md: "2xl" }}
+          color="teal.600"
+        >
+          <Icon as={FaHome} boxSize={6} mr={2} />
+          Trips
+        </Heading>
+        {showIcon ? (
+          <IconButton
+            title="Create Project"
+            onClick={() =>
+              setTripFormData({ open: true, type: "add", data: null })
+            }
+            aria-label="Create Trip"
+            icon={<FaPlus />}
+            colorScheme="teal"
+          />
+        ) : (
+          <Button
+            leftIcon={<FaPlus />}
+            colorScheme="teal"
+            variant="solid"
+            size="lg"
+            _hover={{ bg: "teal.600" }}
+            _active={{ bg: "teal.700" }}
+            _focus={{ boxShadow: "outline" }}
+            onClick={() =>
+              setTripFormData({ open: true, type: "add", data: null })
+            }
+          >
+            CREATE TRIP
+          </Button>
+        )}
+      </Flex>
       <TripLayout
         tripFormData={tripFormData}
         setTripFormData={setTripFormData}
