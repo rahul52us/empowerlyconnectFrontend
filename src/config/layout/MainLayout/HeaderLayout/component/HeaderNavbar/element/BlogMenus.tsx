@@ -1,14 +1,13 @@
-import { observer } from "mobx-react-lite";
-import { useNavigate } from "react-router-dom";
-import store from "../../../../../../../store/store";
-import { useEffect } from "react";
 import {
   Box,
-  Divider,
   Text,
   useColorModeValue,
-  VStack,
+  VStack
 } from "@chakra-ui/react";
+import { observer } from "mobx-react-lite";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import store from "../../../../../../../store/store";
 
 const BlogsMenus = observer(() => {
   const navigate = useNavigate();
@@ -45,10 +44,9 @@ const BlogsMenus = observer(() => {
     <Box>
       {blogCategories.map((category: any) => (
         <VStack key={category.title} align="stretch" spacing={2}>
-          <Text fontSize="lg" fontWeight="bold" color="blue.600" mt={2}>
+          <Text fontWeight="bold"  mt={2}>
             {category.title}
           </Text>
-          <Divider borderColor="blue.200" />
           {blogs.data.map((blog: any, index: number) => (
             <Text
               cursor="pointer"
