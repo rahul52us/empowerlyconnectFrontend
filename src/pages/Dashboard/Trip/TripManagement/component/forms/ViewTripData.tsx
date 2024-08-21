@@ -6,10 +6,11 @@ import DrawerLoader from "../../../../../../config/component/Loader/DrawerLoader
 import { getStatusType } from "../../../../../../config/constant/statusCode";
 import store from "../../../../../../store/store";
 import TripDetails from "../TridDetails/TripDetails";
+import { formatCurrency } from "../../../../../../config/constant/function";
 
 const ViewTripData = observer(({ item, open, onClose }: any) => {
   const {
-    tripStore: { getSingleTrip },
+    tripStore: { getSingleTrip, getIndividualTripAmount },
     auth: { openNotification },
   } = store;
   const [tripData, setTripData] = useState<any>({ open: false, data: null });
@@ -22,6 +23,18 @@ const ViewTripData = observer(({ item, open, onClose }: any) => {
           data: data,
           loading: false,
         });
+        getIndividualTripAmount({tripId : item._id}).then((dt : any) => {
+          if(dt.length > 0)
+          {
+            setTripData((prev : any = {}) => ({...prev, data : {...prev?.data, totalTripExpense : formatCurrency(dt[0].amount)}}))
+          }
+        }).catch((err)=>{
+          openNotification({
+            title: "Failed to Trip Amount",
+            message: err?.data?.message,
+            type: getStatusType(err.status),
+          });
+        })
       })
       .catch((err) => {
         openNotification({
@@ -32,8 +45,9 @@ const ViewTripData = observer(({ item, open, onClose }: any) => {
         setTripData({ data: null, loading: false });
       })
       .finally(() => {});
-  }, [getSingleTrip, item, openNotification]);
+  }, [getSingleTrip, item, openNotification, getIndividualTripAmount]);
 
+  console.log(tripData)
   return (
     <CustomDrawer
       open={open}

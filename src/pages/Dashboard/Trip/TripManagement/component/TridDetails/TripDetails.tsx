@@ -33,6 +33,7 @@ interface TripData {
   title: string;
   description: string;
   country: string;
+  totalTripExpense:string;
   thumbnail: {
     name: string;
     url: string;
@@ -87,6 +88,7 @@ const TripDetails: React.FC<{ trip: TripData,setTripData: any }> = ({ trip, setT
     title : null
   });
 
+
   return (
     <Box
       p={{ base: 5, md: 10 }}
@@ -112,9 +114,14 @@ const TripDetails: React.FC<{ trip: TripData,setTripData: any }> = ({ trip, setT
           boxShadow="md"
         />
         <VStack align="start" spacing={4} w="full">
-          <Text fontSize="3xl" fontWeight="bold" color={textColor}>
+          <Flex justifyContent="space-between" width={'100%'} alignItems='center'>
+          <Text fontSize="3xl" fontWeight="bold" color={textColor} cursor='pointer'>
             {trip.title}
           </Text>
+          <Text fontSize="2xl" fontWeight="bold" color='blue' cursor='pointer'>
+            {trip.totalTripExpense}
+          </Text>
+          </Flex>
           <Text color={secondaryTextColor} fontSize="md">
             {trip.description}
           </Text>
@@ -257,7 +264,7 @@ const TripDetails: React.FC<{ trip: TripData,setTripData: any }> = ({ trip, setT
                       alignItems="center"
                     >
                       <Icon as={MdAttachMoney} mr={1} />
-                      {trip?.currency} {expense?.amount}
+                      {expense?.amount}
                     </Text>
                   </Flex>
                 </Box>

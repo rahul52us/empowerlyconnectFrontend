@@ -63,7 +63,8 @@ class TripStore {
       getTripTypesCounts:action,
       addTripMembers:action,
       getTripTitleAmount:action,
-      getTotalTripAmount:action
+      getTotalTripAmount:action,
+      getIndividualTripAmount:action
     });
   }
 
@@ -203,6 +204,14 @@ class TripStore {
     }
   }
 
+  getIndividualTripAmount = async (sendData : any) => {
+    try {
+      const { data } = await axios.post(`/trip/calculate/individual/amount`,{company : [store.auth.getCurrentCompany()],...sendData});
+      return data?.data || []
+    } catch (err: any) {
+      return Promise.reject(err?.response || err);
+    }
+  }
 }
 
 export default TripStore;
