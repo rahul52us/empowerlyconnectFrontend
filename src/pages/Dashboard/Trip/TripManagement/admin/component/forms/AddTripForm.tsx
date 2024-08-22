@@ -1,12 +1,12 @@
 import { observer } from "mobx-react-lite";
 import TripForm from "./TripForm";
-import CustomDrawer from "../../../../../../config/component/Drawer/CustomDrawer";
+import CustomDrawer from "../../../../../../../config/component/Drawer/CustomDrawer";
 import { useState } from "react";
-import store from "../../../../../../store/store";
-import { initialValues } from "../../utils/constant";
-import {generateTripResponse} from '../../utils/functions'
-import { TripFormValues } from "../../utils/interface";
-import { getStatusType } from "../../../../../../config/constant/statusCode";
+import store from "../../../../../../../store/store";
+import { initialValues } from "../../../utils/constant";
+import {generateTripResponse} from '../../../utils/functions'
+import { TripFormValues } from "../../../utils/interface";
+import { getStatusType } from "../../../../../../../config/constant/statusCode";
 
 const AddTripForm = observer(({ tripFormData, setTripFormData,handleGetRecord }: any) => {
   const {

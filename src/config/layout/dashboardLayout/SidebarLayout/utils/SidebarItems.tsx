@@ -342,6 +342,13 @@ const sidebarDatas: SidebarItem[] = [
         url: dashboard.tripManagement.index,
         role: ["admin", "superadmin"],
       },
+      {
+        id: 92,
+        name: "Users",
+        icon: <FaUsers />,
+        url: dashboard.tripManagement.users,
+        role: ["admin", "superadmin"],
+      },
     ],
 },
 ];

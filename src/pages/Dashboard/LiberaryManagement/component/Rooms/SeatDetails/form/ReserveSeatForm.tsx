@@ -255,7 +255,7 @@ const ReserveSeatForm = observer(({ user, room, close }: any) => {
                   error={errors.user}
                   name="user"
                   placeholder="Search User"
-                  type="real-time-search"
+                  type="real-time-user-search"
                   options={userOptions}
                   value={user ? {label : user?.username, value : user?._id} : undefined}
                   onChange={(e) => setFieldValue("user", e)}

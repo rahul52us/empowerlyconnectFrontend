@@ -1,34 +1,36 @@
 import { SimpleGrid } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
-import SummaryWidget from "../../../../../../config/component/WigdetCard/SummaryWidget";
-import store from "../../../../../../store/store";
+import SummaryWidget from "../../../../../../../config/component/WigdetCard/SummaryWidget";
+import store from "../../../../../../../store/store";
 import { FaUser, FaUsers } from "react-icons/fa";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { MdOutlineTravelExplore } from "react-icons/md";
-import { formatCurrency } from "../../../../../../config/constant/function";
+import { formatCurrency } from "../../../../../../../config/constant/function";
 
-const TripWidget = observer(() => {
+const TripUserWidget = observer(({userId} : any) => {
   const {
     auth: { openNotification },
     tripStore: {
       getTripCounts,
       tripCount,
-      getTripTypesCounts,
-      tripTypeCount,
+      getUserTripTypeCounts,
+      userTripTypeCount,
       getTotalTripAmount,
       totalTripAmount,
     },
   } = store;
 
-  const fetchData = (getDataFn: any) =>
+  console.log(userId)
+
+  const fetchData = useCallback((getDataFn: any) =>
     new Promise((resolve, reject) => {
-      getDataFn().then(resolve).catch(reject);
-    });
+      getDataFn({userId : userId}).then(resolve).catch(reject);
+    }),[userId]);
 
   useEffect(() => {
     Promise.all([
       fetchData(getTripCounts),
-      fetchData(getTripTypesCounts),
+      fetchData(getUserTripTypeCounts),
       fetchData(getTotalTripAmount),
     ])
       .then(() => {})
@@ -39,7 +41,7 @@ const TripWidget = observer(() => {
           title: "Failed to get data",
         });
       });
-  }, [getTripCounts, getTripTypesCounts, getTotalTripAmount, openNotification]);
+  }, [fetchData, getTripCounts, getUserTripTypeCounts, getTotalTripAmount, openNotification]);
 
   const summaryData = [
     {
@@ -52,19 +54,19 @@ const TripWidget = observer(() => {
     },
     {
       label: "Individual Trip Count",
-      value: tripTypeCount?.data?.individual || 0,
+      value: userTripTypeCount?.data?.individual || 0,
       icon: FaUser,
       colorScheme: "blue",
       description: "The total count of trips taken by individual travelers.",
-      loading: tripTypeCount.loading,
+      loading: userTripTypeCount.loading,
     },
     {
       label: "Group Trip Count",
-      value: tripTypeCount?.data?.group || 0,
+      value: userTripTypeCount?.data?.group || 0,
       icon: FaUsers,
       colorScheme: "purple",
       description: "The total count of trips taken by groups of travelers.",
-      loading: tripTypeCount.loading,
+      loading: userTripTypeCount.loading,
     },
     {
       label: "Total Trip Expense",
@@ -94,4 +96,4 @@ const TripWidget = observer(() => {
   );
 });
 
-export default TripWidget;
+export default TripUserWidget;

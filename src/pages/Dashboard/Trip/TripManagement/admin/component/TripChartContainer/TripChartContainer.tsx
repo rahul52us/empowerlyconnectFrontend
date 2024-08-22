@@ -1,12 +1,12 @@
-import { Button, Card, Grid } from "@chakra-ui/react";
+import { Card, Grid } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
-import store from "../../../../../../store/store";
-import { makeChartResponse } from "../../../../component/utils/common";
-import BarChart from "../../../../../../config/component/charts/BarChart";
-import PieChart from "../../../../../../config/component/charts/PieChart";
+import store from "../../../../../../../store/store";
+import { makeChartResponse } from "../../../../../component/utils/common";
+import BarChart from "../../../../../../../config/component/charts/BarChart";
+import PieChart from "../../../../../../../config/component/charts/PieChart";
 
-const TripChartContainer = observer(({addData} : any) => {
+const TripChartContainer = observer(() => {
   const {
     tripStore: { getTripChartCounts, tripChartCount, getTripTitleAmount, tripTitleAmount },
   } = store;
@@ -63,9 +63,6 @@ const TripChartContainer = observer(({addData} : any) => {
           options={tripTitleAmountData?.options}
           loading={tripTitleAmount.loading}
         />
-      </Card>
-      <Card width={"100%"} minH={350} p={{ base: 0, sm: 2 }} display="none">
-        <Button onClick={addData}>Add Data</Button>
       </Card>
     </Grid>
   );

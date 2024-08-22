@@ -28,7 +28,7 @@ const AddNewUserForm = observer(
               <Form>
                 <Flex gap={2} flexDirection={"column"}>
                   <CustomInput
-                    type="real-time-search"
+                    type="real-time-user-search"
                     name="user"
                     placeholder="Add New User"
                     label="Add New User"

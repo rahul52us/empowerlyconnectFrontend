@@ -13,7 +13,7 @@ import styled from "styled-components";
 import { BiEdit } from "react-icons/bi";
 import { useState } from "react";
 import { observer } from "mobx-react-lite";
-import { capitalizeString } from "../../../../../config/constant/function";
+import { capitalizeString } from "../../../../../../config/constant/function";
 
 const ThumbnailWrapper = styled(Box)`
   position: relative;

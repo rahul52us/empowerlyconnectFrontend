@@ -80,12 +80,6 @@ const StaffIndex = lazy(
 
 // trip
 
-const TripManagementIndex = lazy(
-  () => import("../../pages/Dashboard/Trip/TripManagement")
-);
-
-// Users
-
 const UsersManagementIndex = lazy(
   () => import("../../pages/Dashboard/Users")
 );
@@ -128,6 +122,9 @@ const LeaveEditRequest = lazy(
       "../../pages/Dashboard/Request/component/LeaveRequest/component/form/LeaveEditRequest"
     )
 );
+
+const TripManagementIndex = lazy(() => import("../../pages/Dashboard/Trip/TripManagement/admin"));
+const TripUsersTable = lazy(() => import("../../pages/Dashboard/Trip/TripManagement/admin/TripUserDetails/TripUsersTableIndex"))
 // Manager Request
 const ManagerRequest = lazy(
   () => import("../../pages/Dashboard/Request/ManagerRequest/index")
@@ -232,9 +229,17 @@ export const DashboardRoutes = [
     path: dashboard.student.profile,
     privateRoutes: true,
   },
+
+  // Trips
+
   {
     element: <TripManagementIndex />,
     path: dashboard.tripManagement.index,
+    privateRoutes: true,
+  },
+  {
+    element: <TripUsersTable />,
+    path: dashboard.tripManagement.users,
     privateRoutes: true,
   },
 

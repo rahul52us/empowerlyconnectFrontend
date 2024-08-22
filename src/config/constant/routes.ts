@@ -36,6 +36,7 @@ export const dashboard = {
   },
   tripManagement: {
     index: `/${dashboardName}/trip`,
+    users : `/${dashboardName}/trip/users`
   },
   Users: {
     index: `/${dashboardName}/Users`,

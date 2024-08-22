@@ -1,9 +1,9 @@
 import { observer } from "mobx-react-lite";
-import FormModel from "../../../../../../config/component/common/FormModel/FormModel";
+import FormModel from "../../../../../../../config/component/common/FormModel/FormModel";
 import { useState } from "react";
-import store from "../../../../../../store/store";
-import { getStatusType } from "../../../../../../config/constant/statusCode";
-import AddNewUserForm from "../../../../../../config/component/common/AddNewUserModel/AddNewUserModel";
+import store from "../../../../../../../store/store";
+import { getStatusType } from "../../../../../../../config/constant/statusCode";
+import AddNewUserForm from "../../../../../../../config/component/common/AddNewUserModel/AddNewUserModel";
 
 const AddNewUser = observer(
   ({ type, title, open, close, item , setFetchData}: any) => {

@@ -1,15 +1,15 @@
 import { observer } from "mobx-react-lite";
 import TripForm from "./TripForm";
-import CustomDrawer from "../../../../../../config/component/Drawer/CustomDrawer";
+import CustomDrawer from "../../../../../../../config/component/Drawer/CustomDrawer";
 import { useEffect, useState } from "react";
-import store from "../../../../../../store/store";
-import { TripFormValues } from "../../utils/interface";
+import store from "../../../../../../../store/store";
+import { TripFormValues } from "../../../utils/interface";
 import {
   generateEditInitialValues,
   generateTripResponse,
-} from "../../utils/functions";
-import { getStatusType } from "../../../../../../config/constant/statusCode";
-import DrawerLoader from "../../../../../../config/component/Loader/DrawerLoader";
+} from "../../../utils/functions";
+import { getStatusType } from "../../../../../../../config/constant/statusCode";
+import DrawerLoader from "../../../../../../../config/component/Loader/DrawerLoader";
 
 const EditTripForm = observer(
   ({ tripFormData, setTripFormData, handleGetRecord }: any) => {

@@ -1,5 +1,5 @@
-import DashPageHeader from "../../../../config/component/common/DashPageHeader/DashPageHeader";
-import { tripBreadCrumb } from "../../utils/breadcrumb.constant";
+import DashPageHeader from "../../../../../config/component/common/DashPageHeader/DashPageHeader";
+import { tripBreadCrumb } from "../../../utils/breadcrumb.constant";
 import { observer } from "mobx-react-lite";
 import TripChartContainer from "./component/TripChartContainer/TripChartContainer";
 import TripLayout from "./layout/TripLayout";
@@ -14,20 +14,23 @@ import {
   IconButton,
   useBreakpointValue,
 } from "@chakra-ui/react";
+import store from "../../../../../store/store";
+import SearchTripAmount from "./component/SearchTripAmounts/SearchTripAmount";
 
 const TripManagement = observer(() => {
+  const {tripStore : {setOpenSearchTrip}} = store
   const [gridType, setGripType] = useState({ loading: true, type: "grid" });
   const [tripFormData, setTripFormData] = useState({
     open: false,
     type: "add",
-    data: null,
+    data: null
   });
   const showIcon = useBreakpointValue({ base: true, md: false });
 
   return (
     <div>
       <DashPageHeader
-        breadcrumb={tripBreadCrumb}
+        breadcrumb={tripBreadCrumb.index}
         selectedMode={gridType.type}
         btnAction={(type: any) => {
           setGripType((prev) => ({ ...prev, loading: true }));
@@ -37,9 +40,7 @@ const TripManagement = observer(() => {
         }}
       />
       <TripWidget />
-      <TripChartContainer
-        addData={() => setTripFormData({ open: true, type: "add", data: null })}
-      />
+      <TripChartContainer />
       <Flex justifyContent="space-between" alignItems="center" mb={2}>
         <Heading
           display="flex"
@@ -61,6 +62,8 @@ const TripManagement = observer(() => {
             colorScheme="teal"
           />
         ) : (
+          <Flex>
+          <Button onClick={() => setOpenSearchTrip({open : true, data : null})}>Search Trip Amount</Button>
           <Button
             leftIcon={<FaPlus />}
             colorScheme="teal"
@@ -75,6 +78,7 @@ const TripManagement = observer(() => {
           >
             CREATE TRIP
           </Button>
+          </Flex>
         )}
       </Flex>
       <TripLayout
@@ -84,6 +88,7 @@ const TripManagement = observer(() => {
         gridLoading={gridType.loading}
         setGripType={setGripType}
       />
+      <SearchTripAmount />
     </div>
   );
 });

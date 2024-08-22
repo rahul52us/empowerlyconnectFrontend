@@ -9,22 +9,22 @@ Text,
 } from "@chakra-ui/react";
 import { FieldArray, Form, Formik } from "formik";
 import { FaPlus, FaTimes } from "react-icons/fa";
-import CustomInput from "../../../../../../config/component/CustomInput/CustomInput";
-import CountrySelect from "../../../../../../config/component/LocationSelector/CountrySelect";
-import StateSelect from "../../../../../../config/component/LocationSelector/StateSelect";
-import CitySelect from "../../../../../../config/component/LocationSelector/CitySelect";
+import CustomInput from "../../../../../../../config/component/CustomInput/CustomInput";
+import CountrySelect from "../../../../../../../config/component/LocationSelector/CountrySelect";
+import StateSelect from "../../../../../../../config/component/LocationSelector/StateSelect";
+import CitySelect from "../../../../../../../config/component/LocationSelector/CitySelect";
 import {
 insertUniqueFile,
 removeDataByIndex,
-} from "../../../../../../config/constant/function";
-import ShowFileUploadFile from "../../../../../../config/component/common/ShowFileUploadFile/ShowFileUploadFile";
-import { categoryTypes, travelModes, tripTypes } from "../../utils/constant";
-import { TripFormI } from "../../utils/interface";
-import tripFormValidation from "../../utils/validation";
-import { generateFormError } from "../../utils/functions";
-import store from "../../../../../../store/store";
+} from "../../../../../../../config/constant/function";
+import ShowFileUploadFile from "../../../../../../../config/component/common/ShowFileUploadFile/ShowFileUploadFile";
+import { categoryTypes, travelModes, tripTypes } from "../../../utils/constant";
+import { TripFormI } from "../../../utils/interface";
+import tripFormValidation from "../../../utils/validation";
+import { generateFormError } from "../../../utils/functions";
+import store from "../../../../../../../store/store";
 import { useEffect } from "react";
-import SubmitFormBtn from "../../../../../../config/component/Button/SubmitFormBtn";
+import SubmitFormBtn from "../../../../../../../config/component/Button/SubmitFormBtn";
 
 const AddDetailButton: React.FC<{ title: string; onClick: () => void }> = ({
 onClick,

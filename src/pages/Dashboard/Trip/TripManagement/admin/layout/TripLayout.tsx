@@ -1,16 +1,16 @@
 import { observer } from "mobx-react-lite";
 import TripCard from "../component/TripCard";
 import { Box, Center, Flex, Grid, Spinner } from "@chakra-ui/react";
-import store from "../../../../../store/store";
+import store from "../../../../../../store/store";
 import { useEffect, useState } from "react";
-import CustomTable from "../../../../../config/component/CustomTable/CustomTable";
-import { tablePageLimit } from "../../../../../config/constant/variable";
+import CustomTable from "../../../../../../config/component/CustomTable/CustomTable";
+import { tablePageLimit } from "../../../../../../config/constant/variable";
 import EditTripForm from "../component/forms/EditTripForm";
 import AddTripForm from "../component/forms/AddTripForm";
-import { getStatusType } from "../../../../../config/constant/statusCode";
-import MainPagePagination from "../../../../../config/component/pagination/MainPagePagination";
-import { useQueryParams } from "../../../../../config/component/customHooks/useQuery";
-import NotFoundData from "../../../../../config/component/NotFound/NotFoundData";
+import { getStatusType } from "../../../../../../config/constant/statusCode";
+import MainPagePagination from "../../../../../../config/component/pagination/MainPagePagination";
+import { useQueryParams } from "../../../../../../config/component/customHooks/useQuery";
+import NotFoundData from "../../../../../../config/component/NotFound/NotFoundData";
 import ViewTripData from "../component/forms/ViewTripData";
 
 const TripLayout = observer(

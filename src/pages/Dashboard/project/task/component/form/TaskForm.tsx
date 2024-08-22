@@ -192,7 +192,7 @@ const TaskForm = observer(
                           : []
                       }
                       placeholder="Search OR Select the Assigner"
-                      type="real-time-search"
+                      type="real-time-user-search"
                       onChange={(e: any) => {
                         setFieldValue("assigner", e);
                       }}
@@ -206,7 +206,7 @@ const TaskForm = observer(
                       value={values.team_members}
                       options={values.team_members}
                       placeholder="Search OR Select the Team Members"
-                      type="real-time-search"
+                      type="real-time-user-search"
                       onChange={(e: any) => {
                         setFieldValue("team_members", e);
                       }}
@@ -221,7 +221,7 @@ const TaskForm = observer(
                       value={values.dependencies}
                       options={values.dependencies}
                       placeholder="Search OR Select the Dependency Members"
-                      type="real-time-search"
+                      type="real-time-user-search"
                       onChange={(e: any) => {
                         setFieldValue("dependencies", e);
                       }}

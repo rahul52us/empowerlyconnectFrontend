@@ -1,12 +1,12 @@
 import { Box } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
-import CustomDrawer from "../../../../../../config/component/Drawer/CustomDrawer";
-import DrawerLoader from "../../../../../../config/component/Loader/DrawerLoader";
-import { getStatusType } from "../../../../../../config/constant/statusCode";
-import store from "../../../../../../store/store";
+import CustomDrawer from "../../../../../../../config/component/Drawer/CustomDrawer";
+import DrawerLoader from "../../../../../../../config/component/Loader/DrawerLoader";
+import { getStatusType } from "../../../../../../../config/constant/statusCode";
+import store from "../../../../../../../store/store";
 import TripDetails from "../TridDetails/TripDetails";
-import { formatCurrency } from "../../../../../../config/constant/function";
+import { formatCurrency } from "../../../../../../../config/constant/function";
 
 const ViewTripData = observer(({ item, open, onClose }: any) => {
   const {

@@ -24,7 +24,7 @@ import {
   MdAttachMoney,
   MdContentCopy,
 } from "react-icons/md";
-import ShowData from "../../../../Users/component/UserDetails/component/ShowData";
+import ShowData from "../../../../../Users/component/UserDetails/component/ShowData";
 import { RiUserAddLine } from "react-icons/ri";
 import AddNewUser from "./AddNewUser";
 

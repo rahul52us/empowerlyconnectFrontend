@@ -59,7 +59,7 @@ interface CustomInputProps {
     | "dateAndTime"
     | "file-drag"
     | "tags"
-    | "real-time-search";
+    | "real-time-user-search";
   label?: string;
   placeholder?: string;
   required?: boolean;
@@ -134,11 +134,10 @@ const CustomInput: React.FC<CustomInputProps> = ({
     setShowPassword(!showPassword);
   };
 
-  const fetchSearchResults = useCallback(async (query: string) => {
+  const fetchSearchUsers = useCallback(async (query: string) => {
     if (query?.trim() === "") {
       return;
     }
-
     try {
       const response: any = await store.auth.getCompanyUsers({
         page: 1,
@@ -156,9 +155,9 @@ const CustomInput: React.FC<CustomInputProps> = ({
     }
   }, []);
 
-  const debouncedFetchSearchResults = useMemo(
-    () => debounce(fetchSearchResults, 800),
-    [fetchSearchResults]
+  const debouncedFetchSearchUserResults = useMemo(
+    () => debounce(fetchSearchUsers, 800),
+    [fetchSearchUsers]
   );
 
   // const handleSelectChange = (selectedOption: any) => {
@@ -169,12 +168,12 @@ const CustomInput: React.FC<CustomInputProps> = ({
   // };
 
   useEffect(() => {
-    if (isMounted.current) {
-      debouncedFetchSearchResults(searchInput);
+    if (isMounted.current && searchInput.trim() !== "") {
+      debouncedFetchSearchUserResults(searchInput);
     } else {
       isMounted.current = true;
     }
-  }, [searchInput, debouncedFetchSearchResults]);
+  }, [searchInput, debouncedFetchSearchUserResults]);
 
   const handleFileDrop = useCallback(
     (event : any) => {
@@ -658,7 +657,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
             </Wrap>
           </Box>
         );
-        case "real-time-search":
+        case "real-time-user-search":
           return (
             <Select
               options={userOptions}

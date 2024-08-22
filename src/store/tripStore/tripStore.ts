@@ -128,10 +128,10 @@ class TripStore {
     }
   };
 
-  getTripChartCounts = async () => {
+  getTripChartCounts = async (sendData : any = {}) => {
     try {
       this.tripChartCount.loading = true;
-      const { data } = await axios.post(`/trip/tripcounts`, {company : [store.auth.getCurrentCompany()]});
+      const { data } = await axios.post(`/trip/tripcounts`, {company : [store.auth.getCurrentCompany()],...sendData});
       this.tripChartCount.data = data?.data
       return data;
     } catch (err: any) {
@@ -141,10 +141,10 @@ class TripStore {
     }
   }
 
-  getTripCounts = async () => {
+  getTripCounts = async (sendData :any = {}) => {
     try {
       this.tripCount.loading = true;
-      const { data } = await axios.post(`/trip/total/count`,{company : [store.auth.getCurrentCompany()]});
+      const { data } = await axios.post(`/trip/total/count`,{company : [store.auth.getCurrentCompany()], ...sendData});
       this.tripCount.data = data?.data || 0
       return data;
     } catch (err: any) {
@@ -154,10 +154,10 @@ class TripStore {
     }
   }
 
-  getTripTypesCounts = async () => {
+  getTripTypesCounts = async (sendData : any = {}) => {
     try {
       this.tripTypeCount.loading = true;
-      const { data } = await axios.post(`/trip/types/total/count`, { company: [store.auth.getCurrentCompany()] });
+      const { data } = await axios.post(`/trip/types/total/count`, { company: [store.auth.getCurrentCompany()],...sendData });
         const transformedData = data?.data && data.data.reduce((acc : any, item : any) => {
         acc[item.title] = item.count;
         return acc;
@@ -172,12 +172,16 @@ class TripStore {
   }
 
 
-  getUserTripTypeCounts = async () => {
+  getUserTripTypeCounts = async (sendData : any = {}) => {
     try {
       this.userTripTypeCount.loading = true;
-      const { data } = await axios.post(`/trip/user/types/total/count`,{company : [store.auth.getCurrentCompany()]});
-      this.userTripTypeCount.data = data?.data || []
-      return data;
+      const { data } = await axios.post(`/trip/types/total/count`,{company : [store.auth.getCurrentCompany()], ...sendData});
+      const transformedData = data?.data && data.data.reduce((acc : any, item : any) => {
+        acc[item.title] = item.count;
+        return acc;
+      }, {});
+      this.userTripTypeCount.data = transformedData || {};
+      return this.userTripTypeCount.data;
     } catch (err: any) {
       return Promise.reject(err?.response || err);
     } finally {
@@ -185,10 +189,10 @@ class TripStore {
     }
   }
 
-  getTripTitleAmount = async () => {
+  getTripTitleAmount = async (sendData : any = {}) => {
     try {
       this.tripTitleAmount.loading = true;
-      const { data } = await axios.post(`/trip/calculate/title/amount`,{company : [store.auth.getCurrentCompany()]});
+      const { data } = await axios.post(`/trip/calculate/title/amount`,{company : [store.auth.getCurrentCompany()],...sendData});
       this.tripTitleAmount.data = data?.data.map((it : any) => ({...it, count : formatCurrency(it.amount)})) || []
       return data;
     } catch (err: any) {
@@ -198,10 +202,10 @@ class TripStore {
     }
   }
 
-  getTotalTripAmount = async () => {
+  getTotalTripAmount = async (sendData : any = {}) => {
     try {
       this.totalTripAmount.loading = true;
-      const { data } = await axios.post(`/trip/calculate/amount`,{company : [store.auth.getCurrentCompany()]});
+      const { data } = await axios.post(`/trip/calculate/amount`,{company : [store.auth.getCurrentCompany()], ...sendData});
       this.totalTripAmount.data = data?.data || []
       return data;
     } catch (err: any) {
