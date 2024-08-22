@@ -1,10 +1,9 @@
 import DashPageHeader from "../../../../../config/component/common/DashPageHeader/DashPageHeader";
 import { tripBreadCrumb } from "../../../utils/breadcrumb.constant";
 import { observer } from "mobx-react-lite";
-import TripChartContainer from "./component/TripChartContainer/TripChartContainer";
-import TripLayout from "./layout/TripLayout";
+import TripChartContainer from "../component/TripChartContainer/TripChartContainer";
+import TripLayout from "../component/layout/TripLayout";
 import { useState } from "react";
-import TripWidget from "./component/TripWidget/TripWidget";
 import { FaHome, FaPlus } from "react-icons/fa";
 import {
   Button,
@@ -16,8 +15,9 @@ import {
 } from "@chakra-ui/react";
 import store from "../../../../../store/store";
 import SearchTripAmount from "./component/SearchTripAmounts/SearchTripAmount";
+import TripWidgets from "../component/TripWidget/TripWidgets";
 
-const TripManagement = observer(() => {
+const TripAdminDetails = observer(() => {
   const {tripStore : {setOpenSearchTrip}} = store
   const [gridType, setGripType] = useState({ loading: true, type: "grid" });
   const [tripFormData, setTripFormData] = useState({
@@ -39,7 +39,7 @@ const TripManagement = observer(() => {
           }, 1000);
         }}
       />
-      <TripWidget />
+      <TripWidgets />
       <TripChartContainer />
       <Flex justifyContent="space-between" alignItems="center" mb={2}>
         <Heading
@@ -93,4 +93,4 @@ const TripManagement = observer(() => {
   );
 });
 
-export default TripManagement;
+export default TripAdminDetails;

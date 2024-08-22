@@ -123,7 +123,7 @@ const LeaveEditRequest = lazy(
     )
 );
 
-const TripManagementIndex = lazy(() => import("../../pages/Dashboard/Trip/TripManagement/admin"));
+const TripManagementIndex = lazy(() => import("../../pages/Dashboard/Trip/TripManagement/index"));
 const TripUsersTable = lazy(() => import("../../pages/Dashboard/Trip/TripManagement/admin/TripUserDetails/TripUsersTableIndex"))
 // Manager Request
 const ManagerRequest = lazy(

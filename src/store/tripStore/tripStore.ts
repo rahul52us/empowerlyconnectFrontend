@@ -117,7 +117,7 @@ class TripStore {
   getAllTrip = async (sendData : any) => {
     try {
       this.trips.loading = true;
-      const { data } = await axios.post("/trip", {company : [store.auth.getCurrentCompany()]},{params : {...sendData}}, );
+      const { data } = await axios.post("/trip", {company : [store.auth.getCurrentCompany()], ...sendData},{params : {...sendData}}, );
       this.trips.data = data?.data?.data || [];
       this.trips.totalPages = data?.data?.totalPages || 0
       return data;

@@ -1,20 +1,20 @@
 import { Card, Grid } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
-import { useEffect } from "react";
-import store from "../../../../../../../store/store";
-import { makeChartResponse } from "../../../../../component/utils/common";
-import BarChart from "../../../../../../../config/component/charts/BarChart";
-import PieChart from "../../../../../../../config/component/charts/PieChart";
+import { useCallback, useEffect } from "react";
+import store from "../../../../../../store/store";
+import { makeChartResponse } from "../../../../component/utils/common";
+import BarChart from "../../../../../../config/component/charts/BarChart";
+import PieChart from "../../../../../../config/component/charts/PieChart";
 
-const TripChartContainer = observer(() => {
+const TripChartContainer = observer(({userId} : any) => {
   const {
     tripStore: { getTripChartCounts, tripChartCount, getTripTitleAmount, tripTitleAmount },
   } = store;
 
-  const fetchData = (getDataFn: any) =>
+  const fetchData = useCallback((getDataFn: any) =>
     new Promise((resolve, reject) => {
-      getDataFn().then(resolve).catch(reject);
-    });
+      getDataFn({userId : userId}).then(resolve).catch(reject);
+    }),[userId]);
 
   useEffect(() => {
     Promise.all([
@@ -25,7 +25,7 @@ const TripChartContainer = observer(() => {
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
-  }, [getTripChartCounts,getTripTitleAmount]);
+  }, [getTripChartCounts,getTripTitleAmount,fetchData]);
 
   const tripChartData = makeChartResponse(
     tripChartCount.data,

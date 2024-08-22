@@ -5,10 +5,10 @@ import CustomDrawer from "../../../../../../../config/component/Drawer/CustomDra
 import DrawerLoader from "../../../../../../../config/component/Loader/DrawerLoader";
 import { getStatusType } from "../../../../../../../config/constant/statusCode";
 import store from "../../../../../../../store/store";
-import TripDetails from "../TridDetails/TripDetails";
+import TripDetails from "../../../component/TripDetails/TripDetails";
 import { formatCurrency } from "../../../../../../../config/constant/function";
 
-const ViewTripData = observer(({ item, open, onClose }: any) => {
+const ViewTripData = observer(({ item, open, onClose,userId }: any) => {
   const {
     tripStore: { getSingleTrip, getIndividualTripAmount },
     auth: { openNotification },
@@ -62,7 +62,7 @@ const ViewTripData = observer(({ item, open, onClose }: any) => {
         {
             tripData?.data &&
             <Box>
-              <TripDetails trip={tripData?.data} setTripData={setTripData}/>
+              <TripDetails userId={userId} trip={tripData?.data} setTripData={setTripData}/>
             </Box>
         }
 

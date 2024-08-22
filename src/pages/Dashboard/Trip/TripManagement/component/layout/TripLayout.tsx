@@ -1,17 +1,17 @@
 import { observer } from "mobx-react-lite";
-import TripCard from "../component/TripCard";
+import TripCard from "../tripCard/TripCard";
 import { Box, Center, Flex, Grid, Spinner } from "@chakra-ui/react";
 import store from "../../../../../../store/store";
 import { useEffect, useState } from "react";
 import CustomTable from "../../../../../../config/component/CustomTable/CustomTable";
 import { tablePageLimit } from "../../../../../../config/constant/variable";
-import EditTripForm from "../component/forms/EditTripForm";
-import AddTripForm from "../component/forms/AddTripForm";
+import EditTripForm from "../../admin/component/forms/EditTripForm";
+import AddTripForm from "../../admin/component/forms/AddTripForm";
 import { getStatusType } from "../../../../../../config/constant/statusCode";
 import MainPagePagination from "../../../../../../config/component/pagination/MainPagePagination";
 import { useQueryParams } from "../../../../../../config/component/customHooks/useQuery";
 import NotFoundData from "../../../../../../config/component/NotFound/NotFoundData";
-import ViewTripData from "../component/forms/ViewTripData";
+import ViewTripData from "../../admin/component/forms/ViewTripData";
 
 const TripLayout = observer(
   ({
@@ -20,6 +20,7 @@ const TripLayout = observer(
     gridType,
     gridLoading,
     setGripType,
+    userId
   }: any) => {
     const {
       tripStore: {
@@ -44,8 +45,8 @@ const TripLayout = observer(
     });
 
     useEffect(() => {
-      setGripType({ loading: true, type: gridType });
-      getAllTrip({ page: currentPage, limit: pageLimit })
+      setGripType((prev : any) => ({ ...prev, loading: true }));
+      getAllTrip({ page: currentPage, limit: pageLimit, userId : userId })
         .catch((err: any) => {
           openNotification({
             title: "Failed to get Department Categories",
@@ -54,7 +55,7 @@ const TripLayout = observer(
           });
         })
         .finally(() => {
-          setGripType({ loading: false, type: gridType });
+          setGripType((prev : any) => ({ ...prev, loading: false }));
         });
     }, [
       getAllTrip,
@@ -62,7 +63,7 @@ const TripLayout = observer(
       setGripType,
       currentPage,
       pageLimit,
-      gridType,
+      userId
     ]);
 
     const applyGetAllRecord = ({ page, limit, reset }: any) => {
@@ -168,7 +169,7 @@ const TripLayout = observer(
     if (gridLoading && gridType === "grid") {
       return (
         <Center>
-          <Box mt={20}>
+          <Box mt={40}>
             <Spinner color="blue.500" thickness="4px" size="xl" />
           </Box>
         </Center>
@@ -205,6 +206,7 @@ const TripLayout = observer(
                     item={item}
                     setTripFormData={setTripFormData}
                     setSelectedRecord={setSelectedRecord}
+                    userId={userId}
                   />
                 );
               })}
@@ -226,7 +228,7 @@ const TripLayout = observer(
             actions={{
               actionBtn: {
                 editKey: {
-                  showEditButton: true,
+                  showEditButton: userId ? false : true,
                   function: (item: any) => {
                     setTripFormData({ open: true, data: item, type: "edit" });
                   },
@@ -256,22 +258,23 @@ const TripLayout = observer(
             }}
           />
         )}
-        {tripFormData && tripFormData?.type === "edit" && (
+        {tripFormData && !userId && tripFormData?.type === "edit" && (
           <EditTripForm
             tripFormData={tripFormData}
             setTripFormData={setTripFormData}
             handleGetRecord={applyGetAllRecord}
           />
         )}
-        <AddTripForm
+        {tripFormData && !userId && <AddTripForm
           tripFormData={tripFormData}
           setTripFormData={setTripFormData}
           handleGetRecord={applyGetAllRecord}
-        />
+        />}
         {selectedRecord.data && selectedRecord.open && (
           <ViewTripData
             item={selectedRecord.data}
             open={selectedRecord.open}
+            userId={userId}
             onClose={() => setSelectedRecord({ open: false, data: null })}
           />
         )}

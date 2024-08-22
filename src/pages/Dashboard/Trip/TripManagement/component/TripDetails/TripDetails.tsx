@@ -24,7 +24,7 @@ import {
   MdAttachMoney,
   MdContentCopy,
 } from "react-icons/md";
-import ShowData from "../../../../../Users/component/UserDetails/component/ShowData";
+import ShowData from "../../../../Users/component/UserDetails/component/ShowData";
 import { RiUserAddLine } from "react-icons/ri";
 import AddNewUser from "./AddNewUser";
 
@@ -75,7 +75,7 @@ interface TripData {
   }>;
 }
 
-const TripDetails: React.FC<{ trip: TripData,setTripData: any }> = ({ trip, setTripData }) => {
+const TripDetails: React.FC<{ trip: TripData,setTripData: any,userId : any }> = ({ trip, setTripData, userId }) => {
   const bgColor = useColorModeValue("white", "gray.800");
   const textColor = useColorModeValue("gray.700", "gray.200");
   const secondaryTextColor = useColorModeValue("gray.500", "gray.400");
@@ -278,7 +278,7 @@ const TripDetails: React.FC<{ trip: TripData,setTripData: any }> = ({ trip, setT
             <Text fontSize="2xl" fontWeight="bold" color={textColor} mb={6}>
               Participants
             </Text>
-            <Button
+            {!userId && <Button
               leftIcon={<RiUserAddLine />}
               variant="outline"
               size="sm"
@@ -288,7 +288,7 @@ const TripDetails: React.FC<{ trip: TripData,setTripData: any }> = ({ trip, setT
               }
             >
               Invite New
-            </Button>
+            </Button>}
           </Flex>
           <Grid templateColumns={{ base: "1fr", lg: "repeat(2, 1fr)" }} gap={6}>
             {trip.participants.map((participant: any) => (

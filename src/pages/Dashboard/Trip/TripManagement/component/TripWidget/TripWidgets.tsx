@@ -1,13 +1,13 @@
 import { SimpleGrid } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
-import SummaryWidget from "../../../../../../../config/component/WigdetCard/SummaryWidget";
-import store from "../../../../../../../store/store";
+import SummaryWidget from "../../../../../../config/component/WigdetCard/SummaryWidget";
+import store from "../../../../../../store/store";
 import { FaUser, FaUsers } from "react-icons/fa";
 import { useCallback, useEffect } from "react";
 import { MdOutlineTravelExplore } from "react-icons/md";
-import { formatCurrency } from "../../../../../../../config/constant/function";
+import { formatCurrency } from "../../../../../../config/constant/function";
 
-const TripUserWidget = observer(({userId} : any) => {
+const TripWidgets = observer(({userId} : any) => {
   const {
     auth: { openNotification },
     tripStore: {
@@ -19,8 +19,6 @@ const TripUserWidget = observer(({userId} : any) => {
       totalTripAmount,
     },
   } = store;
-
-  console.log(userId)
 
   const fetchData = useCallback((getDataFn: any) =>
     new Promise((resolve, reject) => {
@@ -96,4 +94,4 @@ const TripUserWidget = observer(({userId} : any) => {
   );
 });
 
-export default TripUserWidget;
+export default TripWidgets;
