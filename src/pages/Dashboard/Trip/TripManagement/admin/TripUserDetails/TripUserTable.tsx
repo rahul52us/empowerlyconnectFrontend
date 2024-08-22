@@ -253,7 +253,7 @@ const TripUsersTable = observer(() => {
       />
     </Box>
     <CustomDrawer width={'95%'} title="User Details" open={viewDetails.open} close={() => setViewDetails({open : false, type : 'view', data : null})}>
-        <TripUserDetail userId={viewDetails?.data?._id} />
+        <TripUserDetail userId={viewDetails?.data?._id} isDrawer={true}/>
     </CustomDrawer>
     </>
   );

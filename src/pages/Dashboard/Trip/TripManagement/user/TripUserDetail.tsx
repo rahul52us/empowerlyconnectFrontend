@@ -5,11 +5,14 @@ import TripLayout from "../component/layout/TripLayout";
 import { useState } from "react";
 import { FaHome } from "react-icons/fa";
 import TripChartContainer from "../component/TripChartContainer/TripChartContainer";
+import DashPageHeader from "../../../../../config/component/common/DashPageHeader/DashPageHeader";
+import { tripBreadCrumb } from "../../../utils/breadcrumb.constant";
 
-const TripUserDetail = observer(({ userId }: any) => {
+const TripUserDetail = observer(({ userId, isDrawer }: any) => {
   const [gridType, setGripType] = useState({ loading: true, type: "grid" });
   return (
     <Box>
+      {!isDrawer && <DashPageHeader breadcrumb={tripBreadCrumb.index} />}
       <TripUserWidget userId={userId} />
       <TripChartContainer userId={userId} />
       <Box pb={5}>
