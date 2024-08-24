@@ -12,6 +12,15 @@ import UserActivityFeed from "./UserActivityFeed";
 import CalendarApp from "./Timeline";
 import React from "react";
 import ProgressCard from "./ProgressCard/ProgressCard";
+import DashboardStatsCard from "./Cards/DashboardStatsCard";
+import { cardData } from "./Cards/constant";
+import DoughnutChart from "./Charts/DoughnutChart/DoughnutChart";
+import {
+  barChartData,
+  doughnutDataset,
+  labels,
+} from "./Charts/DoughnutChart/constant";
+import CommonBarGraph from "./Charts/BarGraph/CommonBarGraph";
 
 const coursesData = [
   {
@@ -61,6 +70,8 @@ const quizcore = [
 
 const cardColor = ["purple", "orange", "green", "red"];
 
+const { barGraphLabels, datasets } = barChartData;
+
 export default function NewDash() {
   return (
     <Box>
@@ -81,6 +92,28 @@ export default function NewDash() {
                 />
               </React.Fragment>
             ))}
+          </Grid>
+
+          <Grid
+            templateColumns={{ md: "1fr 1fr", lg: "repeat(3, 1fr)" }}
+            gap={4}
+            mt={4}
+          >
+            {cardData.map((card, index) => (
+              <DashboardStatsCard key={index} {...card} />
+            ))}
+          </Grid>
+
+          <Grid templateColumns={"1fr 1fr"} mt={4} gap={4}>
+            <Box shadow={"md"} borderWidth={1} rounded={12} p={4}>
+              <DoughnutChart
+                labels={labels}
+                doughnutDataset={doughnutDataset}
+              />
+            </Box>
+            <Box shadow={"md"} borderWidth={1} rounded={12} p={4}>
+              <CommonBarGraph labels={barGraphLabels} datasets={datasets} />
+            </Box>
           </Grid>
 
           <Grid templateColumns={"1fr 1fr"} mt={6} gap={4}>
