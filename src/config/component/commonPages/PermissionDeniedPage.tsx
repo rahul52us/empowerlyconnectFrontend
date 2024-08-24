@@ -11,6 +11,8 @@ import {
 } from "@chakra-ui/react";
 import { FaExclamationTriangle, FaHome } from "react-icons/fa";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { dashboard } from "../../constant/routes";
 
 const PermissionDeniedPage = ({
   onClick,
@@ -20,6 +22,7 @@ const PermissionDeniedPage = ({
   show = true,
   children,
 }: any) => {
+  const navigate = useNavigate();
   const { colorMode } = useColorMode();
   const theme = useTheme();
   const isDarkMode = colorMode === "dark";
@@ -56,7 +59,9 @@ const PermissionDeniedPage = ({
         <Icon
           as={FaExclamationTriangle}
           boxSize={{ base: 12, md: 12 }}
-          color={isDarkMode ? theme.colors.orange[300] : theme.colors.orange[500]}
+          color={
+            isDarkMode ? theme.colors.orange[300] : theme.colors.orange[500]
+          }
           mb={4}
         />
 
@@ -81,7 +86,13 @@ const PermissionDeniedPage = ({
             leftIcon={<FaHome />}
             colorScheme="teal"
             variant="solid"
-            onClick={onClick}
+            onClick={() => {
+              if (onClick) {
+                onClick();P
+              } else {
+                navigate(dashboard.home);
+              }
+            }}
             size="lg"
             borderRadius="full"
             _hover={{

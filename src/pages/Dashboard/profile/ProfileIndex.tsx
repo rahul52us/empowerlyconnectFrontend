@@ -11,7 +11,7 @@ import {
 import { observer } from "mobx-react-lite";
 import { useQueryParams } from "../../../config/component/customHooks/useQuery";
 import store from "../../../store/store";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import PageLoader from "../../../config/component/Loader/PageLoader";
 
 // Import your icon components
@@ -28,8 +28,9 @@ import Documents from "./component/Documents";
 import DashPageHeader from "../../../config/component/common/DashPageHeader/DashPageHeader";
 import { dashProfileBreadCrumb } from "../utils/breadcrumb.constant";
 import ProfileEditIndex from "./ProfileEditIndex";
+import PermissionDeniedPage from "../../../config/component/commonPages/PermissionDeniedPage";
 
-const ProfileIndex = observer(({userId} : any) => {
+const ProfileIndex = observer(({ userId }: any) => {
   const [selectedTab, setSelectedTab] = useState({
     open: false,
     type: "profile-details",
@@ -44,7 +45,7 @@ const ProfileIndex = observer(({userId} : any) => {
 
   const {
     User: { getUsersDetailsById },
-    auth: { user },
+    auth: { user, checkPermission },
   } = store;
 
   useEffect(() => {
@@ -55,7 +56,7 @@ const ProfileIndex = observer(({userId} : any) => {
   }, [getQueryParam]);
 
   useEffect(() => {
-    if (user && !haveApiCall) {
+    if (user && !haveApiCall && checkPermission("personalProfile", "view")) {
       setLoading(true);
       getUsersDetailsById(userId || user._id)
         .then((data) => {
@@ -67,7 +68,7 @@ const ProfileIndex = observer(({userId} : any) => {
           setLoading(false);
         });
     }
-  }, [getUsersDetailsById, user, haveApiCall, userId]);
+  }, [getUsersDetailsById, user, haveApiCall, userId, checkPermission]);
 
   const tabMapping: string[] = [
     "personal-details",
@@ -102,145 +103,168 @@ const ProfileIndex = observer(({userId} : any) => {
   };
 
   return (
-    <>
-      <Box p={3} pt={2}>
-        {!userId && <DashPageHeader
-          title="Profile"
-          breadcrumb={dashProfileBreadCrumb.index}
-        />}
-        <PageLoader loading={loading}>
-          <Tabs
-            variant="enclosed"
-            isLazy
-            index={currentTabIndex >= 0 ? currentTabIndex : 0}
-            onChange={handleTabChange}
-          >
-            <TabList
-              borderBottomWidth={2}
-              borderColor="teal.300"
-              mb={4}
-              bg={colorMode === "dark" ? "gray.700" : "white"}
-              borderRadius="md"
-              boxShadow="lg"
-              overflowX="auto"
-              display="flex"
-              flexDirection={{ base: "column", md: "row" }}
-              alignItems="flex-start"
-              p={useBreakpointValue({ base: 2, md: 3 })}
+    <PermissionDeniedPage show={!checkPermission("personalProfile", "view")}>
+      <React.Fragment>
+        <Box p={3} pt={2}>
+          {!userId && (
+            <DashPageHeader
+              title="Profile"
+              breadcrumb={dashProfileBreadCrumb.index}
+            />
+          )}
+          <PageLoader loading={loading}>
+            <Tabs
+              variant="enclosed"
+              isLazy
+              index={currentTabIndex >= 0 ? currentTabIndex : 0}
+              onChange={handleTabChange}
             >
-              <Tab {...tabStyles}>
-                <CalendarIcon style={{ marginRight: "10px" }} /> Personal Info
-              </Tab>
-              <Tab {...tabStyles}>
-                <FaBuilding style={{ marginRight: "10px" }} /> Company
-              </Tab>
-              <Tab {...tabStyles}>
-                <FaUsers style={{ marginRight: "10px" }} /> Family
-              </Tab>
-              <Tab {...tabStyles}>
-                <FaUsers style={{ marginRight: "10px" }} /> Work Experience
-              </Tab>
-              <Tab {...tabStyles}>
-                <FaUsers style={{ marginRight: "10px" }} /> Skill & Additional
-                Info
-              </Tab>
-              <Tab {...tabStyles}>
-                <FaUsers style={{ marginRight: "10px" }} /> Qualification
-              </Tab>
-              <Tab {...tabStyles}>
-                <FaUsers style={{ marginRight: "10px" }} /> Documents
-              </Tab>
-              <Tab {...tabStyles}>
-                <FaUsers style={{ marginRight: "10px" }} /> Bank Account Details
-              </Tab>
-            </TabList>
-            <TabPanels>
-              <TabPanel m={{ base: -5, md: 0 }}>
-                {userDetails?.profileDetails && (
-                  <PersonalInfo
-                    personalDetails={
-                      userDetails?.profileDetails?.length > 0
-                        ? userDetails?.profileDetails.map((it: any) => ({
-                            ...userDetails,
-                            ...it,
-                          }))
+              <TabList
+                borderBottomWidth={2}
+                borderColor="teal.300"
+                mb={4}
+                bg={colorMode === "dark" ? "gray.700" : "white"}
+                borderRadius="md"
+                boxShadow="lg"
+                overflowX="auto"
+                display="flex"
+                flexDirection={{ base: "column", md: "row" }}
+                alignItems="flex-start"
+                p={useBreakpointValue({ base: 2, md: 3 })}
+              >
+                <Tab {...tabStyles}>
+                  <CalendarIcon style={{ marginRight: "10px" }} /> Personal Info
+                </Tab>
+                <Tab {...tabStyles}>
+                  <FaBuilding style={{ marginRight: "10px" }} /> Company
+                </Tab>
+                <Tab {...tabStyles}>
+                  <FaUsers style={{ marginRight: "10px" }} /> Family
+                </Tab>
+                <Tab {...tabStyles}>
+                  <FaUsers style={{ marginRight: "10px" }} /> Work Experience
+                </Tab>
+                <Tab {...tabStyles}>
+                  <FaUsers style={{ marginRight: "10px" }} /> Skill & Additional
+                  Info
+                </Tab>
+                <Tab {...tabStyles}>
+                  <FaUsers style={{ marginRight: "10px" }} /> Qualification
+                </Tab>
+                <Tab {...tabStyles}>
+                  <FaUsers style={{ marginRight: "10px" }} /> Documents
+                </Tab>
+                <Tab {...tabStyles}>
+                  <FaUsers style={{ marginRight: "10px" }} /> Bank Account
+                  Details
+                </Tab>
+              </TabList>
+              <TabPanels>
+                <TabPanel m={{ base: -5, md: 0 }}>
+                  {userDetails?.profileDetails && (
+                    <PersonalInfo
+                      personalDetails={
+                        userDetails?.profileDetails?.length > 0
+                          ? userDetails?.profileDetails.map((it: any) => ({
+                              ...userDetails,
+                              ...it,
+                            }))
+                          : []
+                      }
+                      setSelectedTab={setSelectedTab}
+                      isEditable={
+                        !userId && checkPermission("personalProfile", "edit")
+                      }
+                    />
+                  )}
+                </TabPanel>
+                <TabPanel m={{ base: -5, md: 0 }}>
+                  <CompanyDetails
+                    userDetails={userDetails}
+                    setSelectedTab={setSelectedTab}
+                    isEditable={
+                      !userId && checkPermission("personalProfile", "edit")
+                    }
+                  />
+                </TabPanel>
+                <TabPanel m={{ base: -5, md: 3 }}>
+                  <FamilyDetails
+                    relations={
+                      userDetails?.familyDetails
+                        ? userDetails?.familyDetails[0]?.relations
                         : []
                     }
                     setSelectedTab={setSelectedTab}
-                    isEditable={!userId}
+                    isEditable={
+                      !userId && checkPermission("personalProfile", "edit")
+                    }
                   />
-                )}
-              </TabPanel>
-              <TabPanel m={{ base: -5, md: 0 }}>
-                <CompanyDetails
-                  userDetails={userDetails}
-                  setSelectedTab={setSelectedTab}
-                  isEditable={!userId}
-                />
-              </TabPanel>
-              <TabPanel m={{ base: -5, md: 3 }}>
-                <FamilyDetails
-                  relations={
-                    userDetails?.familyDetails
-                      ? userDetails?.familyDetails[0]?.relations
-                      : []
-                  }
-                  setSelectedTab={setSelectedTab}
-                  isEditable={!userId}
-                />
-              </TabPanel>
-              <TabPanel m={{ base: -5, md: 3 }}>
-                <WorkExperience
-                  experienceDetails={
-                    userDetails?.workExperience
-                      ? userDetails?.workExperience[0]?.experienceDetails
-                      : []
-                  }
-                  setSelectedTab={setSelectedTab}
-                  isEditable={!userId}
-                />
-              </TabPanel>
-              <TabPanel m={{ base: -5, md: 0 }}>
-                <SkillAndAdditionalInfo
-                  userDetails={userDetails}
-                  setSelectedTab={setSelectedTab}
-                  isEditable={!userId}
-                />
-              </TabPanel>
-              <TabPanel m={{ base: -5, md: 0 }}>
-                <Qualification
-                  userDetails={userDetails}
-                  setSelectedTab={setSelectedTab}
-                  isEditable={!userId}
-                />
-              </TabPanel>
-              <TabPanel m={{ base: -5, md: 0 }}>
-                <Documents
-                  userDetails={userDetails}
-                  setSelectedTab={setSelectedTab}
-                  isEditable={!userId}
-                />
-              </TabPanel>
-              <TabPanel m={{ base: -5, md: 3 }}>
-                <BankDetails
-                  bankDetails={
-                    userDetails?.bankDetails ? userDetails?.bankDetails[0] : {}
-                  }
-                  setSelectedTab={setSelectedTab}
-                  isEditable={!userId}
-                />
-              </TabPanel>
-            </TabPanels>
-          </Tabs>
-        </PageLoader>
-      </Box>
-      <ProfileEditIndex
-        setHaveApiCall={setHaveApiCall}
-        setSelectedTab={setSelectedTab}
-        selectedTab={selectedTab}
-        userDetails={userDetails}
-      />
-    </>
+                </TabPanel>
+                <TabPanel m={{ base: -5, md: 3 }}>
+                  <WorkExperience
+                    experienceDetails={
+                      userDetails?.workExperience
+                        ? userDetails?.workExperience[0]?.experienceDetails
+                        : []
+                    }
+                    setSelectedTab={setSelectedTab}
+                    isEditable={
+                      !userId && checkPermission("personalProfile", "edit")
+                    }
+                  />
+                </TabPanel>
+                <TabPanel m={{ base: -5, md: 0 }}>
+                  <SkillAndAdditionalInfo
+                    userDetails={userDetails}
+                    setSelectedTab={setSelectedTab}
+                    isEditable={
+                      !userId && checkPermission("personalProfile", "edit")
+                    }
+                  />
+                </TabPanel>
+                <TabPanel m={{ base: -5, md: 0 }}>
+                  <Qualification
+                    userDetails={userDetails}
+                    setSelectedTab={setSelectedTab}
+                    isEditable={
+                      !userId && checkPermission("personalProfile", "edit")
+                    }
+                  />
+                </TabPanel>
+                <TabPanel m={{ base: -5, md: 0 }}>
+                  <Documents
+                    userDetails={userDetails}
+                    setSelectedTab={setSelectedTab}
+                    isEditable={
+                      !userId && checkPermission("personalProfile", "edit")
+                    }
+                  />
+                </TabPanel>
+                <TabPanel m={{ base: -5, md: 3 }}>
+                  <BankDetails
+                    bankDetails={
+                      userDetails?.bankDetails
+                        ? userDetails?.bankDetails[0]
+                        : {}
+                    }
+                    setSelectedTab={setSelectedTab}
+                    isEditable={
+                      !userId && checkPermission("personalProfile", "edit")
+                    }
+                  />
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
+          </PageLoader>
+        </Box>
+        <ProfileEditIndex
+          setHaveApiCall={setHaveApiCall}
+          setSelectedTab={setSelectedTab}
+          selectedTab={selectedTab}
+          userDetails={userDetails}
+        />
+      </React.Fragment>
+    </PermissionDeniedPage>
   );
 });
 

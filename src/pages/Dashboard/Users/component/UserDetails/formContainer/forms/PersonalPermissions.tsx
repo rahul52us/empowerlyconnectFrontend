@@ -12,6 +12,7 @@ import { Form, Formik } from "formik";
 import SubmitFormBtn from "../../../../../../../config/component/Button/SubmitFormBtn";
 import { transformPermissionsForDB } from "../../utils/function";
 import { defaultPermissions } from "../../utils/constant";
+import { formatCamelCaseLabel } from "../../../../../../../config/constant/function";
 
 const PersonalPermissions = ({ handleSubmitProfile, initialValues }: any) => {
   const [, setShowError] = useState(false);
@@ -64,7 +65,7 @@ const PersonalPermissions = ({ handleSubmitProfile, initialValues }: any) => {
               {Object.keys(values.permissions).map((moduleKey) => (
                 <Box key={moduleKey} mb={4}>
                   <Heading fontSize="lg" mb={4} color={sectionHeadingColor}>
-                    {moduleKey.charAt(0).toUpperCase() + moduleKey.slice(1)}
+                    {formatCamelCaseLabel(moduleKey)}
                   </Heading>
                   <Grid
                     gridTemplateColumns={{
@@ -84,8 +85,7 @@ const PersonalPermissions = ({ handleSubmitProfile, initialValues }: any) => {
                           bg={itemBg}
                         >
                           <FormLabel htmlFor={`${moduleKey}.${permission}`}>
-                            {permission.charAt(0).toUpperCase() +
-                              permission.slice(1)}
+                            {formatCamelCaseLabel(permission)}
                           </FormLabel>
                           <Checkbox
                             id={`${moduleKey}.${permission}`}

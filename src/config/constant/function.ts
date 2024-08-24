@@ -121,3 +121,14 @@ export const renderUserTypeComponent = (role : any) => {
     return false
   }
 }
+
+export function formatCamelCaseLabel(text : any) {
+  if(text?.trim()){
+  return text
+  .replace(/([A-Z])/g, ' $1')  // Add space before each capital letter
+  .replace(/^./, (str : any) => str.toUpperCase());  // Capitalize the first letter
+  }
+  else{
+    return ""
+  }
+}

@@ -44,6 +44,7 @@ const ProjectDetails = ({ selectedProject }: any) => {
   });
   const {
     Project: { setOpenProjectDrawer, getSingleProject },
+    auth : {checkPermission}
   } = store;
 
   const [fetchProjectData, setFetchProjectData] = useState<any>({
@@ -91,7 +92,7 @@ const ProjectDetails = ({ selectedProject }: any) => {
           borderColor={borderColor}
         >
           {/* Logo and Title Section */}
-          <Flex justifyContent={"end"}>
+          {checkPermission('project','edit') && <Flex justifyContent={"end"}>
             <IconButton
               onClick={() => setOpenProjectDrawer("edit", selectedProject)}
               aria-label="Edit"
@@ -101,7 +102,7 @@ const ProjectDetails = ({ selectedProject }: any) => {
               size="sm"
               ml={3}
             />
-          </Flex>
+          </Flex>}
           <Flex direction="column" align="center" mb={4} px={4} py={3}>
             <Image
               src={fetchProjectData?.data?.logo?.file?.url || placeholderImage}
@@ -224,7 +225,7 @@ const ProjectDetails = ({ selectedProject }: any) => {
                 <Icon as={BiTagAlt} boxSize={5} />
                 <Text>Tags</Text>
               </Flex>
-              <Flex wrap="wrap" gap={2}>
+              {checkPermission('project','edit') && <Flex wrap="wrap" gap={2}>
                 {fetchProjectData?.data?.tags?.map(
                   (item: any, index: number) => (
                     <Tag
@@ -246,9 +247,8 @@ const ProjectDetails = ({ selectedProject }: any) => {
                 >
                   Add Tags
                 </Button>
-              </Flex>
+              </Flex>}
             </Grid>
-
             <Grid
               templateColumns={{ base: "1fr", md: "1fr 3fr" }}
               gap={6}
@@ -282,7 +282,7 @@ const ProjectDetails = ({ selectedProject }: any) => {
                     </Tag>
                   )
                 )}
-                <Button
+                {checkPermission('project','edit') && <Button
                   leftIcon={<RiUserAddLine />}
                   variant="outline"
                   size="sm"
@@ -292,7 +292,7 @@ const ProjectDetails = ({ selectedProject }: any) => {
                   }
                 >
                   Invite New
-                </Button>
+                </Button>}
               </Flex>
             </Grid>
 
@@ -329,7 +329,7 @@ const ProjectDetails = ({ selectedProject }: any) => {
                     </Tag>
                   )
                 )}
-                <Button
+                {checkPermission('project','edit') && <Button
                   leftIcon={<RiUserAddLine />}
                   variant="outline"
                   size="sm"
@@ -339,7 +339,7 @@ const ProjectDetails = ({ selectedProject }: any) => {
                   }
                 >
                   Invite New
-                </Button>
+                </Button>}
               </Flex>
             </Grid>
 
@@ -376,7 +376,7 @@ const ProjectDetails = ({ selectedProject }: any) => {
                     </Tag>
                   )
                 )}
-                <Button
+                {checkPermission('project','edit') && <Button
                   leftIcon={<RiUserAddLine />}
                   variant="outline"
                   size="sm"
@@ -386,7 +386,7 @@ const ProjectDetails = ({ selectedProject }: any) => {
                   }
                 >
                   Invite New
-                </Button>
+                </Button>}
               </Flex>
             </Grid>
 

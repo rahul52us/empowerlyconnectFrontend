@@ -54,6 +54,7 @@ class AuthStore {
       createOrganisation: action,
       getCompanyUsers: action,
       getCurrentCompany: action,
+      hasComponentAccess:action
     });
   }
 
@@ -295,10 +296,9 @@ class AuthStore {
   };
 
   checkPermission = (key: string, value: string) => {
-    if (this.user?.role === "superadmin" || this.user?.role === "admin") {
+    if (this.user?.role === "superadmin" || this.user?.role === "admin" || this.user.permissions.adminAccess?.add) {
       return true;
     } else {
-      if (this.user?.permissions) {
         var status = false;
         Object.entries(this.user.permissions).forEach((item: any) => {
           if (item[0] === key) {
@@ -310,8 +310,15 @@ class AuthStore {
           }
         });
         return status;
-      }
     }
+  };
+
+  hasComponentAccess = () => {
+    // Check if the user has an admin or superadmin role or hasAdminAcccess
+    if (['admin', 'superadmin'].includes(this.user?.role) || this.user.permissions.adminAccess?.add) {
+      return true;
+    }
+    return false;
   };
 
   uploadUserPic = async (sendData: any) => {

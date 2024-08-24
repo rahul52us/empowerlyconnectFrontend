@@ -1,6 +1,5 @@
 import { observer } from "mobx-react-lite";
 import store from "../../../store/store";
-import { renderUserTypeComponent } from "../../../config/constant/function";
 import AdminIndex from "./admin/AdminIndex";
 import UserIndex from "./user/UserIndex";
 import PermissionDeniedPage from "../../../config/component/commonPages/PermissionDeniedPage";
@@ -10,10 +9,10 @@ import { dashboard } from "../../../config/constant/routes";
 const ProjectIndex = observer(() => {
   const navigate = useNavigate();
   const {
-    auth: { user, checkPermission },
+    auth: { user, checkPermission, hasComponentAccess },
   } = store;
 
-  if (renderUserTypeComponent(user.role)) {
+  if (hasComponentAccess()) {
     return (
       <PermissionDeniedPage
         show={!checkPermission("project", "view")}

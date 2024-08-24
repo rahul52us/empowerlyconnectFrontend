@@ -13,6 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { FaEdit, FaEye } from "react-icons/fa";
+import store from "../../../../../store/store";
 
 // Function to fetch avatar URLs
 const getAvatarUrl = (userId: string) => {
@@ -20,6 +21,9 @@ const getAvatarUrl = (userId: string) => {
 };
 
 const TaskCard = ({ task, setActiveSelectedTask }: any) => {
+  const {
+    auth: { checkPermission },
+  } = store;
   const bgColor = useColorModeValue(
     "rgba(255, 255, 255, 0.6)",
     "rgba(255, 255, 255, 0.1)"
@@ -27,7 +31,8 @@ const TaskCard = ({ task, setActiveSelectedTask }: any) => {
   const borderColor = useColorModeValue("gray.200", "rgba(255, 255, 255, 0.3)");
   const textColor = useColorModeValue("gray.800", "whiteAlpha.900");
 
-  const { title, description, priority, team_members, startDate, endDate } = task;
+  const { title, description, priority, team_members, startDate, endDate } =
+    task;
 
   // Determine the color scheme based on the priority level
   const getPriorityColorScheme = (priority: string) => {
@@ -47,7 +52,7 @@ const TaskCard = ({ task, setActiveSelectedTask }: any) => {
 
   // Map team members to avatars
   const avatars = team_members
-    ? team_members.map((_: any, index : number) => ({
+    ? team_members.map((_: any, index: number) => ({
         name: `M ${index + 1}`,
         src: getAvatarUrl(`${index + 1}`),
       }))
@@ -58,7 +63,9 @@ const TaskCard = ({ task, setActiveSelectedTask }: any) => {
   };
 
   const handleViewTask = () => {
-    setActiveSelectedTask("view", task);
+    if (checkPermission("task", "view")) {
+      setActiveSelectedTask("view", task);
+    }
   };
 
   const hasValidDates = startDate && endDate;
@@ -70,7 +77,8 @@ const TaskCard = ({ task, setActiveSelectedTask }: any) => {
       )
     : null;
 
-  const formatDate = (date: string) => (date ? new Date(date).toLocaleDateString() : "N/A");
+  const formatDate = (date: string) =>
+    date ? new Date(date).toLocaleDateString() : "N/A";
 
   return (
     <ScaleFade in={true} initialScale={0.9}>
@@ -97,24 +105,28 @@ const TaskCard = ({ task, setActiveSelectedTask }: any) => {
             {priority}
           </Badge>
           <HStack spacing={2}>
-            <Tooltip label="View Task" aria-label="View Task">
-              <IconButton
-                size="sm"
-                colorScheme="blue"
-                aria-label="View Task"
-                icon={<FaEye />}
-                onClick={handleViewTask}
-              />
-            </Tooltip>
-            <Tooltip label="Edit Task" aria-label="Edit Task">
-              <IconButton
-                size="sm"
-                colorScheme="teal"
-                aria-label="Edit Task"
-                icon={<FaEdit />}
-                onClick={handleEditTask}
-              />
-            </Tooltip>
+            {checkPermission("task", "view") && (
+              <Tooltip label="View Task" aria-label="View Task">
+                <IconButton
+                  size="sm"
+                  colorScheme="blue"
+                  aria-label="View Task"
+                  icon={<FaEye />}
+                  onClick={handleViewTask}
+                />
+              </Tooltip>
+            )}
+            {checkPermission("task", "edit") && (
+              <Tooltip label="Edit Task" aria-label="Edit Task">
+                <IconButton
+                  size="sm"
+                  colorScheme="teal"
+                  aria-label="Edit Task"
+                  icon={<FaEdit />}
+                  onClick={handleEditTask}
+                />
+              </Tooltip>
+            )}
           </HStack>
         </Flex>
         <Text

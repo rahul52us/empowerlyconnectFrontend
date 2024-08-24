@@ -20,6 +20,8 @@ import {
   useMediaQuery,
   useTheme,
 } from "@chakra-ui/react";
+import PermissionDeniedPage from "../../component/commonPages/PermissionDeniedPage";
+import { authentication } from "../../constant/routes";
 
 const RedirectComponent = observer(() => {
   const navigate = useNavigate();
@@ -37,7 +39,7 @@ const RedirectComponent = observer(() => {
 
 const DashboardLayout = observer(() => {
   const {
-    auth: { restoreUser, user },
+    auth: { restoreUser, user, checkPermission },
     layout: {
       fullScreenMode,
       mediumScreenMode,
@@ -89,48 +91,53 @@ const DashboardLayout = observer(() => {
   }, [isCallapse, openDashSidebarFun]);
 
   return user ? (
-    <MainContainer isMobile={isMobile}>
-      <Box ref={sidebarRef}>
-        <SidebarLayout
-          onItemClick={handleSidebarItemClick}
-          isCollapsed={isCallapse}
-          onLeafItemClick={handleSidebarItemClick}
-          openMobileSideDrawer={openMobileSideDrawer}
-          setOpenMobileSideDrawer={closeDrawerModel}
-        />
-      </Box>
-      <Container fullScreenMode={fullScreenMode}>
-        <HeaderContainer
-          isMobile={isMobile}
-          sizeStatus={sizeStatus}
-          mediumScreenMode={mediumScreenMode}
-          fullScreenMode={fullScreenMode}
-          backgroundColor={useColorModeValue(
-            themeConfig.colors.custom.light.primary,
-            themeConfig.colors.custom.dark.primary
-          )}
-        >
-          <HeaderLayout />
-        </HeaderContainer>
-        <ContentContainer
-          isMobile={isMobile}
-          mediumScreenMode={mediumScreenMode}
-          className={
-            fullScreenMode
-              ? "fullscreen"
-              : mediumScreenMode
-              ? "mediumScreen"
-              : ""
-          }
-          fullScreenMode={fullScreenMode}
-          sizeStatus={sizeStatus}
-        >
-          <Suspense fallback={<Loader height="90vh" />}>
-            <Outlet />
-          </Suspense>
-        </ContentContainer>
-      </Container>
-    </MainContainer>
+    <PermissionDeniedPage
+    show={!checkPermission('dashboard', 'view')}
+    onClick={() => navigate(authentication.login)}
+    >
+      <MainContainer isMobile={isMobile}>
+        <Box ref={sidebarRef}>
+          <SidebarLayout
+            onItemClick={handleSidebarItemClick}
+            isCollapsed={isCallapse}
+            onLeafItemClick={handleSidebarItemClick}
+            openMobileSideDrawer={openMobileSideDrawer}
+            setOpenMobileSideDrawer={closeDrawerModel}
+          />
+        </Box>
+        <Container fullScreenMode={fullScreenMode}>
+          <HeaderContainer
+            isMobile={isMobile}
+            sizeStatus={sizeStatus}
+            mediumScreenMode={mediumScreenMode}
+            fullScreenMode={fullScreenMode}
+            backgroundColor={useColorModeValue(
+              themeConfig.colors.custom.light.primary,
+              themeConfig.colors.custom.dark.primary
+            )}
+          >
+            <HeaderLayout />
+          </HeaderContainer>
+          <ContentContainer
+            isMobile={isMobile}
+            mediumScreenMode={mediumScreenMode}
+            className={
+              fullScreenMode
+                ? "fullscreen"
+                : mediumScreenMode
+                ? "mediumScreen"
+                : ""
+            }
+            fullScreenMode={fullScreenMode}
+            sizeStatus={sizeStatus}
+          >
+            <Suspense fallback={<Loader height="90vh" />}>
+              <Outlet />
+            </Suspense>
+          </ContentContainer>
+        </Container>
+      </MainContainer>
+    </PermissionDeniedPage>
   ) : (
     <RedirectComponent />
   );
