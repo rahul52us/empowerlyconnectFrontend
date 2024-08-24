@@ -296,11 +296,11 @@ class AuthStore {
   };
 
   checkPermission = (key: string, value: string) => {
-    if (this.user?.role === "superadmin" || this.user?.role === "admin" || this.user.permissions.adminAccess?.add) {
+    if (this.user?.role === "superadmin" || this.user?.role === "admin" || this.user?.permissions?.adminAccess?.add) {
       return true;
     } else {
         var status = false;
-        Object.entries(this.user.permissions).forEach((item: any) => {
+        Object.entries(this.user?.permissions || {}).forEach((item: any) => {
           if (item[0] === key) {
             if (item[1][value]) {
               status = true;
