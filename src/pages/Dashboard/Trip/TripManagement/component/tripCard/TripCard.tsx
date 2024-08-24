@@ -14,6 +14,7 @@ import { BiEdit } from "react-icons/bi";
 import { useState } from "react";
 import { observer } from "mobx-react-lite";
 import { capitalizeString } from "../../../../../../config/constant/function";
+import store from "../../../../../../store/store";
 
 const ThumbnailWrapper = styled(Box)`
   position: relative;
@@ -48,7 +49,8 @@ const ThumbnailCard = styled(Image)`
 `;
 
 const TripCard = observer(
-  ({ setTripFormData, item, handleClick, setSelectedRecord, userId }: any) => {
+  ({ setTripFormData, item, handleClick, setSelectedRecord }: any) => {
+    const {auth : {checkPermission}} = store
     const [thumbnailLoadError, setThumbnailLoadError] = useState(false);
     const bookmarkColor = useColorModeValue("gray.600", "gray.500");
     const headingColor = useColorModeValue("black", "white");
@@ -78,7 +80,7 @@ const TripCard = observer(
           <Heading color="gray.500" fontSize="sm">
             {capitalizeString(item.type)} Trip
           </Heading>
-          {!userId && (
+          {checkPermission('trip','edit') && (
             <Tooltip label="edit" aria-label="edit Tooltip">
               <IconButton
                 icon={<BiEdit />}

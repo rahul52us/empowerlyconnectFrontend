@@ -1,4 +1,13 @@
-import { Box, Heading, SimpleGrid, Flex, Icon, Grid, Button, IconButton, useBreakpointValue } from "@chakra-ui/react";
+import {
+  Box,
+  Heading,
+  SimpleGrid,
+  Flex,
+  Icon,
+  Button,
+  IconButton,
+  useBreakpointValue,
+} from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useEffect, useState, useCallback } from "react";
 import {
@@ -15,14 +24,23 @@ import SummaryWidget from "../../../../../config/component/WigdetCard/SummaryWid
 import ProjectCard from "./ProjectCard";
 import CustomDrawer from "../../../../../config/component/Drawer/CustomDrawer";
 import ProjectDetails from "../../component/ProjectDetails/ProjectDetails";
-import NotFoundData from "../../../../../config/component/NotFound/NotFoundData";
+import NotFoundData from "../../../../../config/component/commonPages/NotFoundData";
 import { useQueryParams } from "../../../../../config/component/customHooks/useQuery";
+import EditProject from "../../component/Form/EditProject";
+import CreateProject from "../../component/Form/CreateProject";
 // import TaskCard from "../../component/TaskCard/TaskCard";
 
-const ProjectWidget = observer(() => {
+const ProjectMainIndex = observer(({ userId }: any) => {
   const {
-    Project: { getProjects, projects, projectCount, getProjectCounts, setOpenProjectDrawer },
-    auth: { openNotification },
+    Project: {
+      getProjects,
+      projects,
+      projectCount,
+      openProjectDrawer,
+      getProjectCounts,
+      setOpenProjectDrawer,
+    },
+    auth: { openNotification, checkPermission },
   } = store;
   const showIcon = useBreakpointValue({ base: true, md: false });
   const [selectedProject, setSelectedProject] = useState({
@@ -36,7 +54,7 @@ const ProjectWidget = observer(() => {
   );
 
   const fetchProjectDetails = useCallback(() => {
-    getProjects({ page: currentPage, limit: 10 })
+    getProjects({ page: currentPage, limit: 10, userId })
       .then(() => {})
       .catch((err) => {
         openNotification({
@@ -45,11 +63,11 @@ const ProjectWidget = observer(() => {
           type: getStatusType(err.status),
         });
       });
-  }, [getProjects, openNotification, currentPage]);
+  }, [getProjects, openNotification, currentPage, userId]);
 
   useEffect(() => {
-    getProjectCounts();
-  }, [getProjectCounts]);
+    getProjectCounts({ userId });
+  }, [getProjectCounts, userId]);
 
   useEffect(() => {
     fetchProjectDetails();
@@ -87,21 +105,6 @@ const ProjectWidget = observer(() => {
     },
   ];
 
-  // const taskData = {
-  //   title: "Admin Dashboard UI",
-  //   description:
-  //     "This is a task description of the task, it can be long or short.",
-  //   category: "Frontend",
-  //   avatars: [
-  //     { name: "Ryan Florence", src: "https://bit.ly/ryan-florence" },
-  //     { name: "Segun Adebayo", src: "https://bit.ly/sage-adebayo" },
-  //     { name: "Kent Dodds", src: "https://bit.ly/kent-c-dodds" },
-  //     { name: "Prosper Otemuyiwa", src: "https://bit.ly/prosper-baba" },
-  //     { name: "Christian Nwamba", src: "https://bit.ly/code-beast" },
-  //   ],
-  //   deadline: "6 Days Left",
-  // };
-
   return (
     <Box>
       <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6} mb={6}>
@@ -117,49 +120,43 @@ const ProjectWidget = observer(() => {
           />
         ))}
       </SimpleGrid>
-
-      <Grid templateColumns={"1fr 1fr 1fr 1fr"} display="none">
-        {/* <TaskCard
-          title={taskData.title}
-          description={taskData.description}
-          category={taskData.category}
-          avatars={taskData.avatars}
-          deadline={taskData.deadline}
-        /> */}
-      </Grid>
       <Flex justifyContent="space-between" alignItems="center" mb={4}>
-      <Heading
-        display="flex"
-        alignItems="center"
-        fontSize={{ base: "xl", md: "2xl" }}
-        color="teal.600"
-      >
-        <Icon as={FaFolderOpen} boxSize={6} mr={2} />
-        Projects
-      </Heading>
-      {showIcon ? (
-            <IconButton
-              title="Create Project"
-              onClick={() => setOpenProjectDrawer("create")}
-              aria-label="Create Project"
-              icon={<FaPlus />}
-              colorScheme="teal"
-            />
-          ) : (
-            <Button
-            leftIcon={<FaPlus />}
-            colorScheme="teal"
-            variant="solid"
-            size="lg"
-            _hover={{ bg: "teal.600" }}
-            _active={{ bg: "teal.700" }}
-            _focus={{ boxShadow: "outline" }}
-              onClick={() => setOpenProjectDrawer("create")}
-            >
-              CREATE PROJECT
-            </Button>
-          )}
-        </Flex>
+        <Heading
+          display="flex"
+          alignItems="center"
+          fontSize={{ base: "xl", md: "2xl" }}
+          color="teal.600"
+        >
+          <Icon as={FaFolderOpen} boxSize={6} mr={2} />
+          Projects
+        </Heading>
+        {checkPermission("project", "add") && (
+          <Box>
+            {showIcon ? (
+              <IconButton
+                title="Create Project"
+                onClick={() => setOpenProjectDrawer("create")}
+                aria-label="Create Project"
+                icon={<FaPlus />}
+                colorScheme="teal"
+              />
+            ) : (
+              <Button
+                leftIcon={<FaPlus />}
+                colorScheme="teal"
+                variant="solid"
+                size="lg"
+                _hover={{ bg: "teal.600" }}
+                _active={{ bg: "teal.700" }}
+                _focus={{ boxShadow: "outline" }}
+                onClick={() => setOpenProjectDrawer("create")}
+              >
+                CREATE PROJECT
+              </Button>
+            )}
+          </Box>
+        )}
+      </Flex>
       {projects.data.length === 0 && projects.loading === false ? (
         <NotFoundData
           onClick={() => {}}
@@ -207,8 +204,24 @@ const ProjectWidget = observer(() => {
       >
         <ProjectDetails selectedProject={selectedProject.data} />
       </CustomDrawer>
+      <CustomDrawer
+        width="90vw"
+        title={`${
+          openProjectDrawer.type === "edit"
+            ? "UPDATE PROJECT"
+            : "CREATE NEW PROJECT"
+        }`}
+        open={openProjectDrawer.open}
+        close={() => setOpenProjectDrawer("create")}
+      >
+        {openProjectDrawer.type === "edit" ? (
+          <EditProject userId={userId} />
+        ) : (
+          <CreateProject userId={userId} />
+        )}
+      </CustomDrawer>
     </Box>
   );
 });
 
-export default ProjectWidget;
+export default ProjectMainIndex;

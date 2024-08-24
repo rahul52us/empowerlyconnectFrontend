@@ -11,7 +11,7 @@ import { ProjectPrioties, projectStatus } from "../utils/constant";
 import { generateProjectResponse } from "../utils/function";
 import ShowFileUploadFile from "../../../../../config/component/common/ShowFileUploadFile/ShowFileUploadFile";
 import { removeDataByIndex } from "../../../../../config/constant/function";
-import NotFoundData from "../../../../../config/component/NotFound/NotFoundData";
+import NotFoundData from "../../../../../config/component/commonPages/NotFoundData";
 import DrawerFormHeightContainer from "../../../../../config/component/Drawer/DrawerFormHeightContainer";
 
 const ProjectForm = observer(

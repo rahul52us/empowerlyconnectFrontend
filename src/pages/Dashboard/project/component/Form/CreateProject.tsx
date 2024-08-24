@@ -5,7 +5,7 @@ import store from "../../../../../store/store";
 import { getStatusType } from "../../../../../config/constant/statusCode";
 import { readFileAsBase64 } from "../../../../../config/constant/function";
 
-const CreateProject = observer(() => {
+const CreateProject = observer(({userId} : any) => {
   const {
     Project: { createProject, setOpenProjectDrawer, getProjects, projects },
     auth: { openNotification },
@@ -51,7 +51,7 @@ const CreateProject = observer(() => {
             message: `${data.message}`,
             type: "success",
           });
-          getProjects({page : projects.currentPage, limit : projects.limit})
+          getProjects({page : projects.currentPage, limit : projects.limit, userId})
           resetForm();
           setOpenProjectDrawer("create");
         })

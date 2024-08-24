@@ -5,9 +5,10 @@ import { transformPermissionsForForm } from "./function";
 
 export const defaultPermissions: any = {
   user: { add: false, edit: false, delete: false, view: false },
-  trip: { add: false, edit: false, view: false, delete: false },
+  trip: { add: false, edit: false, view: true, delete: false },
   course: { add: false, edit: false, view: false, delete: false },
   videos: { add: false, edit: false, view: false, delete: false },
+  project: { add: false, edit: false, view: true, delete: false },
   managers: { view: false },
   dashboard: { view: false },
 };

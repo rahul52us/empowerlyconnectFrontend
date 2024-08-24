@@ -7,7 +7,7 @@ import Loader from "../../../../../config/component/Loader/Loader";
 import { getStatusType } from "../../../../../config/constant/statusCode";
 import { readFileAsBase64 } from "../../../../../config/constant/function";
 
-const EditProject = observer((projectData: any) => {
+const EditProject = observer(({userId} : any) => {
   const {
     Project: {
       getSingleProject,
@@ -36,7 +36,7 @@ const EditProject = observer((projectData: any) => {
       .catch(() => {
         setFetchProjectData({ loading: false, data: null });
       });
-  }, [getSingleProject, projectData, openProjectDrawer]);
+  }, [getSingleProject, openProjectDrawer]);
 
   const handleSubmitForm = async ({
     values,
@@ -74,7 +74,7 @@ const EditProject = observer((projectData: any) => {
             message: `${data.message}`,
             type: "success",
           });
-          getProjects({page : projects.currentPage, limit : projects.limit})
+          getProjects({page : projects.currentPage, limit : projects.limit, userId})
           resetForm();
           setOpenProjectDrawer("create");
         })

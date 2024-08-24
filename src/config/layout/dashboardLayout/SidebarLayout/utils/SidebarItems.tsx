@@ -254,7 +254,7 @@ const sidebarDatas: SidebarItem[] = [
     name: "Project",
     icon: <FaBuilding />,
     url: dashboard.application.project,
-    role: ["manager", "admin", "superadmin"],
+    role: ["manager", "admin", "superadmin",'user'],
     children: [
       {
         id: 51,

@@ -6,7 +6,7 @@ import MainPagePagination from "../../../../../../config/component/pagination/Ma
 import { getStatusType } from "../../../../../../config/constant/statusCode";
 import store from "../../../../../../store/store";
 import BookCard from "./element/BookCard";
-import NotFoundData from "../../../../../../config/component/NotFound/NotFoundData";
+import NotFoundData from "../../../../../../config/component/commonPages/NotFoundData";
 import { useQueryParams } from "../../../../../../config/component/customHooks/useQuery";
 import { FaPlus } from "react-icons/fa";
 import BookDetailDrawer from "../BookDetailDrawers";

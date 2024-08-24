@@ -10,7 +10,7 @@ import AddTripForm from "../../admin/component/forms/AddTripForm";
 import { getStatusType } from "../../../../../../config/constant/statusCode";
 import MainPagePagination from "../../../../../../config/component/pagination/MainPagePagination";
 import { useQueryParams } from "../../../../../../config/component/customHooks/useQuery";
-import NotFoundData from "../../../../../../config/component/NotFound/NotFoundData";
+import NotFoundData from "../../../../../../config/component/commonPages/NotFoundData";
 import ViewTripData from "../../admin/component/forms/ViewTripData";
 
 const TripLayout = observer(
@@ -27,7 +27,7 @@ const TripLayout = observer(
         getAllTrip,
         trips: { data, loading, totalPages },
       },
-      auth: { openNotification },
+      auth: { openNotification, checkPermission },
     } = store;
     const [selectedRecord, setSelectedRecord] = useState<any>({
       open: false,
@@ -206,7 +206,6 @@ const TripLayout = observer(
                     item={item}
                     setTripFormData={setTripFormData}
                     setSelectedRecord={setSelectedRecord}
-                    userId={userId}
                   />
                 );
               })}
@@ -258,23 +257,25 @@ const TripLayout = observer(
             }}
           />
         )}
-        {tripFormData && !userId && tripFormData?.type === "edit" && (
+        {tripFormData && checkPermission('trip','edit') && tripFormData?.type === "edit" && (
           <EditTripForm
             tripFormData={tripFormData}
             setTripFormData={setTripFormData}
             handleGetRecord={applyGetAllRecord}
           />
         )}
-        {tripFormData && !userId && <AddTripForm
+
+        {tripFormData && checkPermission('trip','add') && <AddTripForm
           tripFormData={tripFormData}
           setTripFormData={setTripFormData}
           handleGetRecord={applyGetAllRecord}
         />}
-        {selectedRecord.data && selectedRecord.open && (
+
+        {selectedRecord.data && selectedRecord.open && checkPermission('trip','view') && (
           <ViewTripData
             item={selectedRecord.data}
             open={selectedRecord.open}
-            userId={userId}
+            userId={checkPermission('trip','edit')}
             onClose={() => setSelectedRecord({ open: false, data: null })}
           />
         )}

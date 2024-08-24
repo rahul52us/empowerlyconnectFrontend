@@ -113,3 +113,11 @@ export const formatCurrency = (amount: number, currency: string = '₹'): string
     return `${currency} 0.00`;
   }
 };
+
+export const renderUserTypeComponent = (role : any) => {
+  if(['admin','superadmin'].includes(role)){
+     return true
+  }else{
+    return false
+  }
+}
