@@ -88,7 +88,7 @@ const PermissionDeniedPage = ({
             variant="solid"
             onClick={() => {
               if (onClick) {
-                onClick();P
+                onClick();
               } else {
                 navigate(dashboard.home);
               }
