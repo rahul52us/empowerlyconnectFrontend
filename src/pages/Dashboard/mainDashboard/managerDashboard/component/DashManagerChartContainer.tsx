@@ -4,7 +4,7 @@ import { observer } from "mobx-react-lite";
 import store from "../../../../../store/store";
 import { useEffect } from "react";
 import { makeChartResponse } from "../../../component/utils/common";
-import PieChart from "../../../../../config/component/charts/PieChart";
+import DonutChart from "../../../../../config/component/charts/Doughnut";
 
 const DashChartContainer = observer(() => {
   const {
@@ -26,20 +26,16 @@ const DashChartContainer = observer(() => {
       });
   }, [getManagersUsersCount]);
 
-  // const videosChartData = makeChartResponse(
-  //   managersUsersCount.data,
-  //   "Videos Data",
-  //   "title",
-  //   "count",
-  //   ["#FF5733", "#33FF57", "#3366FF", "#FF33A1", "#FFD700"]
-  // );
+  // Medium-light color palettes
+  const barChartColors = ["#4A90E2", "#50E3C2", "#F5A623", "#D0021B", "#B8E986"];
+  const donutChartColors = ["#4CAF50", "#FFC107", "#03A9F4", "#E91E63", "#9E9E9E"];
 
   const coursesChartData = makeChartResponse(
     managersUsersCount.data,
     "Member Counts",
     "title",
     "count",
-    ["#FFB399", "#99FFCC", "#99CCFF", "#FF99CC", "#FFE680"]
+    barChartColors // Use the medium-light color palette for BarChart
   );
 
   return (
@@ -57,10 +53,11 @@ const DashChartContainer = observer(() => {
         />
       </Card>
       <Card width={"100%"} minH={350} p={{ base: 0, sm: 2 }}>
-        <PieChart
+        <DonutChart
           data={coursesChartData?.data}
           options={coursesChartData?.options}
           loading={managersUsersCount.loading}
+          colors={donutChartColors} // Use the medium-light color palette for DonutChart
         />
       </Card>
     </Grid>

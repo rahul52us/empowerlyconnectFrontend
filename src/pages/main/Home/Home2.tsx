@@ -340,7 +340,6 @@ const Home2 = () => {
     <Box>
       <HeroSection2 />
 
-      <PaymentPage/>
       <Box m={2}>
         <Box
           maxW={"75%"}
@@ -352,6 +351,7 @@ const Home2 = () => {
           display="none"
           // shadow="rgb(0 0 0 / 15%) 0px 0px 12px"
         >
+                <PaymentPage/>
           <CourseForm
             initialValues={initialValues}
             showError={showError}
