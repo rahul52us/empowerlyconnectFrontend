@@ -6,7 +6,7 @@ import store from "../../../../../store/store";
 import { getStatusType } from "../../../../../config/constant/statusCode";
 
 const EditWorkLocation = observer(
-  ({ formValues, setFormValues, getAllRecords }: any) => {
+  ({ formValues, setFormValues, getAllRecords , policy}: any) => {
     const {
       company: { updateWorkLocation },
       auth: { openNotification },
@@ -22,9 +22,11 @@ const EditWorkLocation = observer(
       updateWorkLocation({
         ...values,
         locationName: values?.locationName?.trim(),
+        _id : formValues?.data?._id,
         oldLocation: formValues?.data?.locationName,
         ipAddress: values?.ipAddress?.trim(),
         edit: 1,
+        policy : policy
       })
         .then((data: any) => {
           openNotification({

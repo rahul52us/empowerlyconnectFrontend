@@ -8,7 +8,7 @@ import { getStatusType } from "../../../../../config/constant/statusCode";
 const AddHoliday = observer(({ formValues, setFormValues, getAllRecords }: any) => {
   const {
     company: { updateHoliday },
-    auth: { openNotification },
+    auth: { openNotification, getPolicy },
   } = store;
   const [showError, setShowError] = useState(false);
 
@@ -18,7 +18,7 @@ const AddHoliday = observer(({ formValues, setFormValues, getAllRecords }: any) 
   };
 
   const handleSubmit = ({ values, setSubmitting, resetForm }: any) => {
-    updateHoliday({ ...values, title : values.title?.trim() })
+    updateHoliday({ ...values, title : values.title?.trim(), isAdd : 1, policy : getPolicy() })
       .then((data: any) => {
         openNotification({
           title: "Create Successfully",

@@ -3,6 +3,8 @@ import CreateOrganisationStep2 from "../../../../../../Authentication/CreateOrga
 import { observer } from "mobx-react-lite"
 
 const FormCompany = observer(({onClose, initialValues, isEdit} : any) => {
+
+  console.log('the initialValues are', initialValues)
   return (
     <Box>
         <CreateOrganisationStep2 initialValues={initialValues} isEdit={isEdit} singleCompany={true} onClose={onClose}/>

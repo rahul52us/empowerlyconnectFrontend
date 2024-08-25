@@ -54,7 +54,8 @@ class AuthStore {
       createOrganisation: action,
       getCompanyUsers: action,
       getCurrentCompany: action,
-      hasComponentAccess:action
+      hasComponentAccess:action,
+      getPolicy:action
     });
   }
 
@@ -218,6 +219,10 @@ class AuthStore {
   getCurrentCompany = () => {
     return this.company;
   };
+
+  getPolicy = () => {
+    return this?.user?.companyDetail?.company?.policy?._id
+  }
 
   updateProfile = async (sendData: any) => {
     try {

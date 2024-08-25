@@ -14,13 +14,13 @@ import { timeOptions, weekOptions } from "../utils/constant";
 const WorkTimingForm = observer(({ setFormData }: any) => {
   const {
     company: { updateWorkTiming, workTiming, getWorkTiming },
-    auth: { openNotification },
+    auth: { openNotification,getPolicy },
   } = store;
 
   const [showError, setShowError] = useState(false);
 
   useEffect(() => {
-    getWorkTiming({})
+    getWorkTiming({policy : getPolicy()})
       .then(() => {})
       .catch((err: any) => {
         openNotification({
@@ -29,7 +29,7 @@ const WorkTimingForm = observer(({ setFormData }: any) => {
           message: err?.data?.message,
         });
       });
-  }, [getWorkTiming, openNotification]);
+  }, [getWorkTiming, openNotification, getPolicy]);
 
   return (
     <Box p={6} maxW="100%">
