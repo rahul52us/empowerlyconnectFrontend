@@ -3,6 +3,7 @@ import { main } from "../constant/routes";
 import AddingparaForm from "../../pages/main/Contact/AddingparaForm";
 import SingleProduct from "../../pages/main/Product/component/SingleProduct";
 import Home2 from "../../pages/main/Home/Home2";
+import Ecommerce from "../../pages/main/Ecommerce/Ecommerce";
 // const Home = lazy(() => import("../../pages/main/Home/Home"));
 const About = lazy(() => import("../../pages/main/About/About"));
 const PageNotFound = lazy(() => import("../component/common/WebPages/PageNotFound"));
@@ -126,6 +127,11 @@ export const MainPublicRoutes = [
   {
     element : <IndividualCompanyHome />,
     path: main.individualHomeCompany,
+    publicRoutes:true
+  },
+  {
+    element : <Ecommerce />,
+    path: main.ecommerce,
     publicRoutes:true
   },
   // Not found

@@ -119,6 +119,7 @@ export const main = {
   quizTitle: "/quiz/:quizTitle",
   quizQuestionIndex: "/quiz/:quizTitle/:categoryTitle",
   individualHomeCompany: "/:individualCompany",
+  ecommerce: "/ecommerce",
 };
 
 export const privateMain = {
