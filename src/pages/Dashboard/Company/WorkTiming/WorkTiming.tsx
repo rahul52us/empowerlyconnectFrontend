@@ -12,7 +12,7 @@ const WorkTiming = observer(({ formData, setFormData }: any) => {
       open={formData.open}
       close={() => setFormData({ open: false })}
     >
-      <WorkTimingForm setFormData={setFormData}/>
+      <WorkTimingForm />
     </FormModel>
   );
 });
