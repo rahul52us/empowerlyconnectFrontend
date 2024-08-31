@@ -1,4 +1,3 @@
-// import React from 'react';
 import {
   Badge,
   Box,
@@ -78,7 +77,7 @@ const ProductCard = () => {
             </Text>
           </Flex>
           <HStack align="center">
-            <Box as="span" color="yellow.400" fontSize="lg">
+            <Box as="span" color="blue.500">
               ★ {product.rating}
             </Box>
             <Text fontSize="sm" color="gray.500">

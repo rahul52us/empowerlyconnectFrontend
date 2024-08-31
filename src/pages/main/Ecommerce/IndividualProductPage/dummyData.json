@@ -1,0 +1,25 @@
+{
+  "id": 1,
+  "name": "U.S. Polo Slim T-Shirt",
+  "description": "Spread Collar Pure Cotton Casual Shirt",
+  "price": 999,
+  "currency": "₹",
+  "discount": 20,
+  "rating": 4.5,
+  "reviewsCount": 120,
+  "sizes": ["XS", "S", "M", "L", "XL"],
+  "colors": ["black", "red.400", "blue.400", "green.400", "yellow.400"],
+  "images": [
+    "https://img.freepik.com/free-photo/tattooed-biker-hand-holds-wooden-hangs-with-blank-black-white-t-shirts-from-premium-thin-cotton-isolated-white_346278-1811.jpg?uid=R98118533&ga=GA1.1.1822911562.1716356990&semt=ais_hybrid",
+    "https://img.freepik.com/free-photo/arrangement-yellow-cyber-monday-elements_23-2149074070.jpg?size=626&ext=jpg",
+    "https://img.freepik.com/free-photo/closeup-shot-handsome-man-smiling-blue-background_181624-50433.jpg",
+    "https://img.freepik.com/free-photo/studio-shot-joyful-bearded-european-man-points-fingers-upwards-smiles-with-teeth-gives-advertisement-space-above-wears-round-glasses-brown-jumper-isolated-beige-wall_273609-58394.jpg?size=626&ext=jpg",
+    "https://img.freepik.com/free-photo/portrait-pretty-woman-smiling-crossed-arms-isolated-pink-background_23-2148202650.jpg"
+  ],
+  "features": [
+    "Secure Payment",
+    "Size & Fit",
+    "Free Shipping",
+    "10 Days Replacement"
+  ]
+}
