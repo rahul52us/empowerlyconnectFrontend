@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Box, Button, Grid, GridItem, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Grid, GridItem, Text } from "@chakra-ui/react";
 import { FieldArray, Form, Formik } from "formik";
 import { observer } from "mobx-react-lite";
 import store from "../../../../../../store/store";
@@ -31,15 +31,62 @@ const TaskForm = observer(
         });
     }, [getCompanyUsers, openNotification]);
 
-    const getAttachFilesError = (errors: any, type: string, index: number) => {
-      const errorTypes = ["title"];
-      if (errors.attach_files && errors.attach_files[index]) {
-        const errorTypeIndex = errorTypes.indexOf(type);
-        if (errorTypeIndex !== -1) {
-          return errors.attach_files[index][errorTypes[errorTypeIndex]];
+    const generateErrors = (
+      errorType: any,
+      errors: any,
+      type: string,
+      index: number
+    ) => {
+      if (errorType === "attach_files") {
+        const errorTypes = ["title"];
+        if (errors.attach_files && errors.attach_files[index]) {
+          const errorTypeIndex = errorTypes.indexOf(type);
+          if (errorTypeIndex !== -1) {
+            return errors.attach_files[index][errorTypes[errorTypeIndex]];
+          }
         }
+        return undefined;
       }
-      return undefined;
+      if (errorType === "followers") {
+        const errorTypes = ["user"];
+        if (errors.followers && errors.followers[index]) {
+          const errorTypeIndex = errorTypes.indexOf(type);
+          if (errorTypeIndex !== -1) {
+            return errors.followers[index][errorTypes[errorTypeIndex]];
+          }
+        }
+        return undefined;
+      }
+      if (errorType === "team_members") {
+        const errorTypes = ["user"];
+        if (errors.team_members && errors.team_members[index]) {
+          const errorTypeIndex = errorTypes.indexOf(type);
+          if (errorTypeIndex !== -1) {
+            return errors.team_members[index][errorTypes[errorTypeIndex]];
+          }
+        }
+        return undefined;
+      }
+      if (errorType === "customers") {
+        const errorTypes = ["user"];
+        if (errors.customers && errors.customers[index]) {
+          const errorTypeIndex = errorTypes.indexOf(type);
+          if (errorTypeIndex !== -1) {
+            return errors.customers[index][errorTypes[errorTypeIndex]];
+          }
+        }
+        return undefined;
+      }
+      if (errorType === "project_manager") {
+        const errorTypes = ["user"];
+        if (errors.project_manager && errors.project_manager[index]) {
+          const errorTypeIndex = errorTypes.indexOf(type);
+          if (errorTypeIndex !== -1) {
+            return errors.project_manager[index][errorTypes[errorTypeIndex]];
+          }
+        }
+        return undefined;
+      }
     };
 
     return (
@@ -200,21 +247,149 @@ const TaskForm = observer(
                       error={errors.assigner}
                       showError={showError}
                     />
-                    <CustomInput
-                      name="team_members"
-                      label="Team"
-                      value={values.team_members}
-                      options={values.team_members}
-                      placeholder="Search OR Select the Team Members"
-                      type="real-time-user-search"
-                      onChange={(e: any) => {
-                        setFieldValue("team_members", e);
-                      }}
-                      isMulti={true}
-                      isSearchable
-                      error={errors.team_members}
-                      showError={showError}
-                    />
+                        <GridItem colSpan={3} rowGap={3} mb={5}>
+                      <Box mt={5} mb={2}>
+                        <Text fontWeight={"bold"}>Add Members :- </Text>
+                      </Box>
+                      <FieldArray name="team_members">
+                        {({ push, remove }) => (
+                          <Box>
+                            {values.team_members.length > 0 ? (
+                              <Grid
+                                templateColumns={{ base: "1fr", md: "1fr 1fr" }}
+                                gap={4}
+                                mb={4}
+                              >
+                                {values.team_members.map(
+                                  (user: any, index: number) => (
+                                    <Box
+                                      key={index}
+                                      p={4}
+                                      borderWidth="1px"
+                                      borderRadius="md"
+                                      boxShadow="sm"
+                                    >
+                                      <Flex
+                                        direction={{
+                                          base: "column",
+                                          md: "row",
+                                        }}
+                                        align="center"
+                                        justify="space-between"
+                                        gap={4}
+                                      >
+                                        <CustomInput
+                                          name={`team_members.${index}.user`}
+                                          label="Members"
+                                          value={
+                                            type === "edit" && user?.user
+                                              ? {
+                                                  label: user.user.username,
+                                                  value: user.user._id,
+                                                }
+                                              : undefined
+                                          }
+                                          options={
+                                            type === "edit" && user?.user
+                                              ? [
+                                                  {
+                                                    label: user.user.username,
+                                                    value: user.user._id,
+                                                  },
+                                                ]
+                                              : []
+                                          }
+                                          placeholder="Select Member"
+                                          type="real-time-user-search"
+                                          onChange={(selectedOption) => {
+                                            setFieldValue(
+                                              `team_members.${index}.user`,
+                                              selectedOption
+                                            );
+                                          }}
+                                          isMulti={false}
+                                          isSearchable
+                                          showError={showError}
+                                          error={generateErrors(
+                                            "team_members",
+                                            errors,
+                                            "user",
+                                            index
+                                          )}
+                                          // flex="1"
+                                        />
+                                        <CustomInput
+                                          type="checkbox"
+                                          name={`team_members.${index}.isActive`}
+                                          label="Active"
+                                          value={user.isActive}
+                                          onChange={(e: any) => {
+                                            setFieldValue(
+                                              `team_members.${index}.isActive`,
+                                              e.target.checked
+                                            );
+                                          }}
+                                          // flexShrink={0}
+                                        />
+                                        {user.isAdd && (
+                                          <CustomInput
+                                            type="checkbox"
+                                            name={`team_members.${index}.invitationMail`}
+                                            label="Send Invitation Mail"
+                                            value={user.invitationMail}
+                                            onChange={(e: any) => {
+                                              setFieldValue(
+                                                `team_members.${index}.invitationMail`,
+                                                e.target.checked
+                                              );
+                                            }}
+                                            rest={{ flexShrink: 0 }}
+                                          />
+                                        )}
+                                        <Button
+                                          onClick={() => remove(index)}
+                                          size="sm"
+                                          colorScheme="red"
+                                          variant="outline"
+                                          flexShrink={0}
+                                        >
+                                          Delete
+                                        </Button>
+                                      </Flex>
+                                    </Box>
+                                  )
+                                )}
+                              </Grid>
+                            ) : (
+                              <Text
+                                fontSize="md"
+                                color="gray.500"
+                                mb={4}
+                                textAlign="center"
+                                fontWeight="bold"
+                              >
+                                No Team Manager added yet.
+                              </Text>
+                            )}
+                            <Button
+                              mt={4}
+                              width="100%"
+                              onClick={() =>
+                                push({
+                                  user: undefined,
+                                  isActive: true,
+                                  isAdd: true,
+                                  invitationMail: true,
+                                })
+                              }
+                              colorScheme="blue"
+                            >
+                              Add Member
+                            </Button>
+                          </Box>
+                        )}
+                      </FieldArray>
+                    </GridItem>
                     <CustomInput
                       name="dependencies"
                       label="Dependency Members"
@@ -316,7 +491,8 @@ const TaskForm = observer(
                                           required
                                           showError={showError}
                                           onChange={handleChange}
-                                          error={getAttachFilesError(
+                                          error={generateErrors(
+                                            'attach_files',
                                             errors,
                                             "title",
                                             index

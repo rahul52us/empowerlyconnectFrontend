@@ -33,13 +33,14 @@ const Login = observer(() => {
         bg={useColorModeValue("white", "gray.700")}
         boxShadow={"lg"}
         p={8}
+        maxW={'xl'}
       >
         <Stack align={"center"} mb={10}>
-          <Heading fontSize={"4xl"}>
+          <Heading fontSize={"4xl"} mb={2}>
             Sign In
           </Heading>
           <Text fontSize={"lg"} >
-            to enjoy all of our cool <Link color={"blue.400"}>features</Link> ✌️
+              Sign in to access all your personalized features and continue where you left off ✌️.
           </Text>
         </Stack>
         <Formik
@@ -76,7 +77,6 @@ const Login = observer(() => {
               <Stack spacing={4}>
                 <CustomInput
                   type="text"
-                  labelcolor={"snow"}
                   name="username"
                   label="Email"
                   placeholder="Enter the email"
@@ -88,7 +88,6 @@ const Login = observer(() => {
                 />
                 <CustomInput
                   type="password"
-                  labelcolor={"snow"}
                   name="password"
                   label="Password"
                   placeholder="Enter the password"

@@ -148,7 +148,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
     try {
       const response: any = await store.auth.getCompanyUsers({
         page: 1,
-        searchValue: query,
+        searchValue: query
       });
       setUserOptions(
         response.map((it: any) => ({
@@ -175,7 +175,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
   // };
 
   useEffect(() => {
-    if (isMounted.current && searchInput.trim() !== "") {
+    if (isMounted?.current && searchInput?.trim() !== "") {
       debouncedFetchSearchUserResults(searchInput);
     } else {
       isMounted.current = true;

@@ -369,22 +369,24 @@ const ProjectForm = observer(
                                           }}
                                           rest={{ flexShrink: 0 }}
                                         />
-                                        {user.isAdd && <CustomInput
-                                          type="checkbox"
-                                          name={`customers.${index}.invitationMail`}
-                                          label="Send Invitation Mail"
-                                          value={user.invitationMail}
-                                          onChange={(e: any) => {
-                                            setFieldValue(
-                                              `customers.${index}.invitationMail`,
-                                              e.target.checked
-                                            );
-                                          }}
-                                          rest={{ flexShrink: 0 }}
-                                        />}
+                                        {user.isAdd && (
+                                          <CustomInput
+                                            type="checkbox"
+                                            name={`customers.${index}.invitationMail`}
+                                            label="Send Invitation Mail"
+                                            value={user.invitationMail}
+                                            onChange={(e: any) => {
+                                              setFieldValue(
+                                                `customers.${index}.invitationMail`,
+                                                e.target.checked
+                                              );
+                                            }}
+                                            rest={{ flexShrink: 0 }}
+                                          />
+                                        )}
                                         <Button
                                           onClick={() => {
-                                            remove(index)
+                                            remove(index);
                                           }}
                                           size="sm"
                                           colorScheme="red"
@@ -417,7 +419,7 @@ const ProjectForm = observer(
                                   user: undefined,
                                   isActive: true,
                                   isAdd: true,
-                                  invitationMail:true
+                                  invitationMail: true,
                                 })
                               }
                               colorScheme="blue"
@@ -512,19 +514,21 @@ const ProjectForm = observer(
                                           }}
                                           // flexShrink={0}
                                         />
-                                        {user.isAdd && <CustomInput
-                                          type="checkbox"
-                                          name={`project_manager.${index}.invitationMail`}
-                                          label="Send Invitation Mail"
-                                          value={user.invitationMail}
-                                          onChange={(e: any) => {
-                                            setFieldValue(
-                                              `project_manager.${index}.invitationMail`,
-                                              e.target.checked
-                                            );
-                                          }}
-                                          rest={{ flexShrink: 0 }}
-                                        />}
+                                        {user.isAdd && (
+                                          <CustomInput
+                                            type="checkbox"
+                                            name={`project_manager.${index}.invitationMail`}
+                                            label="Send Invitation Mail"
+                                            value={user.invitationMail}
+                                            onChange={(e: any) => {
+                                              setFieldValue(
+                                                `project_manager.${index}.invitationMail`,
+                                                e.target.checked
+                                              );
+                                            }}
+                                            rest={{ flexShrink: 0 }}
+                                          />
+                                        )}
                                         <Button
                                           onClick={() => remove(index)}
                                           size="sm"
@@ -558,7 +562,7 @@ const ProjectForm = observer(
                                   user: undefined,
                                   isActive: true,
                                   isAdd: true,
-                                  invitationMail:true
+                                  invitationMail: true,
                                 })
                               }
                               colorScheme="blue"
@@ -653,19 +657,21 @@ const ProjectForm = observer(
                                           }}
                                           // flexShrink={0}
                                         />
-                                        {user.isAdd && <CustomInput
-                                          type="checkbox"
-                                          name={`team_members.${index}.invitationMail`}
-                                          label="Send Invitation Mail"
-                                          value={user.invitationMail}
-                                          onChange={(e: any) => {
-                                            setFieldValue(
-                                              `team_members.${index}.invitationMail`,
-                                              e.target.checked
-                                            );
-                                          }}
-                                          rest={{ flexShrink: 0 }}
-                                        />}
+                                        {user.isAdd && (
+                                          <CustomInput
+                                            type="checkbox"
+                                            name={`team_members.${index}.invitationMail`}
+                                            label="Send Invitation Mail"
+                                            value={user.invitationMail}
+                                            onChange={(e: any) => {
+                                              setFieldValue(
+                                                `team_members.${index}.invitationMail`,
+                                                e.target.checked
+                                              );
+                                            }}
+                                            rest={{ flexShrink: 0 }}
+                                          />
+                                        )}
                                         <Button
                                           onClick={() => remove(index)}
                                           size="sm"
@@ -699,7 +705,7 @@ const ProjectForm = observer(
                                   user: undefined,
                                   isActive: true,
                                   isAdd: true,
-                                  invitationMail:true
+                                  invitationMail: true,
                                 })
                               }
                               colorScheme="blue"
@@ -725,101 +731,104 @@ const ProjectForm = observer(
                               >
                                 {values.followers.map(
                                   (user: any, index: number) => {
-                                    return(
-                                    <Box
-                                      key={`followers-${index}`}
-                                      p={4}
-                                      borderWidth="1px"
-                                      borderRadius="md"
-                                      boxShadow="sm"
-                                    >
-                                      <Flex
-                                        direction={{
-                                          base: "column",
-                                          md: "row",
-                                        }}
-                                        align="center"
-                                        justify="space-between"
-                                        gap={4}
+                                    return (
+                                      <Box
+                                        key={`followers-${index}`}
+                                        p={4}
+                                        borderWidth="1px"
+                                        borderRadius="md"
+                                        boxShadow="sm"
                                       >
-                                        <CustomInput
-                                          name={`followers.${index}.user`}
-                                          label="Follower"
-                                          value={
-                                            isEdit && user?.user
-                                              ? {
-                                                  label: user.user.username,
-                                                  value: user.user._id,
-                                                }
-                                              : undefined
-                                          }
-                                          options={
-                                            isEdit && user?.user
-                                              ? [
-                                                  {
+                                        <Flex
+                                          direction={{
+                                            base: "column",
+                                            md: "row",
+                                          }}
+                                          align="center"
+                                          justify="space-between"
+                                          gap={4}
+                                        >
+                                          <CustomInput
+                                            name={`followers.${index}.user`}
+                                            label="Follower"
+                                            value={
+                                              isEdit && user?.user
+                                                ? {
                                                     label: user.user.username,
                                                     value: user.user._id,
-                                                  },
-                                                ]
-                                              : []
-                                          }
-                                          placeholder="Select Follower"
-                                          type="real-time-user-search"
-                                          onChange={(selectedOption) => {
-                                            setFieldValue(
-                                              `followers.${index}.user`,
-                                              selectedOption
-                                            );
-                                          }}
-                                          isMulti={false}
-                                          isSearchable
-                                          showError={showError}
-                                          error={generateErrors(
-                                            "followers",
-                                            errors,
-                                            "user",
-                                            index
+                                                  }
+                                                : undefined
+                                            }
+                                            options={
+                                              isEdit && user?.user
+                                                ? [
+                                                    {
+                                                      label: user.user.username,
+                                                      value: user.user._id,
+                                                    },
+                                                  ]
+                                                : []
+                                            }
+                                            placeholder="Select Follower"
+                                            type="real-time-user-search"
+                                            onChange={(selectedOption) => {
+                                              setFieldValue(
+                                                `followers.${index}.user`,
+                                                selectedOption
+                                              );
+                                            }}
+                                            isMulti={false}
+                                            isSearchable
+                                            showError={showError}
+                                            error={generateErrors(
+                                              "followers",
+                                              errors,
+                                              "user",
+                                              index
+                                            )}
+                                            // flex="1"
+                                          />
+                                          <CustomInput
+                                            type="checkbox"
+                                            name={`followers.${index}.isActive`}
+                                            label="Active"
+                                            value={user.isActive}
+                                            onChange={(e: any) => {
+                                              setFieldValue(
+                                                `followers.${index}.isActive`,
+                                                e.target.checked
+                                              );
+                                            }}
+                                            // flexShrink={0}
+                                          />
+                                          {user.isAdd && (
+                                            <CustomInput
+                                              type="checkbox"
+                                              name={`followers.${index}.invitationMail`}
+                                              label="Send Invitation Mail"
+                                              value={user.invitationMail}
+                                              onChange={(e: any) => {
+                                                setFieldValue(
+                                                  `followers.${index}.invitationMail`,
+                                                  e.target.checked
+                                                );
+                                              }}
+                                              rest={{ flexShrink: 0 }}
+                                            />
                                           )}
-                                          // flex="1"
-                                        />
-                                        <CustomInput
-                                          type="checkbox"
-                                          name={`followers.${index}.isActive`}
-                                          label="Active"
-                                          value={user.isActive}
-                                          onChange={(e: any) => {
-                                            setFieldValue(
-                                              `followers.${index}.isActive`,
-                                              e.target.checked
-                                            );
-                                          }}
-                                          // flexShrink={0}
-                                        />
-                                        {user.isAdd && <CustomInput
-                                          type="checkbox"
-                                          name={`followers.${index}.invitationMail`}
-                                          label="Send Invitation Mail"
-                                          value={user.invitationMail}
-                                          onChange={(e: any) => {
-                                            setFieldValue(
-                                              `followers.${index}.invitationMail`,
-                                              e.target.checked
-                                            );
-                                          }}
-                                          rest={{ flexShrink: 0 }}
-                                        />}
-                                        <Button
-                                          onClick={() => remove(index)}
-                                          size="sm"
-                                          colorScheme="red"
-                                          variant="outline"
-                                          flexShrink={0}
-                                        >
-                                          Delete
-                                        </Button>
-                                      </Flex>
-                                    </Box>
-                                  )}
+                                          <Button
+                                            onClick={() => remove(index)}
+                                            size="sm"
+                                            colorScheme="red"
+                                            variant="outline"
+                                            flexShrink={0}
+                                          >
+                                            Delete
+                                          </Button>
+                                        </Flex>
+                                      </Box>
+                                    );
+                                  }
                                 )}
                               </Grid>
                             ) : (
@@ -841,7 +850,7 @@ const ProjectForm = observer(
                                   user: undefined,
                                   isActive: true,
                                   isAdd: true,
-                                  invitationMail:true
+                                  invitationMail: true,
                                 })
                               }
                               colorScheme="blue"

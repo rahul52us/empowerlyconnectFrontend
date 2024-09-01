@@ -1,12 +1,13 @@
 import { lazy } from "react";
 import { dashboard } from "../constant/routes";
-import ProfileEditIndex from "../../pages/Dashboard/profile/ProfileEditIndex";
+const VerifyInvitationPage = lazy(() => import("../component/common/VerifyInvitationPages/VerifyInvitationPage"))
 
 const PersonalDetails = lazy(
   () => import("../../pages/Dashboard/Users/PersonalDetails")
 );
 
 const ProfileIndex = lazy(() => import("../../pages/Dashboard/profile/ProfileIndex"))
+const ProfileEditIndex = lazy(() => import("../../pages/Dashboard/profile/ProfileEditIndex"));
 
 const PersonalDetailUsersChart = lazy(
   () =>
@@ -35,6 +36,8 @@ const CustomDragForm = lazy(
 const ProjectIndex = lazy(
   () => import("../../pages/Dashboard/project/ProjectIndex")
 );
+
+
 const CustomCalender = lazy(
   () => import("../../pages/Dashboard/CustomCalender/CustomCalender")
 );
@@ -184,6 +187,11 @@ export const DashboardRoutes = [
     element: <CustomDragForm />,
     path: "/dashboard/formbuilder",
     privateRoutes: true,
+  },
+  {
+    element : <VerifyInvitationPage />,
+    path : dashboard.verifyInvitation,
+    privateRoutes : true
   },
   {
     element: <Testimonial />,
@@ -385,5 +393,5 @@ export const DashboardRoutes = [
     element: <TaskIndex />,
     path: dashboard.project.task.index,
     privateRoutes: true
-  },
+  }
 ];

@@ -6,7 +6,6 @@ import {
   Link,
   Button,
   Heading,
-  Text,
   useColorModeValue,
 } from "@chakra-ui/react";
 import CustomInput from "../../../config/component/CustomInput/CustomInput";
@@ -29,9 +28,6 @@ const ResetPassword = observer(() => {
     <Box bg={useColorModeValue("", "gray.800")}>
       <Stack align={"center"} mb={10}>
         <Heading fontSize={"4xl"}>Reset Password</Heading>
-        <Text fontSize={"lg"} color={"gray.600"}>
-          to enjoy all of our cool <Link color={"blue.400"}>features</Link> ✌️
-        </Text>
       </Stack>
       <Box
         rounded={"lg"}

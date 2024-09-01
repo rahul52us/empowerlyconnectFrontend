@@ -18,6 +18,7 @@ export const dashboard = {
   class: `/${dashboardName}/class`,
   course: `/${dashboardName}/courses`,
   quiz: `/${dashboardName}/quiz`,
+  verifyInvitation : `/${dashboardName}/:invitationType/verify-invitation/:token`,
 
   // Profile
 
