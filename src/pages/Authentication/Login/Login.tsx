@@ -103,7 +103,7 @@ const Login = observer(() => {
                     align={"start"}
                     justify={"space-between"}
                   >
-                    <Field color="white" as={Checkbox} name="remember_me">
+                    <Field as={Checkbox} name="remember_me">
                       Remember me
                     </Field>
                     <Link
