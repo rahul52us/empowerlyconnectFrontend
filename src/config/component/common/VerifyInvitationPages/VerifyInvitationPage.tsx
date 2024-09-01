@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
-import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   Box,
   Text,
@@ -11,15 +11,15 @@ import {
   Image,
   useColorModeValue,
 } from "@chakra-ui/react";
+import store from "../../../../store/store";
+import { getStatusType } from "../../../constant/statusCode";
+import { main } from "../../../constant/routes";
 
 const verifyInvitationPage = observer(() => {
+  const navigate = useNavigate()
+  const [loading, setLoading] = useState(false)
+  const {auth  : {verifyAppEmail,openNotification}} =  store
   const { invitationType, token } = useParams();
-
-  useEffect(() => {
-    // Perform verification logic or API calls here
-    console.log("Invitation Type:", invitationType);
-    console.log("Token:", token);
-  }, [invitationType, token]);
 
   // Function to generate the message based on invitationType
   const getMessage = (type: any) => {
@@ -39,6 +39,26 @@ const verifyInvitationPage = observer(() => {
   const bgColor = useColorModeValue("gray.50", "gray.800");
   const textColor = useColorModeValue("gray.700", "gray.200");
   const headingColor = useColorModeValue("teal.600", "teal.400");
+
+  const  verifyMail = () => {
+    setLoading(true)
+    verifyAppEmail({type : invitationType,token : token}).then((data : any) => {
+      openNotification({
+        title: "Verify Successfully",
+        message: data?.message,
+        type: 'success',
+      });
+      navigate(main.home)
+    }).catch((err : any) => {
+      openNotification({
+        title: "Failed to Verify Token",
+        message: err?.data?.message,
+        type: getStatusType(err.status),
+      });
+    }).finally(() => [
+      setLoading(false)
+    ])
+  }
 
   return (
     <Flex
@@ -79,7 +99,7 @@ const verifyInvitationPage = observer(() => {
             {getMessage(invitationType)}
           </Text>
           <VStack spacing={4} width="100%">
-            <Button colorScheme="teal" size="lg" width="full">
+            <Button colorScheme="teal" size="lg" width="full" onClick={verifyMail} isLoading={loading}>
               Confirm Invitation
             </Button>
           </VStack>

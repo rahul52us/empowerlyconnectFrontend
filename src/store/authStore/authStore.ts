@@ -55,7 +55,8 @@ class AuthStore {
       getCompanyUsers: action,
       getCurrentCompany: action,
       hasComponentAccess:action,
-      getPolicy:action
+      getPolicy:action,
+      verifyAppEmail:action
     });
   }
 
@@ -279,6 +280,18 @@ class AuthStore {
       return Promise.reject(err?.response?.data || err.message);
     }
   };
+
+
+  verifyAppEmail = async(sendData : any) => {
+    try
+    {
+      const { data } = await axios.post(`/token/verify`,{userId : this.user._id, company : this.getCurrentCompany(),...sendData});
+      return data;
+    }
+    catch(err: any){
+      return Promise.reject(err?.response || err);
+    }
+  }
 
   openNotification = (data: {
     title: any;
