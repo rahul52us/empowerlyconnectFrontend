@@ -1,5 +1,11 @@
 import * as Yup from "yup";
 
+const UservalidationSchema = Yup.object().shape({
+  user: Yup.mixed()
+    .required("Please select a user from the list"),
+  isActive: Yup.boolean(),
+});
+
 // Yup validation schema for Project
 const ProjectCreateValidation = Yup.object().shape({
   project_name: Yup.string().trim().required("Project name is required."),
@@ -10,12 +16,6 @@ const ProjectCreateValidation = Yup.object().shape({
   logo: Yup.mixed().required(),
   dueDate: Yup.date(),
   priority: Yup.mixed().required(),
-  project_manager: Yup.array()
-    .of(Yup.mixed())
-    .nullable()
-    .transform((val, originalVal) => {
-      return originalVal === "" ? null : val;
-    }),
   startDate: Yup.date().typeError('start date is required'),
   endDate: Yup.date().min(
     Yup.ref("startDate"),
@@ -23,23 +23,13 @@ const ProjectCreateValidation = Yup.object().shape({
   ),
   status: Yup.mixed().required('please select the status'),
   customers: Yup.array()
-    .of(Yup.mixed())
-    .nullable()
-    .transform((val, originalVal) => {
-      return originalVal === "" ? null : val;
-    }).typeError('please select the customers'),
+  .of(UservalidationSchema),
+    project_manager: Yup.array()
+    .of(UservalidationSchema),
+    team_members: Yup.array()
+    .of(UservalidationSchema),
   followers: Yup.array()
-    .of(Yup.mixed())
-    .nullable()
-    .transform((val, originalVal) => {
-      return originalVal === "" ? null : val;
-    }).typeError('please select the followers'),
-  team_members: Yup.array()
-    .of(Yup.mixed())
-    .nullable()
-    .transform((val, originalVal) => {
-      return originalVal === "" ? null : val;
-    }).typeError('please select the team members'),
+    .of(UservalidationSchema),
   attach_files: Yup.array()
     .nullable().required('please select the files')
 });

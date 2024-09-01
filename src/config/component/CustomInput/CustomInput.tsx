@@ -134,6 +134,13 @@ const CustomInput: React.FC<CustomInputProps> = ({
     setShowPassword(!showPassword);
   };
 
+  // useEffect(() => {
+  //   if (type === 'real-time-user-search') {
+  //     setUserOptions(options || []);
+  //   }
+  // }, [options, type]);
+
+
   const fetchSearchUsers = useCallback(async (query: string) => {
     if (query?.trim() === "") {
       return;
@@ -658,8 +665,11 @@ const CustomInput: React.FC<CustomInputProps> = ({
           </Box>
         );
         case "real-time-user-search":
+          console.log(name,options,value,userOptions)
           return (
             <Select
+              key={name}
+              name={name}
               options={userOptions}
               value={isMulti ? Array.isArray(value) ? value?.length > 0 ? value : null :  null : userOptions.find((opt : any) => opt?.value === value?.value)}
               onChange={(selectedOption : any) => {
