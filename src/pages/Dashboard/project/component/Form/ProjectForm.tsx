@@ -369,21 +369,6 @@ const ProjectForm = observer(
                                           }}
                                           rest={{ flexShrink: 0 }}
                                         />
-                                        {user.isAdd && (
-                                          <CustomInput
-                                            type="checkbox"
-                                            name={`customers.${index}.invitationMail`}
-                                            label="Send Invitation Mail"
-                                            value={user.invitationMail}
-                                            onChange={(e: any) => {
-                                              setFieldValue(
-                                                `customers.${index}.invitationMail`,
-                                                e.target.checked
-                                              );
-                                            }}
-                                            rest={{ flexShrink: 0 }}
-                                          />
-                                        )}
                                         <Button
                                           onClick={() => {
                                             remove(index);
@@ -418,8 +403,7 @@ const ProjectForm = observer(
                                 push({
                                   user: undefined,
                                   isActive: true,
-                                  isAdd: true,
-                                  invitationMail: true,
+                                  isAdd: true
                                 })
                               }
                               colorScheme="blue"
@@ -514,21 +498,7 @@ const ProjectForm = observer(
                                           }}
                                           // flexShrink={0}
                                         />
-                                        {user.isAdd && (
-                                          <CustomInput
-                                            type="checkbox"
-                                            name={`project_manager.${index}.invitationMail`}
-                                            label="Send Invitation Mail"
-                                            value={user.invitationMail}
-                                            onChange={(e: any) => {
-                                              setFieldValue(
-                                                `project_manager.${index}.invitationMail`,
-                                                e.target.checked
-                                              );
-                                            }}
-                                            rest={{ flexShrink: 0 }}
-                                          />
-                                        )}
+
                                         <Button
                                           onClick={() => remove(index)}
                                           size="sm"
@@ -561,8 +531,7 @@ const ProjectForm = observer(
                                 push({
                                   user: undefined,
                                   isActive: true,
-                                  isAdd: true,
-                                  invitationMail: true,
+                                  isAdd: true
                                 })
                               }
                               colorScheme="blue"
@@ -657,21 +626,6 @@ const ProjectForm = observer(
                                           }}
                                           // flexShrink={0}
                                         />
-                                        {user.isAdd && (
-                                          <CustomInput
-                                            type="checkbox"
-                                            name={`team_members.${index}.invitationMail`}
-                                            label="Send Invitation Mail"
-                                            value={user.invitationMail}
-                                            onChange={(e: any) => {
-                                              setFieldValue(
-                                                `team_members.${index}.invitationMail`,
-                                                e.target.checked
-                                              );
-                                            }}
-                                            rest={{ flexShrink: 0 }}
-                                          />
-                                        )}
                                         <Button
                                           onClick={() => remove(index)}
                                           size="sm"
@@ -704,8 +658,7 @@ const ProjectForm = observer(
                                 push({
                                   user: undefined,
                                   isActive: true,
-                                  isAdd: true,
-                                  invitationMail: true,
+                                  isAdd: true
                                 })
                               }
                               colorScheme="blue"
@@ -801,21 +754,6 @@ const ProjectForm = observer(
                                             }}
                                             // flexShrink={0}
                                           />
-                                          {user.isAdd && (
-                                            <CustomInput
-                                              type="checkbox"
-                                              name={`followers.${index}.invitationMail`}
-                                              label="Send Invitation Mail"
-                                              value={user.invitationMail}
-                                              onChange={(e: any) => {
-                                                setFieldValue(
-                                                  `followers.${index}.invitationMail`,
-                                                  e.target.checked
-                                                );
-                                              }}
-                                              rest={{ flexShrink: 0 }}
-                                            />
-                                          )}
                                           <Button
                                             onClick={() => remove(index)}
                                             size="sm"
@@ -849,8 +787,7 @@ const ProjectForm = observer(
                                 push({
                                   user: undefined,
                                   isActive: true,
-                                  isAdd: true,
-                                  invitationMail: true,
+                                  isAdd: true
                                 })
                               }
                               colorScheme="blue"

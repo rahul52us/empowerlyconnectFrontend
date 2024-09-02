@@ -9,23 +9,19 @@ export const generateProjectInitialValues = (values: any) => {
     ...values,
     project_manager: values.project_manager.map((item: any) => ({
       user: item.user,
-      isActive: item.isActive,
-      invitationMail: false
+      isActive: item.isActive
     })),
     followers: values.followers.map((item: any) => ({
       user: item.user,
-      isActive: item.isActive,
-      invitationMail: false
+      isActive: item.isActive
     })),
     team_members: values.team_members.map((item: any) => ({
       user: item.user,
-      isActive: item.isActive,
-      invitationMail: false
+      isActive: item.isActive
     })),
     customers: values.customers.map((item: any) => ({
       user: item.user,
-      isActive: item.isActive,
-      invitationMail: false
+      isActive: item.isActive
     })),
     priority:
       ProjectPrioties.find((item: any) => item.value === values.priority) ||
@@ -54,26 +50,22 @@ export const generateProjectResponse = (values: any) => {
     followers: values?.followers.map((item: any) => ({
       user: item.isAdd ? item?.user?.value : item?.user?._id,
       isActive: item.isActive || false,
-      isAdd: item.isAdd || false,
-      invitationMail : item.invitationMail || false
+      isAdd: item.isAdd || false
     })),
     project_manager: values?.project_manager.map((item: any) => ({
       user: item.isAdd ? item?.user?.value : item?.user?._id,
       isActive: item.isActive || false,
-      isAdd: item.isAdd || false,
-      invitationMail : item.invitationMail || false
+      isAdd: item.isAdd || false
     })),
     team_members: values?.team_members.map((item: any) => ({
       user: item.isAdd ? item?.user?.value : item?.user?._id,
       isActive: item.isActive || false,
-      isAdd: item.isAdd || false,
-      invitationMail : item.invitationMail || false
+      isAdd: item.isAdd || false
     })),
     customers: values?.customers.map((item: any) => ({
       user: item.isAdd ? item?.user?.value : item?.user?._id,
       isActive: item.isActive || false,
-      isAdd: item.isAdd || false,
-      invitationMail : item.invitationMail || false
+      isAdd: item.isAdd || false
     })),
     startDate: values?.startDate
       ? formatDate(values?.startDate, YYYYMMDD_FORMAT)

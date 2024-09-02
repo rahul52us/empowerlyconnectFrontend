@@ -36,7 +36,7 @@ const CustomDragForm = lazy(
 const ProjectIndex = lazy(
   () => import("../../pages/Dashboard/project/ProjectIndex")
 );
-
+const IndividualProject = lazy(() => import("../../pages/Dashboard/project/component/individualProject/IndividualProject"))
 
 const CustomCalender = lazy(
   () => import("../../pages/Dashboard/CustomCalender/CustomCalender")
@@ -393,5 +393,10 @@ export const DashboardRoutes = [
     element: <TaskIndex />,
     path: dashboard.project.task.index,
     privateRoutes: true
+  },
+  {
+    element : <IndividualProject />,
+    path : dashboard.project.individual,
+    privateRoutes : true
   }
 ];

@@ -91,6 +91,7 @@ export const dashboard = {
   // project
   project : {
     index : `/${dashboardName}/project`,
+    individual : `/${dashboardName}/project/:projectId`,
     task : {
       index : `/${dashboardName}/project/:projectId/task`,
       create : `/${dashboardName}/:projectId/task/create`,

@@ -56,6 +56,7 @@ class ProjectStore {
       updateProject:action,
       getProjectCounts:action,
       addProjectMembers:action,
+      getIndividualProject:action,
       // task
       task:observable,
       openTaskDrawer:observable,
@@ -124,6 +125,16 @@ class ProjectStore {
       return Promise.reject(err?.response || err);
     } finally {
       this.projectCount.loading = false;
+    }
+  }
+
+  getIndividualProject = async (sendData : any = {}) => {
+    try {
+      const { data } = await axios.post(`/project/individual/${sendData.projectId}`,{company : [store.auth.getCurrentCompany()],...sendData});
+      return data;
+    } catch (err: any) {
+      return Promise.reject(err?.response || err);
+    } finally {
     }
   }
 

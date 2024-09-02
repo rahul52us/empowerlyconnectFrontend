@@ -285,7 +285,7 @@ class AuthStore {
   verifyAppEmail = async(sendData : any) => {
     try
     {
-      const { data } = await axios.post(`/token/verify`,{userId : this.user._id, company : this.getCurrentCompany(),...sendData});
+      const { data } = await axios.post(`${sendData.type}/token/verify`,{userId : this.user._id, company : this.getCurrentCompany(),...sendData});
       return data;
     }
     catch(err: any){
