@@ -1,9 +1,10 @@
 import { lazy } from "react";
-import { main } from "../constant/routes";
 import AddingparaForm from "../../pages/main/Contact/AddingparaForm";
-import SingleProduct from "../../pages/main/Product/component/SingleProduct";
-import Home2 from "../../pages/main/Home/Home2";
 import Ecommerce from "../../pages/main/Ecommerce/Ecommerce";
+import Home2 from "../../pages/main/Home/Home2";
+import SingleProduct from "../../pages/main/Product/component/SingleProduct";
+import { main } from "../constant/routes";
+import IndividualProductPage from "../../pages/main/Ecommerce/IndividualProductPage/IndividualProductPage";
 // const Home = lazy(() => import("../../pages/main/Home/Home"));
 const About = lazy(() => import("../../pages/main/About/About"));
 const PageNotFound = lazy(() => import("../component/common/WebPages/PageNotFound"));
@@ -131,8 +132,13 @@ export const MainPublicRoutes = [
   },
   {
     element : <Ecommerce />,
-    path: main.ecommerce,
+    path: main.ecommerce.products,
     publicRoutes:true
+  },
+  {
+    element: <IndividualProductPage />,
+    path: `${main.ecommerce.products}/:id`, // Dynamic route with :id
+    publicRoutes: true
   },
   // Not found
 

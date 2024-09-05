@@ -18,7 +18,6 @@ const PriceDisplay: React.FC<PriceProps> = ({
     <Flex
       alignItems="center"
       justifyContent="space-between"
-      bg="white"
       w="100%"
       maxW="500px"
       gap={4}
@@ -31,7 +30,7 @@ const PriceDisplay: React.FC<PriceProps> = ({
             {discount}% OFF
           </Tag>
         )}
-        <Box textAlign="left">
+        <Box>
           <Text
             fontWeight="500"
             color="gray"

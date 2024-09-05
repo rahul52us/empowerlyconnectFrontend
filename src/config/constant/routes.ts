@@ -97,7 +97,8 @@ export const dashboard = {
       create : `/${dashboardName}/:projectId/task/create`,
       edit:`/${dashboardName}/:projectId/task/edit/:taskId`
     }
-  }
+  },
+ 
 };
 
 export const main = {
@@ -121,7 +122,10 @@ export const main = {
   quizTitle: "/quiz/:quizTitle",
   quizQuestionIndex: "/quiz/:quizTitle/:categoryTitle",
   individualHomeCompany: "/:individualCompany",
-  ecommerce: "/ecommerce",
+  ecommerce: {
+    products: "/ecommerce/products",  
+    
+  },
 };
 
 export const privateMain = {

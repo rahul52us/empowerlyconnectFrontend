@@ -11,16 +11,17 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
+import axios from "axios";
 import { FaRegComments, FaStar } from "react-icons/fa";
 import { FaOpencart } from "react-icons/fa6";
 import Slider from "react-slick";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import PriceDisplay from "./PriceDisplay/PriceDisplay";
 
-const IndividualProductPage = ({ productData }: any) => {
-  const [mainImage, setMainImage] = useState(productData.images[0]);
+const IndividualProductPage = ({productData}:any) => {
+  const [mainImage, setMainImage] = useState(productData?.images[0]);
 
   const settings = {
     vertical: true,
@@ -30,8 +31,35 @@ const IndividualProductPage = ({ productData }: any) => {
     arrows: false,
   };
 
+  const options = {
+    method: "GET",
+    url: "https://real-time-product-search.p.rapidapi.com/product-details",
+    params: {
+      product_id: "11577822456427762145",
+      country: "us",
+      language: "en",
+    },
+    headers: {
+      "x-rapidapi-key": "d4c4126cb1mshddd553eb7fe95bap1bdf13jsn19c6b312de3f",
+      "x-rapidapi-host": "real-time-product-search.p.rapidapi.com",
+    },
+  };
+  const getDetails = async () => {
+    try {
+      const response = await axios.request(options);
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    getDetails();
+  }, []);
+
   return (
     <Box>
+  
       <Grid templateColumns={"1fr 3fr 4fr"} gap={4}>
         <Box>
           <Slider {...settings}>

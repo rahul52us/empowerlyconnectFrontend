@@ -6,9 +6,47 @@ import IndividualProductPage from "../IndividualProductPage/IndividualProductPag
 // import VerticalCard from "../Cards/VerticalCard/VerticalCard";
 // import Heels from '../assets/heels.png'
 // import Phone from '../assets/phone.png'
-import ProductData from '../IndividualProductPage/dummyData.json'
+import ProductData from "../IndividualProductPage/dummyData.json";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { observer } from "mobx-react-lite";
+import ProductReviewCard from "../IndividualProductPage/ReviewComponent/ReviewComponent";
 
 const EcomHomePage = () => {
+  const [data, setData] = useState<any>({});
+  const options = {
+    method: "GET",
+    url: "https://real-time-product-search.p.rapidapi.com/search",
+    params: {
+      q: "*",
+      country: "uk",
+      language: "en",
+      page: "1",
+      limit: "10",
+      sort_by: "BEST_MATCH",
+      product_condition: "ANY",
+      min_rating: "ANY",
+    },
+    headers: {
+      "x-rapidapi-key": "d4c4126cb1mshddd553eb7fe95bap1bdf13jsn19c6b312de3f",
+      "x-rapidapi-host": "real-time-product-search.p.rapidapi.com",
+    },
+  };
+  const getData = async (data: any) => {
+    try {
+      const response = await axios.request(data);
+      setData(response?.data?.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    getData(options);
+  }, []);
+
+  console.log("data", data);
+
   return (
     <Container maxW={"8xl"} mx={"auto"} my={{ base: 2, md: 12 }}>
       {/* <Grid templateColumns={"1fr 1fr"}>
@@ -38,10 +76,20 @@ const EcomHomePage = () => {
         />
         </Flex>
         </Grid>  */}
-<IndividualProductPage productData={ProductData}/>
-        {/* <ProductCard/> */}
+      <IndividualProductPage productData={ProductData} />
+      {ProductData?.reviews.map((review: any) => (
+        <ProductReviewCard review={review} />
+      ))}
+      {/* {data?.products?.length > 0 && data &&(
+        <Grid templateColumns={"1fr 1fr 1fr 1fr"} gap={4}>
+          {data?.products?.map((item: any) => (
+            <ProductCard product={item} />
+          ))}
+        </Grid>
+      )} */}
+      {/* <ProductCard product={data} /> */}
     </Container>
   );
 };
 
-export default EcomHomePage;
+export default observer(EcomHomePage);

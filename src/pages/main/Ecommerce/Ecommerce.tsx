@@ -1,5 +1,6 @@
 import { Box } from '@chakra-ui/react'
 import EcomHomePage from './Ecom_Home/EcomHomePage'
+import { observer } from 'mobx-react-lite'
 
 const Ecommerce = () => {
   return (
@@ -11,4 +12,4 @@ const Ecommerce = () => {
   )
 }
 
-export default Ecommerce
+export default observer(Ecommerce)

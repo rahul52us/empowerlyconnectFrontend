@@ -8,17 +8,11 @@ import {
   useColorModeValue,
   VStack,
 } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
+import { main } from "../../../../../config/constant/routes";
 
-const ProductCard = () => {
-  const product = {
-    name: "Stylish Sneakers",
-    imageUrl:
-      "https://img.freepik.com/free-photo/full-length-portrait-happy-excited-girl-bright-colorful-clothes-holding-shopping-bags-while-standing-showing-peace-gesture-isolated_231208-5946.jpg?uid=R98118533&ga=GA1.1.1822911562.1716356990&semt=ais_hybrid",
-    price: "$79.99",
-    rating: 4.5,
-    numReviews: 34,
-    isNew: true,
-  };
+const ProductCard = ({ product }: any) => {
+  const navigate = useNavigate();
 
   return (
     <Box
@@ -28,12 +22,14 @@ const ProductCard = () => {
       bg={useColorModeValue("whiteAlpha.800", "blackAlpha.400")}
       boxShadow="base"
       backdropFilter="blur(10px)"
+      pb={2}
+      onClick={() => navigate(`${main.ecommerce.products}/${product?.product_id}`)}
     >
       <Box h="300px" overflow="hidden" position="relative">
         <Image
-          src={product.imageUrl}
-          alt={product.name}
-          objectFit="cover"
+          src={product?.product_photos[0]}
+          alt={product?.product_title}
+          objectFit="contain"
           height="100%"
           width="100%"
           transition="transform 0.3s"
@@ -59,29 +55,23 @@ const ProductCard = () => {
         <VStack align="start" mt="2">
           <Flex justify={"space-between"} w={"100%"}>
             <Box>
-              <Text
-                as="h3"
-                // fontSize="lg"
-                fontWeight="bold"
-                noOfLines={1}
-                w={"100%"}
-              >
-                {product.name}
+              <Text as="h3" fontWeight="bold" noOfLines={1} w={"100%"}>
+                {product?.product_title}
               </Text>
               <Text color={"gray"} fontSize={"sm"}>
-                Allen Solly
+                {product?.offer?.store_name}
               </Text>
             </Box>
             <Text fontSize="lg" fontWeight="bold" color={"blue.700"}>
-              {product.price}
+              {product?.offer?.price}
             </Text>
           </Flex>
           <HStack align="center">
             <Box as="span" color="blue.500">
-              ★ {product.rating}
+              ★ {product?.product_rating}
             </Box>
             <Text fontSize="sm" color="gray.500">
-              ({product.numReviews} reviews)
+              ({product?.product_num_reviews} reviews)
             </Text>
           </HStack>
         </VStack>
