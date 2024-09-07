@@ -6,7 +6,6 @@ import {
   Grid,
   HStack,
   Icon,
-  IconButton,
   Text,
   useColorModeValue,
   VStack,
@@ -19,14 +18,11 @@ import {
   FaFilePdf,
   FaFileWord,
 } from "react-icons/fa";
-import {
-  FiDownload,
-  FiMoreHorizontal,
-  FiPaperclip,
-  FiUpload,
-} from "react-icons/fi";
+import { FiMoreHorizontal, FiPaperclip } from "react-icons/fi";
 import { PiFilePptBold } from "react-icons/pi";
 import { HiDocumentRemove } from "react-icons/hi"; // For no documents icon
+import { ViewIcon } from "@chakra-ui/icons";
+import ShowFileUploadFile from "../../../../../config/component/common/ShowFileUploadFile/ShowFileUploadFile";
 
 const FileIcon = ({ mimeType }: { mimeType: string }) => {
   const color = useColorModeValue("gray.600", "gray.300");
@@ -58,7 +54,6 @@ const FileIcon = ({ mimeType }: { mimeType: string }) => {
   }
 };
 
-
 const AttachmentItem = ({ file }: any) => {
   return (
     <WrapItem>
@@ -83,11 +78,10 @@ const AttachmentItem = ({ file }: any) => {
             </Text>
           </VStack>
         </HStack>
-        <IconButton
-          variant="outline"
-          colorScheme="teal"
-          aria-label="Download file"
-          icon={<FiDownload />}
+        <ShowFileUploadFile
+          edit={true}
+          files={file.file[0]}
+          showViewIcon={true}
         />
       </Flex>
     </WrapItem>
@@ -97,7 +91,7 @@ const AttachmentItem = ({ file }: any) => {
 const ProjectAttachments = ({ attach_files = [] }: any) => {
   const [showAll, setShowAll] = useState(false);
 
-  const filesToShow = showAll ? attach_files : attach_files.slice(0, 5);
+  const filesToShow = showAll ? attach_files : attach_files.slice(0, 4);
 
   return (
     <Box
@@ -122,16 +116,16 @@ const ProjectAttachments = ({ attach_files = [] }: any) => {
 
           <Flex align="end" gap={2}>
             <Button
-              leftIcon={<FiUpload />}
+              leftIcon={<ViewIcon />}
               colorScheme="blue"
               size="sm"
               variant="outline"
+              display="none"
             >
               Upload
             </Button>
           </Flex>
         </Flex>
-
         <Grid
           templateColumns={{ base: "1fr", md: "1fr 1fr", lg: "1fr 1fr 1fr" }}
           gap={4}
@@ -153,7 +147,7 @@ const ProjectAttachments = ({ attach_files = [] }: any) => {
             </Text>
           </Center>
         )}
-        {!showAll && attach_files.length > 5 && (
+        {!showAll && attach_files.length > 4 && (
           <Button
             leftIcon={<FiMoreHorizontal />}
             colorScheme="telegram"

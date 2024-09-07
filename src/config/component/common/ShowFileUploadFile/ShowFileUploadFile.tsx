@@ -14,8 +14,9 @@ import { useState } from "react";
 import { readFileAsBase64 } from "../../../constant/function";
 import FileViewer from "../../FilesViewer/FileViewer";
 import CustomDrawer from "../../Drawer/CustomDrawer";
+import { ViewIcon } from "@chakra-ui/icons";
 
-const ShowFileUploadFile = observer(({ files, removeFile, edit }: any) => {
+const ShowFileUploadFile = observer(({ files, removeFile, edit, showViewIcon }: any) => {
   const [selectedFile, setSelectedFile] = useState<any>({
     type: null,
     file: null,
@@ -71,53 +72,64 @@ const ShowFileUploadFile = observer(({ files, removeFile, edit }: any) => {
 
   return (
     <>
-      <Box mt={5}>
+      <Box mt={showViewIcon ? undefined : 5}>
         {checkFilesType().map((item: any, index: number) => (
-          <Box
-            key={index}
-            display="flex"
-            alignItems="center"
-            justifyContent="space-between"
-            bg="gray.100"
-            p={3}
-            borderRadius="md"
-            boxShadow="md"
-            mt={2}
-            transition="box-shadow 0.3s"
-            _hover={{ boxShadow: "lg" }}
-          >
-            <Flex cursor="pointer" onClick={() => setSelectedFileFun(item)}>
-              {item?.name &&
-                (item.name.endsWith(".pdf") ? (
-                  <FaFilePdf size={24} color="red" />
-                ) : (
-                  <FaFileImage size={24} color="blue" />
-                ))}
-              <Text
-                fontSize="md"
-                fontWeight="semibold"
-                color="gray.800"
-                ml={3}
-                wordBreak={"break-word"}
-              >
-                {item?.name}
-              </Text>
-            </Flex>
-            {removeFile && (
-              <Tooltip label="Delete" hasArrow placement="top">
-                <IconButton
-                  icon={<MdDelete />}
-                  colorScheme="red"
-                  aria-label="Delete"
-                  size="sm"
-                  onClick={() => {
-                    removeFile(item, index);
-                    setSelectedFile({ type: null, file: null });
-                  }}
-                />
-              </Tooltip>
-            )}
-          </Box>
+          showViewIcon ? (
+            <IconButton
+              key={index}
+              variant="outline"
+              colorScheme="teal"
+              aria-label="Download file"
+              onClick={() => setSelectedFileFun(item)}
+              icon={<ViewIcon />}
+            />
+          ) : (
+            <Box
+              key={index}
+              display="flex"
+              alignItems="center"
+              justifyContent="space-between"
+              bg="gray.100"
+              p={3}
+              borderRadius="md"
+              boxShadow="md"
+              mt={2}
+              transition="box-shadow 0.3s"
+              _hover={{ boxShadow: "lg" }}
+            >
+              <Flex cursor="pointer" onClick={() => setSelectedFileFun(item)}>
+                {item?.name &&
+                  (item.name.endsWith(".pdf") ? (
+                    <FaFilePdf size={24} color="red" />
+                  ) : (
+                    <FaFileImage size={24} color="blue" />
+                  ))}
+                <Text
+                  fontSize="md"
+                  fontWeight="semibold"
+                  color="gray.800"
+                  ml={3}
+                  wordBreak={"break-word"}
+                >
+                  {item?.name}
+                </Text>
+              </Flex>
+              {removeFile && (
+                <Tooltip label="Delete" hasArrow placement="top">
+                  <IconButton
+                    icon={<MdDelete />}
+                    colorScheme="red"
+                    aria-label="Delete"
+                    size="sm"
+                    onClick={() => {
+                      removeFile(item, index);
+                      setSelectedFile(null);
+                    }}
+                  />
+                </Tooltip>
+              )}
+            </Box>
+          )
         ))}
       </Box>
       <CustomDrawer

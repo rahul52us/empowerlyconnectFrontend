@@ -34,17 +34,20 @@ import { FaPeopleGroup } from "react-icons/fa6";
 import { BiTagAlt } from "react-icons/bi";
 import AddNewUser from "./component/AddNewUser";
 import AddTags from "./component/AddTags";
+import EditProject from "../Form/EditProject";
+import CustomDrawer from "../../../../../config/component/Drawer/CustomDrawer";
+import CreateProject from "../Form/CreateProject";
 
-const ProjectDetails = ({ selectedProject }: any) => {
+const ProjectDetails = ({ selectedProject, userId }: any) => {
   const [addNewUser, setAddNewUser] = useState<any>({
     type: null,
     data: null,
     open: false,
-    title : null
+    title: null,
   });
   const {
-    Project: { setOpenProjectDrawer, getSingleProject },
-    auth : {checkPermission}
+    Project: { setOpenProjectDrawer, getSingleProject, openProjectDrawer },
+    auth: { checkPermission },
   } = store;
 
   const [fetchProjectData, setFetchProjectData] = useState<any>({
@@ -92,17 +95,19 @@ const ProjectDetails = ({ selectedProject }: any) => {
           borderColor={borderColor}
         >
           {/* Logo and Title Section */}
-          {checkPermission('project','edit') && <Flex justifyContent={"end"}>
-            <IconButton
-              onClick={() => setOpenProjectDrawer("edit", selectedProject)}
-              aria-label="Edit"
-              icon={<EditIcon />}
-              variant="outline"
-              colorScheme="teal"
-              size="sm"
-              ml={3}
-            />
-          </Flex>}
+          {checkPermission("project", "edit") && (
+            <Flex justifyContent={"end"}>
+              <IconButton
+                onClick={() => setOpenProjectDrawer("edit", selectedProject)}
+                aria-label="Edit"
+                icon={<EditIcon />}
+                variant="outline"
+                colorScheme="teal"
+                size="sm"
+                ml={3}
+              />
+            </Flex>
+          )}
           <Flex direction="column" align="center" mb={4} px={4} py={3}>
             <Image
               src={fetchProjectData?.data?.logo?.file?.url || placeholderImage}
@@ -225,29 +230,38 @@ const ProjectDetails = ({ selectedProject }: any) => {
                 <Icon as={BiTagAlt} boxSize={5} />
                 <Text>Tags</Text>
               </Flex>
-              {checkPermission('project','edit') && <Flex wrap="wrap" gap={2}>
-                {fetchProjectData?.data?.tags?.map(
-                  (item: any, index: number) => (
-                    <Tag
-                      size="lg"
-                      colorScheme="teal"
-                      borderRadius="full"
-                      key={index}
-                    >
-                      <TagLabel>{item}</TagLabel>
-                    </Tag>
-                  )
-                )}
-                <Button
-                  leftIcon={<RiUserAddLine />}
-                  variant="outline"
-                  size="sm"
-                  rounded="full"
-                  onClick={() => setAddNewUser({data : fetchProjectData?.data?.tags, type : 'tags', title : 'Tags', open : true})}
-                >
-                  Add Tags
-                </Button>
-              </Flex>}
+              {checkPermission("project", "edit") && (
+                <Flex wrap="wrap" gap={2}>
+                  {fetchProjectData?.data?.tags?.map(
+                    (item: any, index: number) => (
+                      <Tag
+                        size="lg"
+                        colorScheme="teal"
+                        borderRadius="full"
+                        key={index}
+                      >
+                        <TagLabel>{item}</TagLabel>
+                      </Tag>
+                    )
+                  )}
+                  <Button
+                    leftIcon={<RiUserAddLine />}
+                    variant="outline"
+                    size="sm"
+                    rounded="full"
+                    onClick={() =>
+                      setAddNewUser({
+                        data: fetchProjectData?.data?.tags,
+                        type: "tags",
+                        title: "Tags",
+                        open: true,
+                      })
+                    }
+                  >
+                    Add Tags
+                  </Button>
+                </Flex>
+              )}
             </Grid>
             <Grid
               templateColumns={{ base: "1fr", md: "1fr 3fr" }}
@@ -282,17 +296,24 @@ const ProjectDetails = ({ selectedProject }: any) => {
                     </Tag>
                   )
                 )}
-                {checkPermission('project','edit') && <Button
-                  leftIcon={<RiUserAddLine />}
-                  variant="outline"
-                  size="sm"
-                  rounded="full"
-                  onClick={() =>
-                    setAddNewUser({ type: "manager", open: true, data: "user", title : "Manager" })
-                  }
-                >
-                  Invite New
-                </Button>}
+                {checkPermission("project", "edit") && (
+                  <Button
+                    leftIcon={<RiUserAddLine />}
+                    variant="outline"
+                    size="sm"
+                    rounded="full"
+                    onClick={() =>
+                      setAddNewUser({
+                        type: "manager",
+                        open: true,
+                        data: "user",
+                        title: "Manager",
+                      })
+                    }
+                  >
+                    Invite New
+                  </Button>
+                )}
               </Flex>
             </Grid>
 
@@ -329,17 +350,24 @@ const ProjectDetails = ({ selectedProject }: any) => {
                     </Tag>
                   )
                 )}
-                {checkPermission('project','edit') && <Button
-                  leftIcon={<RiUserAddLine />}
-                  variant="outline"
-                  size="sm"
-                  rounded="full"
-                  onClick={() =>
-                    setAddNewUser({ type: "teamMember", open: true,data : 'user', title: "Team Member" })
-                  }
-                >
-                  Invite New
-                </Button>}
+                {checkPermission("project", "edit") && (
+                  <Button
+                    leftIcon={<RiUserAddLine />}
+                    variant="outline"
+                    size="sm"
+                    rounded="full"
+                    onClick={() =>
+                      setAddNewUser({
+                        type: "teamMember",
+                        open: true,
+                        data: "user",
+                        title: "Team Member",
+                      })
+                    }
+                  >
+                    Invite New
+                  </Button>
+                )}
               </Flex>
             </Grid>
 
@@ -376,17 +404,24 @@ const ProjectDetails = ({ selectedProject }: any) => {
                     </Tag>
                   )
                 )}
-                {checkPermission('project','edit') && <Button
-                  leftIcon={<RiUserAddLine />}
-                  variant="outline"
-                  size="sm"
-                  rounded="full"
-                  onClick={() =>
-                    setAddNewUser({ type: "follower", open: true,data : 'user', title: "Follower" })
-                  }
-                >
-                  Invite New
-                </Button>}
+                {checkPermission("project", "edit") && (
+                  <Button
+                    leftIcon={<RiUserAddLine />}
+                    variant="outline"
+                    size="sm"
+                    rounded="full"
+                    onClick={() =>
+                      setAddNewUser({
+                        type: "follower",
+                        open: true,
+                        data: "user",
+                        title: "Follower",
+                      })
+                    }
+                  >
+                    Invite New
+                  </Button>
+                )}
               </Flex>
             </Grid>
 
@@ -422,28 +457,49 @@ const ProjectDetails = ({ selectedProject }: any) => {
           </Box>
         </Box>
       </DrawerLoader>
-      {addNewUser.open && addNewUser.data && !["tags"].includes(addNewUser.type) && (
-        <AddNewUser
-          open={addNewUser.open}
-          type={addNewUser.type}
-          data={addNewUser.data}
-          title={addNewUser.title}
-          item={fetchProjectData?.data}
-          setFetchProjectData={setFetchProjectData}
-          close={() => setAddNewUser({ open: false, data: null, type: null })}
-        />
-      )}
-      {addNewUser.open && addNewUser.data && ["tags"].includes(addNewUser.type) && (
-        <AddTags
-          open={addNewUser.open}
-          type={addNewUser.type}
-          data={addNewUser.data}
-          title={addNewUser.title}
-          item={fetchProjectData?.data}
-          setFetchProjectData={setFetchProjectData}
-          close={() => setAddNewUser({ open: false, data: null, type: null })}
-        />
-      )}
+      {addNewUser.open &&
+        addNewUser.data &&
+        !["tags"].includes(addNewUser.type) && (
+          <AddNewUser
+            open={addNewUser.open}
+            type={addNewUser.type}
+            data={addNewUser.data}
+            title={addNewUser.title}
+            item={fetchProjectData?.data}
+            setFetchProjectData={setFetchProjectData}
+            close={() => setAddNewUser({ open: false, data: null, type: null })}
+          />
+        )}
+      {addNewUser.open &&
+        addNewUser.data &&
+        ["tags"].includes(addNewUser.type) && (
+          <AddTags
+            open={addNewUser.open}
+            type={addNewUser.type}
+            data={addNewUser.data}
+            title={addNewUser.title}
+            item={fetchProjectData?.data}
+            setFetchProjectData={setFetchProjectData}
+            close={() => setAddNewUser({ open: false, data: null, type: null })}
+          />
+        )}
+
+      <CustomDrawer
+        width="90vw"
+        title={`${
+          openProjectDrawer.type === "edit"
+            ? "UPDATE PROJECT"
+            : "CREATE NEW PROJECT"
+        }`}
+        open={openProjectDrawer.open}
+        close={() => setOpenProjectDrawer("create")}
+      >
+        {openProjectDrawer.type === "edit" ? (
+          <EditProject userId={userId} />
+        ) : (
+          <CreateProject userId={userId} />
+        )}
+      </CustomDrawer>
     </>
   );
 };
