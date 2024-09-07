@@ -333,7 +333,7 @@ class AuthStore {
 
   hasComponentAccess = () => {
     // Check if the user has an admin or superadmin role or hasAdminAcccess
-    if (['admin', 'superadmin'].includes(this.user?.role) || this.user.permissions.adminAccess?.add) {
+    if (['admin', 'superadmin'].includes(this.user?.role) || this.user?.permissions?.adminAccess?.add) {
       return true;
     }
     return false;

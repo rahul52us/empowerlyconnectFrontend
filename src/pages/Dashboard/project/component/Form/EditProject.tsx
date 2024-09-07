@@ -43,6 +43,7 @@ const EditProject = observer(({userId} : any) => {
     setSubmitting,
     resetForm,
   }: any) => {
+
     try {
       if (
         values.logo?.file &&
@@ -67,6 +68,7 @@ const EditProject = observer(({userId} : any) => {
           values.logo = fileData;
         }
       }
+      setSubmitting(true)
       updateProject({ _id: fetchProjectData?.data?._id, ...values })
         .then((data: any) => {
           openNotification({

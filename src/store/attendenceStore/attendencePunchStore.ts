@@ -22,7 +22,7 @@ class AttendencePunchStore {
       this.recentPunch.data = [];
       this.recentPunch.loading = true;
       const { data } = await axios.get("/attendenceRequest", {
-        params: { ...sendData, companyId: store.auth.getCurrentCompany() },
+        params: { ...sendData, company: store.auth.getCurrentCompany() },
       });
       this.recentPunch.data = data?.data || [];
       return data?.data;

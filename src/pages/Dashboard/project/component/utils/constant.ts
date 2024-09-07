@@ -13,6 +13,7 @@ export const ProjectPrioties : any = [
   ]
 
 export const initialValuesOfProjects : any = {
+    deleteAttachments : [],
     project_name: "",
     subtitle: "",
     description: "",

@@ -16,6 +16,7 @@ import DrawerFormHeightContainer from "../../../../../config/component/Drawer/Dr
 
 const ProjectForm = observer(
   ({ initialValuesOfProjects, handleSubmitForm, isEdit }: any) => {
+    const [isSubmitting, setSubmitting] = useState(false)
     const [showError, setShowError] = useState(false);
     const {
       auth: { getCompanyUsers, openNotification },
@@ -97,11 +98,11 @@ const ProjectForm = observer(
         <Formik
           initialValues={initialValuesOfProjects}
           validationSchema={ProjectCreateValidation}
-          onSubmit={(
+          onSubmit={async(
             values: ProjectFormValuesI,
-            { setSubmitting, resetForm }
+            { resetForm }
           ) => {
-            const sendDataObject = generateProjectResponse(values);
+            const sendDataObject = await generateProjectResponse(values);
             handleSubmitForm({
               values: { ...values, ...sendDataObject },
               setSubmitting,
@@ -109,7 +110,10 @@ const ProjectForm = observer(
             });
           }}
         >
-          {({ handleChange, values, errors, setFieldValue, isSubmitting }) => {
+          {({ handleChange, values, errors, setFieldValue }) => {
+            console.log('the val are', values.deleteAttachments)
+            console.log('the errors are', errors)
+
             return (
               <Form>
                 <DrawerFormHeightContainer
@@ -428,9 +432,11 @@ const ProjectForm = observer(
                                 mb={4}
                               >
                                 {form.values.project_manager.map(
-                                  (user: any, index: number) => (
+                                  (user: any, index: number) => {
+
+                                    return(
                                     <Box
-                                      key={index}
+                                      key={`project-${index}`}
                                       p={4}
                                       borderWidth="1px"
                                       borderRadius="md"
@@ -510,7 +516,7 @@ const ProjectForm = observer(
                                         </Button>
                                       </Flex>
                                     </Box>
-                                  )
+                                  )}
                                 )}
                               </Grid>
                             ) : (
@@ -816,6 +822,7 @@ const ProjectForm = observer(
                                   title: "",
                                   description: "",
                                   file: null,
+                                  isAdd : 1
                                 },
                               ]);
                             }}
@@ -840,6 +847,10 @@ const ProjectForm = observer(
                                                 edit={isEdit}
                                                 files={file.file[0]}
                                                 removeFile={() => {
+                                                  if(isEdit === true)
+                                                  {
+                                                    setFieldValue('deleteAttachments', [...values.deleteAttachments,file.file[0]?.name])
+                                                  }
                                                   const updatedFiles =
                                                     values.attach_files.map(
                                                       (item: any, i: number) =>
@@ -849,6 +860,7 @@ const ProjectForm = observer(
                                                               file: null,
                                                               isDeleted: 1,
                                                               isAdd: 0,
+                                                              index : index
                                                             }
                                                           : item
                                                     );
@@ -871,6 +883,10 @@ const ProjectForm = observer(
                                                   setFieldValue(
                                                     `attach_files.${index}.file`,
                                                     e.target.files
+                                                  );
+                                                  setFieldValue(
+                                                    `attach_files.${index}.isAdd`,
+                                                    1
                                                   );
                                                 }}
                                               />
@@ -908,7 +924,15 @@ const ProjectForm = observer(
                                             variant="outline"
                                             size="sm"
                                             mt="10px"
-                                            onClick={() => remove(index)}
+                                            onClick={
+                                              () => {
+                                                if(isEdit === true)
+                                                  {
+                                                    setFieldValue('deleteAttachments', [...values.deleteAttachments,file.file[0]?.name])
+                                                  }
+                                                remove(index)
+                                              }
+                                            }
                                           >
                                             Remove Section
                                           </Button>
@@ -929,6 +953,7 @@ const ProjectForm = observer(
                                       title: "",
                                       description: "",
                                       file: null,
+                                      isAdd:1
                                     })
                                   }
                                 >

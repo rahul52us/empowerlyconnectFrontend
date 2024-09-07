@@ -2,6 +2,7 @@ import { useState } from "react";
 import store from "../../../store/store";
 import { Box, Button } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
+import { nextDayMidnight } from "../../../config/constant/dateUtils";
 
 const PunchInComponent = observer(() => {
   const [loading, setLoading] = useState(false);
@@ -37,6 +38,7 @@ const PunchInComponent = observer(() => {
         latitude: position.coords.latitude,
         longitude: position.coords.longitude,
         deviceInfo: navigator.userAgent,
+        date : nextDayMidnight
       })
         .then(() => {
           openNotification({

@@ -25,25 +25,10 @@ const CreateProject = observer(({userId} : any) => {
       }
 
       let formData = {
-        ...values,
-        attach_files: values.attach_files.map((fileObj : any) => ({
-          ...fileObj,
-          file: fileObj.file ? [...fileObj.file] : null,
-        }))
+        ...values
       };
 
-
-      for (const dt of formData.attach_files) {
-        if (dt.file) {
-          const file = await readFileAsBase64(dt.file[0]);
-          dt.file = {
-            buffer: file,
-            filename: dt.file[0].name,
-            type: dt.file[0].type,
-          };
-        }
-      }
-
+      setSubmitting(true)
       createProject({...formData})
         .then((data) => {
           openNotification({

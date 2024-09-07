@@ -106,3 +106,21 @@ const currentDates = moment();
 export const currentYears = currentDates.format('YYYY');
 export const currentMonth = currentDates.format('MM');
 export const currentDateValue = currentDates.format('DD');
+
+// Get the current date
+const currentDate = new Date();
+
+// Set the current date's time to midnight (00:00:00) to represent the start of the day
+currentDate.setHours(0, 0, 0, 0);
+
+// Create a new Date object for the next day
+const nextDay = new Date(currentDate);
+
+// Add 1 day to the current date to get the next day
+nextDay.setDate(currentDate.getDate() + 1);
+
+// Export the current day (midnight to midnight)
+export const currentDay = currentDate;
+
+// Export the next day (midnight to midnight)
+export const nextDayMidnight = nextDay;

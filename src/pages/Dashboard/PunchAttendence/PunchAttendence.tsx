@@ -8,7 +8,7 @@ import { generatePunchResponse } from "./utils/function";
 const PunchAttendance: React.FC = observer(() => {
   const {
     AttendencePunch: { getRecentPunch, recentPunch },
-    auth: { user },
+    auth: { user , getPolicy},
   } = store;
 
   useEffect(() => {
@@ -19,11 +19,12 @@ const PunchAttendance: React.FC = observer(() => {
     getRecentPunch({
       startDate: formatDate(today),
       endDate: formatDate(tomorrow),
+      policy : getPolicy()
     })
       .then(() => {})
       .catch(() => {})
       .finally(() => {});
-  }, [getRecentPunch, user]);
+  }, [getRecentPunch, user, getPolicy]);
 
   const columns: any = [
     {
