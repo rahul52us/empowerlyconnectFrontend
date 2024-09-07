@@ -304,7 +304,7 @@ const ProjectDetails = ({ selectedProject, userId }: any) => {
                     rounded="full"
                     onClick={() =>
                       setAddNewUser({
-                        type: "manager",
+                        type: "project_manager",
                         open: true,
                         data: "user",
                         title: "Manager",
@@ -358,7 +358,7 @@ const ProjectDetails = ({ selectedProject, userId }: any) => {
                     rounded="full"
                     onClick={() =>
                       setAddNewUser({
-                        type: "teamMember",
+                        type: "team_members",
                         open: true,
                         data: "user",
                         title: "Team Member",
@@ -412,7 +412,7 @@ const ProjectDetails = ({ selectedProject, userId }: any) => {
                     rounded="full"
                     onClick={() =>
                       setAddNewUser({
-                        type: "follower",
+                        type: "followers",
                         open: true,
                         data: "user",
                         title: "Follower",
