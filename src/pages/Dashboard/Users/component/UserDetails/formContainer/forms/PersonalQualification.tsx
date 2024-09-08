@@ -48,6 +48,16 @@ const PersonalQualifications = ({
                           return (
                             <Box key={index} mb="20px">
                               <Grid gridTemplateColumns={{ md: "1fr" }} gap={2}>
+                              <CustomInput
+                                  name={`qualifications.${index}.title`}
+                                  type="text"
+                                  placeholder="Title"
+                                  label="Title"
+                                  value={file.title}
+                                  required
+                                  showError={showError}
+                                  onChange={handleChange}
+                                />
                                 <Box width="100%">
                                   {(file && file?.file && file?.file[0]) ? (
                                     <ShowFileUploadFile
@@ -101,16 +111,7 @@ const PersonalQualifications = ({
                                     />
                                   )}
                                 </Box>
-                                <CustomInput
-                                  name={`qualifications.${index}.title`}
-                                  type="text"
-                                  placeholder="Title"
-                                  label="Title"
-                                  value={file.title}
-                                  required
-                                  showError={showError}
-                                  onChange={handleChange}
-                                />
+
                               </Grid>
                               {values.qualifications.length && (
                                 <Button
