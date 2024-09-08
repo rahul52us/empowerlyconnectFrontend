@@ -4,6 +4,7 @@ export const sideTabs = [
     { key: "bank-details", title: "Bank Details" },
     { key: "family-details", title: "Family Details" },
     { title: "Documents", key: "documents" },
+    { title: "Qualifications", key: "qualifications" },
     { key: "work-experience", title: "Work Experience" },
     { key: "permissions", title: "Permissions" },
 

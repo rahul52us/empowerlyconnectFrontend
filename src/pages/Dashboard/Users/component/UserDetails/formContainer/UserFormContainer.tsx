@@ -43,6 +43,7 @@ const UserFormContainer = observer(() => {
       updateDocuments,
       updateCompanyDetails,
       updatePermissions,
+      updateQualifications
     },
     auth: { openNotification },
   } = store;
@@ -282,7 +283,8 @@ const UserFormContainer = observer(() => {
           .finally(() => {
             setSubmitting(false);
           });
-      } else if (tab === "documents") {
+      }
+      else if (tab === "documents") {
         let dt = await Promise.all(
           values.documents.map(async (item: any) => {
             if (item?.isAdd && item?.file) {
@@ -324,7 +326,51 @@ const UserFormContainer = observer(() => {
           .finally(() => {
             setSubmitting(false);
           });
-      } else if (tab === "permissions") {
+      }
+      else if (tab === "qualifications") {
+        let dt = await Promise.all(
+          values.qualifications.map(async (item: any) => {
+            if (item?.isAdd && item?.file) {
+              const buffer = await readFileAsBase64(item?.file[0]);
+              const fileData = {
+                buffer: buffer,
+                filename: item.file[0].name,
+                type: item.file[0].type,
+              };
+              return { title: item.title, file: fileData, isAdd: item.isAdd };
+            } else {
+              if (item.file && Array.isArray(item.file)) {
+                if (item.file?.length) {
+                  item.file = item.file[0];
+                }
+              }
+              return { ...item };
+            }
+          })
+        );
+        updateQualifications(userId, { ...values, qualifications: dt })
+          .then(() => {
+            setShowError(false);
+            setErrors({});
+            openNotification({
+              type: "success",
+              message: "Update Documents Successfully",
+              title: "Updated Successfully",
+            });
+            setHaveApiCall(false);
+          })
+          .catch((err) => {
+            openNotification({
+              type: "error",
+              message: err?.message,
+              title: "Failed to Update Documents",
+            });
+          })
+          .finally(() => {
+            setSubmitting(false);
+          });
+      }
+      else if (tab === "permissions") {
         updatePermissions(userId, values)
           .then(() => {
             setShowError(false);

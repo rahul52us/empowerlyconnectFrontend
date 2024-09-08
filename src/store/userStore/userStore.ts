@@ -88,6 +88,7 @@ class Userstore {
       updateDocuments: action,
       updateCompanyDetails:action,
       updatePermissions:action,
+      updateQualifications:action,
       getAllUsersRoles:action,
       getManagersUsersCount:action,
       getUsersSubOrdinateDetails:action,
@@ -281,6 +282,18 @@ class Userstore {
     try {
       const { data } = await axios.put(
         `User/updateDocuments/${id}`,
+        sendData
+      );
+      return data;
+    } catch (err: any) {
+      return Promise.reject(err?.response?.data || err);
+    }
+  };
+
+  updateQualifications = async (id: any, sendData: any) => {
+    try {
+      const { data } = await axios.put(
+        `User/qualifications/${id}`,
         sendData
       );
       return data;

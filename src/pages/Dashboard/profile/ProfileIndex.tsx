@@ -76,7 +76,7 @@ const ProfileIndex = observer(({ userId }: any) => {
     "family-details",
     "work-experience",
     "skill-and-additional-info",
-    "qualification",
+    "qualifications",
     "documents",
     "bank-details",
   ];

@@ -15,6 +15,7 @@ import FamilyDetails from "../Users/component/UserDetails/formContainer/forms/Pe
 import PersonalWorkExperience from "../Users/component/UserDetails/formContainer/forms/PersonalWorkExperience";
 import PersonalDocuments from "../Users/component/UserDetails/formContainer/forms/PersonalDocuments";
 import PersonalCompanyDetails from "../Users/component/UserDetails/formContainer/forms/PersonalCompanyDetails";
+import PersonalQualifications from "../Users/component/UserDetails/formContainer/forms/PersonalQualification";
 
 const ProfileEditIndex = observer(
   ({ selectedTab, setSelectedTab, userDetails, setHaveApiCall }: any) => {
@@ -28,6 +29,7 @@ const ProfileEditIndex = observer(
         updatePermissions,
         updateUserProfile,
         updateWorkExperience,
+        updateQualifications
       },
     } = store;
     const [files, setFiles] = useState<any>({
@@ -303,7 +305,53 @@ const ProfileEditIndex = observer(
           .finally(() => {
             setSubmitting(false);
           });
-      } else if (selectedTab.type === "permissions") {
+      }
+      else if (selectedTab.type === "qualifications") {
+        let vall = {...values}
+        let dt = await Promise.all(
+          vall.qualifications.map(async(item : any) => {
+            if (item?.isAdd && item?.file) {
+              const buffer = await readFileAsBase64(item?.file[0]);
+              const fileData = {
+                buffer: buffer,
+                filename: item.file[0].name,
+                type: item.file[0].type
+              };
+              return {title : item.title, file : fileData, isAdd : item.isAdd}
+            } else {
+              if(item.file && Array.isArray(item.file)){
+                if(item.file?.length){
+                  item.file = item.file[0]
+                }
+              }
+                return {...item}
+            }
+          }))
+        updateQualifications(userDetails._id, { ...vall, qualifications: dt })
+          .then(() => {
+            setShowError(false);
+            setErrors({});
+            openNotification({
+              type: "success",
+              message: "Update Documents Successfully",
+              title: "Updated Successfully",
+            });
+          setSelectedTab({ ...selectedTab, open: false })
+
+            setHaveApiCall(false);
+          })
+          .catch((err) => {
+            openNotification({
+              type: "error",
+              message: err?.message,
+              title: "Failed to Update Documents",
+            });
+          })
+          .finally(() => {
+            setSubmitting(false);
+          });
+      }
+      else if (selectedTab.type === "permissions") {
         updatePermissions(userDetails._id, values)
           .then(() => {
             setShowError(false);
@@ -405,6 +453,20 @@ const ProfileEditIndex = observer(
               setFiles={setFiles}
             />
           );
+          case "qualifications":
+            return (
+              <PersonalQualifications
+                type={type}
+                profileData={profileData}
+                handleSubmitProfile={handleSubmitProfile}
+                initialValues={
+                  getUserInitialValues("qualifications", userDetails).qualifications
+                }
+                validations={getUserValidation("qualifications", 'edit')}
+                files={files}
+                setFiles={setFiles}
+              />
+            );
         case "company-details":
           return (
             <PersonalCompanyDetails

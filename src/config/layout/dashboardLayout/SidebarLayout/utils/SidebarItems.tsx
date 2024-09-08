@@ -69,9 +69,9 @@ const sidebarDatas: SidebarItem[] = [
       },
       {
         id: 8,
-        name: "Qualification",
+        name: "Qualifications",
         icon: <FaUsers />,
-        url: `${dashboard.profile}?tab=qualification`,
+        url: `${dashboard.profile}?tab=qualifications`,
         role: ["user"],
       },
       {

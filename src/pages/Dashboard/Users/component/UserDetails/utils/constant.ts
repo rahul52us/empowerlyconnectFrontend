@@ -165,14 +165,21 @@ export const getUserInitialValues = (type: string, data: any) => {
     return {
       workExperience: workExperience
     };
-  } else if (type === "documents") {
-
-    return {documents : {documents : data?.documents[0]?.documents ? data?.documents[0]?.documents?.map((it: any) => ({
+  }
+  else if (type === "documents") {
+    return {documents : {documents : data.documents?.length ? data?.documents[0]?.documents ? data?.documents[0]?.documents?.map((it: any) => ({
       ...it,
       file: Object.entries(it.file || {}).length ? [it.file] : undefined,
-    })) : [],deleteAttachments : []}}
+    })) : [] : [],deleteAttachments : []}}
 
-  } else if (type === "company-details") {
+  }
+  else if (type === "qualifications") {
+    return {qualifications : {qualifications : data?.qualifications?.length ? data?.qualifications[0]?.qualifications ? data?.qualifications[0]?.qualifications?.map((it: any) => ({
+      ...it,
+      file: Object.entries(it.file || {}).length ? [it.file] : undefined,
+    })) : [] : [],deleteAttachments : []}}
+  }
+   else if (type === "company-details") {
     let details: any = {};
     if (data) {
       details = data?.companyDetail?.length
