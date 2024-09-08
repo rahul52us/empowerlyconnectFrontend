@@ -37,7 +37,7 @@ export const generateProjectInitialValues = (values: any) => {
     logo: values.logo?.url ? { file: values?.logo } : { file: [] },
     attach_files: values?.attach_files?.map((it: any) => ({
       ...it,
-      file: [it.file],
+      file: it.file ? [it.file] : undefined,
     })),
     tags: values.tags || [],
   };
@@ -50,14 +50,18 @@ export const generateProjectResponse = async (val: any) => {
   // Process attach_files separately and asynchronously
   const processedFiles = await Promise.all(
     values.attach_files.map(async (item: any) => {
-      if (item.isAdd) {
+      if (item.isAdd && item.file) {
         try {
           const base64Data = await readFileAsBase64(item.file[0]);
           return { ...item, file: { buffer: base64Data, type: item.file[0]?.type, filename: item.file[0]?.name } };
         } catch {
           return item;
         }
-      } else {
+      }
+      else if(!item.file){
+        return {...item,file : null};
+      }
+       else {
         return {...item,file : {...item.file[0]}};
       }
     })

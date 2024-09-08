@@ -35,7 +35,8 @@ const EditTask = observer(({ task, fetchRecords,close }: any) => {
   }, [getSingleTask, openNotification, task]);
 
   const handleSubmit = async ({ values, setSubmitting, resetForm } : any) => {
-    const response = generateSendTaskResponse(values);
+    const response = await generateSendTaskResponse(values);
+    setSubmitting(true)
     updateTask({ _id: task?._id, ...response })
         .then((data: any) => {
           openNotification({

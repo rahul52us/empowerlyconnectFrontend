@@ -2,11 +2,36 @@ import {
   formatDate,
   YYYYMMDD_FORMAT,
 } from "../../../../../../config/constant/dateUtils";
+import { readFileAsBase64 } from "../../../../../../config/constant/function";
 import { activeStatus, taskPrioties, taskStatus } from "./constant";
 
-export const generateSendTaskResponse = (values: any) => {
+export const generateSendTaskResponse = async(val: any) => {
+
+  let values: any = { ...val };
+
+  // Process attach_files separately and asynchronously
+  const processedFiles = await Promise.all(
+    values.attach_files.map(async (item: any) => {
+      if (item.isAdd && item.file) {
+        try {
+          const base64Data = await readFileAsBase64(item.file[0]);
+          return { ...item, file: { buffer: base64Data, type: item.file[0]?.type, filename: item.file[0]?.name } };
+        } catch {
+          return item;
+        }
+      }
+      else if(!item.file){
+        return {...item,file : null};
+      }
+      else {
+        return {...item,file : {...item.file[0]}};
+      }
+    })
+  );
+
   return {
     ...values,
+    attach_files: processedFiles,
     priority: values?.priority
       ? values?.priority?.value
       : taskPrioties[1].value,
@@ -41,10 +66,9 @@ export const generateInitialValues = (data?: any) => {
     data = {};
   }
 
-  console.log('the data are', data)
-
   return {
     ...data,
+    deleteAttachments : [],
     assigner: data.assigner
       ? Array.isArray(data.assigner)
         ? data.assigner?.length > 0
@@ -80,6 +104,10 @@ export const generateInitialValues = (data?: any) => {
         taskPrioties[0]
       : taskPrioties[0],
     reminders: new Date(),
+    attach_files: data?.attach_files?.map((it: any) => ({
+      ...it,
+      file: it.file ? [it.file] : undefined,
+    })),
     // followers: [],
     // dependencies:[],
     // team_members: [],
@@ -89,6 +117,5 @@ export const generateInitialValues = (data?: any) => {
     status: data
       ? taskStatus.find((it: any) => it.value === data.status) || taskStatus[0]
       : taskStatus[0],
-    attach_files: [],
   };
 };

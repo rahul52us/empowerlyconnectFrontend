@@ -13,6 +13,7 @@ import DrawerFormHeightContainer from "../../../../../../config/component/Drawer
 
 const TaskForm = observer(
   ({ type = "create", initialValues, handleSubmitForm }: any) => {
+    const [isSubmitting, setSubmitting] = useState(false)
     const [showError, setShowError] = useState(false);
     const {
       auth: { getCompanyUsers, openNotification },
@@ -95,11 +96,11 @@ const TaskForm = observer(
           initialValues={initialValues}
           enableReinitialize={true}
           validationSchema={TaskCreateValidation}
-          onSubmit={(values, { resetForm, setSubmitting }) => {
+          onSubmit={(values, { resetForm }) => {
             handleSubmitForm({ values, resetForm, setSubmitting });
           }}
         >
-          {({ handleChange, values, errors, setFieldValue, isSubmitting }) => {
+          {({ handleChange, values, errors, setFieldValue }) => {
             return (
               <Form>
                 <DrawerFormHeightContainer>
@@ -446,6 +447,10 @@ const TaskForm = observer(
                                               edit={type === "edit"}
                                               files={file.file[0]}
                                               removeFile={() => {
+                                                if(type === "edit")
+                                                  {
+                                                    setFieldValue('deleteAttachments', [...values.deleteAttachments,file.file[0]?.name])
+                                                  }
                                                 const updatedFiles =
                                                   values.attach_files.map(
                                                     (item: any, i: number) =>
@@ -477,6 +482,10 @@ const TaskForm = observer(
                                                 setFieldValue(
                                                   `attach_files.${index}.file`,
                                                   e.target.files
+                                                );
+                                                setFieldValue(
+                                                  `attach_files.${index}.isAdd`,
+                                                  1
                                                 );
                                               }}
                                             />
@@ -514,7 +523,12 @@ const TaskForm = observer(
                                           variant="outline"
                                           size="sm"
                                           mt="10px"
-                                          onClick={() => remove(index)}
+                                          onClick={() => {
+                                            if(type === 'edit')
+                                              {
+                                                setFieldValue('deleteAttachments', [...values.deleteAttachments,file.file[0]?.name])
+                                              }
+                                            remove(index)}}
                                         >
                                           Remove Section
                                         </Button>
@@ -531,6 +545,7 @@ const TaskForm = observer(
                                   mt={5}
                                   onClick={() =>
                                     push({
+                                      isAdd : 1,
                                       title: "",
                                       description: "",
                                       file: null,

@@ -68,19 +68,19 @@ const AttachmentItem = ({ file }: any) => {
         bg={useColorModeValue("white", "gray.700")}
       >
         <HStack spacing={3}>
-          <FileIcon mimeType={file?.file[0]?.type || "application/pdf"} />
+          <FileIcon mimeType={file?.file ? file?.file[0]?.type : "unknown file"} />
           <VStack align="flex-start" spacing={0}>
-            <Text fontSize="sm" fontWeight="bold" isTruncated>
-              {file?.title || file?.file[0]?.name}
+            <Text fontSize="sm" fontWeight="bold" isTruncated wordBreak={'break-word'} >
+              {file?.file ? file?.file[0]?.name?.slice(0,30) : "file not exists"}
             </Text>
             <Text fontSize="xs" color="gray.500">
-              {file?.file[0]?.type || "Unknown Size"}
+              {file?.file ? file?.file[0]?.type : "Unknown Size"}
             </Text>
           </VStack>
         </HStack>
         <ShowFileUploadFile
           edit={true}
-          files={file.file[0]}
+          files={file?.file ? file.file[0] : []}
           showViewIcon={true}
         />
       </Flex>
