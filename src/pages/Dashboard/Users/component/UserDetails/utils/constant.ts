@@ -163,52 +163,17 @@ export const getUserInitialValues = (type: string, data: any) => {
       };
     }
     return {
-      workExperience: workExperience,
+      workExperience: workExperience
     };
   } else if (type === "documents") {
-    let docs: any = {};
-    let documents = { ...data?.documents[0] };
-    if (documents.documents) {
-      const documentFields = Object.keys(documents.documents);
-      for (const fieldName of documentFields) {
-        docs[fieldName] = {
-          file: [
-            {
-              ...documents.documents[fieldName],
-              file: documents.documents[fieldName].url,
-            },
-          ],
-        };
-      }
-    }
 
-    return {
-      documents: Object.keys(docs).length
-        ? docs
-        : {
-            class10: {
-              file: null,
-              isDeleted: 0,
-              isAdd: 0,
-              validTill: "",
-              effectiveForm: "",
-            },
-            class12: {
-              file: null,
-              isDeleted: 0,
-              isAdd: 0,
-              validTill: "",
-              effectiveForm: "",
-            },
-            games: {
-              file: null,
-              isDeleted: 0,
-              isAdd: 0,
-              validTill: "",
-              effectiveForm: "",
-            },
-          },
-    };
+    console.log('the documents are', data?.documents)
+
+    return {documents : {documents : data?.documents[0]?.documents ? data?.documents[0]?.documents?.map((it: any) => ({
+      ...it,
+      file: it.file ? [it.file] : undefined,
+    })) : [],deleteAttachments : []}}
+
   } else if (type === "company-details") {
     let details: any = {};
     if (data) {

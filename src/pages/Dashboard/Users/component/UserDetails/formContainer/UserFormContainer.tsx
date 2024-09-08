@@ -280,27 +280,20 @@ const UserFormContainer = observer(() => {
           });
       } else if (tab === "documents") {
         let dt = await Promise.all(
-          Object.entries(values).map(async ([key, item]: any) => {
+          values.documents.map(async(item : any) => {
             if (item?.isAdd && item?.file) {
               const buffer = await readFileAsBase64(item?.file[0]);
               const fileData = {
                 buffer: buffer,
                 filename: item.file[0].name,
-                type: item.file[0].type,
-                isFileDeleted: item.isDeleted,
-                isAdd: item.isAdd,
+                type: item.file[0].type
               };
-              return [key, fileData];
+              return {title : item.title, file : fileData, isAdd : item.isAdd}
             } else {
-              if(Array.isArray(item.file) && item?.file?.length){
-                return [key, item.file[0]];
-              }
-              return [key, item];
+                return {...item}
             }
-          })
-        );
-        dt = Object.fromEntries(dt);
-        updateDocuments(userId, { documents: dt })
+          }))
+        updateDocuments(userId, { ...values, documents: dt })
           .then(() => {
             setShowError(false);
             setErrors({});
