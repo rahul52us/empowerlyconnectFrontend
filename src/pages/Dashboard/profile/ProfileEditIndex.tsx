@@ -258,29 +258,29 @@ const ProfileEditIndex = observer(
           .finally(() => {
             setSubmitting(false);
           });
-      } else if (selectedTab.type === "documents") {
+      }
+      else if (selectedTab.type === "documents") {
+        let vall = {...values}
         let dt = await Promise.all(
-          Object.entries(values).map(async ([key, item]: any) => {
+          vall.documents.map(async(item : any) => {
             if (item?.isAdd && item?.file) {
               const buffer = await readFileAsBase64(item?.file[0]);
               const fileData = {
                 buffer: buffer,
                 filename: item.file[0].name,
-                type: item.file[0].type,
-                isFileDeleted: item.isDeleted,
-                isAdd: item.isAdd,
+                type: item.file[0].type
               };
-              return [key, fileData];
+              return {title : item.title, file : fileData, isAdd : item.isAdd}
             } else {
-              if (Array.isArray(item.file) && item?.file?.length) {
-                return [key, item.file[0]];
+              if(item.file && Array.isArray(item.file)){
+                if(item.file?.length){
+                  item.file = item.file[0]
+                }
               }
-              return [key, item];
+                return {...item}
             }
-          })
-        );
-        dt = Object.fromEntries(dt);
-        updateDocuments(userDetails._id, { documents: dt })
+          }))
+        updateDocuments(userDetails._id, { ...vall, documents: dt })
           .then(() => {
             setShowError(false);
             setErrors({});
@@ -289,8 +289,9 @@ const ProfileEditIndex = observer(
               message: "Update Documents Successfully",
               title: "Updated Successfully",
             });
+          setSelectedTab({ ...selectedTab, open: false })
+
             setHaveApiCall(false);
-            setSelectedTab({ open: false, type: "profile-details" });
           })
           .catch((err) => {
             openNotification({

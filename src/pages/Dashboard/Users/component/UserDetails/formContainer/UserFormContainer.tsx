@@ -17,7 +17,9 @@ import { readFileAsBase64 } from "../../../../../../config/constant/function";
 import { getStatusType } from "../../../../../../config/constant/statusCode";
 
 const UserFormContainer = observer(() => {
-  const {auth : {user}} = store
+  const {
+    auth: { user },
+  } = store;
   const [haveApiCall, setHaveApiCall] = useState(false);
   const [files, setFiles] = useState<any>({
     cancelledCheque: {
@@ -40,20 +42,20 @@ const UserFormContainer = observer(() => {
       updateWorkExperience,
       updateDocuments,
       updateCompanyDetails,
-      updatePermissions
+      updatePermissions,
     },
     auth: { openNotification },
   } = store;
   const [userData, setUserData] = useState<any>(null);
-  const [userId, setUserId] = useState<any>(null)
+  const [userId, setUserId] = useState<any>(null);
   const { id } = useParams();
-  const [type,setType] = useState<any>(
+  const [type, setType] = useState<any>(
     location.pathname?.split("/")[4] === "edit" && id
   );
 
   useEffect(() => {
     setType(location.pathname?.split("/")[4] === "edit" && id);
-  }, [location.pathname, id,setType]);
+  }, [location.pathname, id, setType]);
 
   useEffect(() => {
     if (id) {
@@ -61,17 +63,15 @@ const UserFormContainer = observer(() => {
     }
   }, [id]);
 
-  const navigateUser = (id : any) => {
-    navigate(
-      `${dashboard.Users.details}/edit/${id}?tab=company-details`
-    )
-  }
+  const navigateUser = (id: any) => {
+    navigate(`${dashboard.Users.details}/edit/${id}?tab=company-details`);
+  };
   const handleSubmitProfile = async ({
     values,
     setSubmitting,
     setErrors,
-    setShowError
-  } : any) => {
+    setShowError,
+  }: any) => {
     if (type) {
       if (tab === "profile-details") {
         let updatedValues = { ...values };
@@ -99,7 +99,10 @@ const UserFormContainer = observer(() => {
         }
 
         const finalData = await generateSubmitResponse(updatedValues);
-        updateUserProfile(userId, { ...finalData, company: user?.companyDetail?.company })
+        updateUserProfile(userId, {
+          ...finalData,
+          company: user?.companyDetail?.company,
+        })
           .then(() => {
             setShowError(false);
             setErrors({});
@@ -120,16 +123,17 @@ const UserFormContainer = observer(() => {
           .finally(() => {
             setSubmitting(false);
           });
-      }
-      else if(tab === "company-details"){
-        let data : any = {}
-        data['workTiming'] = values.workTiming.map((item : any) => item.value)
-        data['workingLocation'] = values.workingLocation.map((item : any) => item.value)
-        data['managers'] = values.managers.map((item : any) => item.value)
-        data['eType'] = values.eType?.value
-        data['department'] = values.department?.value
-        data['designation'] = values.designation?.value
-        updateCompanyDetails(userId, {details : {...values, ...data}})
+      } else if (tab === "company-details") {
+        let data: any = {};
+        data["workTiming"] = values.workTiming.map((item: any) => item.value);
+        data["workingLocation"] = values.workingLocation.map(
+          (item: any) => item.value
+        );
+        data["managers"] = values.managers.map((item: any) => item.value);
+        data["eType"] = values.eType?.value;
+        data["department"] = values.department?.value;
+        data["designation"] = values.designation?.value;
+        updateCompanyDetails(userId, { details: { ...values, ...data } })
           .then(() => {
             setShowError(false);
             setErrors({});
@@ -150,15 +154,16 @@ const UserFormContainer = observer(() => {
           .finally(() => {
             setSubmitting(false);
           });
-      }
-      else if (tab === "bank-details") {
-        let bankDetails: any = {...values}
+      } else if (tab === "bank-details") {
+        let bankDetails: any = { ...values };
         if (
           bankDetails.cancelledCheque?.file &&
           bankDetails.cancelledCheque?.file?.length !== 0 &&
           bankDetails?.cancelledCheque?.isAdd
         ) {
-          const buffer = await readFileAsBase64(bankDetails.cancelledCheque?.file);
+          const buffer = await readFileAsBase64(
+            bankDetails.cancelledCheque?.file
+          );
           const fileData = {
             buffer: buffer,
             filename: bankDetails.cancelledCheque?.file?.name,
@@ -197,8 +202,7 @@ const UserFormContainer = observer(() => {
           .finally(() => {
             setSubmitting(false);
           });
-      }
-       else if (tab === "family-details") {
+      } else if (tab === "family-details") {
         updateFamilyDetails(userId, values)
           .then(() => {
             setShowError(false);
@@ -280,19 +284,25 @@ const UserFormContainer = observer(() => {
           });
       } else if (tab === "documents") {
         let dt = await Promise.all(
-          values.documents.map(async(item : any) => {
+          values.documents.map(async (item: any) => {
             if (item?.isAdd && item?.file) {
               const buffer = await readFileAsBase64(item?.file[0]);
               const fileData = {
                 buffer: buffer,
                 filename: item.file[0].name,
-                type: item.file[0].type
+                type: item.file[0].type,
               };
-              return {title : item.title, file : fileData, isAdd : item.isAdd}
+              return { title: item.title, file: fileData, isAdd: item.isAdd };
             } else {
-                return {...item}
+              if (item.file && Array.isArray(item.file)) {
+                if (item.file?.length) {
+                  item.file = item.file[0];
+                }
+              }
+              return { ...item };
             }
-          }))
+          })
+        );
         updateDocuments(userId, { ...values, documents: dt })
           .then(() => {
             setShowError(false);
@@ -314,35 +324,34 @@ const UserFormContainer = observer(() => {
           .finally(() => {
             setSubmitting(false);
           });
-      }
-      else if(tab === "permissions"){
+      } else if (tab === "permissions") {
         updatePermissions(userId, values)
-        .then(() => {
-          setShowError(false);
-          setErrors({});
-          openNotification({
-            type: "success",
-            message: "Update Permissions Successfully",
-            title: "Updated Successfully",
+          .then(() => {
+            setShowError(false);
+            setErrors({});
+            openNotification({
+              type: "success",
+              message: "Update Permissions Successfully",
+              title: "Updated Successfully",
+            });
+            setHaveApiCall(false);
+          })
+          .catch((err) => {
+            openNotification({
+              type: "error",
+              message: err?.message,
+              title: "Failed to Update Permissions Details",
+            });
+          })
+          .finally(() => {
+            setSubmitting(false);
           });
-          setHaveApiCall(false);
-        })
-        .catch((err) => {
-          openNotification({
-            type: "error",
-            message: err?.message,
-            title: "Failed to Update Permissions Details",
-          });
-        })
-        .finally(() => {
-          setSubmitting(false);
-        });
       }
     } else {
       if (tab === "profile-details") {
         const finalData = await generateSubmitResponse(values);
-        createUser({ ...finalData,company : user?.companyDetail?.company })
-          .then((data : any) => {
+        createUser({ ...finalData, company: user?.companyDetail?.company })
+          .then((data: any) => {
             setShowError(false);
             setErrors({});
             openNotification({
@@ -351,7 +360,7 @@ const UserFormContainer = observer(() => {
               title: "Create Successfully",
             });
             setHaveApiCall(false);
-            navigateUser(data?.data?._id)
+            navigateUser(data?.data?._id);
           })
           .catch((err) => {
             openNotification({
@@ -363,15 +372,15 @@ const UserFormContainer = observer(() => {
           .finally(() => {
             setSubmitting(false);
           });
+      } else {
+        openNotification({
+          title: `${tab} Tab Inaccessible`,
+          message:
+            "This tab is accessible only after completing the profile details.",
+          type: "info",
+        });
+        setSubmitting(false);
       }
-    else{
-      openNotification({
-        title: `${tab} Tab Inaccessible`,
-        message: 'This tab is accessible only after completing the profile details.',
-        type: 'info',
-      });
-      setSubmitting(false);
-    }
     }
   };
 
@@ -418,10 +427,7 @@ const UserFormContainer = observer(() => {
 
   return (
     <Box>
-      <DashPageHeader
-        title="Users > New"
-        breadcrumb={UsersBreadCrumb.new}
-      />
+      <DashPageHeader title="Users > New" breadcrumb={UsersBreadCrumb.new} />
       {isDataLoaded ? (
         <UserContainer {...commonProps} />
       ) : type === false ? (

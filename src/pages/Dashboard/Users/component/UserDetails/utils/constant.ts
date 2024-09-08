@@ -167,11 +167,9 @@ export const getUserInitialValues = (type: string, data: any) => {
     };
   } else if (type === "documents") {
 
-    console.log('the documents are', data?.documents)
-
     return {documents : {documents : data?.documents[0]?.documents ? data?.documents[0]?.documents?.map((it: any) => ({
       ...it,
-      file: it.file ? [it.file] : undefined,
+      file: Object.entries(it.file || {}).length ? [it.file] : undefined,
     })) : [],deleteAttachments : []}}
 
   } else if (type === "company-details") {

@@ -49,7 +49,7 @@ const PersonalDocuments = ({
                             <Box key={index} mb="20px">
                               <Grid gridTemplateColumns={{ md: "1fr" }} gap={2}>
                                 <Box width="100%">
-                                  {file.file ? (
+                                  {(file && file?.file && file?.file[0]) ? (
                                     <ShowFileUploadFile
                                       edit={type === "edit" ? true : false}
                                       files={file.file[0]}
@@ -128,7 +128,7 @@ const PersonalDocuments = ({
                                     remove(index);
                                   }}
                                 >
-                                  Remove Section
+                                  Remove Document
                                 </Button>
                               )}
                             </Box>
@@ -150,7 +150,7 @@ const PersonalDocuments = ({
                             })
                           }
                         >
-                          Add Section
+                          Add Document
                         </Button>
                       </Box>
                     )}
