@@ -39,5 +39,29 @@
         "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQpYDnlJm0QEM_9uHfDgLn0Bq63FO7IWVaPmU_purqpVPgPIWo&usqp=CAY"
       ]
     }
+  ],
+  "productSpecifications": [
+    { "label": "Brand", "value": "Apple" },
+    { "label": "Prosesor", "value": "Apple M1 Chip (CPU 8-Core, GPU 7-Core)" },
+    { "label": "Grafis", "value": "GPU 7-core" },
+    {
+      "label": "Nirkabel",
+      "value": "Wi-Fi\nJaringan nirkabel Wi-Fi 6 802.11ax\nBluetooth\nTeknologi nirkabel Bluetooth 5.0"
+    },
+    {
+      "label": "Kamera",
+      "value": "Kamera FaceTime HD 1080p dengan prosesor sinyal gambar M1"
+    },
+    { "label": "Ukuran Layar", "value": "24 inci" },
+    {
+      "label": "Tipe Layar",
+      "value": "Layar Retina 4.5K 24 inci\nResolusi 4480 x 2520 pada 218 piksel per inci dengan dukungan untuk 1 miliar warna\nKecerahan 500 nit\nWarna luas (P3)\nTeknologi True Tone"
+    },
+    {
+      "label": "Audio",
+      "value": "Sistem enam speaker high-fidelity dengan subwoofer force-cancelling\nSuara stereo berjangkauan luas\nDukungan untuk audio spasial saat memutar musik atau video dengan Dolby Atmos"
+    },
+    { "label": "Papan Ketik", "value": "Apple Magic Keyboard" },
+    { "label": "Memori", "value": "Memori terintegrasi 8 GB" }
   ]
 }
