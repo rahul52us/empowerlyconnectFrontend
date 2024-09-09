@@ -19,6 +19,7 @@ import { useEffect, useState } from "react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import PriceDisplay from "./PriceDisplay/PriceDisplay";
+import ProductSpecification from "./ProductSpecification/ProductSpecification";
 
 const IndividualProductPage = ({productData}:any) => {
   const [mainImage, setMainImage] = useState(productData?.images[0]);
@@ -206,6 +207,7 @@ const IndividualProductPage = ({productData}:any) => {
           </VStack>
         </Box>
       </Grid>
+      <ProductSpecification productSpecifications={productData?.productSpecifications} />
     </Box>
   );
 };
