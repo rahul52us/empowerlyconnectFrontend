@@ -14,7 +14,7 @@ const AddNewUser = observer(
     const [showError, setShowError] = useState([]);
 
     const handleSubmit = ({ setSubmitting, values }: any) => {
-      addTripMembers({ _id: item?._id,user : values?.user?.value, type: type })
+      addTripMembers({ _id: item?._id,user : values?.user?.value, isActive : values?.isActive , type: type })
         .then((data) => {
           getSingleTrip({ _id: item?._id })
             .then((dt) => {
