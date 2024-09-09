@@ -56,7 +56,7 @@ isFileDeleted,
 setIsFileDeleted,
 }: TripFormI) => {
 const {
-	auth: { getCompanyUsers, companyUsers, openNotification },
+	auth: { getCompanyUsers, openNotification },
 } = store;
 
 useEffect(() => {
@@ -70,6 +70,39 @@ useEffect(() => {
 		});
 	});
 }, [getCompanyUsers, openNotification]);
+
+const generateErrors = (
+	errorType: any,
+	errors: any,
+	type: string,
+	index: number
+  ) => {
+	if (errorType === "attachment") {
+	  const errorTypes = ["title"];
+	  if (errors.attach_files && errors.attach_files[index]) {
+		const errorTypeIndex = errorTypes.indexOf(type);
+		if (errorTypeIndex !== -1) {
+		  return errors.attach_files[index][errorTypes[errorTypeIndex]];
+		}
+	  }
+	  return undefined;
+	}
+
+
+	if (errorType === "participants") {
+	  const errorTypes = ["user"];
+	  if (errors.customers && errors.customers[index]) {
+		const errorTypeIndex = errorTypes.indexOf(type);
+		if (errorTypeIndex !== -1) {
+		  return errors.customers[index][errorTypes[errorTypeIndex]];
+		}
+	  }
+	  return undefined;
+	}
+
+  };
+
+
 return (
 	<Box>
 	<Formik<any>
@@ -174,30 +207,135 @@ return (
 						}}
 					/>
 					</GridItem>
-					<GridItem>
-					<CustomInput
-						type="select"
-						label="Participants"
-						placeholder="Select Participants"
-						name={`participants`}
-						options={companyUsers}
-						error={errors.participants}
-						value={values.participants}
-						getOptionLabel={(options: any) =>
-						options?.user?.username
-						}
-						getOptionValue={(options: any) => options?.user?._id}
-						onChange={(e) => {
-						setFieldValue(`participants`, e);
-						}}
-						required={true}
-						isMulti={
-						values.type?.value === tripTypes[1].value
-							? true
-							: false
-						}
-					/>
-					</GridItem>
+					<GridItem colSpan={{ base: 1, md: 4 }}>
+                      <Box mt={5} mb={2}>
+                        <Text fontWeight={"bold"}>Add Participants :- </Text>
+                      </Box>
+                      <FieldArray name="participants">
+                        {({ push, remove }) => (
+                          <>
+                            {values.participants.length > 0 ? (
+                              <Grid
+                                templateColumns={{ base: "1fr", md: "1fr 1fr" }}
+                                gap={4}
+                                mb={4}
+                              >
+                                {values.participants.map(
+                                  (user: any, index: number) => (
+                                    <Box
+                                      key={`participants-${index}-${user}`}
+                                      p={4}
+                                      borderWidth="1px"
+                                      borderRadius="md"
+                                      boxShadow="sm"
+                                    >
+                                      <Flex
+                                        direction={{
+                                          base: "column",
+                                          md: "row",
+                                        }}
+                                        align="center"
+                                        justify="space-between"
+                                        gap={4}
+                                      >
+                                        <CustomInput
+                                          name={`participants.${index}.user`}
+                                          label="Participants"
+                                          value={
+                                            isEdit && user?.user
+                                              ? {
+                                                  label: user.user.username,
+                                                  value: user.user._id,
+                                                }
+                                              : undefined
+                                          }
+                                          options={
+                                            isEdit && user?.user
+                                              ? [
+                                                  {
+                                                    label: user.user.username,
+                                                    value: user.user._id,
+                                                  },
+                                                ]
+                                              : []
+                                          }
+                                          placeholder="Select Participants"
+                                          type="real-time-user-search"
+                                          onChange={(selectedOption) => {
+                                            setFieldValue(
+                                              `participants.${index}.user`,
+                                              selectedOption
+                                            );
+                                          }}
+                                          isMulti={false}
+                                          isSearchable
+                                          showError={true}
+                                          error={generateErrors(
+                                            "participants",
+                                            errors,
+                                            "user",
+                                            index
+                                          )}
+                                          rest={{ flex: 1 }}
+                                        />
+                                        <CustomInput
+                                          type="checkbox"
+                                          name={`participants.${index}.isActive`}
+                                          label="Active"
+                                          value={user.isActive}
+                                          onChange={(e: any) => {
+                                            setFieldValue(
+                                              `participants.${index}.isActive`,
+                                              e.target.checked
+                                            );
+                                          }}
+                                          rest={{ flexShrink: 0 }}
+                                        />
+                                        <Button
+                                          onClick={() => {
+                                            remove(index);
+                                          }}
+                                          size="sm"
+                                          colorScheme="red"
+                                          variant="outline"
+                                          flexShrink={0}
+                                        >
+                                          Delete
+                                        </Button>
+                                      </Flex>
+                                    </Box>
+                                  )
+                                )}
+                              </Grid>
+                            ) : (
+                              <Text
+                                fontSize="md"
+                                color="gray.500"
+                                mb={4}
+                                textAlign="center"
+                                fontWeight="bold"
+                              >
+                                No Participants added yet.
+                              </Text>
+                            )}
+                            <Button
+                              mt={4}
+                              width="100%"
+                              onClick={() =>
+                                push({
+                                  user: undefined,
+                                  isActive: true,
+                                  isAdd: true
+                                })
+                              }
+                              colorScheme="blue"
+                            >
+                              Add Participants
+                            </Button>
+                          </>
+                        )}
+                      </FieldArray>
+                    </GridItem>
 				</Grid>
 				</Box>
 				{/* for the travels details */}

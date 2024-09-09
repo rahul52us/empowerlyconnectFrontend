@@ -52,7 +52,7 @@ export const initialValues: TripFormValues = {
       amount: "",
     },
   ],
-  participants: [{ label: "", value: "" }],
+  participants: [],
 };
 
 export const getInitialValues = (data : any) => {

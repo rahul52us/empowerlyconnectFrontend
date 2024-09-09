@@ -44,17 +44,6 @@ export const generateTripResponse = async (data: any) => {
     })}
   );
   const type = data.type ? data?.type?.value : tripTypes[0].value;
-  let updatedParticipants : any = []
-  if(type === tripTypes[0].value && data?.participants)
-  {
-    updatedParticipants = Array.isArray(data?.participants) ? data?.participants?.length ? [{user : data?.participants[0]?.user?._id, isActive : true}] : [] : [{user : data?.participants.user?._id, isActive : true}]
-  }
-  else
-  {
-    updatedParticipants = data.participants?.map(
-      (item: any) => ({user : item.user?.value || item.user?._id, isActive : true})
-    ) || [];
-  }
   const updatedAdditionalExpense = data.additionalExpenses?.map(
     (item: AdditionalExpense) => ({
       ...item,
@@ -64,7 +53,11 @@ export const generateTripResponse = async (data: any) => {
   const updatedData = {
     ...data,
     type: type,
-    participants: updatedParticipants,
+    participants: data?.participants.map((item: any) => ({
+      user: item.isAdd ? item?.user?.value : item?.user?._id,
+      isActive: item.isActive || false,
+      isAdd: item.isAdd || false,
+    })),
     travelDetails: updatedTravelDetails,
     additionalExpenses: updatedAdditionalExpense,
   };
@@ -102,8 +95,10 @@ export const generateEditInitialValues = (data : any) => {
     type: tripTypes.find((it : any) => it.value === data.type) || tripTypes[0],
     travelDetails: updatedTravelDetails,
     additionalExpenses: updatedAdditionalExpense,
-    participants : data.participants || []
-  };
+    participants: data.participants.map((item: any) => ({
+      user: item.user,
+      isActive: item.isActive
+    })),  };
   return updatedData;
 }
 
