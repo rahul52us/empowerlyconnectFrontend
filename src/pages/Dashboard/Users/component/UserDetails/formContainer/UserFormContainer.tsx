@@ -17,9 +17,6 @@ import { readFileAsBase64 } from "../../../../../../config/constant/function";
 import { getStatusType } from "../../../../../../config/constant/statusCode";
 
 const UserFormContainer = observer(() => {
-  const {
-    auth: { user },
-  } = store;
   const [haveApiCall, setHaveApiCall] = useState(false);
   const [files, setFiles] = useState<any>({
     cancelledCheque: {
@@ -76,7 +73,6 @@ const UserFormContainer = observer(() => {
     if (type) {
       if (tab === "profile-details") {
         let updatedValues = { ...values };
-
         if (
           updatedValues.pic?.file &&
           updatedValues.pic?.file?.length !== 0 &&
@@ -101,8 +97,7 @@ const UserFormContainer = observer(() => {
 
         const finalData = await generateSubmitResponse(updatedValues);
         updateUserProfile(userId, {
-          ...finalData,
-          company: user?.companyDetail?.company,
+          ...finalData
         })
           .then(() => {
             setShowError(false);
@@ -395,8 +390,31 @@ const UserFormContainer = observer(() => {
       }
     } else {
       if (tab === "profile-details") {
-        const finalData = await generateSubmitResponse(values);
-        createUser({ ...finalData, company: user?.companyDetail?.company })
+        let updatedValues = { ...values };
+        if (
+          updatedValues.pic?.file &&
+          updatedValues.pic?.file?.length !== 0 &&
+          updatedValues?.pic?.isAdd
+        ) {
+          const buffer = await readFileAsBase64(updatedValues.pic?.file);
+          const fileData = {
+            buffer: buffer,
+            filename: updatedValues.pic?.file?.name,
+            type: updatedValues.pic?.file?.type,
+            isDeleted: updatedValues?.pic?.isDeleted || 0,
+            isAdd: updatedValues?.pic?.isAdd || 0,
+          };
+          updatedValues.pic = fileData;
+        } else if (updatedValues?.pic?.isDeleted) {
+          const fileData = {
+            isDeleted: updatedValues?.pic?.isDeleted || 0,
+            isAdd: updatedValues?.pic?.isAdd || 0,
+          };
+          updatedValues.pic = fileData;
+        }
+
+        const finalData = await generateSubmitResponse(updatedValues);
+        createUser({ ...finalData })
           .then((data: any) => {
             setShowError(false);
             setErrors({});
@@ -464,7 +482,7 @@ const UserFormContainer = observer(() => {
     initialValues: getUserInitialValues(tab, userData),
     validations: getUserValidation(tab, type ? "edit" : "create"),
     type: type ? "edit" : "create",
-    changePassword: () => alert("rahul"),
+    changePassword: () => alert("not found"),
     files: files,
     setFiles: setFiles,
   };

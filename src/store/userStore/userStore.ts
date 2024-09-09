@@ -316,7 +316,7 @@ class Userstore {
 
   updateUserProfile = async (id: any, sendData: any) => {
     try {
-      const { data } = await axios.put(`User/profile/${id}`, sendData);
+      const { data } = await axios.put(`User/profile/${id}`, {...sendData,company: store.auth.company});
       return data;
     } catch (err: any) {
       return Promise.reject(err?.response?.data || err);

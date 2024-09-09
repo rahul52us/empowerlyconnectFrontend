@@ -233,7 +233,7 @@ const PersonalWorkExperience = ({
                           );
                         }
                       )}
-                      <Flex justifyContent="end" mb={3}>
+                      <Flex justifyContent="end" mb={3} mt={2}>
                       <Button
                         type="button"
                         colorScheme="blue"
