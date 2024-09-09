@@ -1,5 +1,5 @@
 import { YYYYMMDD_FORMAT, formatDate } from "../../../../../config/constant/dateUtils";
-import { readFileAsBase64 } from "../../../../../config/constant/function";
+import { getUniqueUsers, readFileAsBase64 } from "../../../../../config/constant/function";
 import { categoryTypes,  travelModes, tripTypes } from "./constant";
 import {
   AdditionalExpense,
@@ -53,11 +53,7 @@ export const generateTripResponse = async (data: any) => {
   const updatedData = {
     ...data,
     type: type,
-    participants: data?.participants.map((item: any) => ({
-      user: item.isAdd ? item?.user?.value : item?.user?._id,
-      isActive: item.isActive || false,
-      isAdd: item.isAdd || false,
-    })),
+    participants: getUniqueUsers(data?.participants || []),
     travelDetails: updatedTravelDetails,
     additionalExpenses: updatedAdditionalExpense,
   };

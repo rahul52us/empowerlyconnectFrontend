@@ -91,10 +91,10 @@ const generateErrors = (
 
 	if (errorType === "participants") {
 	  const errorTypes = ["user"];
-	  if (errors.customers && errors.customers[index]) {
+	  if (errors.participants && errors.participants[index]) {
 		const errorTypeIndex = errorTypes.indexOf(type);
 		if (errorTypeIndex !== -1) {
-		  return errors.customers[index][errorTypes[errorTypeIndex]];
+		  return errors.participants[index][errorTypes[errorTypeIndex]];
 		}
 	  }
 	  return undefined;
@@ -114,6 +114,8 @@ return (
 		}}
 	>
 		{({ handleChange, setFieldValue, values, errors }) => {
+
+			console.log(errors)
 		return (
 			<Form>
 			<Box minH={"80vh"} maxH={"80vh"} overflowY={"auto"}>
@@ -318,7 +320,7 @@ return (
                                 No Participants added yet.
                               </Text>
                             )}
-                            <Button
+                            {((values.type?.value === "individual" && values.participants?.length < 1) || values.type?.value === "group") && <Button
                               mt={4}
                               width="100%"
                               onClick={() =>
@@ -331,7 +333,7 @@ return (
                               colorScheme="blue"
                             >
                               Add Participants
-                            </Button>
+                            </Button>}
                           </>
                         )}
                       </FieldArray>

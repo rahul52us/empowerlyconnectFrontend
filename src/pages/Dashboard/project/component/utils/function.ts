@@ -2,7 +2,7 @@ import {
   formatDate,
   YYYYMMDD_FORMAT,
 } from "../../../../../config/constant/dateUtils";
-import { readFileAsBase64 } from "../../../../../config/constant/function";
+import { getUniqueUsers, readFileAsBase64 } from "../../../../../config/constant/function";
 import { ProjectPrioties, projectStatus } from "./constant";
 
 export const generateProjectInitialValues = (values: any) => {
@@ -73,33 +73,13 @@ export const generateProjectResponse = async (val: any) => {
     attach_files: processedFiles,
     priority: values?.priority ? values?.priority?.value : ProjectPrioties[1].value,
     status: values?.status ? values?.status?.value : projectStatus[0].value,
-    followers: values?.followers.map((item: any) => ({
-      user: item.isAdd ? item?.user?.value : item?.user?._id,
-      isActive: item.isActive || false,
-      isAdd: item.isAdd || false,
-    })),
-    project_manager: values?.project_manager.map((item: any) => ({
-      user: item.isAdd ? item?.user?.value : item?.user?._id,
-      isActive: item.isActive || false,
-      isAdd: item.isAdd || false,
-    })),
-    team_members: values?.team_members.map((item: any) => ({
-      user: item.isAdd ? item?.user?.value : item?.user?._id,
-      isActive: item.isActive || false,
-      isAdd: item.isAdd || false,
-    })),
-    customers: values?.customers.map((item: any) => ({
-      user: item.isAdd ? item?.user?.value : item?.user?._id,
-      isActive: item.isActive || false,
-      isAdd: item.isAdd || false,
-    })),
+    followers: getUniqueUsers(values?.followers || []),
+    project_manager: getUniqueUsers(values?.project_manager || []),
+    team_members: getUniqueUsers(values.team_members || []),
+    customers: getUniqueUsers(values.customers || []),
     startDate: values?.startDate ? formatDate(values?.startDate, YYYYMMDD_FORMAT) : new Date(),
     endDate: values?.endDate ? formatDate(values.endDate, YYYYMMDD_FORMAT) : new Date(),
     dueDate: values?.dueDate ? formatDate(values?.dueDate, YYYYMMDD_FORMAT) : new Date(),
   };
-
-  console.log('The dt is', dt);
-
   return dt;
 };
-
