@@ -167,7 +167,7 @@ export const getUserInitialValues = (type: string, data: any) => {
     };
   }
   else if (type === "documents") {
-    return {documents : {documents : data.documents?.length ? data?.documents[0]?.documents ? data?.documents[0]?.documents?.map((it: any) => ({
+    return {documents : {documents : data?.documents?.length ? data?.documents[0]?.documents ? data?.documents[0]?.documents?.map((it: any) => ({
       ...it,
       file: Object.entries(it.file || {}).length ? [it.file] : undefined,
     })) : [] : [],deleteAttachments : []}}
