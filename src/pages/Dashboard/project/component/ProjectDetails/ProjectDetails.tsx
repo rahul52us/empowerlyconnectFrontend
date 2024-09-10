@@ -22,7 +22,6 @@ import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
 import store from "../../../../../store/store";
 import AttachmentSection from "../ProjectAttachments/ProjectAttachments";
-import TaskTable from "../TaskTable/TaskTable";
 import DrawerLoader from "../../../../../config/component/Loader/DrawerLoader";
 import {
   formatDate,
@@ -450,10 +449,6 @@ const ProjectDetails = ({ selectedProject, userId }: any) => {
             <AttachmentSection
               attach_files={fetchProjectData.data?.attach_files || []}
             />
-          </Box>
-          {/* Tasks Table */}
-          <Box mt={3}>
-            <TaskTable />
           </Box>
         </Box>
       </DrawerLoader>

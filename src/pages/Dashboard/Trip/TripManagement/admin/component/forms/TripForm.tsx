@@ -114,8 +114,6 @@ return (
 		}}
 	>
 		{({ handleChange, setFieldValue, values, errors }) => {
-
-			console.log(errors)
 		return (
 			<Form>
 			<Box minH={"80vh"} maxH={"80vh"} overflowY={"auto"}>

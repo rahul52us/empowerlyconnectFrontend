@@ -94,7 +94,7 @@ export const generateEditInitialValues = (data : any) => {
     participants: data.participants.map((item: any) => ({
       user: item.user,
       isActive: item.isActive
-    })),  };
+    }))};
   return updatedData;
 }
 

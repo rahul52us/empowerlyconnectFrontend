@@ -18,9 +18,6 @@ export const travelModes = [
   { label: "bussiness", value: "bussiness" },
 ];
 
-export const participants = [
-  { username: "Rahul52us@gamil.com", _id: "669c8a97f04c9aed92c89695" }
-];
 
 export const initialValues: TripFormValues = {
   title: "",
