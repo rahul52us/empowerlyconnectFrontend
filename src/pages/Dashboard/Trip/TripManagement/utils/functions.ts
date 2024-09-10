@@ -32,6 +32,26 @@ export const generateTripResponse = async (data: any) => {
     };
     data.thumbnail = fileData;
   }
+
+  const processedFiles = await Promise.all(
+    data.attach_files.map(async (item: any) => {
+      if (item.isAdd && item.file) {
+        try {
+          const base64Data = await readFileAsBase64(item.file[0]);
+          return { ...item, file: { buffer: base64Data, type: item.file[0]?.type, filename: item.file[0]?.name } };
+        } catch {
+          return item;
+        }
+      }
+      else if(!item.file){
+        return {...item,file : null};
+      }
+       else {
+        return {...item,file : {...item.file[0]}};
+      }
+    })
+  );
+
   const updatedTravelDetails = data.travelDetails.map(
     (item: TravelDetails) => {
       return({
@@ -52,6 +72,7 @@ export const generateTripResponse = async (data: any) => {
   ) || [];
   const updatedData = {
     ...data,
+    attach_files:processedFiles,
     type: type,
     participants: getUniqueUsers(data?.participants || []),
     travelDetails: updatedTravelDetails,
@@ -88,6 +109,11 @@ export const generateEditInitialValues = (data : any) => {
   const {createdBy, ...rest} = data
   const updatedData = {
     ...rest,
+    deleteAttachments:[],
+    attach_files: data?.attach_files?.map((it: any) => ({
+      ...it,
+      file: it.file ? [it.file] : undefined,
+    })),
     type: tripTypes.find((it : any) => it.value === data.type) || tripTypes[0],
     travelDetails: updatedTravelDetails,
     additionalExpenses: updatedAdditionalExpense,

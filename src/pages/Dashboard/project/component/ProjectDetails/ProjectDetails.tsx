@@ -21,7 +21,6 @@ import { TbProgress } from "react-icons/tb";
 import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
 import store from "../../../../../store/store";
-import AttachmentSection from "../ProjectAttachments/ProjectAttachments";
 import DrawerLoader from "../../../../../config/component/Loader/DrawerLoader";
 import {
   formatDate,
@@ -36,6 +35,7 @@ import AddTags from "./component/AddTags";
 import EditProject from "../Form/EditProject";
 import CustomDrawer from "../../../../../config/component/Drawer/CustomDrawer";
 import CreateProject from "../Form/CreateProject";
+import ShowAttachments from "../../../../../config/component/common/showAttachments/ShowAttachments";
 
 const ProjectDetails = ({ selectedProject, userId }: any) => {
   const [addNewUser, setAddNewUser] = useState<any>({
@@ -446,7 +446,7 @@ const ProjectDetails = ({ selectedProject, userId }: any) => {
 
           {/* Attachments */}
           <Box mt={2}>
-            <AttachmentSection
+            <ShowAttachments
               attach_files={fetchProjectData.data?.attach_files || []}
             />
           </Box>

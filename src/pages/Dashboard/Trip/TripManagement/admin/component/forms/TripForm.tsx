@@ -25,6 +25,7 @@ import { generateFormError } from "../../../utils/functions";
 import store from "../../../../../../../store/store";
 import { useEffect } from "react";
 import SubmitFormBtn from "../../../../../../../config/component/Button/SubmitFormBtn";
+import NotFoundData from "../../../../../../../config/component/commonPages/NotFoundData";
 
 const AddDetailButton: React.FC<{ title: string; onClick: () => void }> = ({
 onClick,
@@ -775,6 +776,167 @@ return (
 					value={values.description}
 				/>
 				</GridItem>
+				<Box>
+                    <Box mt={5} mb={2}>
+                      <Text fontWeight={"bold"}>Add Attachments :- </Text>
+                    </Box>
+                    <Box>
+                      {values.attach_files?.length === 0 ? (
+                        <Box>
+                          <NotFoundData
+                            title="No Attachment Are Found"
+                            subTitle="Add New Attachment for the project description"
+                            btnText="Add New Attachment"
+                            onClick={() => {
+                              setFieldValue("attach_files", [
+                                {
+                                  title: "",
+                                  description: "",
+                                  file: null,
+                                  isAdd : 1
+                                },
+                              ]);
+                            }}
+                          />
+                        </Box>
+                      ) : (
+                        <Grid columnGap={5} rowGap={3} mb={5}>
+                          <FieldArray name="attach_files">
+                            {({ push, remove }) => (
+                              <Box>
+                                {values.attach_files.map(
+                                  (file: any, index: number) => {
+                                    return (
+                                      <Box key={index} mb="20px">
+                                        <Grid
+                                          gridTemplateColumns={{ md: "1fr" }}
+                                          gap={2}
+                                        >
+                                          <Box width="100%">
+                                            {file.file ? (
+                                              <ShowFileUploadFile
+                                                edit={isEdit}
+                                                files={file.file[0]}
+                                                removeFile={() => {
+                                                  if(isEdit === true)
+                                                  {
+                                                    setFieldValue('deleteAttachments', [...values.deleteAttachments,file.file[0]?.name])
+                                                  }
+                                                  const updatedFiles =
+                                                    values.attach_files.map(
+                                                      (item: any, i: number) =>
+                                                        i === index
+                                                          ? {
+                                                              ...item,
+                                                              file: null,
+                                                              isDeleted: 1,
+                                                              isAdd: 0,
+                                                              index : index
+                                                            }
+                                                          : item
+                                                    );
+                                                  setFieldValue(
+                                                    "attach_files",
+                                                    updatedFiles
+                                                  );
+                                                }}
+                                                // Optionally, you can add functionality to remove files
+                                              />
+                                            ) : (
+                                              <CustomInput
+                                                name={`attach_files.${index}.file`}
+                                                type="file-drag"
+                                                placeholder="File"
+                                                label="File"
+                                                required
+                                                showError={showError}
+                                                onChange={(e: any) => {
+                                                  setFieldValue(
+                                                    `attach_files.${index}.file`,
+                                                    e.target.files
+                                                  );
+                                                  setFieldValue(
+                                                    `attach_files.${index}.isAdd`,
+                                                    1
+                                                  );
+                                                }}
+                                              />
+                                            )}
+                                          </Box>
+                                          <CustomInput
+                                            name={`attach_files.${index}.title`}
+                                            type="text"
+                                            placeholder="Title"
+                                            label="Title"
+                                            value={file.title}
+                                            required
+                                            showError={showError}
+                                            onChange={handleChange}
+                                            error={generateErrors(
+                                              "attachment",
+                                              errors,
+                                              "title",
+                                              index
+                                            )}
+                                          />
+                                          <CustomInput
+                                            name={`attach_files.${index}.description`}
+                                            type="textarea"
+                                            placeholder="Description"
+                                            label="Description"
+                                            value={file.description}
+                                            showError={showError}
+                                            onChange={handleChange}
+                                          />
+                                        </Grid>
+                                        {values.attach_files.length && (
+                                          <Button
+                                            colorScheme="red"
+                                            variant="outline"
+                                            size="sm"
+                                            mt="10px"
+                                            onClick={
+                                              () => {
+                                                if(isEdit === true)
+                                                  {
+                                                    setFieldValue('deleteAttachments', [...values.deleteAttachments,file.file[0]?.name])
+                                                  }
+                                                remove(index)
+                                              }
+                                            }
+                                          >
+                                            Remove Section
+                                          </Button>
+                                        )}
+                                      </Box>
+                                    );
+                                  }
+                                )}
+                                <Button
+                                  colorScheme="blue"
+                                  variant="outline"
+                                  display="block"
+                                  size="sm"
+                                  mb="10px"
+                                  mt={5}
+                                  onClick={() =>
+                                    push({
+                                      title: "",
+                                      description: "",
+                                      file: null,
+                                      isAdd:1
+                                    })
+                                  }
+                                >
+                                  Add Section
+                                </Button>
+                              </Box>
+                            )}
+                          </FieldArray>
+                        </Grid>
+                      )}
+                    </Box>
+                  </Box>
 			</Box>
 			<SubmitFormBtn
 				onClick={() => setShowError(true)}

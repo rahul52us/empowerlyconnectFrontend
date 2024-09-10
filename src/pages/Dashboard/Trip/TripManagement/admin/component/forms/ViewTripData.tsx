@@ -19,8 +19,12 @@ const ViewTripData = observer(({ item, open, onClose,userId }: any) => {
     setTripData({ loading: true, data: null });
     getSingleTrip({ _id: item?._id })
       .then((data: any) => {
+        data.attach_files = data.attach_files ? data?.attach_files?.map((it: any) => ({
+          ...it,
+          file: it.file ? [it.file] : undefined,
+        })) : []
         setTripData({
-          data: data,
+          data:  data,
           loading: false,
         });
         getIndividualTripAmount({tripId : item._id}).then((dt : any) => {

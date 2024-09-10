@@ -28,6 +28,7 @@ import ShowData from "../../../../Users/component/UserDetails/component/ShowData
 import { RiUserAddLine } from "react-icons/ri";
 import AddNewUser from "./AddNewUser";
 import store from "../../../../../../store/store";
+import ShowAttachments from "../../../../../../config/component/common/showAttachments/ShowAttachments";
 
 interface TripData {
   _id: string;
@@ -47,6 +48,7 @@ interface TripData {
   company: string;
   companyOrg: string;
   createdAt: string;
+  attach_files:any[],
   participants: Array<{
     _id: string;
     username: string;
@@ -303,6 +305,11 @@ const TripDetails: React.FC<{ trip: TripData,setTripData: any,userId : any }> = 
             ))}
           </Grid>
         </Box>
+        <Box mt={2}>
+            <ShowAttachments
+              attach_files={trip?.attach_files || []}
+            />
+          </Box>
       </Stack>
       {addNewUser.open && addNewUser.data && (
         <AddNewUser

@@ -49,6 +49,8 @@ export const initialValues: TripFormValues = {
       amount: "",
     },
   ],
+  attach_files: [],
+  deleteAttachments:[],
   participants: [],
 };
 
@@ -86,6 +88,8 @@ export const getInitialValues = (data : any) => {
         amount: "",
       },
     ],
+    attach_files:[],
+    deleteAttachments:[],
     participants: [],
   };
 };

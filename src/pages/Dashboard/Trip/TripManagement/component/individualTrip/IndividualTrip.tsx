@@ -33,6 +33,12 @@ const IndividualTrip = observer(() => {
         await getIndividualTrip(query);
 
         const singleTripData = await getSingleTrip({ _id: tripId });
+
+        singleTripData.attach_files = singleTripData.attach_files ? singleTripData?.attach_files?.map((it: any) => ({
+          ...it,
+          file: it.file ? [it.file] : undefined,
+        })) : []
+
         setTripData({ data: singleTripData, loading: false });
 
         const tripAmountData = await getIndividualTripAmount({ tripId });
