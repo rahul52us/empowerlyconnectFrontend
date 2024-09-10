@@ -15,6 +15,7 @@ import {
   Grid,
 } from "@chakra-ui/react";
 import TeamMember from "./TeamMembers";
+import ShowAttachments from "../../../../../../../config/component/common/showAttachments/ShowAttachments";
 
 const ViewTask = observer(({ task }: any) => {
   const [fetchData, setFetchData] = useState<any>({
@@ -30,10 +31,14 @@ const ViewTask = observer(({ task }: any) => {
   useEffect(() => {
     setFetchData((prev: any) => ({ ...prev, loading: true, data: null }));
     getSingleTask({ id: task?._id })
-      .then((data: any) => {
+      .then(({data} : any) => {
+        data.attach_files = data?.attach_files?.map((it: any) => ({
+          ...it,
+          file: it.file ? [it.file] : undefined,
+        }))
         setFetchData({
           loading: false,
-          data: data.data,
+          data: data,
         });
       })
       .catch((err: any) => {
@@ -163,12 +168,12 @@ const ViewTask = observer(({ task }: any) => {
               Assigner
             </Text>
             <Grid gridTemplateColumns={{ base: "1fr", md: "1fr 1fr" }} gap={4}>
-            {fetchData.data?.assigner?.map((member: any, index: number) => (
-              <TeamMember
-                key={index}
-                member={{ user: member, isActive: true }}
-              />
-            ))}
+              {fetchData.data?.assigner?.map((member: any, index: number) => (
+                <TeamMember
+                  key={index}
+                  member={{ user: member, isActive: true }}
+                />
+              ))}
             </Grid>
           </Box>
 
@@ -179,9 +184,9 @@ const ViewTask = observer(({ task }: any) => {
               Team Members
             </Text>
             <Grid gridTemplateColumns={{ base: "1fr", md: "1fr 1fr" }} gap={4}>
-            {fetchData.data.team_members.map((member: any, index: number) => (
-              <TeamMember key={index} member={member} />
-            ))}
+              {fetchData.data.team_members.map((member: any, index: number) => (
+                <TeamMember key={index} member={member} />
+              ))}
             </Grid>
           </Box>
 
@@ -218,6 +223,11 @@ const ViewTask = observer(({ task }: any) => {
             <Text fontSize="md" color={textColor}>
               {new Date(fetchData.data.createdAt).toLocaleString()}
             </Text>
+          </Box>
+          <Box mt={2}>
+            <ShowAttachments
+              attach_files={fetchData?.data?.attach_files || []}
+            />
           </Box>
         </Box>
       )}
