@@ -126,8 +126,12 @@ const LeaveEditRequest = lazy(
     )
 );
 
+// Trip
 const TripManagementIndex = lazy(() => import("../../pages/Dashboard/Trip/TripManagement/index"));
 const TripUsersTable = lazy(() => import("../../pages/Dashboard/Trip/TripManagement/admin/TripUserDetails/TripUsersTableIndex"))
+const IndividualTrip = lazy(() => import("../../pages/Dashboard/Trip/TripManagement/component/individualTrip/IndividualTrip"))
+
+
 // Manager Request
 const ManagerRequest = lazy(
   () => import("../../pages/Dashboard/Request/ManagerRequest/index")
@@ -249,6 +253,11 @@ export const DashboardRoutes = [
     element: <TripUsersTable />,
     path: dashboard.tripManagement.users,
     privateRoutes: true,
+  },
+  {
+    element : <IndividualTrip />,
+    path : dashboard.tripManagement.individual,
+    privateRoutes : true
   },
 
   // Users

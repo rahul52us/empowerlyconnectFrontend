@@ -71,7 +71,8 @@ class TripStore {
       getTripTitleAmount:action,
       getTotalTripAmount:action,
       getIndividualTripAmount:action,
-      setOpenSearchTrip:action
+      setOpenSearchTrip:action,
+      getIndividualTrip:action
     });
   }
 
@@ -102,6 +103,16 @@ class TripStore {
       return data;
     } catch (err: any) {
       return Promise.reject(err?.response || err);
+    }
+  }
+
+  getIndividualTrip = async (sendData : any = {}) => {
+    try {
+      const { data } = await axios.post(`/trip/individual/${sendData.tripId}`,{company : [store.auth.getCurrentCompany()],...sendData});
+      return data;
+    } catch (err: any) {
+      return Promise.reject(err?.response || err);
+    } finally {
     }
   }
 

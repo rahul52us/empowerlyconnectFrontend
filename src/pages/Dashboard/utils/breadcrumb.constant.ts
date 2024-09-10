@@ -72,6 +72,10 @@ const tripBreadCrumb = {
   { label: "Home", link: "/" },
   { label: "Dashboard", link: dashboard.home },
   { label: "Trip" }],
+  individualTrip : [
+    { label: "Home", link: "/" },
+    { label: "Trip", link: dashboard.tripManagement.index },
+    { label: "Individual" }],
   users : [
     { label: "Home", link: dashboard.home },
     { label: "Trip", link: dashboard.tripManagement.index },

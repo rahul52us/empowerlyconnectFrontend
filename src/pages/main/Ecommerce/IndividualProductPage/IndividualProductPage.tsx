@@ -60,7 +60,7 @@ const IndividualProductPage = ({productData}:any) => {
 
   return (
     <Box>
-  
+
       <Grid templateColumns={"1fr 3fr 4fr"} gap={4}>
         <Box>
           <Slider {...settings}>

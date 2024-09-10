@@ -37,7 +37,8 @@ export const dashboard = {
   },
   tripManagement: {
     index: `/${dashboardName}/trip`,
-    users : `/${dashboardName}/trip/users`
+    users : `/${dashboardName}/trip/users`,
+    individual : `/${dashboardName}/trip/:tripId`,
   },
   Users: {
     index: `/${dashboardName}/Users`,
@@ -98,7 +99,7 @@ export const dashboard = {
       edit:`/${dashboardName}/:projectId/task/edit/:taskId`
     }
   },
- 
+
 };
 
 export const main = {
@@ -123,8 +124,8 @@ export const main = {
   quizQuestionIndex: "/quiz/:quizTitle/:categoryTitle",
   individualHomeCompany: "/:individualCompany",
   ecommerce: {
-    products: "/ecommerce/products",  
-    
+    products: "/ecommerce/products",
+
   },
 };
 

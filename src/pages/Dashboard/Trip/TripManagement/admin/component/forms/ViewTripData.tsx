@@ -47,7 +47,6 @@ const ViewTripData = observer(({ item, open, onClose,userId }: any) => {
       .finally(() => {});
   }, [getSingleTrip, item, openNotification, getIndividualTripAmount]);
 
-  console.log(tripData)
   return (
     <CustomDrawer
       open={open}
