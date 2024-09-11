@@ -1,6 +1,6 @@
-import { Container } from "@chakra-ui/react";
-// import ProductCard from "../Cards/ProductCard/ProductCard";
-import IndividualProductPage from "../IndividualProductPage/IndividualProductPage";
+import { Box, Container, Grid } from "@chakra-ui/react";
+import ProductCard from "../Cards/ProductCard/ProductCard";
+// import IndividualProductPage from "../IndividualProductPage/IndividualProductPage";
 // import HomeCard from "../Cards/HomeCard";
 // import Headphone from "../assets/headphones.png";
 // import VerticalCard from "../Cards/VerticalCard/VerticalCard";
@@ -11,6 +11,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import ProductReviewCard from "../IndividualProductPage/ReviewComponent/ReviewComponent";
+import RatingPerReview from "../IndividualProductPage/ReviewComponent/RatingPerReview";
 
 const EcomHomePage = () => {
   const [data, setData] = useState<any>({});
@@ -76,17 +77,22 @@ const EcomHomePage = () => {
         />
         </Flex>
         </Grid>  */}
-      <IndividualProductPage productData={ProductData} />
+      {/* <IndividualProductPage productData={ProductData} /> */}
       {ProductData?.reviews.map((review: any) => (
         <ProductReviewCard review={review} />
       ))}
-      {/* {data?.products?.length > 0 && data &&(
+      {data?.products?.length > 0 && data && (
         <Grid templateColumns={"1fr 1fr 1fr 1fr"} gap={4}>
           {data?.products?.map((item: any) => (
             <ProductCard product={item} />
           ))}
         </Grid>
-      )} */}
+      )}
+
+      <Box>
+        {/* <Text fontSize="2xl" mb={4}>Rating Breakdown</Text> */}
+        <RatingPerReview ratings={ProductData?.reviews_per_rating} />
+      </Box>
       {/* <ProductCard product={data} /> */}
     </Container>
   );

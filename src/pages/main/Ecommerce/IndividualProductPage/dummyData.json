@@ -40,6 +40,13 @@
       ]
     }
   ],
+  "reviews_per_rating": [
+    { "star": 5, "count": 100 },
+    { "star": 4, "count": 34 },
+    { "star": 3, "count": 12 },
+    { "star": 2, "count": 5 },
+    { "star": 1, "count": 8 }
+  ],
   "productSpecifications": [
     { "label": "Brand", "value": "Apple" },
     { "label": "Prosesor", "value": "Apple M1 Chip (CPU 8-Core, GPU 7-Core)" },

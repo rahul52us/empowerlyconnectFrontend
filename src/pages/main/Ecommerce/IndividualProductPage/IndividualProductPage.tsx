@@ -21,7 +21,7 @@ import "slick-carousel/slick/slick-theme.css";
 import PriceDisplay from "./PriceDisplay/PriceDisplay";
 import ProductSpecification from "./ProductSpecification/ProductSpecification";
 
-const IndividualProductPage = ({productData}:any) => {
+const IndividualProductPage = ({ productData }: any) => {
   const [mainImage, setMainImage] = useState(productData?.images[0]);
 
   const settings = {
@@ -60,7 +60,6 @@ const IndividualProductPage = ({productData}:any) => {
 
   return (
     <Box>
-
       <Grid templateColumns={"1fr 3fr 4fr"} gap={4}>
         <Box>
           <Slider {...settings}>
@@ -81,7 +80,7 @@ const IndividualProductPage = ({productData}:any) => {
             ))}
           </Slider>
         </Box>
-        <Box px={2}>
+        <Box px={2} h={"80vh"}>
           <Image
             w={"100%"}
             mx={{ base: 0, md: "auto" }}
@@ -115,7 +114,6 @@ const IndividualProductPage = ({productData}:any) => {
                       }
                     />
                   ))}
-
                 <Text ml={2} color={"gray"} fontWeight={500}>
                   {productData.rating}
                 </Text>
@@ -207,7 +205,9 @@ const IndividualProductPage = ({productData}:any) => {
           </VStack>
         </Box>
       </Grid>
-      <ProductSpecification productSpecifications={productData?.productSpecifications} />
+      <ProductSpecification
+        productSpecifications={productData?.productSpecifications}
+      />
     </Box>
   );
 };
