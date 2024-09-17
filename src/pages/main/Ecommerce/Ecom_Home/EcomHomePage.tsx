@@ -1,6 +1,6 @@
 import { Box, Container, Grid } from "@chakra-ui/react";
 import ProductCard from "../Cards/ProductCard/ProductCard";
-// import IndividualProductPage from "../IndividualProductPage/IndividualProductPage";
+import IndividualProductPage from "../IndividualProductPage/IndividualProductPage";
 // import HomeCard from "../Cards/HomeCard";
 // import Headphone from "../assets/headphones.png";
 // import VerticalCard from "../Cards/VerticalCard/VerticalCard";
@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import ProductReviewCard from "../IndividualProductPage/ReviewComponent/ReviewComponent";
 import RatingPerReview from "../IndividualProductPage/ReviewComponent/RatingPerReview";
+import ReviewInsights from "../IndividualProductPage/ReviewInsight/ReviewInsight";
 
 const EcomHomePage = () => {
   const [data, setData] = useState<any>({});
@@ -77,7 +78,7 @@ const EcomHomePage = () => {
         />
         </Flex>
         </Grid>  */}
-      {/* <IndividualProductPage productData={ProductData} /> */}
+      <IndividualProductPage productData={ProductData} />
       {ProductData?.reviews.map((review: any) => (
         <ProductReviewCard review={review} />
       ))}
@@ -91,9 +92,12 @@ const EcomHomePage = () => {
 
       <Box>
         {/* <Text fontSize="2xl" mb={4}>Rating Breakdown</Text> */}
-        <RatingPerReview ratings={ProductData?.reviews_per_rating} />
+        <RatingPerReview ratings={ProductData?.reviews_summary.reviews_per_rating} />
       </Box>
       {/* <ProductCard product={data} /> */}
+      <Box>
+        <ReviewInsights reviewsInsights={ProductData?.reviews_insights} />
+      </Box>
     </Container>
   );
 };

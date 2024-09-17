@@ -7,7 +7,7 @@ const ProductSpecification = ({ productSpecifications }: any) => {
   const rightColumn = productSpecifications?.slice(midIndex);
 
   return (
-    <Box p={6} shadow={'md'} borderWidth={1} rounded={12}>
+    <Box p={6}  rounded={12}>
       <Text fontSize="xl" fontWeight="bold" mb={2}>
         Specifications
       </Text>

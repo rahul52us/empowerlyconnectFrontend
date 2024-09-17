@@ -147,7 +147,7 @@ const IndividualProductPage = ({ productData }: any) => {
               </Button>
             </Flex>
             <Flex gap={6}>
-              {productData.sizes.map((size: any) => (
+              {productData.available_sizes.map((size: any) => (
                 <Button
                   key={size}
                   boxSize={9}
@@ -166,11 +166,11 @@ const IndividualProductPage = ({ productData }: any) => {
                 Colors Available
               </Text>
               <Flex gap={3}>
-                {productData.colors.map((color: any) => (
+                {productData.available_colors.map((color: any) => (
                   <Box p={"0.5"} borderWidth={2} rounded={"full"} key={color}>
                     <Box
                       cursor={"pointer"}
-                      bg={color}
+                      bg={color.hex_code}
                       boxSize={6}
                       rounded={"full"}
                     ></Box>
@@ -206,7 +206,7 @@ const IndividualProductPage = ({ productData }: any) => {
         </Box>
       </Grid>
       <ProductSpecification
-        productSpecifications={productData?.productSpecifications}
+        productSpecifications={productData?.product_specifications}
       />
     </Box>
   );

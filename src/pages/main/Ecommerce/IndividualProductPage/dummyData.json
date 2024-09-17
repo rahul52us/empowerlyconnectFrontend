@@ -1,14 +1,23 @@
 {
-  "id": 1,
+  "status": "success",
+  "product_id": "11577822456427762145",
   "name": "U.S. Polo Slim T-Shirt",
-  "description": "Spread Collar Pure Cotton Casual Shirt",
+  "short_desc": "Spread Collar Pure Cotton Casual Shirt",
+  "long_desc": "This U.S. Polo Slim T-Shirt is designed for comfort and casual style. Made from pure cotton, it features a spread collar and a sleek fit, perfect for any casual occasion.",
   "price": 999,
   "currency": "₹",
   "discount": 20,
+  "final_price": 799.2,
   "rating": 4.5,
   "reviewsCount": 120,
-  "sizes": ["XS", "S", "M", "L", "XL"],
-  "colors": ["black", "red.400", "blue.400", "green.400", "yellow.400"],
+  "available_sizes": ["XS", "S", "M", "L", "XL"],
+  "available_colors": [
+    { "color_name": "Black", "hex_code": "#000000" },
+    { "color_name": "Red", "hex_code": "#FF0000" },
+    { "color_name": "Blue", "hex_code": "#0000FF" },
+    { "color_name": "Green", "hex_code": "#008000" },
+    { "color_name": "Yellow", "hex_code": "#FFFF00" }
+  ],
   "images": [
     "https://img.freepik.com/free-photo/tattooed-biker-hand-holds-wooden-hangs-with-blank-black-white-t-shirts-from-premium-thin-cotton-isolated-white_346278-1811.jpg?uid=R98118533&ga=GA1.1.1822911562.1716356990&semt=ais_hybrid",
     "https://img.freepik.com/free-photo/arrangement-yellow-cyber-monday-elements_23-2149074070.jpg?size=626&ext=jpg",
@@ -16,59 +25,86 @@
     "https://img.freepik.com/free-photo/studio-shot-joyful-bearded-european-man-points-fingers-upwards-smiles-with-teeth-gives-advertisement-space-above-wears-round-glasses-brown-jumper-isolated-beige-wall_273609-58394.jpg?size=626&ext=jpg",
     "https://img.freepik.com/free-photo/portrait-pretty-woman-smiling-crossed-arms-isolated-pink-background_23-2148202650.jpg"
   ],
+  "product_attributes": {
+    "Department": "Men's",
+    "Material": "Pure Cotton",
+    "Color": "Black",
+    "Style": "Casual",
+    "Fit": "Slim Fit",
+    "Sleeve Length": "Full Sleeve",
+    "Collar": "Spread Collar",
+    "Occasion": "Casual"
+  },
   "features": [
     "Secure Payment",
-    "Size & Fit",
+    "Size & Fit Guidance",
     "Free Shipping",
-    "10 Days Replacement"
+    "10 Days Replacement Policy",
+    "Pure Cotton Material"
   ],
+  "reviews_summary": {
+    "average_rating": 4.5,
+    "total_reviews": 120,
+    "reviews_per_rating": [
+      { "star": 5, "count": 100 },
+      { "star": 4, "count": 34 },
+      { "star": 3, "count": 12 },
+      { "star": 2, "count": 21 },
+      { "star": 1, "count": 8 }
+    ]
+  },
   "reviews": [
     {
       "review_id": "596472698230412700",
-      "review_title": null,
       "review_author": "Colton W.",
       "review_source": "stockx.com",
       "review_source_url": "https://stockx.com/air-jordan-1-retro-high-white-university-blue-black",
-      "review_text": "My first pair of Jordan 1 Highs! These are very high-quality sneakers. My only real complaint is that the price is very steep. Otherwise, great sneakers that arrived in a timely manner and in pristine condition! The premium(?) leather is very crease-resistant. I don’t really mind creasing - I think of it as a badge of honor because it shows you wear your shoes - but I say that because I’ve worn them six times now and they still look fresh out the box! Plus, the suede is very easy to clean. (I got a drip of salsa on my drip, but a slightly damp paper towel followed up with a dry one cleared it right up and it looks like it never happened!) Definitely my favorite pair of sneakers. 10/10 highly recommend, especially for sneakerheads in training like me. :)",
-      "rating": 5,
-      "review_datetime_utc": "2023-05-10T00:00:00.000Z",
-      "review_language": "en",
+      "review_text": "This U.S. Polo Slim T-Shirt is my favorite! It’s comfortable and fits perfectly. The only downside is that it's slightly pricey. Overall, highly recommend for casual wear!",
+      "rating": 4.5,
+      "review_date": "2023-05-10",
       "photos": [
         "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcT2WXdOqWwpW2uvvOPgAQ7l9PsXGP3D4i-7RRNEWWW9_p03tVQ&usqp=CAY",
-        "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSW1JE8CMAB2hNj4vfILXhlWe9ivYeT0aW3THz1B-8Gk2dRuG33&usqp=CAY",
-        "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQpYDnlJm0QEM_9uHfDgLn0Bq63FO7IWVaPmU_purqpVPgPIWo&usqp=CAY"
+        "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSW1JE8CMAB2hNj4vfILXhlWe9ivYeT0aW3THz1B-8Gk2dRuG33&usqp=CAY"
       ]
     }
   ],
-  "reviews_per_rating": [
-    { "star": 5, "count": 100 },
-    { "star": 4, "count": 34 },
-    { "star": 3, "count": 12 },
-    { "star": 2, "count": 5 },
-    { "star": 1, "count": 8 }
+  "product_specifications": [
+    { "label": "Brand", "value": "U.S. Polo Assn." },
+    { "label": "Material", "value": "Pure Cotton" },
+    { "label": "Fit", "value": "Slim Fit" },
+    { "label": "Sleeve Length", "value": "Full Sleeve" },
+    { "label": "Collar", "value": "Spread Collar" },
+    { "label": "Occasion", "value": "Casual Wear" },
+    { "label": "Care Instructions", "value": "Machine Washable" }
   ],
-  "productSpecifications": [
-    { "label": "Brand", "value": "Apple" },
-    { "label": "Prosesor", "value": "Apple M1 Chip (CPU 8-Core, GPU 7-Core)" },
-    { "label": "Grafis", "value": "GPU 7-core" },
+  "reviews_insights": [
     {
-      "label": "Nirkabel",
-      "value": "Wi-Fi\nJaringan nirkabel Wi-Fi 6 802.11ax\nBluetooth\nTeknologi nirkabel Bluetooth 5.0"
+      "attribute": "Attractive",
+      "positive": "Attractive",
+      "positive_count": 557,
+      "negative": "Unattractive",
+      "negative_count": 10
     },
     {
-      "label": "Kamera",
-      "value": "Kamera FaceTime HD 1080p dengan prosesor sinyal gambar M1"
-    },
-    { "label": "Ukuran Layar", "value": "24 inci" },
-    {
-      "label": "Tipe Layar",
-      "value": "Layar Retina 4.5K 24 inci\nResolusi 4480 x 2520 pada 218 piksel per inci dengan dukungan untuk 1 miliar warna\nKecerahan 500 nit\nWarna luas (P3)\nTeknologi True Tone"
+      "attribute": "Durable",
+      "positive": "Durable",
+      "positive_count": 203,
+      "negative": "Lacks durability",
+      "negative_count": 11
     },
     {
-      "label": "Audio",
-      "value": "Sistem enam speaker high-fidelity dengan subwoofer force-cancelling\nSuara stereo berjangkauan luas\nDukungan untuk audio spasial saat memutar musik atau video dengan Dolby Atmos"
+      "attribute": "Comfortable",
+      "positive": "Comfortable",
+      "positive_count": 179,
+      "negative": "Uncomfortable",
+      "negative_count": 5
     },
-    { "label": "Papan Ketik", "value": "Apple Magic Keyboard" },
-    { "label": "Memori", "value": "Memori terintegrasi 8 GB" }
+    {
+      "attribute": "Well made",
+      "positive": "Well made",
+      "positive_count": 32,
+      "negative": "Poorly made",
+      "negative_count": 2
+    }
   ]
 }
