@@ -60,7 +60,7 @@ const IndividualProductPage = ({ productData }: any) => {
 
   return (
     <Box>
-      <Grid templateColumns={"1fr 3fr 4fr"} gap={4}>
+      <Grid templateColumns={"1fr 3fr 4fr"} gap={4} mb={4}>
         <Box>
           <Slider {...settings}>
             {productData.images.map((img: any, index: any) => (
@@ -80,12 +80,13 @@ const IndividualProductPage = ({ productData }: any) => {
             ))}
           </Slider>
         </Box>
-        <Box px={2} h={"80vh"}>
+        <Box  >
           <Image
             w={"100%"}
             mx={{ base: 0, md: "auto" }}
             objectFit={"contain"}
-            h={"80%"}
+            // h={"90%"}
+            maxH={"78vh"}
             src={mainImage}
           />
         </Box>

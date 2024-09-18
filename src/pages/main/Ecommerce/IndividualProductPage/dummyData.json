@@ -53,21 +53,57 @@
       { "star": 1, "count": 8 }
     ]
   },
-  "reviews": [
-    {
-      "review_id": "596472698230412700",
-      "review_author": "Colton W.",
-      "review_source": "stockx.com",
-      "review_source_url": "https://stockx.com/air-jordan-1-retro-high-white-university-blue-black",
-      "review_text": "This U.S. Polo Slim T-Shirt is my favorite! It’s comfortable and fits perfectly. The only downside is that it's slightly pricey. Overall, highly recommend for casual wear!",
-      "rating": 4.5,
-      "review_date": "2023-05-10",
-      "photos": [
-        "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcT2WXdOqWwpW2uvvOPgAQ7l9PsXGP3D4i-7RRNEWWW9_p03tVQ&usqp=CAY",
-        "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSW1JE8CMAB2hNj4vfILXhlWe9ivYeT0aW3THz1B-8Gk2dRuG33&usqp=CAY"
-      ]
-    }
-  ],
+  "reviews":[  
+  {  
+    "reviewer": {  
+      "name": "John Doe",  
+      "avatar": "https://randomuser.me/api/portraits/men/1.jpg" 
+    },  
+    "rating": 4,  
+    "reviewText":  
+      "This product is amazing! It exceeded my expectations in every way. Highly recommended!",  
+    "photos": [  
+      "https://via.placeholder.com/150",  
+      "https://via.placeholder.com/150",  
+      "https://via.placeholder.com/150"  
+    ],  
+    "likes": 25,  
+    "dislikes": 3,  
+    "timestamp": "2023-04-15T12:34:56Z"
+  },  
+  {  
+    "reviewer": {  
+      "name": "Jane Smith",  
+      "avatar": "https://randomuser.me/api/portraits/women/2.jpg" 
+    },  
+    "rating": 3,  
+    "reviewText":  
+      "The product was decent, but I had a few issues with it. The customer service was helpful, though.",  
+    "photos": ["https://via.placeholder.com/150"],  
+    "likes": 12,  
+    "dislikes": 5,  
+    "timestamp": "2023-03-22T09:15:00Z"  
+  },  
+  {  
+    "reviewer": {  
+      "name": "Michael Johnson",  
+      "avatar": "https://randomuser.me/api/portraits/men/3.jpg"
+    },  
+    "rating": 5,  
+    "reviewText":  
+      "I absolutely love this product! It's been a game-changer for me, and I highly recommend it to everyone.",  
+    "photos": [  
+      "https://via.placeholder.com/150",  
+      "https://via.placeholder.com/150",  
+      "https://via.placeholder.com/150",  
+      "https://via.placeholder.com/150"
+    ],  
+    "likes": 42,  
+    "dislikes": 1,  
+    "timestamp": "2023-02-08T18:27:30Z"
+  }
+],
+ 
   "product_specifications": [
     { "label": "Brand", "value": "U.S. Polo Assn." },
     { "label": "Material", "value": "Pure Cotton" },

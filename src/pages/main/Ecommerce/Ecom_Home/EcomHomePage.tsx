@@ -79,9 +79,12 @@ const EcomHomePage = () => {
         </Flex>
         </Grid>  */}
       <IndividualProductPage productData={ProductData} />
+      <Grid templateColumns={'1fr 1fr'} gap={4} mt={4}>
+
       {ProductData?.reviews.map((review: any) => (
         <ProductReviewCard review={review} />
       ))}
+      </Grid>
       {data?.products?.length > 0 && data && (
         <Grid templateColumns={"1fr 1fr 1fr 1fr"} gap={4}>
           {data?.products?.map((item: any) => (
