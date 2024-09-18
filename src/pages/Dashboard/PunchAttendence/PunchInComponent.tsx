@@ -8,7 +8,7 @@ const PunchInComponent = observer(() => {
   const [loading, setLoading] = useState(false);
   const {
     AttendencePunch: { handlePunch },
-    auth: { openNotification },
+    auth: { openNotification, getPolicy },
   } = store;
   const [, setLatitude] = useState<number | null>(null);
   const [, setLongitude] = useState<number | null>(null);
@@ -38,7 +38,8 @@ const PunchInComponent = observer(() => {
         latitude: position.coords.latitude,
         longitude: position.coords.longitude,
         deviceInfo: navigator.userAgent,
-        date : nextDayMidnight
+        date : nextDayMidnight,
+        policy : getPolicy()
       })
         .then(() => {
           openNotification({
