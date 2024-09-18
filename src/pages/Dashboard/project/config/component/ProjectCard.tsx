@@ -54,6 +54,7 @@ const ProjectCard: React.FC<CardProps> = ({
   const navigate = useNavigate();
   const {
     Project: { setOpenProjectDrawer },
+    auth: { checkPermission },
   } = store;
   const bgColor = useColorModeValue("white", "gray.800");
   const boxShadow = useColorModeValue("lg", "dark-lg");
@@ -90,15 +91,17 @@ const ProjectCard: React.FC<CardProps> = ({
             )}
           </Box>
         </Flex>
-        <Tooltip label="Edit Project" aria-label="Edit Project">
-          <IconButton
-            icon={<EditIcon />}
-            onClick={() => setOpenProjectDrawer("edit", item)}
-            variant="ghost"
-            colorScheme="teal"
-            aria-label="Edit Project"
-          />
-        </Tooltip>
+        {checkPermission("project", "edit") && (
+          <Tooltip label="Edit Project" aria-label="Edit Project">
+            <IconButton
+              icon={<EditIcon />}
+              onClick={() => setOpenProjectDrawer("edit", item)}
+              variant="ghost"
+              colorScheme="teal"
+              aria-label="Edit Project"
+            />
+          </Tooltip>
+        )}
       </Flex>
       <Divider mb={4} />
       <Box mb={4}>
@@ -154,16 +157,18 @@ const ProjectCard: React.FC<CardProps> = ({
             </Text>
           )}
         </VStack>
-        <Text
-          cursor="pointer"
-          color="teal.500"
-          fontWeight="bold"
-          onClick={() => {
-            navigate(`${dashboard.project.index}/${item._id}/task`);
-          }}
-        >
-          View tasks
-        </Text>
+        {checkPermission("task", "view") && (
+          <Text
+            cursor="pointer"
+            color="teal.500"
+            fontWeight="bold"
+            onClick={() => {
+              navigate(`${dashboard.project.index}/${item._id}/task`);
+            }}
+          >
+            View tasks
+          </Text>
+        )}
       </Flex>
     </Box>
   );

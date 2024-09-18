@@ -8,14 +8,15 @@ import SubmitFormBtn from "../../../../../../config/component/Button/SubmitFormB
 import CustomInput from "../../../../../../config/component/CustomInput/CustomInput";
 import { TaskCreateValidation } from "../utils/validation";
 import ShowFileUploadFile from "../../../../../../config/component/common/ShowFileUploadFile/ShowFileUploadFile";
-import NotFoundData from "../../../../../../config/component/NotFound/NotFoundData";
+import NotFoundData from "../../../../../../config/component/commonPages/NotFoundData";
 import DrawerFormHeightContainer from "../../../../../../config/component/Drawer/DrawerFormHeightContainer";
 
 const TaskForm = observer(
   ({ type = "create", initialValues, handleSubmitForm }: any) => {
+    const [isSubmitting, setSubmitting] = useState(false)
     const [showError, setShowError] = useState(false);
     const {
-      auth: { getCompanyUsers, companyUsers, openNotification },
+      auth: { getCompanyUsers, openNotification },
       Project: { setOpenTaskDrawer },
     } = store;
 
@@ -31,27 +32,75 @@ const TaskForm = observer(
         });
     }, [getCompanyUsers, openNotification]);
 
-    const getAttachFilesError = (errors: any, type: string, index: number) => {
-      const errorTypes = ["title"];
-      if (errors.attach_files && errors.attach_files[index]) {
-        const errorTypeIndex = errorTypes.indexOf(type);
-        if (errorTypeIndex !== -1) {
-          return errors.attach_files[index][errorTypes[errorTypeIndex]];
+    const generateErrors = (
+      errorType: any,
+      errors: any,
+      type: string,
+      index: number
+    ) => {
+      if (errorType === "attach_files") {
+        const errorTypes = ["title"];
+        if (errors.attach_files && errors.attach_files[index]) {
+          const errorTypeIndex = errorTypes.indexOf(type);
+          if (errorTypeIndex !== -1) {
+            return errors.attach_files[index][errorTypes[errorTypeIndex]];
+          }
         }
+        return undefined;
       }
-      return undefined;
+      if (errorType === "followers") {
+        const errorTypes = ["user"];
+        if (errors.followers && errors.followers[index]) {
+          const errorTypeIndex = errorTypes.indexOf(type);
+          if (errorTypeIndex !== -1) {
+            return errors.followers[index][errorTypes[errorTypeIndex]];
+          }
+        }
+        return undefined;
+      }
+      if (errorType === "team_members") {
+        const errorTypes = ["user"];
+        if (errors.team_members && errors.team_members[index]) {
+          const errorTypeIndex = errorTypes.indexOf(type);
+          if (errorTypeIndex !== -1) {
+            return errors.team_members[index][errorTypes[errorTypeIndex]];
+          }
+        }
+        return undefined;
+      }
+      if (errorType === "customers") {
+        const errorTypes = ["user"];
+        if (errors.customers && errors.customers[index]) {
+          const errorTypeIndex = errorTypes.indexOf(type);
+          if (errorTypeIndex !== -1) {
+            return errors.customers[index][errorTypes[errorTypeIndex]];
+          }
+        }
+        return undefined;
+      }
+      if (errorType === "project_manager") {
+        const errorTypes = ["user"];
+        if (errors.project_manager && errors.project_manager[index]) {
+          const errorTypeIndex = errorTypes.indexOf(type);
+          if (errorTypeIndex !== -1) {
+            return errors.project_manager[index][errorTypes[errorTypeIndex]];
+          }
+        }
+        return undefined;
+      }
     };
 
     return (
       <Box>
         <Formik
           initialValues={initialValues}
+          enableReinitialize={true}
           validationSchema={TaskCreateValidation}
-          onSubmit={(values, { resetForm, setSubmitting }) => {
+          onSubmit={(values, { resetForm }) => {
             handleSubmitForm({ values, resetForm, setSubmitting });
           }}
         >
-          {({ handleChange, values, errors, setFieldValue, isSubmitting }) => {
+          {({ handleChange, values, errors, setFieldValue }) => {
             return (
               <Form>
                 <DrawerFormHeightContainer>
@@ -185,11 +234,13 @@ const TaskForm = observer(
                       name="assigner"
                       label="Assigner"
                       value={values.assigner}
-                      getOptionLabel={(option: any) => option?.user?.username}
-                      getOptionValue={(option: any) => option?.user?._id}
-                      options={companyUsers}
-                      placeholder="Select the Assigner"
-                      type="select"
+                      options={
+                        type === "edit"
+                          ? [values.assigner]
+                          : []
+                      }
+                      placeholder="Search OR Select the Assigner"
+                      type="real-time-user-search"
                       onChange={(e: any) => {
                         setFieldValue("assigner", e);
                       }}
@@ -197,192 +248,329 @@ const TaskForm = observer(
                       error={errors.assigner}
                       showError={showError}
                     />
-                    <CustomInput
-                      name="team_members"
-                      label="Team"
-                      value={values.team_members}
-                      getOptionLabel={(option: any) => option.user?.username}
-                      getOptionValue={(option: any) => option.user?._id}
-                      options={companyUsers}
-                      placeholder="Select the Team Members"
-                      type="select"
-                      onChange={(e: any) => {
-                        setFieldValue("team_members", e);
-                      }}
-                      isMulti
-                      isSearchable
-                      error={errors.team_members}
-                      showError={showError}
-                    />
+                        <GridItem colSpan={3} rowGap={3} mb={5}>
+                      <Box mt={5} mb={2}>
+                        <Text fontWeight={"bold"}>Add Members :- </Text>
+                      </Box>
+                      <FieldArray name="team_members">
+                        {({ push, remove }) => (
+                          <Box>
+                            {values.team_members.length > 0 ? (
+                              <Grid
+                                templateColumns={{ base: "1fr", md: "1fr 1fr" }}
+                                gap={4}
+                                mb={4}
+                              >
+                                {values.team_members.map(
+                                  (user: any, index: number) => (
+                                    <Box
+                                      key={index}
+                                      p={4}
+                                      borderWidth="1px"
+                                      borderRadius="md"
+                                      boxShadow="sm"
+                                    >
+                                      <Flex
+                                        direction={{
+                                          base: "column",
+                                          md: "row",
+                                        }}
+                                        align="center"
+                                        justify="space-between"
+                                        gap={4}
+                                      >
+                                        <CustomInput
+                                          name={`team_members.${index}.user`}
+                                          label="Members"
+                                          value={
+                                            type === "edit" && user?.user
+                                              ? {
+                                                  label: user.user.username,
+                                                  value: user.user._id,
+                                                }
+                                              : undefined
+                                          }
+                                          options={
+                                            type === "edit" && user?.user
+                                              ? [
+                                                  {
+                                                    label: user.user.username,
+                                                    value: user.user._id,
+                                                  },
+                                                ]
+                                              : []
+                                          }
+                                          placeholder="Select Member"
+                                          type="real-time-user-search"
+                                          onChange={(selectedOption) => {
+                                            setFieldValue(
+                                              `team_members.${index}.user`,
+                                              selectedOption
+                                            );
+                                          }}
+                                          isMulti={false}
+                                          isSearchable
+                                          showError={showError}
+                                          error={generateErrors(
+                                            "team_members",
+                                            errors,
+                                            "user",
+                                            index
+                                          )}
+                                          // flex="1"
+                                        />
+                                        <CustomInput
+                                          type="checkbox"
+                                          name={`team_members.${index}.isActive`}
+                                          label="Active"
+                                          value={user.isActive}
+                                          onChange={(e: any) => {
+                                            setFieldValue(
+                                              `team_members.${index}.isActive`,
+                                              e.target.checked
+                                            );
+                                          }}
+                                          // flexShrink={0}
+                                        />
+                                        {user.isAdd && (
+                                          <CustomInput
+                                            type="checkbox"
+                                            name={`team_members.${index}.invitationMail`}
+                                            label="Send Invitation Mail"
+                                            value={user.invitationMail}
+                                            onChange={(e: any) => {
+                                              setFieldValue(
+                                                `team_members.${index}.invitationMail`,
+                                                e.target.checked
+                                              );
+                                            }}
+                                            rest={{ flexShrink: 0 }}
+                                          />
+                                        )}
+                                        <Button
+                                          onClick={() => remove(index)}
+                                          size="sm"
+                                          colorScheme="red"
+                                          variant="outline"
+                                          flexShrink={0}
+                                        >
+                                          Delete
+                                        </Button>
+                                      </Flex>
+                                    </Box>
+                                  )
+                                )}
+                              </Grid>
+                            ) : (
+                              <Text
+                                fontSize="md"
+                                color="gray.500"
+                                mb={4}
+                                textAlign="center"
+                                fontWeight="bold"
+                              >
+                                No Team Manager added yet.
+                              </Text>
+                            )}
+                            <Button
+                              mt={4}
+                              width="100%"
+                              onClick={() =>
+                                push({
+                                  user: undefined,
+                                  isActive: true,
+                                  isAdd: true,
+                                  invitationMail: true,
+                                })
+                              }
+                              colorScheme="blue"
+                            >
+                              Add Member
+                            </Button>
+                          </Box>
+                        )}
+                      </FieldArray>
+                    </GridItem>
                     <CustomInput
                       name="dependencies"
                       label="Dependency Members"
                       value={values.dependencies}
-                      getOptionLabel={(option: any) => option.user?.username}
-                      getOptionValue={(option: any) => option.user?._id}
-                      options={companyUsers}
-                      placeholder="Select the Dependency Members"
-                      type="select"
+                      options={values.dependencies}
+                      placeholder="Search OR Select the Dependency Members"
+                      type="real-time-user-search"
                       onChange={(e: any) => {
                         setFieldValue("dependencies", e);
                       }}
-                      isMulti
+                      isMulti={true}
                       isSearchable
                       error={errors.dependencies}
                       showError={showError}
                     />
                   </Grid>
                   <Box>
-                  <Box mt={5} mb={2}>
-                    <Text fontWeight={"bold"}>Add Attachments :- </Text>
-                  </Box>
-                  <Box>
-                    {values.attach_files?.length === 0 ? (
-                      <Box>
-                        <NotFoundData
-                          title="No Attachment Are Found"
-                          subTitle="Add New Attachment for the project description"
-                          btnText="Add New Attachment"
-                          onClick={() => {
-                            setFieldValue("attach_files", [
-                              {
-                                title: "",
-                                description: "",
-                                file: null
-                              },
-                            ]);
-                          }}
-                        />
-                      </Box>
-                    ) : (
-                      <Grid columnGap={5} rowGap={3} mb={5}>
-                        <FieldArray name="attach_files">
-                          {({ push, remove }) => (
-                            <Box>
-                              {values.attach_files.map(
-                                (file: any, index: number) => (
-                                  <Box key={index} mb="20px">
-                                    <Grid
-                                      gridTemplateColumns={{ md: "1fr" }}
-                                      gap={2}
-                                    >
-                                      <Box width="100%">
-                                        {file.file ? (
-                                          <ShowFileUploadFile
-                                            edit={type === "edit"}
-                                            files={file.file[0]}
-                                            removeFile={() => {
-                                              const updatedFiles =
-                                                values.attach_files.map(
-                                                  (item: any, i: number) =>
-                                                    i === index
-                                                      ? {
-                                                          ...item,
-                                                          file: null,
-                                                          isDeleted: 1,
-                                                          isAdd: 0,
-                                                        }
-                                                      : item
-                                                );
-                                              setFieldValue(
-                                                "attach_files",
-                                                updatedFiles
-                                              );
-                                            }}
-                                            // Optionally, you can add functionality to remove files
-                                          />
-                                        ) : (
-                                          <CustomInput
-                                            name={`attach_files.${index}.file`}
-                                            type="file-drag"
-                                            placeholder="File"
-                                            label="File"
-                                            required
-                                            showError={showError}
-                                            onChange={(e: any) => {
-                                              setFieldValue(
-                                                `attach_files.${index}.file`,
-                                                e.target.files
-                                              );
-                                            }}
-                                          />
-                                        )}
-                                      </Box>
-                                      <CustomInput
-                                        name={`attach_files.${index}.title`}
-                                        type="text"
-                                        placeholder="Title"
-                                        label="Title"
-                                        value={file.title}
-                                        required
-                                        showError={showError}
-                                        onChange={handleChange}
-                                        error={getAttachFilesError(
-                                          errors,
-                                          "title",
-                                          index
-                                        )}
-                                      />
-                                      <CustomInput
-                                        name={`attach_files.${index}.description`}
-                                        type="textarea"
-                                        placeholder="Description"
-                                        label="Description"
-                                        value={file.description}
-                                        showError={showError}
-                                        onChange={handleChange}
-                                      />
-                                    </Grid>
-                                    {values.attach_files.length && (
-                                      <Button
-                                        colorScheme="red"
-                                        variant="outline"
-                                        size="sm"
-                                        mt="10px"
-                                        onClick={() => remove(index)}
+                    <Box mt={5} mb={2}>
+                      <Text fontWeight={"bold"}>Add Attachments :- </Text>
+                    </Box>
+                    <Box>
+                      {values.attach_files?.length === 0 ? (
+                        <Box>
+                          <NotFoundData
+                            title="No Attachment Are Found"
+                            subTitle="Add New Attachment for the project description"
+                            btnText="Add New Attachment"
+                            onClick={() => {
+                              setFieldValue("attach_files", [
+                                {
+                                  title: "",
+                                  description: "",
+                                  file: null,
+                                },
+                              ]);
+                            }}
+                          />
+                        </Box>
+                      ) : (
+                        <Grid columnGap={5} rowGap={3} mb={5}>
+                          <FieldArray name="attach_files">
+                            {({ push, remove }) => (
+                              <Box>
+                                {values.attach_files.map(
+                                  (file: any, index: number) => (
+                                    <Box key={index} mb="20px">
+                                      <Grid
+                                        gridTemplateColumns={{ md: "1fr" }}
+                                        gap={2}
                                       >
-                                        Remove Section
-                                      </Button>
-                                    )}
-                                  </Box>
-                                )
-                              )}
-                              <Button
-                                colorScheme="blue"
-                                variant="outline"
-                                display="block"
-                                size="sm"
-                                mb="10px"
-                                mt={5}
-                                onClick={() =>
-                                  push({
-                                    title: "",
-                                    description: "",
-                                    file: null,
-                                  })
-                                }
-                              >
-                                Add Section
-                              </Button>
-                            </Box>
-                          )}
-                        </FieldArray>
-                      </Grid>
-                    )}
-                  </Box>
+                                        <Box width="100%">
+                                          {file.file ? (
+                                            <ShowFileUploadFile
+                                              edit={type === "edit"}
+                                              files={file.file[0]}
+                                              removeFile={() => {
+                                                if(type === "edit")
+                                                  {
+                                                    setFieldValue('deleteAttachments', [...values.deleteAttachments,file.file[0]?.name])
+                                                  }
+                                                const updatedFiles =
+                                                  values.attach_files.map(
+                                                    (item: any, i: number) =>
+                                                      i === index
+                                                        ? {
+                                                            ...item,
+                                                            file: null,
+                                                            isDeleted: 1,
+                                                            isAdd: 0,
+                                                          }
+                                                        : item
+                                                  );
+                                                setFieldValue(
+                                                  "attach_files",
+                                                  updatedFiles
+                                                );
+                                              }}
+                                              // Optionally, you can add functionality to remove files
+                                            />
+                                          ) : (
+                                            <CustomInput
+                                              name={`attach_files.${index}.file`}
+                                              type="file-drag"
+                                              placeholder="File"
+                                              label="File"
+                                              required
+                                              showError={showError}
+                                              onChange={(e: any) => {
+                                                setFieldValue(
+                                                  `attach_files.${index}.file`,
+                                                  e.target.files
+                                                );
+                                                setFieldValue(
+                                                  `attach_files.${index}.isAdd`,
+                                                  1
+                                                );
+                                              }}
+                                            />
+                                          )}
+                                        </Box>
+                                        <CustomInput
+                                          name={`attach_files.${index}.title`}
+                                          type="text"
+                                          placeholder="Title"
+                                          label="Title"
+                                          value={file.title}
+                                          required
+                                          showError={showError}
+                                          onChange={handleChange}
+                                          error={generateErrors(
+                                            'attach_files',
+                                            errors,
+                                            "title",
+                                            index
+                                          )}
+                                        />
+                                        <CustomInput
+                                          name={`attach_files.${index}.description`}
+                                          type="textarea"
+                                          placeholder="Description"
+                                          label="Description"
+                                          value={file.description}
+                                          showError={showError}
+                                          onChange={handleChange}
+                                        />
+                                      </Grid>
+                                      {values.attach_files.length && (
+                                        <Button
+                                          colorScheme="red"
+                                          variant="outline"
+                                          size="sm"
+                                          mt="10px"
+                                          onClick={() => {
+                                            if(type === 'edit')
+                                              {
+                                                setFieldValue('deleteAttachments', [...values.deleteAttachments,file.file[0]?.name])
+                                              }
+                                            remove(index)}}
+                                        >
+                                          Remove Section
+                                        </Button>
+                                      )}
+                                    </Box>
+                                  )
+                                )}
+                                <Button
+                                  colorScheme="blue"
+                                  variant="outline"
+                                  display="block"
+                                  size="sm"
+                                  mb="10px"
+                                  mt={5}
+                                  onClick={() =>
+                                    push({
+                                      isAdd : 1,
+                                      title: "",
+                                      description: "",
+                                      file: null,
+                                    })
+                                  }
+                                >
+                                  Add Section
+                                </Button>
+                              </Box>
+                            )}
+                          </FieldArray>
+                        </Grid>
+                      )}
+                    </Box>
                   </Box>
                 </DrawerFormHeightContainer>
-                <Flex justifyContent={"end"} mt={4}>
-                  <SubmitFormBtn
-                    cancelFunctionality={{
-                      show: true,
-                      onClick: () => setOpenTaskDrawer('create'),
-                    }}
-                    onClick={() => setShowError(true)}
-                    type="submit"
-                    loading={isSubmitting}
-                  />
-                </Flex>
+                <SubmitFormBtn
+                  cancelFunctionality={{
+                    show: true,
+                    onClick: () => setOpenTaskDrawer("create"),
+                  }}
+                  onClick={() => setShowError(true)}
+                  type="submit"
+                  loading={isSubmitting}
+                />
               </Form>
             );
           }}

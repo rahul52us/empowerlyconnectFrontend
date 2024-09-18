@@ -5,7 +5,7 @@ import store from "../../../../../store/store";
 import { getStatusType } from "../../../../../config/constant/statusCode";
 import { readFileAsBase64 } from "../../../../../config/constant/function";
 
-const CreateProject = observer(() => {
+const CreateProject = observer(({userId} : any) => {
   const {
     Project: { createProject, setOpenProjectDrawer, getProjects, projects },
     auth: { openNotification },
@@ -25,25 +25,10 @@ const CreateProject = observer(() => {
       }
 
       let formData = {
-        ...values,
-        attach_files: values.attach_files.map((fileObj : any) => ({
-          ...fileObj,
-          file: fileObj.file ? [...fileObj.file] : null,
-        }))
+        ...values
       };
 
-
-      for (const dt of formData.attach_files) {
-        if (dt.file) {
-          const file = await readFileAsBase64(dt.file[0]);
-          dt.file = {
-            buffer: file,
-            filename: dt.file[0].name,
-            type: dt.file[0].type,
-          };
-        }
-      }
-
+      setSubmitting(true)
       createProject({...formData})
         .then((data) => {
           openNotification({
@@ -51,7 +36,7 @@ const CreateProject = observer(() => {
             message: `${data.message}`,
             type: "success",
           });
-          getProjects({page : projects.currentPage, limit : projects.limit})
+          getProjects({page : projects.currentPage, limit : projects.limit, userId})
           resetForm();
           setOpenProjectDrawer("create");
         })

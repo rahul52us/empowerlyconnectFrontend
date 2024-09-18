@@ -5,7 +5,7 @@ import { FaBook, FaPersonCircleQuestion } from "react-icons/fa6";
 import MainPagePagination from "../../../../../../config/component/pagination/MainPagePagination";
 import { getStatusType } from "../../../../../../config/constant/statusCode";
 import store from "../../../../../../store/store";
-import NotFoundData from "../../../../../../config/component/NotFound/NotFoundData";
+import NotFoundData from "../../../../../../config/component/commonPages/NotFoundData";
 import { useQueryParams } from "../../../../../../config/component/customHooks/useQuery";
 import { FaBookOpen, FaBookReader, FaPlus } from "react-icons/fa";
 import BookCategory from "./element/BookCategory";

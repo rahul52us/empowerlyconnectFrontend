@@ -69,9 +69,9 @@ const sidebarDatas: SidebarItem[] = [
       },
       {
         id: 8,
-        name: "Qualification",
+        name: "Qualifications",
         icon: <FaUsers />,
-        url: `${dashboard.profile}?tab=qualification`,
+        url: `${dashboard.profile}?tab=qualifications`,
         role: ["user"],
       },
       {
@@ -254,7 +254,7 @@ const sidebarDatas: SidebarItem[] = [
     name: "Project",
     icon: <FaBuilding />,
     url: dashboard.application.project,
-    role: ["manager", "admin", "superadmin"],
+    role: ["manager", "admin", "superadmin",'user'],
     children: [
       {
         id: 51,
@@ -267,19 +267,19 @@ const sidebarDatas: SidebarItem[] = [
   },
   // liberay
   {
-      id: 80,
-      name: "Liberary",
-      icon: <FaBuilding />,
-      url: dashboard.liberary.books.index,
-      role: ["admin", "superadmin"],
-      children: [
-        {
-          id: 81,
-          name: "Book Management",
-          icon: <FaUsers />,
-          url: dashboard.liberary.books.index,
-          role: ["admin", "superadmin"],
-         children : [
+    id: 80,
+    name: "Liberary",
+    icon: <FaBuilding />,
+    url: dashboard.liberary.books.index,
+    role: ["admin", "superadmin"],
+    children: [
+      {
+        id: 81,
+        name: "Book Management",
+        icon: <FaUsers />,
+        url: dashboard.liberary.books.index,
+        role: ["admin", "superadmin"],
+        children: [
           {
             id: 82,
             name: "Books",
@@ -288,28 +288,28 @@ const sidebarDatas: SidebarItem[] = [
             role: ["admin", "superadmin"],
           },
           {
-          id: 83,
-          name: "Category",
-          icon: <FaUsers />,
-          url: dashboard.liberary.books.category.index,
-          role: ["admin", "superadmin"],
-        },
-        {
-          id: 84,
-          name: "Users",
-          icon: <FaUsers />,
-          url: dashboard.liberary.books.users,
-          role: ["admin", "superadmin"],
-        }
-        ]
-        },
-        {
-          id: 85,
-          name: "Seat Management",
-          icon: <FaUsers />,
-          url: dashboard.liberary.room.index,
-          role: ["admin", "superadmin"],
-         children : [
+            id: 83,
+            name: "Category",
+            icon: <FaUsers />,
+            url: dashboard.liberary.books.category.index,
+            role: ["admin", "superadmin"],
+          },
+          {
+            id: 84,
+            name: "Users",
+            icon: <FaUsers />,
+            url: dashboard.liberary.books.users,
+            role: ["admin", "superadmin"],
+          },
+        ],
+      },
+      {
+        id: 85,
+        name: "Seat Management",
+        icon: <FaUsers />,
+        url: dashboard.liberary.room.index,
+        role: ["admin", "superadmin"],
+        children: [
           {
             id: 86,
             name: "Room",
@@ -318,14 +318,15 @@ const sidebarDatas: SidebarItem[] = [
             role: ["admin", "superadmin"],
           },
           {
-          id: 87,
-          name: "Users",
-          icon: <FaUsers />,
-          url: dashboard.liberary.room.users,
-          role: ["admin", "superadmin"],
-        }]
-        },
-      ],
+            id: 87,
+            name: "Users",
+            icon: <FaUsers />,
+            url: dashboard.liberary.room.users,
+            role: ["admin", "superadmin"],
+          },
+        ],
+      },
+    ],
   },
   // Trip
   {
@@ -333,17 +334,24 @@ const sidebarDatas: SidebarItem[] = [
     name: "Trips",
     icon: <FaBuilding />,
     url: dashboard.tripManagement.index,
-    role: ["admin", "superadmin"],
+    role: ["admin", "superadmin","user","manager"],
     children: [
       {
         id: 91,
         name: "Trip",
         icon: <FaUsers />,
         url: dashboard.tripManagement.index,
+        role: ["admin", "superadmin","user","manager"],
+      },
+      {
+        id: 92,
+        name: "Users",
+        icon: <FaUsers />,
+        url: dashboard.tripManagement.users,
         role: ["admin", "superadmin"],
       },
     ],
-},
+  },
 ];
 
 export const sidebarFooterData: SidebarItem[] = [

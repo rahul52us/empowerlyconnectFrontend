@@ -21,6 +21,7 @@ const DailyAttendance = observer(() => {
   const [attendenceRecord, setAttendenceRecord] = useState([]);
   const {
     AttendencePunch: { getRecentPunch, recentPunch },
+    auth : {getPolicy}
   } = store;
 
   const [startDate, setStartDate] = useState(new Date());
@@ -32,7 +33,8 @@ const DailyAttendance = observer(() => {
     let query : any = {
       startDate: formatDate(startDate),
       endDate: formatDate(endDate),
-      limit: 31
+      limit: 31,
+      policy : getPolicy()
     }
     if(userId){
       query = {...query, user : userId}
@@ -43,7 +45,7 @@ const DailyAttendance = observer(() => {
       })
       .catch(() => {})
       .finally(() => {});
-  }, [startDate, endDate, getRecentPunch, userId]);
+  }, [startDate, endDate, getRecentPunch, userId, getPolicy]);
 
   const handleStartDateChange = (date: Date) => {
     if (date) {

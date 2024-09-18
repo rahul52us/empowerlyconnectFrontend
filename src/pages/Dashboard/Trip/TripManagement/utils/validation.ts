@@ -33,12 +33,19 @@ export interface TripFormValues {
   participants: { label: string, value: string }[];
 }
 
+const UservalidationSchema = Yup.object().shape({
+  user: Yup.mixed()
+    .required("Please select a user from the list"),
+  isActive: Yup.boolean(),
+});
+
 const tripFormValidation: any = Yup.object().shape({
   title: Yup.string().min(3,'Title must be of 3 characters').trim().required('Title is required'),
   description: Yup.string().trim().required('Description is required'),
   country: Yup.string().required('Country is required'),
-  participants : Yup.mixed().required('select the participants '),
-  travelDetails: Yup.array().of(
+  participants: Yup.array()
+  .of(UservalidationSchema),
+    travelDetails: Yup.array().of(
     Yup.object().shape({
       fromState: Yup.string().required('From State is required'),
       toState: Yup.string().required('To State is required'),

@@ -20,6 +20,7 @@ function FormModel({
   title,
   footer,
   children,
+  size,
   ...rest
 }: any) {
   const {
@@ -37,7 +38,7 @@ function FormModel({
     <>
       <Modal
         isCentered={isCentered}
-        size="2xl"
+        size={size ? size : "2xl"}
         isOpen={open}
         onClose={close}
         {...rest}
@@ -56,9 +57,8 @@ function FormModel({
               <Text fontSize="xl">{title}</Text>
               <ModalCloseButton
                 color={headerTextColor}
-                bg="transparent"
-                _hover={{ bg: "transparent" }}
                 size="lg"
+                bg="red.500"
                 mt={1}
               />
             </Flex>

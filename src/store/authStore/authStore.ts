@@ -54,6 +54,9 @@ class AuthStore {
       createOrganisation: action,
       getCompanyUsers: action,
       getCurrentCompany: action,
+      hasComponentAccess:action,
+      getPolicy:action,
+      verifyAppEmail:action
     });
   }
 
@@ -218,6 +221,10 @@ class AuthStore {
     return this.company;
   };
 
+  getPolicy = () => {
+    return this?.user?.companyDetail?.company?.policy?._id
+  }
+
   updateProfile = async (sendData: any) => {
     try {
       const { data } = await axios.put("/auth", sendData);
@@ -274,6 +281,18 @@ class AuthStore {
     }
   };
 
+
+  verifyAppEmail = async(sendData : any) => {
+    try
+    {
+      const { data } = await axios.post(`${sendData.type}/token/verify`,{userId : this.user._id, company : this.getCurrentCompany(),...sendData});
+      return data;
+    }
+    catch(err: any){
+      return Promise.reject(err?.response || err);
+    }
+  }
+
   openNotification = (data: {
     title: any;
     message: string;
@@ -295,12 +314,11 @@ class AuthStore {
   };
 
   checkPermission = (key: string, value: string) => {
-    if (this.user?.role === "superadmin" || this.user?.role === "admin") {
+    if (this.user?.role === "superadmin" || this.user?.role === "admin" || this.user?.permissions?.adminAccess?.add) {
       return true;
     } else {
-      if (this.user?.permissions) {
         var status = false;
-        Object.entries(this.user.permissions).forEach((item: any) => {
+        Object.entries(this.user?.permissions || {}).forEach((item: any) => {
           if (item[0] === key) {
             if (item[1][value]) {
               status = true;
@@ -310,8 +328,15 @@ class AuthStore {
           }
         });
         return status;
-      }
     }
+  };
+
+  hasComponentAccess = () => {
+    // Check if the user has an admin or superadmin role or hasAdminAcccess
+    if (['admin', 'superadmin'].includes(this.user?.role) || this.user?.permissions?.adminAccess?.add) {
+      return true;
+    }
+    return false;
   };
 
   uploadUserPic = async (sendData: any) => {

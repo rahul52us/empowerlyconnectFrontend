@@ -11,6 +11,7 @@ import PersonalDetailsChangePassword from "./forms/PersonalDetailsChangePassword
 import PersonalWorkExperience from "./forms/PersonalWorkExperience";
 import PersonalDocuments from "./forms/PersonalDocuments";
 import PersonalPermissions from "./forms/PersonalPermissions";
+import PersonalQualifications from "./forms/PersonalQualification";
 
 const UserContainer = observer(
   ({
@@ -96,6 +97,18 @@ const UserContainer = observer(
               setFiles={setFiles}
             />
           );
+        case "qualifications":
+            return (
+              <PersonalQualifications
+                type={type}
+                profileData={profileData}
+                handleSubmitProfile={handleSubmitProfile}
+                initialValues={initialValues?.qualifications}
+                validations={validations}
+                files={files}
+                setFiles={setFiles}
+              />
+            );
         case "company-details":
           return (
             <PersonalCompanyDetails
@@ -193,6 +206,18 @@ const UserContainer = observer(
               setFiles={setFiles}
             />
           );
+        case "qualifications":
+            return (
+              <PersonalQualifications
+                type={type}
+                profileData={profileData}
+                handleSubmitProfile={handleSubmitProfile}
+                initialValues={initialValues?.qualifications}
+                validations={validations}
+                files={files}
+                setFiles={setFiles}
+              />
+            );
         case "company-details":
           return (
             <PersonalCompanyDetails

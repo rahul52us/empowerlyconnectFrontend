@@ -15,6 +15,7 @@ import { authentication, main } from "../../../../config/constant/routes";
 import { useEffect, useState } from "react";
 import { readFileAsBase64 } from "../../../../config/constant/function";
 import { observer } from "mobx-react-lite";
+import { CompanyInitialValues } from "./utils/constant";
 
 const CreateOrganisationStep2 = observer(({
   singleCompany,
@@ -23,7 +24,7 @@ const CreateOrganisationStep2 = observer(({
   isEdit
 }: any) => {
   const [initialValuesData, setInitialValuesData] =
-    useState<any>(initialValues);
+    useState<any>(initialValues || CompanyInitialValues);
   const navigate = useNavigate();
   const [activeStep, setActiveStep] = useState(0);
   const { token } = useParams();
@@ -127,6 +128,7 @@ const CreateOrganisationStep2 = observer(({
           name: `${first_name} ${last_name}`,
           password,
           username,
+          code:code,
           companyDetails: { ...rest, logo },
           token: token,
         })

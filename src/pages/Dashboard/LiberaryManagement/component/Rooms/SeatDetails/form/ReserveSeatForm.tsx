@@ -13,7 +13,7 @@ import SubmitFormBtn from "../../../../../../../config/component/Button/SubmitFo
 const validationSchema = Yup.object({
   startDate: Yup.date().required("Start date is required"),
   endDate: Yup.date().required("End date is required"),
-  user: Yup.string().required("Select the User"),
+  user: Yup.mixed().required("Select the User"),
   room: Yup.object().required("Select the Room"),
   seat: Yup.object().required("Select the Seat"),
   startTime: Yup.string()
@@ -57,7 +57,7 @@ const defaultInitialValues = {
 const ReserveSeatForm = observer(({ user, room, close }: any) => {
   const [roomSeatDatas, setRoomSeatDatas] = useState<any>([]);
   const userOptions = useState<any>(
-    user ? [{ label: user.username, _id: user._id }] : []
+    user ? [{ label: user.username, value: user._id }] : []
   )[0];
   const [initialValues, setInitialValues] = useState(defaultInitialValues);
   const [selectedRoom, setSelectedRoom] = useState<any>(room || null);
@@ -110,7 +110,7 @@ const ReserveSeatForm = observer(({ user, room, close }: any) => {
     if (user) {
       setInitialValues((prev: any) => ({
         ...prev,
-        user: user._id,
+        user: {label : user?.username, value : user._id},
       }));
     }
   }, [
@@ -173,6 +173,7 @@ const ReserveSeatForm = observer(({ user, room, close }: any) => {
 
       const payload = {
         ...values,
+        user : values.user ? values.user?.value : undefined,
         startDate: startDateTime.toISOString(),
         endDate: endDateTime.toISOString(),
         startTime: fullDay ? null : startDateTime.toISOString(),
@@ -254,9 +255,9 @@ const ReserveSeatForm = observer(({ user, room, close }: any) => {
                   error={errors.user}
                   name="user"
                   placeholder="Search User"
-                  type="real-time-search"
-                  defaultUserOptions={userOptions}
-                  value={user ? user.value : undefined}
+                  type="real-time-user-search"
+                  options={userOptions}
+                  value={user ? {label : user?.username, value : user?._id} : undefined}
                   onChange={(e) => setFieldValue("user", e)}
                   required
                   showError={showError}

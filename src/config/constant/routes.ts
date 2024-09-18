@@ -18,6 +18,7 @@ export const dashboard = {
   class: `/${dashboardName}/class`,
   course: `/${dashboardName}/courses`,
   quiz: `/${dashboardName}/quiz`,
+  verifyInvitation : `/${dashboardName}/:invitationType/verify-invitation/:token`,
 
   // Profile
 
@@ -36,6 +37,8 @@ export const dashboard = {
   },
   tripManagement: {
     index: `/${dashboardName}/trip`,
+    users : `/${dashboardName}/trip/users`,
+    individual : `/${dashboardName}/trip/:tripId`,
   },
   Users: {
     index: `/${dashboardName}/Users`,
@@ -89,12 +92,14 @@ export const dashboard = {
   // project
   project : {
     index : `/${dashboardName}/project`,
+    individual : `/${dashboardName}/project/:projectId`,
     task : {
       index : `/${dashboardName}/project/:projectId/task`,
       create : `/${dashboardName}/:projectId/task/create`,
       edit:`/${dashboardName}/:projectId/task/edit/:taskId`
     }
-  }
+  },
+
 };
 
 export const main = {
@@ -118,6 +123,10 @@ export const main = {
   quizTitle: "/quiz/:quizTitle",
   quizQuestionIndex: "/quiz/:quizTitle/:categoryTitle",
   individualHomeCompany: "/:individualCompany",
+  ecommerce: {
+    products: "/ecommerce/products",
+
+  },
 };
 
 export const privateMain = {

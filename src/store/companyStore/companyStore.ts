@@ -157,22 +157,30 @@ class CompanyStore {
 
   getWorkLocations = async (sendData : any) => {
     try {
-      this.workLocations.loading = true
-      this.workLocations.hasFetch = true
-      const { data } = await axios.get("/company/policy/workLocations", {params :  {...sendData,company:sendData.company || store.auth.getCurrentCompany()}});
-      if(sendData.company){
-        return data.data
-      }
-      this.workLocations.data = data.data || [];
-      this.workLocations.totalPages = data.data?.totalPages || 0
-      return data;
+        this.workLocations.loading = true;
+        this.workLocations.hasFetch = true;
+
+        const { data } = await axios.get("/company/policy/workLocations", {
+            params: { ...sendData, company: sendData.company || store.auth.getCurrentCompany() }
+        });
+
+        if (sendData.company) {
+            return data.data;
+        }
+
+        this.workLocations.data = data.data || [];
+        this.workLocations.totalPages = data.data?.totalPages || 0;
+        return data;
+
     } catch (err: any) {
-      this.workLocations.hasFetch = false
-      return Promise.reject(err?.response || err);
+        console.error('Error fetching work locations:', err?.response || err);
+        this.workLocations.hasFetch = false;
+        return Promise.reject(err?.response || err);
     } finally {
-      this.workLocations.loading = false;
-  };
-}
+        this.workLocations.loading = false;
+    }
+};
+
 
 getWorkTiming = async (sendData : any) => {
   try {

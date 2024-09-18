@@ -29,11 +29,11 @@ const HolidaysDetailTable = observer(() => {
 
   const {
     company: { getHolidays, holidays, updateHoliday, updateHolidayByExcel },
-    auth: { openNotification },
+    auth: { openNotification, getPolicy },
   } = store;
 
   useEffect(() => {
-    getHolidays({})
+    getHolidays({policy : getPolicy()})
       .then(() => {})
       .catch((err: any) => {
         openNotification({
@@ -42,11 +42,11 @@ const HolidaysDetailTable = observer(() => {
           message: err?.data?.message,
         });
       });
-  }, [getHolidays, openNotification]);
+  }, [getHolidays, openNotification, getPolicy]);
 
   // function to get the data from backend on the page, limit, date and others
   const applyGetAllRecords = () => {
-    const query: any = {};
+    const query: any = {policy : getPolicy()};
     getHolidays(query)
       .then(() => {})
       .catch((err: any) => {
@@ -75,9 +75,9 @@ const HolidaysDetailTable = observer(() => {
     applyGetAllRecords();
   };
 
-  const deleteRecord = (data: any) => {
+  const deleteRecord = () => {
     setFormValues(() => ({ ...formValues, loading: true }));
-    updateHoliday({ title: data.title?.trim(), delete: 1 })
+    updateHoliday({ _id:formValues?.data?._id, isDelete: 1, policy : getPolicy() })
       .then((data: any) => {
         openNotification({
           title: "Deleted Successfully",

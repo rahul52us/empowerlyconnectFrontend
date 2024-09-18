@@ -38,6 +38,8 @@ export interface TripFormValues {
     participants:Participants[];
     travelDetails: TravelDetails[];
     additionalExpenses: AdditionalExpense[];
+    attach_files: any[]
+    deleteAttachments:[]
 }
 
 export interface TripFormI {

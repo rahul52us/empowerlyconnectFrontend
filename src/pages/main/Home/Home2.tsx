@@ -15,6 +15,7 @@ import SliderCard1 from "./component/Card1/SliderCard1";
 import { main } from "../../../config/constant/routes";
 import CourseForm from "../courses/CourseForm/CourseForm";
 import { useState } from "react";
+import PaymentPage from "../../../config/component/PaymentGateway/PaymentPage";
 // import ProfileCard from "./component/ProfileCard/ProfileCard";
 
 // const cardData = [
@@ -338,6 +339,7 @@ const Home2 = () => {
   return (
     <Box>
       <HeroSection2 />
+
       <Box m={2}>
         <Box
           maxW={"75%"}
@@ -349,6 +351,7 @@ const Home2 = () => {
           display="none"
           // shadow="rgb(0 0 0 / 15%) 0px 0px 12px"
         >
+                <PaymentPage/>
           <CourseForm
             initialValues={initialValues}
             showError={showError}

@@ -1,12 +1,13 @@
 import { lazy } from "react";
 import { dashboard } from "../constant/routes";
-import ProfileEditIndex from "../../pages/Dashboard/profile/ProfileEditIndex";
+const VerifyInvitationPage = lazy(() => import("../component/common/VerifyInvitationPages/VerifyInvitationPage"))
 
 const PersonalDetails = lazy(
   () => import("../../pages/Dashboard/Users/PersonalDetails")
 );
 
 const ProfileIndex = lazy(() => import("../../pages/Dashboard/profile/ProfileIndex"))
+const ProfileEditIndex = lazy(() => import("../../pages/Dashboard/profile/ProfileEditIndex"));
 
 const PersonalDetailUsersChart = lazy(
   () =>
@@ -35,6 +36,8 @@ const CustomDragForm = lazy(
 const ProjectIndex = lazy(
   () => import("../../pages/Dashboard/project/ProjectIndex")
 );
+const IndividualProject = lazy(() => import("../../pages/Dashboard/project/component/individualProject/IndividualProject"))
+
 const CustomCalender = lazy(
   () => import("../../pages/Dashboard/CustomCalender/CustomCalender")
 );
@@ -80,12 +83,6 @@ const StaffIndex = lazy(
 
 // trip
 
-const TripManagementIndex = lazy(
-  () => import("../../pages/Dashboard/Trip/TripManagement")
-);
-
-// Users
-
 const UsersManagementIndex = lazy(
   () => import("../../pages/Dashboard/Users")
 );
@@ -128,6 +125,13 @@ const LeaveEditRequest = lazy(
       "../../pages/Dashboard/Request/component/LeaveRequest/component/form/LeaveEditRequest"
     )
 );
+
+// Trip
+const TripManagementIndex = lazy(() => import("../../pages/Dashboard/Trip/TripManagement/index"));
+const TripUsersTable = lazy(() => import("../../pages/Dashboard/Trip/TripManagement/admin/TripUserDetails/TripUsersTableIndex"))
+const IndividualTrip = lazy(() => import("../../pages/Dashboard/Trip/TripManagement/component/individualTrip/IndividualTrip"))
+
+
 // Manager Request
 const ManagerRequest = lazy(
   () => import("../../pages/Dashboard/Request/ManagerRequest/index")
@@ -189,6 +193,11 @@ export const DashboardRoutes = [
     privateRoutes: true,
   },
   {
+    element : <VerifyInvitationPage />,
+    path : dashboard.verifyInvitation,
+    privateRoutes : true
+  },
+  {
     element: <Testimonial />,
     path: dashboard.testimonial,
   },
@@ -232,10 +241,23 @@ export const DashboardRoutes = [
     path: dashboard.student.profile,
     privateRoutes: true,
   },
+
+  // Trips
+
   {
     element: <TripManagementIndex />,
     path: dashboard.tripManagement.index,
     privateRoutes: true,
+  },
+  {
+    element: <TripUsersTable />,
+    path: dashboard.tripManagement.users,
+    privateRoutes: true,
+  },
+  {
+    element : <IndividualTrip />,
+    path : dashboard.tripManagement.individual,
+    privateRoutes : true
   },
 
   // Users
@@ -381,4 +403,9 @@ export const DashboardRoutes = [
     path: dashboard.project.task.index,
     privateRoutes: true
   },
+  {
+    element : <IndividualProject />,
+    path : dashboard.project.individual,
+    privateRoutes : true
+  }
 ];

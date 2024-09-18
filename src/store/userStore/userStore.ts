@@ -88,6 +88,7 @@ class Userstore {
       updateDocuments: action,
       updateCompanyDetails:action,
       updatePermissions:action,
+      updateQualifications:action,
       getAllUsersRoles:action,
       getManagersUsersCount:action,
       getUsersSubOrdinateDetails:action,
@@ -289,6 +290,18 @@ class Userstore {
     }
   };
 
+  updateQualifications = async (id: any, sendData: any) => {
+    try {
+      const { data } = await axios.put(
+        `User/qualifications/${id}`,
+        sendData
+      );
+      return data;
+    } catch (err: any) {
+      return Promise.reject(err?.response?.data || err);
+    }
+  };
+
   updatePermissions = async (id: any, sendData: any) => {
     try {
       const { data } = await axios.put(
@@ -303,7 +316,7 @@ class Userstore {
 
   updateUserProfile = async (id: any, sendData: any) => {
     try {
-      const { data } = await axios.put(`User/profile/${id}`, sendData);
+      const { data } = await axios.put(`User/profile/${id}`, {...sendData,company: store.auth.company});
       return data;
     } catch (err: any) {
       return Promise.reject(err?.response?.data || err);

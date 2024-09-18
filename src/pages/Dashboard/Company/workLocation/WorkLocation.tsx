@@ -29,11 +29,11 @@ const WorkLocationDetails = observer(() => {
 
   const {
     company: { getWorkLocations, workLocations, updateWorkLocation, updateWorkLocationsByExcel },
-    auth: { openNotification },
+    auth: { openNotification, getPolicy },
   } = store;
 
   useEffect(() => {
-    getWorkLocations({})
+    getWorkLocations({policy :  getPolicy() })
       .then(() => {})
       .catch((err: any) => {
         openNotification({
@@ -42,11 +42,11 @@ const WorkLocationDetails = observer(() => {
           message: err?.data?.message,
         });
       });
-  }, [getWorkLocations, openNotification]);
+  }, [getWorkLocations, openNotification, getPolicy]);
 
   // function to get the data from backend on the page, limit, date and others
   const applyGetAllRecords = () => {
-    const query: any = {};
+    const query: any = {policy : getPolicy()};
     getWorkLocations(query)
       .then(() => {})
       .catch((err: any) => {
@@ -77,7 +77,7 @@ const WorkLocationDetails = observer(() => {
 
   const deleteRecord = (data : any) => {
     setFormValues(() => ({...formValues, loading : true}))
-    updateWorkLocation({ locationName : data.locationName?.trim(), delete : 1 })
+    updateWorkLocation({ locationName : data.locationName?.trim(), delete : 1, _id : formValues?.data?._id, policy : getPolicy() })
       .then((data: any) => {
         openNotification({
           title: "Deleted Successfully",
@@ -269,9 +269,9 @@ const WorkLocationDetails = observer(() => {
         loading={workLocations.loading}
         serial={{ show: false, text: "S.No.", width: "10px" }}
       />
-      <AddWorkLocation formValues={formValues} setFormValues={setFormValues} getAllRecords={applyGetAllRecords}/>
-      <EditWorkLocation formValues={formValues} setFormValues={setFormValues} getAllRecords={applyGetAllRecords}/>
-      <DeleteWorkLocation formValues={formValues} setFormValues={setFormValues} deleteRecord={deleteRecord} />
+      <AddWorkLocation formValues={formValues} setFormValues={setFormValues} getAllRecords={applyGetAllRecords} policy={getPolicy()}/>
+      <EditWorkLocation formValues={formValues} setFormValues={setFormValues} getAllRecords={applyGetAllRecords} policy={getPolicy()}/>
+      <DeleteWorkLocation formValues={formValues} setFormValues={setFormValues} deleteRecord={deleteRecord} policy={getPolicy()}/>
     </>
   );
 });

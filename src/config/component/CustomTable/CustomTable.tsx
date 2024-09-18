@@ -292,8 +292,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
   const boxBorder = useColorModeValue("gray.200", "gray.700");
   return (
     <Box
-      rounded={12}
-      p={4}
+      rounded={5}
       boxShadow="rgb(0 0 0 / 20%) 0px 0px 8px"
       border={"1px solid"}
       borderColor={boxBorder}

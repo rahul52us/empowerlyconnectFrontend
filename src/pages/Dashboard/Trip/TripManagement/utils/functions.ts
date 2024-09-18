@@ -1,14 +1,18 @@
 import { YYYYMMDD_FORMAT, formatDate } from "../../../../../config/constant/dateUtils";
-import { readFileAsBase64 } from "../../../../../config/constant/function";
+import { getUniqueUsers, readFileAsBase64 } from "../../../../../config/constant/function";
 import { categoryTypes,  travelModes, tripTypes } from "./constant";
 import {
   AdditionalExpense,
   TravelDetails,
 } from "./interface";
 
-export const generateTableData = (data : any[]) => {
-  return data.map((item : any) => ({...item,...item}))
-}
+export const generateTableData = (data: any[]) => {
+  return data.map((item: any) => ({
+    ...item,
+    ...item.profileDetails[0],
+    ...item.userData,
+  }));
+};
 
 export const generateFormError = (errors: any, parent : any, type: string, index: number) => {
   if(errors?.[parent]?.[index]?.[type]){
@@ -28,6 +32,26 @@ export const generateTripResponse = async (data: any) => {
     };
     data.thumbnail = fileData;
   }
+
+  const processedFiles = await Promise.all(
+    data.attach_files.map(async (item: any) => {
+      if (item.isAdd && item.file) {
+        try {
+          const base64Data = await readFileAsBase64(item.file[0]);
+          return { ...item, file: { buffer: base64Data, type: item.file[0]?.type, filename: item.file[0]?.name } };
+        } catch {
+          return item;
+        }
+      }
+      else if(!item.file){
+        return {...item,file : null};
+      }
+       else {
+        return {...item,file : {...item.file[0]}};
+      }
+    })
+  );
+
   const updatedTravelDetails = data.travelDetails.map(
     (item: TravelDetails) => {
       return({
@@ -40,17 +64,6 @@ export const generateTripResponse = async (data: any) => {
     })}
   );
   const type = data.type ? data?.type?.value : tripTypes[0].value;
-  let updatedParticipants : any = []
-  if(type === tripTypes[0].value && data?.participants)
-  {
-    updatedParticipants = Array.isArray(data?.participants) ? data?.participants?.length ? [{user : data?.participants[0]?.user?._id, isActive : true}] : [] : [{user : data?.participants.user?._id, isActive : true}]
-  }
-  else
-  {
-    updatedParticipants = data.participants?.map(
-      (item: any) => ({user : item.user?.value || item.user?._id, isActive : true})
-    ) || [];
-  }
   const updatedAdditionalExpense = data.additionalExpenses?.map(
     (item: AdditionalExpense) => ({
       ...item,
@@ -59,8 +72,9 @@ export const generateTripResponse = async (data: any) => {
   ) || [];
   const updatedData = {
     ...data,
+    attach_files:processedFiles,
     type: type,
-    participants: updatedParticipants,
+    participants: getUniqueUsers(data?.participants || []),
     travelDetails: updatedTravelDetails,
     additionalExpenses: updatedAdditionalExpense,
   };
@@ -95,11 +109,18 @@ export const generateEditInitialValues = (data : any) => {
   const {createdBy, ...rest} = data
   const updatedData = {
     ...rest,
+    deleteAttachments:[],
+    attach_files: data?.attach_files?.map((it: any) => ({
+      ...it,
+      file: it.file ? [it.file] : undefined,
+    })),
     type: tripTypes.find((it : any) => it.value === data.type) || tripTypes[0],
     travelDetails: updatedTravelDetails,
     additionalExpenses: updatedAdditionalExpense,
-    participants : data.participants || []
-  };
+    participants: data.participants.map((item: any) => ({
+      user: item.user,
+      isActive: item.isActive
+    }))};
   return updatedData;
 }
 

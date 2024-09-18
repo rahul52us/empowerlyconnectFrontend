@@ -18,6 +18,7 @@ export const taskPrioties : any = [
   ]
 
 export const initialValuesOfTask : any = {
+    deleteAttachments : [],
     title: "",
     description: "",
     isActive:activeStatus[0],

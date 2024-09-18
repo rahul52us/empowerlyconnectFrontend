@@ -45,12 +45,12 @@ const PersonalWorkExperience = ({
                 <Divider />
                 <FieldArray name="experienceDetails">
                   {({ push, remove }) => (
-                    <div>
+                    <Box>
                       {values.experienceDetails.map(
                         (experience: any, index: number) => {
                           console.log(index,experience.certificate)
                           return (
-                            <div key={index}>
+                            <Box key={index} mb={3}>
                               <Flex>
                                 {!experience?.certificate || experience?.certificate?.file === null ? (
                                   <CustomInput
@@ -219,19 +219,24 @@ const PersonalWorkExperience = ({
                                   }
                                 />
                               </Grid>
+                              <Flex justifyContent="end">
                               <Button
                                 type="button"
                                 onClick={() => remove(index)}
                                 variant="outline"
+                                colorScheme="red"
                               >
                                 Remove
                               </Button>
-                            </div>
+                              </Flex>
+                            </Box>
                           );
                         }
                       )}
+                      <Flex justifyContent="end" mb={3} mt={2}>
                       <Button
                         type="button"
+                        colorScheme="blue"
                         onClick={() =>
                           push({
                             pastUserr: "",
@@ -255,7 +260,8 @@ const PersonalWorkExperience = ({
                       >
                         Add Experience
                       </Button>
-                    </div>
+                      </Flex>
+                    </Box>
                   )}
                 </FieldArray>
               </Grid>

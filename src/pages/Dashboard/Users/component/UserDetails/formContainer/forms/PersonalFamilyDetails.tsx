@@ -13,7 +13,7 @@ import {
 import CustomInput from "../../../../../../../config/component/CustomInput/CustomInput";
 import SubmitFormBtn from "../../../../../../../config/component/Button/SubmitFormBtn";
 import FormModel from "../../../../../../../config/component/common/FormModel/FormModel";
-import NotFoundData from "../../../../../../../config/component/NotFound/NotFoundData";
+import NotFoundData from "../../../../../../../config/component/commonPages/NotFoundData";
 
 const FamilyDetails = ({
   handleSubmitProfile,

@@ -56,11 +56,14 @@ class ProjectStore {
       updateProject:action,
       getProjectCounts:action,
       addProjectMembers:action,
+      getIndividualProject:action,
       // task
       task:observable,
       openTaskDrawer:observable,
       createTask:action,
-      setOpenTaskDrawer:action
+      setOpenTaskDrawer:action,
+      updateTask:action,
+      getSingleTask:action
     });
   }
 
@@ -112,10 +115,10 @@ class ProjectStore {
     }
   };
 
-  getProjectCounts = async () => {
+  getProjectCounts = async (sendData : any = {}) => {
     try {
       this.projectCount.loading = true;
-      const { data } = await axios.post(`/project/total/count`,{company : [store.auth.getCurrentCompany()]});
+      const { data } = await axios.post(`/project/total/count`,{company : [store.auth.getCurrentCompany()],...sendData});
       this.projectCount.data = data?.data || 0
       return data;
     } catch (err: any) {
@@ -125,12 +128,22 @@ class ProjectStore {
     }
   }
 
-  getProjects = async (sendData: any) => {
+  getIndividualProject = async (sendData : any = {}) => {
+    try {
+      const { data } = await axios.post(`/project/individual/${sendData.projectId}`,{company : [store.auth.getCurrentCompany()],...sendData});
+      return data;
+    } catch (err: any) {
+      return Promise.reject(err?.response || err);
+    } finally {
+    }
+  }
+
+  getProjects = async (sendData: any = {}) => {
     this.projects.loading = true;
     try {
       const { data } = await axios.post(
         `/project/get`,
-        {...sendData, company : [store.auth.getCurrentCompany() ]},
+        {company : [store.auth.getCurrentCompany()],...sendData},
         {params : {page : sendData.page, limit : sendData.limit }}
       );
       this.projects.data = data.data?.data || [];
@@ -163,9 +176,33 @@ class ProjectStore {
 
   // Task Related function
 
+  getSingleTask = async (sendData: any) => {
+    try {
+      const { data } = await axios.get(`/project/task/single/${sendData.id}`, {
+        params: { company: store.auth.getCurrentCompany() },
+      });
+      return data;
+    } catch (err: any) {
+      return Promise.reject(err?.response || err);
+    }
+  };
+
+
   createTask = async (sendData: any) => {
     try {
       const { data } = await axios.post(`/project/task/${sendData.projectId}/create`, {
+        ...sendData,
+        company: store.auth.getCurrentCompany(),
+      });
+      return data;
+    } catch (err: any) {
+      return Promise.reject(err?.response || err);
+    }
+  };
+
+  updateTask = async (sendData: any) => {
+    try {
+      const { data } = await axios.put(`/project/task/${sendData._id}`, {
         ...sendData,
         company: store.auth.getCurrentCompany(),
       });

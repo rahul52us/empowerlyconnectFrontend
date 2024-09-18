@@ -5,7 +5,7 @@ import DashPageHeader from "../../config/component/common/DashPageHeader/DashPag
 import { headerHeight } from "../../config/constant/variable";
 import { Box, Flex } from "@chakra-ui/react";
 import { dashBreadCrumb } from "./utils/breadcrumb.constant";
-import NewDash from "../NewDash/NewDash";
+// import NewDash from "../NewDash/NewDash";
 import PunchInComponent from "./PunchAttendence/PunchInComponent";
 import AdminDashboard from "./mainDashboard/adminDashboard/AdminDashboard";
 import UserDashboard from "./mainDashboard/userDashboard/UserDashboard";
@@ -13,13 +13,13 @@ import ManagerDashboard from "./mainDashboard/managerDashboard/ManagerDashboard"
 
 const DashboardIndex = observer(() => {
   const {
-    auth: { user },
+    auth: { user , hasComponentAccess},
   } = store;
 
   const renderElements = (role: string) => {
     if (role === "manager") {
       return <ManagerDashboard />;
-    } else if (role === "admin" || role === "superadmin") {
+    } else if (hasComponentAccess()) {
       return <AdminDashboard />;
     } else {
       return <UserDashboard />;
@@ -36,7 +36,7 @@ const DashboardIndex = observer(() => {
           <PunchInComponent />
         </Flex>
       </Box>
-      <NewDash />
+      {/* <NewDash /> */}
     </>
   );
 });

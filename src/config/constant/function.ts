@@ -99,3 +99,73 @@ export const capitalizeString = (str : string) => {
   if (!str) return '';
   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 };
+
+export const formatCurrency = (amount: number, currency: string = '₹'): string => {
+  try {
+    if (typeof amount !== 'number' || isNaN(amount)) {
+      return `${currency} 0.00`;
+    }
+
+    // Format the amount with commas and two decimal places
+    return `${currency} ${amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`;
+  } catch (error) {
+    // Return a default value in case of error
+    return `${currency} 0.00`;
+  }
+};
+
+export const renderUserTypeComponent = (role : any) => {
+  if(['admin','superadmin'].includes(role)){
+     return true
+  }else{
+    return false
+  }
+}
+
+export function formatCamelCaseLabel(text : any) {
+  if(text?.trim()){
+  return text
+  .replace(/([A-Z])/g, ' $1')  // Add space before each capital letter
+  .replace(/^./, (str : any) => str.toUpperCase());  // Capitalize the first letter
+  }
+  else{
+    return ""
+  }
+}
+
+type UserI = {
+  user: string | number; // Adjust the type based on your data, it can be string or ObjectId
+  isActive: boolean;
+  isAdd: boolean;
+};
+
+export const getUniqueUsers = (participants: any[]): UserI[] => {
+  const userMap = new Map<string | number, UserI>();
+
+  participants.forEach((item: any) => {
+    const user = item.isAdd ? item?.user?.value : item?.user?._id;
+    if (!user) return; // Skip if no valid user
+
+    // If user already exists, update only if needed (e.g., if isActive is true)
+    if (!userMap.has(user)) {
+      userMap.set(user, {
+        user,
+        isActive: item.isActive || false,
+        isAdd: item.isAdd || false,
+      });
+    } else {
+      // If user exists, you can handle merging logic here (e.g., prioritize isActive)
+      const existing = userMap.get(user);
+      if (existing && !existing.isActive && item.isActive) {
+        userMap.set(user, {
+          user,
+          isActive: true,
+          isAdd: item.isAdd || existing.isAdd,
+        });
+      }
+    }
+  });
+
+  // Convert Map back to an array
+  return Array.from(userMap.values());
+};

@@ -65,9 +65,9 @@ const ViewCompany = observer(({ data, onClose }: any) => {
     setLoading(true);
 
     Promise.all([
-      getHolidays({ company: data._id }),
-      getWorkLocations({ company: data._id }),
-      getWorkTiming({ company: data._id }),
+      getHolidays({ company: data._id, policy : data?.policy }),
+      getWorkLocations({ company: data._id, policy : data?.policy }),
+      getWorkTiming({ company: data._id, policy : data?.policy }),
     ])
       .then(([holidaysData, locationsData, timingData]) => {
         setHolidays(holidaysData);
@@ -89,6 +89,7 @@ const ViewCompany = observer(({ data, onClose }: any) => {
     getWorkLocations,
     getWorkTiming,
     data._id,
+    data?.policy,
     openNotification,
   ]);
 

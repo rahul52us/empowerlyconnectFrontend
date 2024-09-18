@@ -6,9 +6,8 @@ import CustomInput from "../../CustomInput/CustomInput";
 import SubmitFormBtn from "../../Button/SubmitFormBtn";
 
 const validationSchema = Yup.object().shape({
-  user: Yup.string()
-    .required("Please select a user from the list")
-    .min(1, "Please select a user from the list"),
+  user: Yup.mixed()
+    .required("Please select a user from the list"),
   isActive: Yup.boolean(),
 });
 
@@ -29,7 +28,7 @@ const AddNewUserForm = observer(
               <Form>
                 <Flex gap={2} flexDirection={"column"}>
                   <CustomInput
-                    type="real-time-search"
+                    type="real-time-user-search"
                     name="user"
                     placeholder="Add New User"
                     label="Add New User"

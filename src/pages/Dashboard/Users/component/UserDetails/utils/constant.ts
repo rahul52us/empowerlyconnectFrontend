@@ -4,12 +4,16 @@
 import { transformPermissionsForForm } from "./function";
 
 export const defaultPermissions: any = {
+  adminAccess:{add : false},
+  dashboard: { view: false },
   user: { add: false, edit: false, delete: false, view: false },
-  trip: { add: false, edit: false, view: false, delete: false },
+  personalProfile : { edit: false, delete: false, view: true },
+  trip: { add: false, edit: false, view: true, delete: false },
   course: { add: false, edit: false, view: false, delete: false },
   videos: { add: false, edit: false, view: false, delete: false },
+  project: { add: false, edit: false, view: true, delete: false },
+  task: { add: false, edit: false, view: true, delete: false },
   managers: { view: false },
-  dashboard: { view: false },
 };
 
 export const employDropdownData: any = [
@@ -159,53 +163,23 @@ export const getUserInitialValues = (type: string, data: any) => {
       };
     }
     return {
-      workExperience: workExperience,
+      workExperience: workExperience
     };
-  } else if (type === "documents") {
-    let docs: any = {};
-    let documents = { ...data?.documents[0] };
-    if (documents.documents) {
-      const documentFields = Object.keys(documents.documents);
-      for (const fieldName of documentFields) {
-        docs[fieldName] = {
-          file: [
-            {
-              ...documents.documents[fieldName],
-              file: documents.documents[fieldName].url,
-            },
-          ],
-        };
-      }
-    }
+  }
+  else if (type === "documents") {
+    return {documents : {documents : data?.documents?.length ? data?.documents[0]?.documents ? data?.documents[0]?.documents?.map((it: any) => ({
+      ...it,
+      file: Object.entries(it.file || {}).length ? [it.file] : undefined,
+    })) : [] : [],deleteAttachments : []}}
 
-    return {
-      documents: Object.keys(docs).length
-        ? docs
-        : {
-            class10: {
-              file: null,
-              isDeleted: 0,
-              isAdd: 0,
-              validTill: "",
-              effectiveForm: "",
-            },
-            class12: {
-              file: null,
-              isDeleted: 0,
-              isAdd: 0,
-              validTill: "",
-              effectiveForm: "",
-            },
-            games: {
-              file: null,
-              isDeleted: 0,
-              isAdd: 0,
-              validTill: "",
-              effectiveForm: "",
-            },
-          },
-    };
-  } else if (type === "company-details") {
+  }
+  else if (type === "qualifications") {
+    return {qualifications : {qualifications : data?.qualifications?.length ? data?.qualifications[0]?.qualifications ? data?.qualifications[0]?.qualifications?.map((it: any) => ({
+      ...it,
+      file: Object.entries(it.file || {}).length ? [it.file] : undefined,
+    })) : [] : [],deleteAttachments : []}}
+  }
+   else if (type === "company-details") {
     let details: any = {};
     if (data) {
       details = data?.companyDetail?.length
