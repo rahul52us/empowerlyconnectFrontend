@@ -37,7 +37,8 @@ interface Timing {
   daysOfWeek: string[];
   isDelete?: boolean;
   isAdd?:boolean;
-  isEdit?:boolean
+  isEdit?:boolean;
+  index?:number
 }
 
 
@@ -71,13 +72,13 @@ const WorkTimingForm: React.FC = observer(() => {
     onOpen();
   };
 
-  const handleEditTiming = (timing: Timing) => {
-    setSelectedTiming({ ...timing, isEdit: true });
+  const handleEditTiming = (timing: Timing, index : number) => {
+    setSelectedTiming({ ...timing, index : index, isEdit: true });
     onOpen();
   };
 
-  const handleDeleteTiming = (timing: Timing) => {
-    setSelectedTiming({ ...timing, isDelete: true });
+  const handleDeleteTiming = (timing: Timing, index : number) => {
+    setSelectedTiming({ ...timing, index : index, isDelete: true });
     onOpen();
   };
 
@@ -173,13 +174,13 @@ const WorkTimingForm: React.FC = observer(() => {
               <Td>{timing.daysOfWeek.join(", ")}</Td>
               <Td>
                 <Flex gap={2}>
-                  <Button colorScheme="teal" onClick={() => handleEditTiming(timing)}>
+                  <Button colorScheme="teal" onClick={() => handleEditTiming(timing,index)}>
                     Edit
                   </Button>
                   <IconButton
                     aria-label="Remove timing"
                     icon={<MinusIcon />}
-                    onClick={() => handleDeleteTiming(timing)}
+                    onClick={() => handleDeleteTiming(timing, index)}
                     colorScheme="red"
                   />
                 </Flex>
