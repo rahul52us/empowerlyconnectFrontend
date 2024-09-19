@@ -18,7 +18,7 @@ const AddWorkLocation = observer(({ formValues, setFormValues, getAllRecords, po
   };
 
   const handleSubmit = ({ values, setSubmitting, resetForm }: any) => {
-    updateWorkLocation({ ...values, locationName : values.locationName?.trim(), ipAddress : values.ipAddress?.trim(), policy : policy })
+    updateWorkLocation({ ...values, locationName : values.locationName?.trim(), ipAddress : values.ipAddress?.trim(), isAdd : 1, policy : policy })
       .then((data: any) => {
         openNotification({
           title: "Create Successfully",

@@ -77,7 +77,7 @@ const WorkLocationDetails = observer(() => {
 
   const deleteRecord = (data : any) => {
     setFormValues(() => ({...formValues, loading : true}))
-    updateWorkLocation({ locationName : data.locationName?.trim(), delete : 1, _id : formValues?.data?._id, policy : getPolicy() })
+    updateWorkLocation({ locationName : data.locationName?.trim(), isDelete : 1, _id : formValues?.data?._id, policy : getPolicy() })
       .then((data: any) => {
         openNotification({
           title: "Deleted Successfully",

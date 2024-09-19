@@ -25,7 +25,7 @@ const EditWorkLocation = observer(
         _id : formValues?.data?._id,
         oldLocation: formValues?.data?.locationName,
         ipAddress: values?.ipAddress?.trim(),
-        edit: 1,
+        isEdit: 1,
         policy : policy
       })
         .then((data: any) => {
