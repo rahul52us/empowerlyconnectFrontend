@@ -18,12 +18,14 @@ import SearchTripAmount from "./component/SearchTripAmounts/SearchTripAmount";
 import TripWidgets from "../component/TripWidget/TripWidgets";
 
 const TripAdminDetails = observer(() => {
-  const {tripStore : {setOpenSearchTrip}} = store
+  const {
+    tripStore: { setOpenSearchTrip },
+  } = store;
   const [gridType, setGripType] = useState({ loading: true, type: "grid" });
   const [tripFormData, setTripFormData] = useState({
     open: false,
     type: "add",
-    data: null
+    data: null,
   });
   const showIcon = useBreakpointValue({ base: true, md: false });
 
@@ -62,22 +64,32 @@ const TripAdminDetails = observer(() => {
             colorScheme="teal"
           />
         ) : (
-          <Flex>
-          <Button onClick={() => setOpenSearchTrip({open : true, data : null})}>Search Trip Amount</Button>
-          <Button
-            leftIcon={<FaPlus />}
-            colorScheme="teal"
-            variant="solid"
-            size="lg"
-            _hover={{ bg: "teal.600" }}
-            _active={{ bg: "teal.700" }}
-            _focus={{ boxShadow: "outline" }}
-            onClick={() =>
-              setTripFormData({ open: true, type: "add", data: null })
-            }
-          >
-            CREATE TRIP
-          </Button>
+          <Flex columnGap={4}>
+            <Button
+              colorScheme="teal"
+              variant="solid"
+              size="lg"
+              _hover={{ bg: "teal.600" }}
+              _active={{ bg: "teal.700" }}
+              _focus={{ boxShadow: "outline" }}
+              onClick={() => setOpenSearchTrip({ open: true, data: null })}
+            >
+              Search Trip Amount
+            </Button>
+            <Button
+              leftIcon={<FaPlus />}
+              colorScheme="teal"
+              variant="solid"
+              size="lg"
+              _hover={{ bg: "teal.600" }}
+              _active={{ bg: "teal.700" }}
+              _focus={{ boxShadow: "outline" }}
+              onClick={() =>
+                setTripFormData({ open: true, type: "add", data: null })
+              }
+            >
+              CREATE TRIP
+            </Button>
           </Flex>
         )}
       </Flex>

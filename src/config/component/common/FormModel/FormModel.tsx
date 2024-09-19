@@ -63,7 +63,7 @@ function FormModel({
               />
             </Flex>
           )}
-          <ModalBody p={-5}>{children}</ModalBody>
+          <ModalBody p={-5} {...rest}>{children}</ModalBody>
           {footer && (
             <>
               <Divider />
