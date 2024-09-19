@@ -14,6 +14,7 @@ export interface TravelDetails {
     locality?: string;
     durationOfStay?: number;
     accommodationCost?: number;
+    attach_files?:any[]
   }
 
 export interface tripTypeI {

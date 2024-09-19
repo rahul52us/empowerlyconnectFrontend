@@ -77,7 +77,7 @@ const HolidaysDetailTable = observer(() => {
 
   const deleteRecord = () => {
     setFormValues(() => ({ ...formValues, loading: true }));
-    updateHoliday({ _id:formValues?.data?._id, isDelete: 1, policy : getPolicy() })
+    updateHoliday({ _id:formValues?.data?._id,title : formValues?.data?.title, isDelete: 1, policy : getPolicy() })
       .then((data: any) => {
         openNotification({
           title: "Deleted Successfully",

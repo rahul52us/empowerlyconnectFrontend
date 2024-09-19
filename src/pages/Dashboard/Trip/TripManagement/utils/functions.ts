@@ -110,10 +110,10 @@ export const generateEditInitialValues = (data : any) => {
   const updatedData = {
     ...rest,
     deleteAttachments:[],
-    attach_files: data?.attach_files?.map((it: any) => ({
+    attach_files: data?.attach_files ? data?.attach_files?.map((it: any) => ({
       ...it,
       file: it.file ? [it.file] : undefined,
-    })),
+    })) : [],
     type: tripTypes.find((it : any) => it.value === data.type) || tripTypes[0],
     travelDetails: updatedTravelDetails,
     additionalExpenses: updatedAdditionalExpense,
