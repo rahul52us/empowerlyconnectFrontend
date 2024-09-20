@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   Box,
   Button,
@@ -42,21 +42,20 @@ interface Timing {
 }
 
 
-const WorkTimingForm: React.FC = observer(() => {
+const WorkTimingForm = observer(({selectedPolicy, selectCompany} : any) => {
   const {
-    company: { updateWorkTiming, getWorkTiming },
+    company: { updateWorkTiming, getWorkTiming, workTiming },
     auth: { openNotification, getPolicy },
   } = store;
-
-  const [timings, setTimings] = useState<Timing[]>([]);
+  const selectedCompany = useState(selectCompany || store.auth.getCurrentCompany())[0]
+  const policy = useState(selectedPolicy || getPolicy())[0]
   const [deleteLoading,setDeleteLoading] = useState(false)
   const [selectedTiming, setSelectedTiming] = useState<Timing | null>(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
-    getWorkTiming({ policy: getPolicy() })
-      .then((data: any) => {
-        setTimings(data?.data || []);
+    getWorkTiming({ policy: policy, company : selectedCompany })
+      .then(() => {
       })
       .catch((err: any) => {
         openNotification({
@@ -90,15 +89,14 @@ const WorkTimingForm: React.FC = observer(() => {
       daysOfWeek: values.daysOfWeek,
     };
 
-    updateWorkTiming({ ...updatedTiming, policy: getPolicy() })
+    updateWorkTiming({ ...updatedTiming, policy, company : selectedCompany })
       .then((data: any) => {
         openNotification({
           title: "Updated Successfully",
           message: data?.message,
           type: "success",
         });
-        getWorkTiming({ policy: getPolicy() })
-          .then((data: any) => setTimings(data?.data || []))
+        getWorkTiming({ policy, company : selectedCompany })
           .catch((err: any) => {
             openNotification({
               type: "error",
@@ -121,15 +119,15 @@ const WorkTimingForm: React.FC = observer(() => {
   const handleConfirmDelete = () => {
     if (!selectedTiming) return;
     setDeleteLoading(true)
-    updateWorkTiming({ ...selectedTiming, isDelete: true, policy: getPolicy() })
+    updateWorkTiming({ ...selectedTiming, isDelete: true, policy, company : selectedCompany })
       .then((data: any) => {
         openNotification({
           title: "Deleted Successfully",
           message: data?.message,
           type: "success",
         });
-        getWorkTiming({ policy: getPolicy() })
-          .then((data: any) => setTimings(data?.data || []))
+        getWorkTiming({ policy: policy })
+          .then(() => {})
           .catch((err: any) => {
             openNotification({
               type: "error",
@@ -167,7 +165,7 @@ const WorkTimingForm: React.FC = observer(() => {
           </Tr>
         </Thead>
         <Tbody>
-          {timings.map((timing, index) => (
+          {workTiming.data.map((timing : any, index) => (
             <Tr key={index}>
               <Td>{timing.startTime}</Td>
               <Td>{timing.endTime}</Td>

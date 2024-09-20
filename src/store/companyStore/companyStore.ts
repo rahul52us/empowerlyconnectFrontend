@@ -44,6 +44,7 @@ class CompanyStore {
       getHolidays: action,
       getWorkLocations:action,
       getWorkTiming:action,
+      getPolicies:action,
       updateHoliday: action,
       updateClass: action,
       updateWorkTiming:action,
@@ -84,7 +85,7 @@ class CompanyStore {
 
   updateHoliday = async (sendData: any) => {
     try {
-      const { data } = await axios.put("/company/policy/holidays", {...sendData,company:store.auth.getCurrentCompany()});
+      const { data } = await axios.put("/company/policy/holidays", {company:store.auth.getCurrentCompany(),...sendData,});
       return data;
     } catch (err: any) {
       return Promise.reject(err?.response || err);
@@ -93,7 +94,7 @@ class CompanyStore {
 
   updateHolidayByExcel = async (sendData: any) => {
     try {
-      const { data } = await axios.put("/company/policy/holidays/excel", {...sendData,company:store.auth.getCurrentCompany()});
+      const { data } = await axios.put("/company/policy/holidays/excel", {company:store.auth.getCurrentCompany(),...sendData});
       return data;
     } catch (err: any) {
       return Promise.reject(err?.response || err);
@@ -102,7 +103,7 @@ class CompanyStore {
 
   updateWorkLocationsByExcel = async (sendData: any) => {
     try {
-      const { data } = await axios.put("/company/policy/workLocations/excel", {...sendData,company:store.auth.getCurrentCompany()});
+      const { data } = await axios.put("/company/policy/workLocations/excel", {company:store.auth.getCurrentCompany(),...sendData});
       return data;
     } catch (err: any) {
       return Promise.reject(err?.response || err);
@@ -111,7 +112,7 @@ class CompanyStore {
 
   updateWorkTiming = async (sendData: any) => {
     try {
-      const { data } = await axios.put("/company/policy/workTiming", {...sendData,company:store.auth.getCurrentCompany()});
+      const { data } = await axios.put("/company/policy/workTiming", {company:store.auth.getCurrentCompany(),...sendData});
       return data;
     } catch (err: any) {
       return Promise.reject(err?.response || err);
@@ -120,7 +121,7 @@ class CompanyStore {
 
   updateWorkLocation = async (sendData: any) => {
     try {
-      const { data } = await axios.put("/company/policy/workLocation", {...sendData,company:store.auth.getCurrentCompany()});
+      const { data } = await axios.put("/company/policy/workLocation", {company:store.auth.getCurrentCompany(),...sendData});
       return data;
     } catch (err: any) {
       return Promise.reject(err?.response || err);
@@ -140,10 +141,7 @@ class CompanyStore {
     try {
       this.holidays.loading = true
       this.holidays.hasFetch = true
-      const { data } = await axios.get("/company/policy/holidays", {params : {...sendData, company:sendData.company || store.auth.getCurrentCompany()}});
-      if(sendData.company){
-        return data.data
-      }
+      const { data } = await axios.get("/company/policy/holidays", {params : {company:store.auth.getCurrentCompany(),...sendData}});
       this.holidays.data = data.data || [];
       this.holidays.totalPages = data.data?.totalPages || 0
       return data;
@@ -173,7 +171,6 @@ class CompanyStore {
         return data;
 
     } catch (err: any) {
-        console.error('Error fetching work locations:', err?.response || err);
         this.workLocations.hasFetch = false;
         return Promise.reject(err?.response || err);
     } finally {
@@ -185,10 +182,7 @@ class CompanyStore {
 getWorkTiming = async (sendData : any) => {
   try {
     this.workTiming.loading = true
-    const { data } = await axios.get("/company/policy/workTiming", {params :  {...sendData,company:sendData.company || store.auth.getCurrentCompany()}});
-    if(sendData.company){
-      return data.data
-    }
+    const { data } = await axios.get("/company/policy/workTiming", {params :  {company: store.auth.getCurrentCompany(),...sendData}});
     this.workTiming.data = data.data || [];
     return data;
   } catch (err: any) {
@@ -211,6 +205,15 @@ getCompanies = async (sendData : any) => {
 };
 }
 
+getPolicies = async (sendData : any) => {
+  try {
+    const { data } = await axios.get("/company/policies", {params :  {company:store.auth.getCurrentCompany(),...sendData}});
+    return data.data || [];
+  } catch (err: any) {
+    return Promise.reject(err?.response || err);
+  } finally {
+};
+}
 }
 
 export default CompanyStore;

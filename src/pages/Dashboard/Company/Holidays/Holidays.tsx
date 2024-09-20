@@ -11,8 +11,14 @@ import { Button, Flex, Input } from "@chakra-ui/react";
 import { readFileAsBase64 } from "../../../../config/constant/function";
 import { employDropdownData } from "../../Users/component/UserDetails/utils/constant";
 
-const HolidaysDetailTable = observer(() => {
+const HolidaysDetailTable = observer(({selectedPolicy, selectCompany} : any) => {
+  const {
+    company: { getHolidays, holidays, updateHoliday, updateHolidayByExcel },
+    auth: { openNotification, getPolicy },
+  } = store;
   const inputRef = useRef<any>(null);
+  const selectedCompany = useState(selectCompany || store.auth.getCurrentCompany())[0]
+  const policy = useState(selectedPolicy || getPolicy())[0]
   const [uploadLoading, setUploadLoading] = useState(false);
   const dropdowns = useState(employDropdownData)[0];
   const [selectedOptions, setSelectedOptions] = useState({});
@@ -27,13 +33,9 @@ const HolidaysDetailTable = observer(() => {
     data: null,
   });
 
-  const {
-    company: { getHolidays, holidays, updateHoliday, updateHolidayByExcel },
-    auth: { openNotification, getPolicy },
-  } = store;
 
   useEffect(() => {
-    getHolidays({policy : getPolicy()})
+    getHolidays({policy : policy, company : selectedCompany})
       .then(() => {})
       .catch((err: any) => {
         openNotification({
@@ -46,7 +48,7 @@ const HolidaysDetailTable = observer(() => {
 
   // function to get the data from backend on the page, limit, date and others
   const applyGetAllRecords = () => {
-    const query: any = {policy : getPolicy()};
+    const query: any = {policy : policy, company : selectedCompany};
     getHolidays(query)
       .then(() => {})
       .catch((err: any) => {
@@ -77,7 +79,7 @@ const HolidaysDetailTable = observer(() => {
 
   const deleteRecord = () => {
     setFormValues(() => ({ ...formValues, loading: true }));
-    updateHoliday({ _id:formValues?.data?._id,title : formValues?.data?.title, isDelete: 1, policy : getPolicy() })
+    updateHoliday({ _id:formValues?.data?._id,title : formValues?.data?.title, isDelete: 1, policy : policy, company : selectedCompany })
       .then((data: any) => {
         openNotification({
           title: "Deleted Successfully",
@@ -171,7 +173,7 @@ const HolidaysDetailTable = observer(() => {
     try {
       setUploadLoading(true);
       const data = await readFileAsBase64(file);
-      updateHolidayByExcel({ file: data })
+      updateHolidayByExcel({ file: data, policy : policy, company : selectedCompany })
         .then((response) => {
           if (response.status === "success") {
             resetTableData();
@@ -319,16 +321,22 @@ const HolidaysDetailTable = observer(() => {
         formValues={formValues}
         setFormValues={setFormValues}
         getAllRecords={applyGetAllRecords}
+        policy={policy}
+        selectedCompany={selectedCompany}
       />
       <EditHoliday
         formValues={formValues}
         setFormValues={setFormValues}
         getAllRecords={applyGetAllRecords}
+        policy={policy}
+        selectedCompany={selectedCompany}
       />
       <DeleteHoliday
         formValues={formValues}
         setFormValues={setFormValues}
         deleteRecord={deleteRecord}
+        policy={policy}
+        selectedCompany={selectedCompany}
       />
     </>
   );

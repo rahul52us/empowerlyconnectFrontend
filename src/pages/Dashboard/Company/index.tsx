@@ -107,7 +107,7 @@ const Company = observer(() => {
           <WorkLocationDetails />
         </GridItem>
       </Grid>
-      <WorkTiming  />
+      <WorkTiming />
     </div>
   );
 });

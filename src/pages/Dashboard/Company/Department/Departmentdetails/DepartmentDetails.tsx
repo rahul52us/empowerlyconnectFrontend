@@ -121,11 +121,29 @@ const DepartmentDetails = ({ selectedCategory, setSelectedCategory }: any) => {
     {
       headerName: "Code",
       key: "code",
+      props: {
+        column: { textAlign: "center" },
+        row: {
+          minW: 120,
+          textAlign: "center",
+          fontWeight: 500,
+          textDecoration: "none",
+        },
+      },
     },
     {
       headerName: "Created At",
       type: "date",
       key: "createdAt",
+      props: {
+        column: { textAlign: "center" },
+        row: {
+          minW: 120,
+          textAlign: "center",
+          fontWeight: 500,
+          textDecoration: "none",
+        },
+      },
     },
     {
       headerName: "Actions",
@@ -144,10 +162,11 @@ const DepartmentDetails = ({ selectedCategory, setSelectedCategory }: any) => {
         loading={departments.loading}
         title={`${selectedCategory.data?.title} (${selectedCategory?.data?.code})`}
         open={selectedCategory.open}
+        isCentered
         close={() => setSelectedCategory({ open: false, data: null, id: null })}
       >
         <CustomTable
-                  cells={true}
+          cells={true}
           columns={columns}
           data={data}
           loading={loading}
@@ -160,12 +179,12 @@ const DepartmentDetails = ({ selectedCategory, setSelectedCategory }: any) => {
             resetData: {
               show: true,
               text: "Reset Data",
-              function: () => applyGetAllRecords({reset : true}),
+              function: () => applyGetAllRecords({ reset: true }),
             },
             actionBtn: {
               addKey: {
                 showAddButton: true,
-                function: (dt : any) => {
+                function: (dt: any) => {
                   setOpenModel({
                     type: "add",
                     data: dt,
@@ -175,7 +194,7 @@ const DepartmentDetails = ({ selectedCategory, setSelectedCategory }: any) => {
               },
               editKey: {
                 showEditButton: true,
-                function: (dt : any) => {
+                function: (dt: any) => {
                   setOpenModel({
                     type: "edit",
                     data: dt,
@@ -198,19 +217,33 @@ const DepartmentDetails = ({ selectedCategory, setSelectedCategory }: any) => {
               show: true,
               onClick: handleChangePage,
               currentPage: currentPage,
-              totalPages:totalPages
+              totalPages: totalPages,
             },
           }}
         />
       </FormModel>
       {openModel?.open && openModel?.type === "delete" && (
-        <DeleteDepartment openModel={openModel} setOpenModel={setOpenModel} deleteRecord={deleteRecord}/>
+        <DeleteDepartment
+          openModel={openModel}
+          setOpenModel={setOpenModel}
+          deleteRecord={deleteRecord}
+        />
       )}
       {openModel?.open && openModel?.type === "add" && (
-        <AddDepartment openModel={openModel} setOpenModel={setOpenModel} getAllRecords={applyGetAllRecords} selectedCategory={selectedCategory} />
+        <AddDepartment
+          openModel={openModel}
+          setOpenModel={setOpenModel}
+          getAllRecords={applyGetAllRecords}
+          selectedCategory={selectedCategory}
+        />
       )}
       {openModel?.open && openModel?.type === "edit" && (
-        <EditDepartment openModel={openModel} setOpenModel={setOpenModel} getAllRecords={applyGetAllRecords} selectedCategory={selectedCategory}/>
+        <EditDepartment
+          openModel={openModel}
+          setOpenModel={setOpenModel}
+          getAllRecords={applyGetAllRecords}
+          selectedCategory={selectedCategory}
+        />
       )}
     </>
   );

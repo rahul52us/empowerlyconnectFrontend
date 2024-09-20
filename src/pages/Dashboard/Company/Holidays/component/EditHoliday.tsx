@@ -5,10 +5,10 @@ import { useState } from "react";
 import store from "../../../../../store/store";
 import { getStatusType } from "../../../../../config/constant/statusCode";
 
-const EditHoliday = observer(({ formValues, setFormValues, getAllRecords }: any) => {
+const EditHoliday = observer(({ formValues, setFormValues, getAllRecords,policy, selectedCompany }: any) => {
   const {
     company: { updateHoliday },
-    auth: { openNotification, getPolicy},
+    auth: { openNotification },
   } = store;
   const [showError, setShowError] = useState(false);
 
@@ -18,7 +18,7 @@ const EditHoliday = observer(({ formValues, setFormValues, getAllRecords }: any)
   };
 
   const handleSubmit = ({ values, setSubmitting, resetForm }: any) => {
-    updateHoliday({ ...values, title : values?.title?.trim(), _id : formValues.data?._id, oldTitle : formValues?.data?.title, isEdit : 1, policy : getPolicy()  })
+    updateHoliday({ ...values, title : values?.title?.trim(), _id : formValues.data?._id, oldTitle : formValues?.data?.title, isEdit : 1, policy, company : selectedCompany })
       .then((data: any) => {
         openNotification({
           title: "Updated Successfully",

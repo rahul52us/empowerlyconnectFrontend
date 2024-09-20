@@ -8,6 +8,7 @@ import { tablePageLimit } from "../../../../../config/constant/variable";
 import CustomTable from "../../../../../config/component/CustomTable/CustomTable";
 import store from "../../../../../store/store";
 import { employDropdownData } from "../../../Users/component/UserDetails/utils/constant";
+import { Box } from "@chakra-ui/react";
 
 const DepartmentCategories = observer(() => {
   const [searchValue, setSearchValue] = useState("");
@@ -112,10 +113,10 @@ const DepartmentCategories = observer(() => {
         });
       },
       props: {
-        column: { textAlign: "left" },
+        column: { textAlign: "center" },
         row: {
           minW: 120,
-          textAlign: "left",
+          textAlign: "center",
           fontWeight: 500,
           textDecoration: "none",
         },
@@ -142,8 +143,8 @@ const DepartmentCategories = observer(() => {
       key: "table-actions",
       type: "table-actions",
       props: {
-        row: { minW: 180, textAlign: "left" },
-        column: { textAlign: "left" },
+        row: { minW: 180, textAlign: "center" },
+        column: { textAlign: "center" },
       },
     },
   ];
@@ -180,7 +181,7 @@ const DepartmentCategories = observer(() => {
   };
 
   return (
-    <>
+    <Box>
       <CustomTable
         actions={{
           applyFilter: {
@@ -267,7 +268,7 @@ const DepartmentCategories = observer(() => {
         data={departmentCategories.data}
         columns={categoriesColumns}
         loading={departmentCategories.loading}
-        serial={{ show: true, text: "S.No.", width: "10px" }}
+        serial={{ show: false, text: "S.No.", width: "10px" }}
       />
       {selectedCategory.open && (
         <DepartmentDetails
@@ -284,7 +285,7 @@ const DepartmentCategories = observer(() => {
       {openModel?.open && openModel?.type === "edit" && (
         <EditCategory openModel={openModel} setOpenModel={setOpenModel} getAllRecords={applyGetRecords}/>
       )}
-    </>
+    </Box>
   );
 });
 
