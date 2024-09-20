@@ -8,6 +8,11 @@ class CompanyStore {
     totalPages : 0
   }
 
+  companyCount = {
+    data : 0,
+    loading : false
+  }
+
   holidays = {
     data: [],
     loading: false,
@@ -37,9 +42,11 @@ class CompanyStore {
       openTaskDrawer: observable,
       holidays: observable,
       workLocations:observable,
+      companyCount:observable,
       workTiming:observable,
       companies:observable,
       createSingleCompany:action,
+      getCompanyCount:action,
       getCompanies:action,
       getHolidays: action,
       getWorkLocations:action,
@@ -55,6 +62,19 @@ class CompanyStore {
     });
   }
 
+  getCompanyCount = async (sendData: any) => {
+    try {
+      this.companyCount.loading = true
+      const { data } = await axios.get("/company/count", {params : { company:store.auth.getCurrentCompany(),...sendData}});
+      this.companyCount.data = data.data
+      return data;
+    } catch (err: any) {
+      return Promise.reject(err?.response || err);
+    }
+    finally {
+      this.companyCount.loading = false
+    }
+  };
 
   createSingleCompany = async (value: any) => {
     try {
