@@ -5,7 +5,7 @@ import { useState } from "react";
 import store from "../../../../../store/store";
 import { getStatusType } from "../../../../../config/constant/statusCode";
 
-const AddWorkLocation = observer(({ formValues, setFormValues, getAllRecords, policy }: any) => {
+const AddWorkLocation = observer(({ formValues, setFormValues, getAllRecords, policy, company }: any) => {
   const {
     company: { updateWorkLocation },
     auth: { openNotification },
@@ -18,7 +18,7 @@ const AddWorkLocation = observer(({ formValues, setFormValues, getAllRecords, po
   };
 
   const handleSubmit = ({ values, setSubmitting, resetForm }: any) => {
-    updateWorkLocation({ ...values, locationName : values.locationName?.trim(), ipAddress : values.ipAddress?.trim(), isAdd : 1, policy : policy })
+    updateWorkLocation({ ...values, locationName : values.locationName?.trim(), ipAddress : values.ipAddress?.trim(), isAdd : 1, policy , company })
       .then((data: any) => {
         openNotification({
           title: "Create Successfully",

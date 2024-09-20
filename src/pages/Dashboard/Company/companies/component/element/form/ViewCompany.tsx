@@ -46,11 +46,10 @@ import PolicyCompany from "./CompanyPolicies";
 
 const ViewCompany = observer(({ data, onClose }: any) => {
   const [editDrawer, setEditDrawer] = useState({ open: false, data: data });
-  const [workLocations, setWorkLocations] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const {
-    company: { getHolidays, getWorkLocations, getWorkTiming, holidays, workTiming },
+    company: { getHolidays, getWorkLocations, getWorkTiming, holidays, workTiming, workLocations },
     auth: { openNotification },
   } = store;
 
@@ -71,9 +70,7 @@ const ViewCompany = observer(({ data, onClose }: any) => {
       getWorkLocations({ company: data._id, policy: data?.policy }),
       getWorkTiming({ company: data._id, policy: data?.policy }),
     ])
-      .then(([_, locationsData, ss]) => {
-        console.log(ss)
-        setWorkLocations(locationsData);
+      .then(() => {
       })
       .catch((err: any) => {
         openNotification({
@@ -181,7 +178,7 @@ const ViewCompany = observer(({ data, onClose }: any) => {
                         <Flex align="center" justify="center" height="100%">
                           <Spinner size="xl" color="teal.500" />
                         </Flex>
-                      ) : holidays?.data ? (
+                      ) : holidays?.data?.length ? (
                         <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
                           {holidays.data.map((holiday: any) => (
                             <Box
@@ -283,8 +280,8 @@ const ViewCompany = observer(({ data, onClose }: any) => {
                         </Flex>
                       ) : (
                         <List spacing={2}>
-                          {workLocations?.length ? (
-                            workLocations.map((location: any) => (
+                          {workLocations?.data?.length ? (
+                            workLocations.data?.map((location: any) => (
                               <ListItem
                                 key={location._id}
                                 p={2}

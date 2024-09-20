@@ -11,8 +11,14 @@ import { Button, Flex, Input } from "@chakra-ui/react";
 import { readFileAsBase64 } from "../../../../config/constant/function";
 import { employDropdownData } from "../../Users/component/UserDetails/utils/constant";
 
-const WorkLocationDetails = observer(() => {
+const WorkLocationDetails = observer(({selectedPolicy, selectCompany} : any) => {
+  const {
+    company: { getWorkLocations, workLocations, updateWorkLocation, updateWorkLocationsByExcel },
+    auth: { openNotification, getPolicy },
+  } = store;
   const inputRef = useRef<any>(null);
+  const policy = useState(selectedPolicy || getPolicy())[0]
+  const selectedCompany = useState(selectCompany || store.auth.getCurrentCompany())[0]
   const [uploadLoading, setUploadLoading] = useState(false);
   const dropdowns = useState(employDropdownData)[0];
   const [selectedOptions, setSelectedOptions] = useState({});
@@ -27,13 +33,8 @@ const WorkLocationDetails = observer(() => {
     data : null
   });
 
-  const {
-    company: { getWorkLocations, workLocations, updateWorkLocation, updateWorkLocationsByExcel },
-    auth: { openNotification, getPolicy },
-  } = store;
-
   useEffect(() => {
-    getWorkLocations({policy :  getPolicy() })
+    getWorkLocations({policy, company : selectedCompany })
       .then(() => {})
       .catch((err: any) => {
         openNotification({
@@ -46,7 +47,7 @@ const WorkLocationDetails = observer(() => {
 
   // function to get the data from backend on the page, limit, date and others
   const applyGetAllRecords = () => {
-    const query: any = {policy : getPolicy()};
+    const query: any = {policy, company : selectedCompany};
     getWorkLocations(query)
       .then(() => {})
       .catch((err: any) => {
@@ -77,7 +78,7 @@ const WorkLocationDetails = observer(() => {
 
   const deleteRecord = (data : any) => {
     setFormValues(() => ({...formValues, loading : true}))
-    updateWorkLocation({ locationName : data.locationName?.trim(), isDelete : 1, _id : formValues?.data?._id, policy : getPolicy() })
+    updateWorkLocation({ locationName : data.locationName?.trim(), isDelete : 1, _id : formValues?.data?._id, policy, company : selectedCompany })
       .then((data: any) => {
         openNotification({
           title: "Deleted Successfully",
@@ -135,10 +136,8 @@ const WorkLocationDetails = observer(() => {
     try {
       setUploadLoading(true);
       const data = await readFileAsBase64(file);
-      updateWorkLocationsByExcel({ file: data })
+      updateWorkLocationsByExcel({ file: data, policy : policy, company : selectedCompany })
         .then((response) => {
-
-          console.log('the response are', response)
 
           if (response.status === "success") {
             resetTableData();
@@ -269,9 +268,9 @@ const WorkLocationDetails = observer(() => {
         loading={workLocations.loading}
         serial={{ show: false, text: "S.No.", width: "10px" }}
       />
-      <AddWorkLocation formValues={formValues} setFormValues={setFormValues} getAllRecords={applyGetAllRecords} policy={getPolicy()}/>
-      <EditWorkLocation formValues={formValues} setFormValues={setFormValues} getAllRecords={applyGetAllRecords} policy={getPolicy()}/>
-      <DeleteWorkLocation formValues={formValues} setFormValues={setFormValues} deleteRecord={deleteRecord} policy={getPolicy()}/>
+      <AddWorkLocation formValues={formValues} setFormValues={setFormValues} getAllRecords={applyGetAllRecords} policy={policy} company={selectedCompany}/>
+      <EditWorkLocation formValues={formValues} setFormValues={setFormValues} getAllRecords={applyGetAllRecords} policy={policy} company={selectedCompany}/>
+      <DeleteWorkLocation formValues={formValues} setFormValues={setFormValues} deleteRecord={deleteRecord} policy={policy} company={selectedCompany}/>
     </>
   );
 });

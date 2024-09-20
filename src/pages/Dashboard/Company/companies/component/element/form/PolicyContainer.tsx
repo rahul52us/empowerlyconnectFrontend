@@ -13,7 +13,6 @@ import WorkLocationDetails from "../../../../workLocation/WorkLocation";
 import WorkTiming from "../../../../WorkTiming/WorkTiming";
 
 const PolicyContainer = observer(({ selectedPolicy }: any) => {
-  console.log(selectedPolicy);
 
   return (
     <Box width="100%">
@@ -46,7 +45,8 @@ const PolicyContainer = observer(({ selectedPolicy }: any) => {
 
           {/* Work Locations Tab */}
           <TabPanel>
-            <WorkLocationDetails />
+            <WorkLocationDetails selectedPolicy={selectedPolicy?.data?._id}
+              selectCompany={selectedPolicy?.data?.company}/>
           </TabPanel>
 
           {/* Other Tab */}

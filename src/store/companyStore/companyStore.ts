@@ -159,12 +159,8 @@ class CompanyStore {
         this.workLocations.hasFetch = true;
 
         const { data } = await axios.get("/company/policy/workLocations", {
-            params: { ...sendData, company: sendData.company || store.auth.getCurrentCompany() }
+            params: { company: sendData.company || store.auth.getCurrentCompany(),...sendData }
         });
-
-        if (sendData.company) {
-            return data.data;
-        }
 
         this.workLocations.data = data.data || [];
         this.workLocations.totalPages = data.data?.totalPages || 0;
