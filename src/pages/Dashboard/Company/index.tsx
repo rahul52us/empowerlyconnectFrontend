@@ -4,9 +4,6 @@ import { companyBreadCrumb } from "../utils/breadcrumb.constant";
 import WidgetCard from "../../../config/component/WigdetCard/WidgetCard";
 import { Grid, GridItem } from "@chakra-ui/react";
 import { dashboard } from "../../../config/constant/routes";
-import WorkTiming from "./WorkTiming/WorkTiming";
-import WorkLocationDetails from "./workLocation/WorkLocation";
-import HolidaysDetailTable from "./Holidays/Holidays";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import store from "../../../store/store";
@@ -18,9 +15,6 @@ const Company = observer(() => {
     auth: { openNotification },
   } = store;
   const navigate = useNavigate();
-  // const [workTimingForm, setworkTimingForm] = useState({
-  //   open: false,
-  // });
 
   const cards: any = [
     {
@@ -99,15 +93,6 @@ const Company = observer(() => {
           <CompaniesTable />
         </GridItem>
       </Grid>
-      <Grid gridTemplateColumns={{ md: "1fr", xl: "1fr 1fr" }} gap={4} mt={5}>
-        <GridItem overflowX="auto">
-          <HolidaysDetailTable />
-        </GridItem>
-        <GridItem overflowX="auto">
-          <WorkLocationDetails />
-        </GridItem>
-      </Grid>
-      <WorkTiming />
     </div>
   );
 });
