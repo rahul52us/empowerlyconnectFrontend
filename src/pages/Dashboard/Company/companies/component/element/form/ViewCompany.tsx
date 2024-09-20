@@ -49,7 +49,14 @@ const ViewCompany = observer(({ data, onClose }: any) => {
   const [loading, setLoading] = useState(true);
 
   const {
-    company: { getHolidays, getWorkLocations, getWorkTiming, holidays, workTiming, workLocations },
+    company: {
+      getHolidays,
+      getWorkLocations,
+      getWorkTiming,
+      holidays,
+      workTiming,
+      workLocations,
+    },
     auth: { openNotification },
   } = store;
 
@@ -70,8 +77,7 @@ const ViewCompany = observer(({ data, onClose }: any) => {
       getWorkLocations({ company: data._id, policy: data?.policy }),
       getWorkTiming({ company: data._id, policy: data?.policy }),
     ])
-      .then(() => {
-      })
+      .then(() => {})
       .catch((err: any) => {
         openNotification({
           type: getStatusType(err.status),
@@ -180,9 +186,9 @@ const ViewCompany = observer(({ data, onClose }: any) => {
                         </Flex>
                       ) : holidays?.data?.length ? (
                         <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
-                          {holidays.data.map((holiday: any) => (
+                          {holidays.data.map((holiday: any, index : number) => (
                             <Box
-                              key={holiday._id}
+                              key={index}
                               p={4}
                               shadow="md"
                               borderWidth="1px"

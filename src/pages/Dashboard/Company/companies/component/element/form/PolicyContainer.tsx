@@ -1,18 +1,12 @@
 import { observer } from "mobx-react-lite";
-import {
-  Tabs,
-  TabList,
-  TabPanels,
-  Tab,
-  TabPanel,
-  Box,
-  Text,
-} from "@chakra-ui/react";
+import { Tabs, TabList, TabPanels, Tab, TabPanel, Box } from "@chakra-ui/react";
 import HolidaysDetailTable from "../../../../Holidays/Holidays";
 import WorkLocationDetails from "../../../../workLocation/WorkLocation";
 import WorkTiming from "../../../../WorkTiming/WorkTiming";
+import CompanyOtherPolicyData from "../../../../CompanyOtherPolicyData/CompanyOtherPolicyData";
 
 const PolicyContainer = observer(({ selectedPolicy }: any) => {
+  console.log("the selected policy are", selectedPolicy);
 
   return (
     <Box width="100%">
@@ -39,19 +33,32 @@ const PolicyContainer = observer(({ selectedPolicy }: any) => {
 
           {/* Work Timings Tab */}
           <TabPanel>
-            <WorkTiming selectedPolicy={selectedPolicy?.data?._id}
-              selectCompany={selectedPolicy?.data?.company}/>
+            <WorkTiming
+              selectedPolicy={selectedPolicy?.data?._id}
+              selectCompany={selectedPolicy?.data?.company}
+            />
           </TabPanel>
 
           {/* Work Locations Tab */}
           <TabPanel>
-            <WorkLocationDetails selectedPolicy={selectedPolicy?.data?._id}
-              selectCompany={selectedPolicy?.data?.company}/>
+            <WorkLocationDetails
+              selectedPolicy={selectedPolicy?.data?._id}
+              selectCompany={selectedPolicy?.data?.company}
+            />
           </TabPanel>
 
           {/* Other Tab */}
           <TabPanel>
-            <Text>Dummy Other content goes here.</Text>
+            <CompanyOtherPolicyData
+              selectedPolicy={selectedPolicy?.data?._id}
+              selectCompany={selectedPolicy?.data?.company}
+              initialValues={{
+                gracePeriodMinutesEarly:
+                  selectedPolicy?.data?.gracePeriodMinutesEarly,
+                gracePeriodMinutesLate:
+                  selectedPolicy?.data?.gracePeriodMinutesLate,
+              }}
+            />
           </TabPanel>
         </TabPanels>
       </Tabs>

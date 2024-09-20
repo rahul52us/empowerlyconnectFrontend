@@ -52,6 +52,7 @@ class CompanyStore {
       getWorkLocations:action,
       getWorkTiming:action,
       getPolicies:action,
+      updatePolicy:action,
       updateHoliday: action,
       updateClass: action,
       updateWorkTiming:action,
@@ -102,6 +103,14 @@ class CompanyStore {
     }
   };
 
+  updatePolicy = async (sendData: any) => {
+    try {
+      const { data } = await axios.put("/company/policy", {company:store.auth.getCurrentCompany(),...sendData,});
+      return data;
+    } catch (err: any) {
+      return Promise.reject(err?.response || err);
+    }
+  };
 
   updateHoliday = async (sendData: any) => {
     try {
