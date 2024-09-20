@@ -158,11 +158,11 @@ const ProjectMainIndex = observer(({ userId }: any) => {
         )}
       </Flex>
       {projects.data.length === 0 && projects.loading === false ? (
-        <NotFoundData
-          onClick={() => {}}
-          btnText="CREATE PROJECT"
-          title="No projects found"
-          subTitle="Start by creating a new project to get started."
+      <NotFoundData
+        onClick={() => setOpenProjectDrawer("create")}
+        btnText="CREATE PROJECT"
+        title="No projects found"
+        subTitle="Start by creating a new project to get started."
         />
       ) : (
         <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6} mb={8}>
@@ -188,7 +188,7 @@ const ProjectMainIndex = observer(({ userId }: any) => {
         </SimpleGrid>
       )}
 
-      <Flex justifyContent="center" mt={8}>
+      <Flex justifyContent="center" mt={8} display={projects.data.length !== 0 ? undefined : 'none'}>
         <MainPagePagination
           currentPage={currentPage}
           onPageChange={handlePageChange}

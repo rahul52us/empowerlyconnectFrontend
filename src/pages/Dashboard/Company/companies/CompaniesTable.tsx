@@ -4,7 +4,6 @@ import store from "../../../../store/store";
 import CustomTable from "../../../../config/component/CustomTable/CustomTable";
 import { getStatusType } from "../../../../config/constant/statusCode";
 import { employDropdownData } from "../../Users/component/UserDetails/utils/constant";
-import { toJS } from "mobx";
 import ViewCompany from "./component/element/form/ViewCompany";
 import CustomDrawer from "../../../../config/component/Drawer/CustomDrawer";
 import AddCompany from "./component/element/form/AddCompany";
@@ -83,8 +82,6 @@ const HolidaysDetailTable = observer(() => {
     setSelectedOptions({});
     applyGetAllRecords();
   };
-
-  console.log("the companies are", toJS(companies));
 
   const UserTableColumns = [
     {

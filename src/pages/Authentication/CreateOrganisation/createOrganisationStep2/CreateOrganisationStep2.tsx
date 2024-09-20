@@ -58,7 +58,7 @@ const CreateOrganisationStep2 = observer(({
       updateSingleCompany({
         _id : initialValues._id,
         name: `${first_name} ${last_name}`, last_name, password, username, code, logo,
-        companyDetails: { ...rest },
+        companyDetails: { ...rest, createdBy : rest.createdBy[0]._id,activeUser : rest.activeUser[0]?._id, },
       })
         .then((data: any) => {
           openNotification({

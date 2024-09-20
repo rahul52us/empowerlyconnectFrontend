@@ -4,13 +4,13 @@ import { action, makeObservable } from "mobx";
 class OrganisationStore {
   constructor() {
     makeObservable(this, {
-      filterOrganisation: action,
+      filterOrganisations: action,
       createOrganisationUser: action,
       getCompanyDetailsByName:action
     });
   }
 
-  filterOrganisation = async (searchValue: string) => {
+  filterOrganisations = async (searchValue: string) => {
     try {
       const { data } = await axios.get(
         `/company/search?company=${searchValue}`

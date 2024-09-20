@@ -11,7 +11,7 @@ import { observer } from "mobx-react-lite";
 import { Formik, Form } from "formik";
 import debounce from "lodash/debounce";
 import store from "../../../../../store/store";
-import { OrganisationCreateValidation } from "../utils/validations";
+import { getOrganisationCreateValidation } from "../utils/validations";
 import OrganisationLinks from "./OrganisationLinks";
 import OrganisationInfo from "./OrganisationInfo";
 import OrganisationUserPersonalInfo from "./OrganisationUserPersonalInfo";
@@ -30,18 +30,18 @@ const CreateOrganisationPersonalDetails = observer(
     const [showError, setShowError] = useState(false);
     const [organisationError, setOrganisationError] = useState("");
     const {
-      Organisation: { filterOrganisation },
+      Organisation: { filterOrganisations },
     } = store;
 
     const [searchValue, setSearchValue] = useState("");
 
     useEffect(() => {
       const debouncedSearch = debounce((value) => {
-        filterOrganisation(value)
+        filterOrganisations(value)
           .then(() => {
             setOrganisationError("");
           })
-          .catch((err) => {
+          .catch((err : any) => {
             setOrganisationError(err.message);
           });
       }, 1500);
@@ -52,7 +52,7 @@ const CreateOrganisationPersonalDetails = observer(
       return () => {
         debouncedSearch.cancel();
       };
-    }, [searchValue, filterOrganisation]);
+    }, [searchValue, filterOrganisations]);
 
     const handleSearchChange = (e: any) => {
       const value = e.target.value;
@@ -73,7 +73,7 @@ const CreateOrganisationPersonalDetails = observer(
         <Formik
           initialValues={initialValues}
           enableReinitialize={true}
-          validationSchema={OrganisationCreateValidation}
+          validationSchema={getOrganisationCreateValidation(isEdit)}
           onSubmit={(values, { setSubmitting }) => {
             if (!organisationError) {
               handleSubmit({ values: values, setSubmitting: setSubmitting });
@@ -87,7 +87,8 @@ const CreateOrganisationPersonalDetails = observer(
             errors,
             values,
             isSubmitting,
-          }) => (
+          }) => {
+            return(
             <Form
               onSubmit={handleSubmit}
               style={{
@@ -105,6 +106,7 @@ const CreateOrganisationPersonalDetails = observer(
                   errors={errors}
                   handleChange={handleChange}
                   showError={showError}
+                  isEdit={isEdit}
                 />
               </Box>
               <Box display={activeIndex === 1 ? undefined : "none"}>
@@ -185,7 +187,7 @@ const CreateOrganisationPersonalDetails = observer(
                 </Button>
               </Flex>
             </Form>
-          )}
+          )}}
         </Formik>
       </Box>
     );

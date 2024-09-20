@@ -6,6 +6,7 @@ const OrganisationUserPersonalInfo = ({
   handleChange,
   errors,
   showError,
+  isEdit
 }: any) => {
   return (
     <Grid gridTemplateColumns={{ base: "1fr", md: "1fr" }} gap={2}>
@@ -19,6 +20,7 @@ const OrganisationUserPersonalInfo = ({
         onChange={handleChange}
         value={values.first_name}
         showError={showError}
+        readOnly={isEdit ? true : false}
       />
       <CustomInput
         type="text"
@@ -30,6 +32,7 @@ const OrganisationUserPersonalInfo = ({
         onChange={handleChange}
         value={values.last_name}
         showError={showError}
+        readOnly={isEdit ? true : false}
       />
       <CustomInput
         type="text"
@@ -41,6 +44,7 @@ const OrganisationUserPersonalInfo = ({
         onChange={handleChange}
         value={values.username}
         showError={showError}
+        readOnly={isEdit ? true : false}
       />
       <CustomInput
         type="text"
@@ -52,8 +56,9 @@ const OrganisationUserPersonalInfo = ({
         onChange={handleChange}
         value={values.code}
         showError={showError}
+        readOnly={isEdit ? true : false}
       />
-      <CustomInput
+      {!isEdit && <CustomInput
         type="password"
         name="password"
         label="Password"
@@ -62,7 +67,7 @@ const OrganisationUserPersonalInfo = ({
         onChange={handleChange}
         value={values.password}
         showError={showError}
-      />
+      />}
     </Grid>
   );
 };
