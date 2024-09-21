@@ -22,6 +22,7 @@ class AuthStore {
   companyUsers = [];
   role: any = "user";
   webLoader: boolean = false;
+  currentCompanyDetails : any = {}
 
   constructor() {
     this.initiatAppOptions();
@@ -34,6 +35,7 @@ class AuthStore {
       company: observable,
       role: observable,
       webLoader: observable,
+      currentCompanyDetails:observable,
       openLoginModel: action,
       login: action,
       register: action,
@@ -56,7 +58,7 @@ class AuthStore {
       getCurrentCompany: action,
       hasComponentAccess:action,
       getPolicy:action,
-      verifyAppEmail:action
+      verifyAppEmail:action,
     });
   }
 
@@ -98,6 +100,7 @@ class AuthStore {
         this.company = data.data?.companyDetail?.company?._id;
         this.user = data.data;
         this.role = this.user?.role;
+        this.currentCompanyDetails = data?.data?.companyDetail?.company
         sessionStorage.setItem(
           process.env.REACT_APP_AUTHORIZATION_USER_DATA!,
           CryptoJS.AES.encrypt(
@@ -220,6 +223,7 @@ class AuthStore {
   getCurrentCompany = () => {
     return this.company;
   };
+
 
   getPolicy = () => {
     return this?.user?.companyDetail?.company?.policy?._id

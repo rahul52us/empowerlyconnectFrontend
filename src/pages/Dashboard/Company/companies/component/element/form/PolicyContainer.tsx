@@ -6,8 +6,6 @@ import WorkTiming from "../../../../WorkTiming/WorkTiming";
 import CompanyOtherPolicyData from "../../../../CompanyOtherPolicyData/CompanyOtherPolicyData";
 
 const PolicyContainer = observer(({ selectedPolicy }: any) => {
-  console.log("the selected policy are", selectedPolicy);
-
   return (
     <Box width="100%">
       <Tabs

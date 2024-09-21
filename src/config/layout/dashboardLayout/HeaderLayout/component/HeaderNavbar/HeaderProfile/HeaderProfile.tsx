@@ -27,6 +27,7 @@ import {
 } from "react-icons/fa";
 
 const HeaderProfile = observer(() => {
+  const {auth : {currentCompanyDetails}} = store
   const { pathname } = useLocation();
   const {
     auth: { user, doLogout },
@@ -64,6 +65,7 @@ const HeaderProfile = observer(() => {
               <Text mt={2} fontWeight="bold">
                 {user?.name}
               </Text>
+              <Text mt={0.5} fontWeight="xl" fontSize="sm" cursor="pointer">{currentCompanyDetails?.company_name}</Text>
             </Box>
             <Divider />
             {user && pathname !== main.home && (
