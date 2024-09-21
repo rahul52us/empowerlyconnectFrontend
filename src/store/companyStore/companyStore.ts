@@ -59,7 +59,8 @@ class CompanyStore {
       updateWorkLocation:action,
       updateHolidayByExcel:action,
       updateWorkLocationsByExcel:action,
-      updateSingleCompany:action
+      updateSingleCompany:action,
+      getIndividualPolicy:action
     });
   }
 
@@ -74,6 +75,17 @@ class CompanyStore {
     }
     finally {
       this.companyCount.loading = false
+    }
+  };
+
+  getIndividualPolicy = async (sendData: any) => {
+    try {
+      const { data } = await axios.get("/company/policy", {params : { company:store.auth.getCurrentCompany(),...sendData}});
+      return data.data;
+    } catch (err: any) {
+      return Promise.reject(err?.response || err);
+    }
+    finally {
     }
   };
 

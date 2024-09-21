@@ -45,18 +45,12 @@ import CustomDrawer from "../../../../../../../config/component/Drawer/CustomDra
 import PolicyCompany from "./CompanyPolicies";
 
 const ViewCompany = observer(({ data, onClose }: any) => {
+  const [policyData, setPolicyData] = useState<any>({});
   const [editDrawer, setEditDrawer] = useState({ open: false, data: data });
   const [loading, setLoading] = useState(true);
 
   const {
-    company: {
-      getHolidays,
-      getWorkLocations,
-      getWorkTiming,
-      holidays,
-      workTiming,
-      workLocations,
-    },
+    company: { getIndividualPolicy },
     auth: { openNotification },
   } = store;
 
@@ -71,13 +65,10 @@ const ViewCompany = observer(({ data, onClose }: any) => {
 
   useEffect(() => {
     setLoading(true);
-
-    Promise.all([
-      getHolidays({ company: data._id, policy: data?.policy }),
-      getWorkLocations({ company: data._id, policy: data?.policy }),
-      getWorkTiming({ company: data._id, policy: data?.policy }),
-    ])
-      .then(() => {})
+    getIndividualPolicy({ company: data._id, policy: data?.policy })
+      .then((dt: any) => {
+        setPolicyData(dt);
+      })
       .catch((err: any) => {
         openNotification({
           type: getStatusType(err.status),
@@ -88,14 +79,7 @@ const ViewCompany = observer(({ data, onClose }: any) => {
       .finally(() => {
         setLoading(false);
       });
-  }, [
-    getHolidays,
-    getWorkLocations,
-    getWorkTiming,
-    data._id,
-    data?.policy,
-    openNotification,
-  ]);
+  }, [getIndividualPolicy, data._id, data?.policy, openNotification]);
 
   return (
     <>
@@ -177,6 +161,9 @@ const ViewCompany = observer(({ data, onClose }: any) => {
                     <Tab _selected={{ color: "white", bg: "teal.500" }}>
                       Work Locations
                     </Tab>
+                    <Tab _selected={{ color: "white", bg: "teal.500" }}>
+                      Other
+                    </Tab>
                   </TabList>
                   <TabPanels>
                     <TabPanel>
@@ -184,40 +171,42 @@ const ViewCompany = observer(({ data, onClose }: any) => {
                         <Flex align="center" justify="center" height="100%">
                           <Spinner size="xl" color="teal.500" />
                         </Flex>
-                      ) : holidays?.data?.length ? (
+                      ) : policyData?.holidays?.length ? (
                         <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
-                          {holidays.data.map((holiday: any, index : number) => (
-                            <Box
-                              key={index}
-                              p={4}
-                              shadow="md"
-                              borderWidth="1px"
-                              borderRadius="md"
-                              bg={useColorModeValue("gray.50", "gray.700")}
-                            >
-                              <Heading as="h4" size="sm" color={headingColor}>
-                                <Icon
-                                  as={FaCalendarAlt}
-                                  mr={2}
-                                  color={headingColor}
-                                />
-                                {holiday.title}
-                              </Heading>
-                              <Text fontSize="sm" color={textColor}>
-                                {new Date(holiday.date).toLocaleDateString(
-                                  "en-US",
-                                  {
-                                    year: "numeric",
-                                    month: "long",
-                                    day: "numeric",
-                                  }
-                                )}
-                              </Text>
-                              <Text fontSize="sm" color={textColor}>
-                                {holiday.description}
-                              </Text>
-                            </Box>
-                          ))}
+                          {policyData?.holidays?.map(
+                            (holiday: any, index: number) => (
+                              <Box
+                                key={index}
+                                p={4}
+                                shadow="md"
+                                borderWidth="1px"
+                                borderRadius="md"
+                                bg={useColorModeValue("gray.50", "gray.700")}
+                              >
+                                <Heading as="h4" size="sm" color={headingColor}>
+                                  <Icon
+                                    as={FaCalendarAlt}
+                                    mr={2}
+                                    color={headingColor}
+                                  />
+                                  {holiday.title}
+                                </Heading>
+                                <Text fontSize="sm" color={textColor}>
+                                  {new Date(holiday.date).toLocaleDateString(
+                                    "en-US",
+                                    {
+                                      year: "numeric",
+                                      month: "long",
+                                      day: "numeric",
+                                    }
+                                  )}
+                                </Text>
+                                <Text fontSize="sm" color={textColor}>
+                                  {holiday.description}
+                                </Text>
+                              </Box>
+                            )
+                          )}
                         </SimpleGrid>
                       ) : (
                         <Center
@@ -245,8 +234,8 @@ const ViewCompany = observer(({ data, onClose }: any) => {
                         </Flex>
                       ) : (
                         <List spacing={2}>
-                          {workTiming?.data?.length ? (
-                            workTiming.data.map((timing: any) => (
+                          {policyData?.workTiming?.length ? (
+                            policyData?.workTiming?.map((timing: any) => (
                               <ListItem
                                 key={timing._id}
                                 p={2}
@@ -286,8 +275,8 @@ const ViewCompany = observer(({ data, onClose }: any) => {
                         </Flex>
                       ) : (
                         <List spacing={2}>
-                          {workLocations?.data?.length ? (
-                            workLocations.data?.map((location: any) => (
+                          {policyData?.workLocations?.length ? (
+                            policyData?.workLocations?.map((location: any) => (
                               <ListItem
                                 key={location._id}
                                 p={2}
@@ -321,6 +310,28 @@ const ViewCompany = observer(({ data, onClose }: any) => {
                           )}
                         </List>
                       )}
+                    </TabPanel>
+                    <TabPanel>
+                      <Flex direction="column">
+                        <Flex columnGap={4}>
+                          <Text fontWeight={500} minW={200}>
+                            Grace Period Early Minutes
+                          </Text>{" "}
+                          :{" "}
+                          <Text fontWeight={400}>
+                            {policyData?.gracePeriodMinutesEarly}
+                          </Text>
+                        </Flex>
+                        <Flex columnGap={4}>
+                          <Text fontWeight={500} minW={200}>
+                            Grace Period Late Minutes
+                          </Text>{" "}
+                          :{" "}
+                          <Text fontWeight={400}>
+                            {policyData?.gracePeriodMinutesLate}
+                          </Text>
+                        </Flex>
+                      </Flex>
                     </TabPanel>
                   </TabPanels>
                 </Tabs>
