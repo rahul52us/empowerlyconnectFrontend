@@ -37,6 +37,9 @@ const OrganisationInfo = ({
 						accept="image/*"
 						onChange={(e: any) => {
               setFieldValue('logo',e.target.files[0])
+              if(isEdit){
+                setFieldValue('isLogoEdit',true)
+              }
 						}}
             required={true}
             showError={showError}
@@ -48,6 +51,11 @@ const OrganisationInfo = ({
 						files={values.logo}
 						removeFile={(_: any) => {
 							setFieldValue('logo',removeDataByIndex(values.logo, 0))
+              if(isEdit){
+                if(values?.logo?.name){
+                  setFieldValue('deletedLogo',[values?.logo?.name])
+                }
+              }
 						}
 						}
             edit={isEdit}

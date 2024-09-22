@@ -54,11 +54,22 @@ const CreateOrganisationStep2 = observer(({
   const handleSubmit = async ({ values, setSubmitting }: any) => {
     if (isEdit) {
       setSubmitting(true)
-      const { first_name, last_name, password, username, logo, code , ...rest } = values;
+      let { first_name, last_name, password, username, logo, code , deletedLogo, ...rest } = values;
+      if(values.isLogoEdit){
+        if (values.logo && values.logo?.length !== 0) {
+          const buffer = await readFileAsBase64(values.logo);
+          const fileData = {
+            buffer: buffer,
+            filename: values.logo?.name,
+            type: values.logo?.type,
+          };
+          logo = fileData;
+        }
+      }
       updateSingleCompany({
         _id : initialValues._id,
-        name: `${first_name} ${last_name}`, last_name, password, username, code, logo,
-        companyDetails: { ...rest, createdBy : rest.createdBy[0]._id,activeUser : rest.activeUser[0]?._id, },
+        name: `${first_name} ${last_name}`, password, username, code,
+        companyDetails: { ...rest, createdBy : rest.createdBy[0]._id,activeUser : rest.activeUser[0]?._id,logo,isLogoEdit : values.isLogoEdit, deletedFiles : deletedLogo },
       })
         .then((data: any) => {
           openNotification({
