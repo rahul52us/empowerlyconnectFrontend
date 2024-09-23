@@ -71,13 +71,13 @@ const TableActions: React.FC<TableActionsProps> = ({
   actions,
   column,
   row,
-  cells,
+  // cells,
 }) => {
   if (!actions) {
     actions = {};
   }
   const { actionBtn } = actions;
-  const cellProps = cells ? { border: "1px groove gray" } : {};
+  // const cellProps = cells ? { border: "1px groove gray" } : {};
 
   const iconColor = useColorModeValue("gray.700", "gray.200");
   const deleteColor = useColorModeValue("red.500", "red.300");
@@ -86,9 +86,10 @@ const TableActions: React.FC<TableActionsProps> = ({
     <Td
       // position="sticky" right={0} bg="white" zIndex={9999}
       {...column?.props?.row}
-      {...cellProps}
+      // {...cellProps}
       position={column?.props?.isSticky ? "sticky" : "relative"}
       right={column?.props?.isSticky ? "0" : undefined}
+      p={1}
       zIndex={column?.props?.isSticky ? "5" : undefined}
       bgColor={column?.props?.isSticky ? "white" : undefined}
     >
@@ -143,13 +144,144 @@ const TableActions: React.FC<TableActionsProps> = ({
   );
 };
 
+// const GenerateRows: React.FC<{
+//   column: Column;
+//   row: RowData;
+//   action: any;
+//   cells: boolean;
+// }> = ({ column, row, action, cells }: any) => {
+//   const cellProps = cells ? { border: "1px solid gray" } : {};
+//   switch (column.type) {
+//     case "date":
+//       return (
+//         <Td
+//           whiteSpace="normal"
+//           cursor="pointer"
+//           fontSize="sm"
+//           {...column?.props?.row}
+//           {...cellProps}
+//         >
+//           {row[column.key] ? formatDate(row[column.key]) : "--"}
+//         </Td>
+//       );
+//     case "link":
+//       return (
+//         <Td
+//           whiteSpace="normal"
+//           cursor="pointer"
+//           fontSize="sm"
+//           color="blue.400"
+//           textDecoration="underline"
+//           {...column?.props?.row}
+//           {...cellProps}
+//           onClick={() => {
+//             if (column?.function) {
+//               column?.function(row);
+//             }
+//           }}
+//         >
+//           {row[column.key] || "--"}
+//         </Td>
+//       );
+//     case "tooltip":
+//       return (
+//         <Td
+//           whiteSpace="normal"
+//           cursor="pointer"
+//           fontSize="sm"
+//           {...column?.props?.row}
+//           {...cellProps}
+//         >
+//           <Tooltip label={row[column.key]}>
+//             {typeof row[column.key] === "string"
+//               ? row[column.key].substring(0, 15) || "--"
+//               : "-"}
+//           </Tooltip>
+//         </Td>
+//       );
+//     case "array":
+//       return (
+//         <Td
+//           whiteSpace="normal"
+//           cursor="pointer"
+//           fontSize="sm"
+//           {...column?.props?.row}
+//           {...cellProps}
+//         >
+//           <Tooltip label={JSON.stringify(row[column.key])}>
+//             <IconButton
+//               aria-label=""
+//               size="lg"
+//               bgColor={"transparent"}
+//               color={"gray.700"}
+//             >
+//               <IoMdInformationCircle />
+//             </IconButton>
+//           </Tooltip>
+//         </Td>
+//       );
+//     case "table-actions":
+//       return (
+//         <TableActions
+//           actions={action}
+//           column={column}
+//           row={row}
+//           cells={cells}
+//         />
+//       );
+//     case "combineKey":
+//       return (
+//         <Td
+//           whiteSpace="normal"
+//           cursor="pointer"
+//           fontSize="sm"
+//           {...column?.props?.row}
+//           {...cellProps}
+//           isTruncated={true}
+//         >
+//           {row[column.key] || "--"}
+//         </Td>
+//       );
+//     case "component":
+//       return (
+//         <Td
+//           whiteSpace="normal"
+//           cursor="pointer"
+//           fontSize="sm"
+//           {...column?.props?.row}
+//           {...cellProps}
+//         >
+//           {column.metaData?.component ? column.metaData.component(row) : null}
+//         </Td>
+//       );
+//     default:
+//       return (
+//         <Td
+//           whiteSpace="normal"
+//           cursor="pointer"
+//           fontSize="sm"
+//           {...column?.props?.row}
+//           {...cellProps}
+//           isTruncated={true}
+//         >
+//           {row[column.key] || "--"}
+//         </Td>
+//       );
+//   }
+// };
+
 const GenerateRows: React.FC<{
   column: Column;
   row: RowData;
   action: any;
   cells: boolean;
 }> = ({ column, row, action, cells }: any) => {
-  const cellProps = cells ? { border: "1px solid gray" } : {};
+  // Define cell border color based on color mode
+  const cellBorder = useColorModeValue("gray.200", "gray.700");
+  const cellProps = cells
+    ? { border: `1px solid ${cellBorder}` } // Conditional border only if cells prop is true
+    : {};
+
   switch (column.type) {
     case "date":
       return (
@@ -209,10 +341,10 @@ const GenerateRows: React.FC<{
         >
           <Tooltip label={JSON.stringify(row[column.key])}>
             <IconButton
-              aria-label=""
+              aria-label="array info"
               size="lg"
-              bgColor={"transparent"}
-              color={"gray.700"}
+              bgColor="transparent"
+              color="gray.700"
             >
               <IoMdInformationCircle />
             </IconButton>
@@ -281,18 +413,22 @@ const CustomTable: React.FC<CustomTableProps> = ({
   // isActions = false,
 }) => {
   const isMobile = useBreakpointValue({ base: true, md: false });
-  const cellProps = cells ? { border: "1px solid gray" } : {};
+  // const cellProps = cells ? { border: "1px solid gray" } : {};
   const headerBg = useColorModeValue("gray.700", "gray.800");
+  // const borderColor = useColorModeValue("gray.300", "gray.600");
+
   const bodyBg = useColorModeValue("white", "gray.700");
 
   const hoverBg = useColorModeValue("blue.100", "blue.700");
   const menuItemHover = useColorModeValue("blue.100", "blue.700");
   const menuListBg = useColorModeValue("white", "gray.700");
+  const titleColor = useColorModeValue("blue.500", "white");
 
   const boxBorder = useColorModeValue("gray.200", "gray.700");
   return (
     <Box
-      rounded={5}
+      rounded={12}
+      p={4}
       boxShadow="rgb(0 0 0 / 20%) 0px 0px 8px"
       border={"1px solid"}
       borderColor={boxBorder}
@@ -305,7 +441,9 @@ const CustomTable: React.FC<CustomTableProps> = ({
         // columnGap={2}
       >
         {title ? (
-          <Heading fontSize={isMobile ? "sm" : "xl"}>{title || ""}</Heading>
+          <Heading color={titleColor} fontSize={isMobile ? "sm" : "xl"}>
+            {title || ""}
+          </Heading>
         ) : null}
 
         <Flex alignItems="center" columnGap={2} ml="auto">
@@ -363,10 +501,9 @@ const CustomTable: React.FC<CustomTableProps> = ({
             <Menu>
               <MenuButton
                 as={Button}
-                size="md"
                 variant="outline"
                 colorScheme="red"
-                w={{ base: "6rem", md: "11rem" }}
+                w={{ base: "6rem", md: "8rem" }}
                 textAlign={"center"}
               >
                 Actions
@@ -416,12 +553,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
         rounded={2}
         {...tableProps.tableBox}
       >
-        <Table
-          size={isMobile ? "xs" : "xs"}
-          // borderWidth="1px"
-          borderRadius="lg"
-          {...tableProps.table}
-        >
+        {/* <Table size={isMobile ? "xs" : "xs"} {...tableProps.table}>
           <Thead
             bg="gray.700"
             position="sticky"
@@ -443,7 +575,6 @@ const CustomTable: React.FC<CustomTableProps> = ({
                   position={column?.props?.isSticky ? "sticky" : "relative"}
                   right={column?.props?.isSticky ? "0" : undefined}
                   bg={headerBg}
-                  // bgColor={column?.props?.isSticky ? "black" : undefined}
                   fontSize="xs"
                   color={"white"}
                   {...cellProps}
@@ -476,9 +607,93 @@ const CustomTable: React.FC<CustomTableProps> = ({
                       cells={cells}
                     />
                   ))}
-                  {/* {isActions && (
-                    <TableActions actions={actions} column={{}} row={row} cells={cells} />
-                  )} */}
+                </Tr>
+              ))}
+            </Tbody>
+          </TableLoader>
+        </Table> */}
+        <Table
+          size={isMobile ? "xs" : "sm"}
+          variant="striped"
+          {...tableProps.table}
+          bg={bodyBg}
+          borderRadius="md"
+          overflow="hidden"
+        >
+          <Thead
+            bg={headerBg}
+            position="sticky"
+            top="0"
+            zIndex="9"
+            height="50px"
+          >
+            <Tr>
+              {serial?.show && (
+                <Th
+                  color="white"
+                  w={serial?.width || undefined}
+                  border="none"
+                  textTransform="uppercase"
+                  letterSpacing="wider"
+                  fontSize="xs"
+                >
+                  {serial?.text || "S.No."}
+                </Th>
+              )}
+              {columns.map((column, colIndex) => (
+                <Th
+                  key={colIndex}
+                  textAlign="center"
+                  position={column?.props?.isSticky ? "sticky" : "relative"}
+                  right={column?.props?.isSticky ? "0" : undefined}
+                  bg={headerBg}
+                  fontSize="xs"
+                  textTransform="uppercase"
+                  letterSpacing="wider"
+                  color="white"
+                  fontWeight="bold"
+                  border="none" // No borders on header cells
+                  {...column?.props?.column}
+                >
+                  {column.headerName}
+                </Th>
+              ))}
+            </Tr>
+          </Thead>
+
+          <TableLoader loader={loading} show={data.length}>
+            <Tbody>
+              {data.map((row, rowIndex) => (
+                <Tr
+                  key={rowIndex}
+                  _hover={{
+                    bg: hoverBg,
+                    cursor: "pointer",
+                    transition: "0.3s",
+                  }}
+                >
+                  {serial?.show && (
+                    <Td
+                      fontWeight="bold"
+                      w={serial?.width || undefined}
+                      textAlign="center"
+                      p={2}
+                      fontSize="sm"
+                      border="none" // No border on cells
+                    >
+                      {rowIndex + 1}
+                    </Td>
+                  )}
+                  {columns.map((column, colIndex) => (
+                    <GenerateRows
+                      key={colIndex}
+                      column={column}
+                      row={row}
+                      action={actions}
+                      cells={cells}
+                      // border="none" // No border on cells
+                    />
+                  ))}
                 </Tr>
               ))}
             </Tbody>
