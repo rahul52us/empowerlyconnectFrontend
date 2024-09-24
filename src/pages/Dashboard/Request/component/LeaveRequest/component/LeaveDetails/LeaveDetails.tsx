@@ -218,9 +218,9 @@ const LeaveDetails = observer(() => {
 
   return (
     <>
-      <Box border="3px solid" borderColor="gray.300" borderRadius="md">
+      <Box  >
         <Flex alignItems="center" justifyContent="space-between" m={3}>
-          <Text>Leave Request</Text>
+          <Text fontSize={'lg'} fontWeight={500} color={'blue.500'}>Leave Request</Text>
           <Flex>
             <RequestButtons
               selectRequestStatus={selectRequestStatus}

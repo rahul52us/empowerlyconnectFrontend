@@ -62,6 +62,7 @@ const UserChart = observer(() => {
               "#FFDAB9",
               "#FFFACD",
             ],
+            barThickness:24
           },
         ],
       },

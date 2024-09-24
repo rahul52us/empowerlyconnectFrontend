@@ -53,20 +53,21 @@ const NormalTable = ({
     lg: "12.5%",
   });
   const cellHeight = "40px";
-  const bgColor = useColorModeValue("gray.100", "gray.700");
-  const headerColor = useColorModeValue("gray.200", "gray.600");
+  const bgColor = useColorModeValue("gray.200", "gray.700");
+  const headerColor = useColorModeValue("gray.100", "gray.700");
   const textColor = useColorModeValue("black", "white");
-  const borderColor = useColorModeValue(
-    "1px solid lightgray",
-    "1px solid darkgray"
-  );
+  // const borderColor = useColorModeValue(
+  //   "transparent",
+  //   "1px solid darkgray"
+  // );
+  const tableHeaderBg = useColorModeValue("gray.400", "blackAlpha.300");
 
   return (
-    <Box border={borderColor} mt={5} overflowX="auto">
+    <Box shadow={'base'} borderWidth={1} rounded={'lg'} mt={5} overflowX="auto">
       <Flex
         justifyContent="space-between"
         alignItems="center"
-        borderBottom={borderColor}
+        // borderBottom={borderColor}
         p={2}
         height={50}
         bg={headerColor}
@@ -83,16 +84,16 @@ const NormalTable = ({
           />
         </Box>
       </Flex>
-      <Box p={3} height={{ sm: "325px" }} overflowY="auto" maxWidth="100%">
-        <Table variant="simple" width="100%" border={borderColor} size="sm">
+      <Box p={1} height={{ sm: "325px" }} overflowY="auto" maxWidth="100%">
+        <Table variant="simple" width="100%"  size="sm">
           <Thead>
-            <Tr bg={headerColor} height={cellHeight}>
+            <Tr bg={tableHeaderBg} height={cellHeight}>
               {columns.map((column, index) => (
                 <Th
                   key={index}
                   width={columnWidth}
                   color={textColor}
-                  border={borderColor}
+                  // border={borderColor} 
                   textAlign="center"
                 >
                   {column.headerName}
@@ -120,7 +121,7 @@ const NormalTable = ({
                         key={colIndex}
                         width={columnWidth}
                         color={textColor}
-                        border={borderColor}
+                        // border={borderColor}
                         textAlign="center"
                         minW={115}
                       >
@@ -139,7 +140,7 @@ const NormalTable = ({
         alignItems="center"
         p={2}
         // height={cellHeight}
-        borderTop={borderColor}
+        // borderTop={borderColor}
         bg={headerColor}
       >
         <Box>

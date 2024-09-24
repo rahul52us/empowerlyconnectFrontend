@@ -1,4 +1,4 @@
-import { Box, Center, Icon, Text, VStack } from "@chakra-ui/react";
+import { Box, Center, Icon, Text, VStack, Spinner } from "@chakra-ui/react";
 import { useColorModeValue } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
@@ -36,12 +36,9 @@ const NewWidgetCard = ({
     return () => clearInterval(interval);
   }, [count, totalCount]);
 
-  if (loading === true) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <Box
+      position="relative" 
       onClick={() => handleClick()}
       p={4}
       mt={8}
@@ -49,9 +46,27 @@ const NewWidgetCard = ({
       rounded={"2xl"}
       textAlign={"center"}
       bgGradient={bgGradient}
-      _hover={{ transform: "scale(1.02)", transition: "all 0.3s ease" }}
+      _hover={{ transform: "scale(1.02)" }}
+      transition="all 0.3s ease"
     >
-      <VStack spacing={0}>
+      {loading && (
+        <Box
+          position="absolute"
+          top={0}
+          left={0}
+          right={0}
+          bottom={0}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          bgGradient={bgGradient}
+          zIndex={1} // Ensures the spinner is on top
+          rounded={"2xl"}
+        >
+          <Spinner thickness="4px" size="xl" color="blue.500" />
+        </Box>
+      )}
+      <VStack>
         <Center>
           <Icon color={textColor} as={icon} w={9} h={9} />
         </Center>

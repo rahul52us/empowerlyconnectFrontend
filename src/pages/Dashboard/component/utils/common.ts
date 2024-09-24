@@ -1,4 +1,10 @@
-export const makeChartResponse = (data: any, chartTitle: string, labelProp: string = "title", valueProp: string = "count", colors: string[] = []) => {
+export const makeChartResponse = (
+  data: any,
+  chartTitle: string,
+  labelProp: string = "title",
+  valueProp: string = "count",
+  colors: string[] = []
+) => {
   const labels: string[] = [];
   const values: number[] = [];
 
@@ -8,13 +14,23 @@ export const makeChartResponse = (data: any, chartTitle: string, labelProp: stri
     values.push(entry[valueProp]);
   });
 
-
-  const datasets = [{
-    label: chartTitle,
-    data: values,
-    backgroundColor: colors.length > 0 ? colors : Array(data.length).fill(`rgba(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, 0.5)`), // Use provided colors or generate random colors for each data point
-    borderWidth: 1,
-  }];
+  const datasets = [
+    {
+      label: chartTitle,
+      data: values,
+      backgroundColor:
+        colors.length > 0
+          ? colors
+          : Array(data.length).fill(
+              `rgba(${Math.floor(Math.random() * 256)}, ${Math.floor(
+                Math.random() * 256
+              )}, ${Math.floor(Math.random() * 256)}, 0.5)`
+            ), // Use provided colors or generate random colors for each data point
+      borderWidth: 2,
+      barThickness:24,
+      
+    },
+  ];
 
   const chartData = {
     labels: labels,
