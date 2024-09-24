@@ -1,5 +1,4 @@
 import { Grid, GridItem } from "@chakra-ui/react";
-import WidgetCard from "../../../config/component/WigdetCard/WidgetCard";
 import { dashboard } from "../../../config/constant/routes";
 import { observer } from "mobx-react-lite";
 import store from "../../../store/store";
@@ -96,12 +95,6 @@ const DashWidgetCard = observer(() => {
         },
       ].map((item, key) => (
         <GridItem key={key}>
-          <WidgetCard
-            totalCount={item.count}
-            title={item.title}
-            handleClick={() => navigate(item.link)}
-            loading={item.loading}
-          />
           <NewWidgetCard
             key={key}
             totalCount={item.count}
