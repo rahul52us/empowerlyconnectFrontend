@@ -165,7 +165,7 @@ const PersonalInfo = observer(
 
                   return (
                     <GridItem key={key}>
-                      <HStack spacing={3} align="end" mb={3}>
+                      <HStack spacing={3} align="end" mb={3} alignItems="center">
                         <Tooltip label={label} aria-label={`${label} tooltip`}>
                           <Box cursor="pointer">{icon}</Box>
                         </Tooltip>

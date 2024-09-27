@@ -428,7 +428,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
   return (
     <Box
       rounded={12}
-      p={4}
+      // p={4}
       boxShadow="rgb(0 0 0 / 20%) 0px 0px 8px"
       border={"1px solid"}
       borderColor={boxBorder}
@@ -503,7 +503,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
                 as={Button}
                 variant="outline"
                 colorScheme="red"
-                w={{ base: "6rem", md: "8rem" }}
+                minW={{ base: "6rem", md: "10rem" }}
                 textAlign={"center"}
               >
                 Actions
