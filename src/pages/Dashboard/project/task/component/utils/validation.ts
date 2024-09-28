@@ -7,6 +7,11 @@ const attach_files = Yup.object().shape({
     .required("Title is required"),
 });
 
+const UservalidationSchema = Yup.object().shape({
+  user: Yup.mixed().required("Please select a user from the list"),
+  isActive: Yup.boolean(),
+});
+
 // Yup validation schema for Project
 const TaskCreateValidation = Yup.object().shape({
   title: Yup.string().trim().required("Title is required."),
@@ -23,20 +28,10 @@ const TaskCreateValidation = Yup.object().shape({
     "End date must be greater than or equal to the start date."
   ),
   priority: Yup.mixed().required(),
-  team_members: Yup.array()
-    .of(Yup.mixed())
-    .nullable()
-    .transform((val, originalVal) => {
-      return originalVal === "" ? null : val;
-    })
-    .typeError("Please select the team members"),
+  team_members: Yup.array().of(UservalidationSchema),
+  dependencies: Yup.array().of(UservalidationSchema),
+  assigner: Yup.array().of(UservalidationSchema),
   attach_files: Yup.array().of(attach_files),
-  assigner: Yup.mixed()
-    .nullable()
-    .transform((val, originalVal) => {
-      return originalVal === "" ? null : val;
-    })
-    .typeError("Please select the assigner"),
 });
 
 export { TaskCreateValidation };

@@ -48,18 +48,18 @@ const TaskForm = observer(
         }
         return undefined;
       }
-      if (errorType === "followers") {
-        const errorTypes = ["user"];
-        if (errors.followers && errors.followers[index]) {
+      if (errorType === "dependencies") {
+        const errorTypes = ["dependencies"];
+        if (errors.dependencies && errors.dependencies[index]) {
           const errorTypeIndex = errorTypes.indexOf(type);
           if (errorTypeIndex !== -1) {
-            return errors.followers[index][errorTypes[errorTypeIndex]];
+            return errors.dependencies[index][errorTypes[errorTypeIndex]];
           }
         }
         return undefined;
       }
       if (errorType === "team_members") {
-        const errorTypes = ["user"];
+        const errorTypes = ["team_members"];
         if (errors.team_members && errors.team_members[index]) {
           const errorTypeIndex = errorTypes.indexOf(type);
           if (errorTypeIndex !== -1) {
@@ -68,18 +68,18 @@ const TaskForm = observer(
         }
         return undefined;
       }
-      if (errorType === "customers") {
-        const errorTypes = ["user"];
-        if (errors.customers && errors.customers[index]) {
+      if (errorType === "assigner") {
+        const errorTypes = ["assigner"];
+        if (errors.assigner && errors.assigner[index]) {
           const errorTypeIndex = errorTypes.indexOf(type);
           if (errorTypeIndex !== -1) {
-            return errors.customers[index][errorTypes[errorTypeIndex]];
+            return errors.assigner[index][errorTypes[errorTypeIndex]];
           }
         }
         return undefined;
       }
       if (errorType === "project_manager") {
-        const errorTypes = ["user"];
+        const errorTypes = ["project_manager"];
         if (errors.project_manager && errors.project_manager[index]) {
           const errorTypeIndex = errorTypes.indexOf(type);
           if (errorTypeIndex !== -1) {
@@ -230,24 +230,135 @@ const TaskForm = observer(
                       showError={showError}
                       minDate={values.startDate}
                     />
-                    <CustomInput
-                      name="assigner"
-                      label="Assigner"
-                      value={values.assigner}
-                      options={
-                        type === "edit"
-                          ? [values.assigner]
-                          : []
-                      }
-                      placeholder="Search OR Select the Assigner"
-                      type="real-time-user-search"
-                      onChange={(e: any) => {
-                        setFieldValue("assigner", e);
-                      }}
-                      isSearchable
-                      error={errors.assigner}
-                      showError={showError}
-                    />
+                    <GridItem colSpan={3} rowGap={3} mb={5}>
+                      <Box mt={5} mb={2}>
+                        <Text fontWeight={"bold"}>Add Assigner :- </Text>
+                      </Box>
+                      <FieldArray name="assigner">
+                        {({ push, remove }) => (
+                          <Box>
+                            {values.assigner.length > 0 ? (
+                              <Grid
+                                templateColumns={{ base: "1fr", md: "1fr 1fr" }}
+                                gap={4}
+                                mb={4}
+                              >
+                                {values.assigner.map(
+                                  (user: any, index: number) => (
+                                    <Box
+                                      key={index}
+                                      p={4}
+                                      borderWidth="1px"
+                                      borderRadius="md"
+                                      boxShadow="sm"
+                                    >
+                                      <Flex
+                                        direction={{
+                                          base: "column",
+                                          md: "row",
+                                        }}
+                                        align="center"
+                                        justify="space-between"
+                                        gap={4}
+                                      >
+                                        <CustomInput
+                                          name={`assigner.${index}.user`}
+                                          label="Members"
+                                          value={
+                                            type === "edit" && user?.user
+                                              ? {
+                                                  label: user.user.username,
+                                                  value: user.user._id,
+                                                }
+                                              : undefined
+                                          }
+                                          options={
+                                            type === "edit" && user?.user
+                                              ? [
+                                                  {
+                                                    label: user.user.username,
+                                                    value: user.user._id,
+                                                  },
+                                                ]
+                                              : []
+                                          }
+                                          placeholder="Select Assigner"
+                                          type="real-time-user-search"
+                                          onChange={(selectedOption) => {
+                                            setFieldValue(
+                                              `assigner.${index}.user`,
+                                              selectedOption
+                                            );
+                                          }}
+                                          isMulti={false}
+                                          isSearchable
+                                          showError={showError}
+                                          error={generateErrors(
+                                            "assigner",
+                                            errors,
+                                            "user",
+                                            index
+                                          )}
+                                          // flex="1"
+                                        />
+                                        <CustomInput
+                                          type="checkbox"
+                                          name={`assigner.${index}.isActive`}
+                                          label="Active"
+                                          value={user.isActive}
+                                          onChange={(e: any) => {
+                                            setFieldValue(
+                                              `assigner.${index}.isActive`,
+                                              e.target.checked
+                                            );
+                                          }}
+                                          // flexShrink={0}
+                                        />
+                                        <Button
+                                          onClick={() => remove(index)}
+                                          size="sm"
+                                          colorScheme="red"
+                                          variant="outline"
+                                          flexShrink={0}
+                                        >
+                                          Delete
+                                        </Button>
+                                      </Flex>
+                                    </Box>
+                                  )
+                                )}
+                              </Grid>
+                            ) : (
+                              <Text
+                                fontSize="md"
+                                color="gray.500"
+                                mb={4}
+                                textAlign="center"
+                                fontWeight="bold"
+                              >
+                                No Assigner added yet.
+                              </Text>
+                            )}
+                            <Button
+                              mt={4}
+                              width="100%"
+                              onClick={() =>
+                                push({
+                                  user: undefined,
+                                  isActive: true,
+                                  isAdd: true,
+                                  invitationMail: true,
+                                })
+                              }
+                              colorScheme="blue"
+                            >
+                              Add Member
+                            </Button>
+                          </Box>
+                        )}
+                      </FieldArray>
+                    </GridItem>
+
                         <GridItem colSpan={3} rowGap={3} mb={5}>
                       <Box mt={5} mb={2}>
                         <Text fontWeight={"bold"}>Add Members :- </Text>
@@ -332,21 +443,6 @@ const TaskForm = observer(
                                           }}
                                           // flexShrink={0}
                                         />
-                                        {user.isAdd && (
-                                          <CustomInput
-                                            type="checkbox"
-                                            name={`team_members.${index}.invitationMail`}
-                                            label="Send Invitation Mail"
-                                            value={user.invitationMail}
-                                            onChange={(e: any) => {
-                                              setFieldValue(
-                                                `team_members.${index}.invitationMail`,
-                                                e.target.checked
-                                              );
-                                            }}
-                                            rest={{ flexShrink: 0 }}
-                                          />
-                                        )}
                                         <Button
                                           onClick={() => remove(index)}
                                           size="sm"
@@ -391,21 +487,135 @@ const TaskForm = observer(
                         )}
                       </FieldArray>
                     </GridItem>
-                    <CustomInput
-                      name="dependencies"
-                      label="Dependency Members"
-                      value={values.dependencies}
-                      options={values.dependencies}
-                      placeholder="Search OR Select the Dependency Members"
-                      type="real-time-user-search"
-                      onChange={(e: any) => {
-                        setFieldValue("dependencies", e);
-                      }}
-                      isMulti={true}
-                      isSearchable
-                      error={errors.dependencies}
-                      showError={showError}
-                    />
+                    <GridItem colSpan={{ base: 1, md: 4 }}>
+                      <Box mt={5} mb={2}>
+                        <Text fontWeight={"bold"}>Add dependencies :- </Text>
+                      </Box>
+                      <FieldArray name="dependencies">
+                        {({ push, remove }) => (
+                          <Box>
+                            {values.dependencies.length > 0 ? (
+                              <Grid
+                                templateColumns={{ base: "1fr", md: "1fr 1fr" }}
+                                gap={4}
+                                mb={4}
+                              >
+                                {values.dependencies.map(
+                                  (user: any, index: number) => {
+                                    return (
+                                      <Box
+                                        key={`dependencies-${index}`}
+                                        p={4}
+                                        borderWidth="1px"
+                                        borderRadius="md"
+                                        boxShadow="sm"
+                                      >
+                                        <Flex
+                                          direction={{
+                                            base: "column",
+                                            md: "row",
+                                          }}
+                                          align="center"
+                                          justify="space-between"
+                                          gap={4}
+                                        >
+                                          <CustomInput
+                                            name={`dependencies.${index}.user`}
+                                            label="Dependency"
+                                            value={
+                                              type === "edit" && user?.user
+                                                ? {
+                                                    label: user.user.username,
+                                                    value: user.user._id,
+                                                  }
+                                                : undefined
+                                            }
+                                            options={
+                                              type === "edit" && user?.user
+                                                ? [
+                                                    {
+                                                      label: user.user.username,
+                                                      value: user.user._id,
+                                                    },
+                                                  ]
+                                                : []
+                                            }
+                                            placeholder="Select Dependency"
+                                            type="real-time-user-search"
+                                            onChange={(selectedOption) => {
+                                              setFieldValue(
+                                                `dependencies.${index}.user`,
+                                                selectedOption
+                                              );
+                                            }}
+                                            isMulti={false}
+                                            isSearchable
+                                            showError={showError}
+                                            error={generateErrors(
+                                              "dependencies",
+                                              errors,
+                                              "user",
+                                              index
+                                            )}
+                                            // flex="1"
+                                          />
+                                          <CustomInput
+                                            type="checkbox"
+                                            name={`dependencies.${index}.isActive`}
+                                            label="Active"
+                                            value={user.isActive}
+                                            onChange={(e: any) => {
+                                              setFieldValue(
+                                                `dependencies.${index}.isActive`,
+                                                e.target.checked
+                                              );
+                                            }}
+                                            // flexShrink={0}
+                                          />
+                                          <Button
+                                            onClick={() => remove(index)}
+                                            size="sm"
+                                            colorScheme="red"
+                                            variant="outline"
+                                            flexShrink={0}
+                                          >
+                                            Delete
+                                          </Button>
+                                        </Flex>
+                                      </Box>
+                                    );
+                                  }
+                                )}
+                              </Grid>
+                            ) : (
+                              <Text
+                                fontSize="md"
+                                color="gray.500"
+                                mb={4}
+                                textAlign="center"
+                                fontWeight="bold"
+                              >
+                                No dependencies added yet.
+                              </Text>
+                            )}
+                            <Button
+                              mt={4}
+                              width="100%"
+                              onClick={() =>
+                                push({
+                                  user: undefined,
+                                  isActive: true,
+                                  isAdd: true
+                                })
+                              }
+                              colorScheme="blue"
+                            >
+                              Add dependency
+                            </Button>
+                          </Box>
+                        )}
+                      </FieldArray>
+                    </GridItem>
                   </Grid>
                   <Box>
                     <Box mt={5} mb={2}>

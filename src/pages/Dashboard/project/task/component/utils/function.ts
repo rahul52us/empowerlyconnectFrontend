@@ -2,7 +2,7 @@ import {
   formatDate,
   YYYYMMDD_FORMAT,
 } from "../../../../../../config/constant/dateUtils";
-import { readFileAsBase64 } from "../../../../../../config/constant/function";
+import { getUniqueUsers, readFileAsBase64 } from "../../../../../../config/constant/function";
 import { activeStatus, taskPrioties, taskStatus } from "./constant";
 
 export const generateSendTaskResponse = async(val: any) => {
@@ -37,17 +37,9 @@ export const generateSendTaskResponse = async(val: any) => {
       : taskPrioties[1].value,
     isActive: values.isActive ? values?.isActive?.value : activeStatus[1],
     status: values?.status ? values?.status?.value : taskStatus[0].value,
-    team_members: values?.team_members.map((item: any) => ({
-      user: item.isAdd ? item?.user?.value : item?.user?._id,
-      isActive: item.isActive || false,
-      isAdd: item.isAdd || false,
-      invitationMail: item.invitationMail || false,
-    })),
-    assigner: values.assigner ? values.assigner?.value : undefined,
-    dependencies: values.dependencies.map((item: any) => ({
-      user: item?.value,
-      isActive: item.isActive || true,
-    })),
+    team_members: getUniqueUsers(values.team_members || []),
+    assigner: getUniqueUsers(values.assigner || []),
+    dependencies: getUniqueUsers(values.dependencies || []),
     reminders: [values.reminders],
     startDate: values?.startDate
       ? formatDate(values?.startDate, YYYYMMDD_FORMAT)
@@ -69,27 +61,18 @@ export const generateInitialValues = (data?: any) => {
   return {
     ...data,
     deleteAttachments : [],
-    assigner: data.assigner
-      ? Array.isArray(data.assigner)
-        ? data.assigner?.length > 0
-          ? data.assigner.map((it: any) => ({
-              label: it.username,
-              value: it._id,
-            }))[0]
-          : undefined
-        : undefined
-      : undefined,
+      assigner: Array.isArray(data.assigner) ? data.assigner.map((item: any) => ({
+        user: item.user,
+        isActive: item.isActive
+      })) : [],
     team_members: Array.isArray(data.team_members) ? data.team_members.map((item: any) => ({
       user: item.user,
-      isActive: item.isActive,
-      invitationMail: false,
+      isActive: item.isActive
     })) : [],
-    dependencies: Array.isArray(data.dependencies) ? data.dependencies
-      ? data.dependencies.map((it: any) => ({
-          label: it.user?.username,
-          value: it.user?._id,
-        }))
-      : [] : [],
+    dependencies: Array.isArray(data.dependencies) ? data.dependencies.map((item: any) => ({
+      user: item.user,
+      isActive: item.isActive
+    })) : [],
     title: data?.title || "",
     description: data?.description || "",
     isActive: data
