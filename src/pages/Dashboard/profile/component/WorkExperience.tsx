@@ -41,7 +41,7 @@ interface ExperienceDetail {
 interface WorkExperienceProps {
   experienceDetails: ExperienceDetail[];
   setSelectedTab: any;
-  isEditable?:boolean
+  isEditable?: boolean;
 }
 
 // Key-to-Label mapping
@@ -88,17 +88,41 @@ const WorkExperience = observer(
         boxShadow="lg"
         p={2}
       >
-        <Flex justifyContent="space-between" alignItems="center" p={{base : 2, md : 4}}>
-          <Heading textAlign={"center"} fontSize={{base: "sm", md: "2xl" }} fontWeight="bold">
+        <Flex
+          justifyContent="space-between"
+          alignItems="center"
+          p={{ base: 2, md: 4 }}
+        >
+          <Heading
+            textAlign={"center"}
+            fontSize={{ base: "sm", md: "2xl" }}
+            fontWeight="bold"
+          >
             Work Experience
           </Heading>
-          {isEditable && <CustomButton
-            onClick={() =>
-              setSelectedTab({ open: true, type: "work-experience" })
-            }
-            btnText="Edit"
-          />}
+          {isEditable && (
+            <CustomButton
+              onClick={() =>
+                setSelectedTab({ open: true, type: "work-experience" })
+              }
+              btnText="Edit"
+            />
+          )}
         </Flex>
+        <Divider />
+
+        {experienceDetails?.length === 0 && (
+          <Box mb={5} mt={9}>
+            <Text
+              textAlign="center"
+              fontSize={"md"}
+              fontWeight={500}
+              cursor="pointer"
+            >
+              No Document Exists
+            </Text>
+          </Box>
+        )}
         {experienceDetails.map((experience) => (
           <Box
             key={experience._id}

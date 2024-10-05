@@ -5,6 +5,7 @@ import {
   Flex,
   useColorModeValue,
   Divider,
+  Text,
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import CustomButton from "../../../../config/component/Button/CustomButton";
@@ -37,16 +38,28 @@ const SkillAndAddionalInfo = observer(({ setSelectedTab, isEditable }: any) => {
             >
               Skill And Additional Info.
             </Heading>
-
-            { isEditable && <CustomButton
-              onClick={() =>
-                setSelectedTab({ open: true, type: "skillAndAddionalInfo" })
-              }
-              btnText="Edit"
-            />}
+            {isEditable && (
+              <CustomButton
+                onClick={() =>
+                  setSelectedTab({ open: true, type: "skillAndAddionalInfo" })
+                }
+                btnText="Edit"
+              />
+            )}
           </Flex>
           <Divider />
-
+          {true && (
+              <Box mb={5} mt={5}>
+                <Text
+                  textAlign="center"
+                  fontSize={"md"}
+                  fontWeight={500}
+                  cursor="pointer"
+                >
+                  No Skill And Additional Info are exists.
+                </Text>
+              </Box>
+            )}
         </Stack>
       </Box>
     </Flex>

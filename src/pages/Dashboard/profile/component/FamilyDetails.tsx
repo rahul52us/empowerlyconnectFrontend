@@ -45,16 +45,35 @@ const Relations = observer(({ relations, setSelectedTab, isEditable }: any) => {
       boxShadow="lg"
       p={2}
     >
-      <Flex p={{base : 1, md : 3}} justifyContent="space-between" alignItems="center">
-        <Heading as="h2" size="lg" color={textColor} fontSize={{base: "sm", md: "2xl" }}>
+      <Flex
+        p={{ base: 1, md: 3 }}
+        justifyContent="space-between"
+        alignItems="center"
+      >
+        <Heading
+          as="h2"
+          size="lg"
+          color={textColor}
+          fontSize={{ base: "sm", md: "2xl" }}
+        >
           Family Relations
         </Heading>
-        {isEditable && <CustomButton
-          onClick={() => setSelectedTab({ open: true, type: "family-details" })}
-          btnText="Edit"
-        />}
+        {isEditable && (
+          <CustomButton
+            onClick={() =>
+              setSelectedTab({ open: true, type: "family-details" })
+            }
+            btnText="Edit"
+          />
+        )}
       </Flex>
-      <Divider mt={3}/>
+      <Divider />
+      {relations?.length === 0 &&
+      <Box mb={5} mt={9}>
+      <Text textAlign="center" fontSize={"md"} fontWeight={500} cursor="pointer">
+          No Family details Exists
+        </Text>
+      </Box>}
       <Stack spacing={2} width="100%" mb={2}>
         <Flex width="100%" justifyContent="space-between" wrap="wrap">
           {relations &&
