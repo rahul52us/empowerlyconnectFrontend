@@ -30,7 +30,7 @@ const ContactForm = observer(() => {
           description: "",
         }}
         validationSchema={ContactValidation}
-        onSubmit={(values, { setSubmitting }) => {
+        onSubmit={(values, { setSubmitting , resetForm}) => {
           handleContactMail({...values})
               .then((data: any) => {
                 openNotification({
@@ -38,6 +38,7 @@ const ContactForm = observer(() => {
                   message: data.message,
                   type: "success",
                 });
+                resetForm()
               })
               .catch((error: Error) => {
                 openNotification({
