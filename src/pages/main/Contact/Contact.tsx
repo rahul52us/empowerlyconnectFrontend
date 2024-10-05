@@ -9,10 +9,8 @@ import {
 import { observer } from "mobx-react-lite";
 import { Controls, Player } from "@lottiefiles/react-lottie-player";
 import styled from "styled-components";
-
 import { MdLocationPin, MdMail } from "react-icons/md";
 import { FaPhoneAlt } from "react-icons/fa";
-
 import ContactForm from "./component/ContactForm";
 import SocialMediaLink from "../../../config/component/SocialMediaLinkContainer/SocialMediaLink";
 import LinkText from "../../../config/component/LinkText/LinkText";
@@ -27,6 +25,7 @@ const BoxStyleFirst = styled(Box)`
 `;
 
 const Contact = observer(() => {
+
   return (
     <Container maxW={"7xl"} my={{ base: 2, md: 14 }}>
       <Heading textAlign="center" fontSize={"4xl"}>

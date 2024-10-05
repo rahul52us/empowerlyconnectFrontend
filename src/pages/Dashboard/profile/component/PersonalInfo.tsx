@@ -17,6 +17,7 @@ import { CalendarIcon, InfoIcon, PhoneIcon, EmailIcon } from "@chakra-ui/icons";
 import { MdLocationOn, MdAccountCircle, MdLanguage } from "react-icons/md";
 import { BiIdCard } from "react-icons/bi";
 import CustomButton from "../../../../config/component/Button/CustomButton";
+import UserProfilePDF from "../../../../config/component/common/printUserProfile/PrintUserProfile";
 
 interface PersonalDetail {
   _id: string;
@@ -129,6 +130,7 @@ const PersonalInfo = observer(
           <Heading fontSize={{ base: "sm", md: "2xl" }} fontWeight="bold" textAlign="center">
             Personal Details
           </Heading>
+          <UserProfilePDF user={{...personalDetails[0],username : 'rahul52us@gmail.com', name : 'rahul kushwah'}}/>
           {isEditable && <CustomButton
             onClick={() =>
               setSelectedTab({ open: true, type: "profile-details" })
