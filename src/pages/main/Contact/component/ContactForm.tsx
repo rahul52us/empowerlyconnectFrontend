@@ -7,11 +7,13 @@ import { useTranslation } from "react-i18next";
 import { Form, Formik } from "formik";
 import { ContactValidation } from "../utils/validation";
 import { useState } from "react";
+import store from "../../../../store/store";
 
 const ContactForm = observer(() => {
+  const {auth : {handleContactMail, openNotification}} = store
   const [showError, setShowError] = useState(false);
-
   const { t } = useTranslation();
+
   return (
     <Box
       border="1px solid"
@@ -23,14 +25,30 @@ const ContactForm = observer(() => {
         initialValues={{
           firstName: "",
           lastName: "",
-          userName: "",
+          email: "",
           phone: "",
           description: "",
         }}
         validationSchema={ContactValidation}
         onSubmit={(values, { setSubmitting }) => {
-          console.log(values);
-          setSubmitting(false);
+          handleContactMail({...values})
+              .then((data: any) => {
+                openNotification({
+                  title: "mail has been sent",
+                  message: data.message,
+                  type: "success",
+                });
+              })
+              .catch((error: Error) => {
+                openNotification({
+                  title: "Something went wrong",
+                  message: error.message,
+                  type: "error",
+                });
+              })
+              .finally(() => {
+                setSubmitting(false);
+              });
         }}
       >
         {({
@@ -72,9 +90,9 @@ const ContactForm = observer(() => {
                 <CustomInput
                   placeholder="Enter User Name"
                   label="User Name"
-                  name="userName"
-                  error={errors.userName}
-                  value={values.userName}
+                  name="email"
+                  error={errors.email}
+                  value={values.email}
                   onChange={handleChange}
                   required
                   showError={showError}

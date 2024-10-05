@@ -170,9 +170,6 @@ const ViewTask = observer(({ task }: any) => {
             </Text>
             <Grid gridTemplateColumns={{ base: "1fr", md: "1fr 1fr" }} gap={4}>
               {fetchData.data?.assigner?.map((member: any, index: number) => {
-
-                console.log('the member are', member)
-
                 return(
                 <ParticipantCard
                   key={index}

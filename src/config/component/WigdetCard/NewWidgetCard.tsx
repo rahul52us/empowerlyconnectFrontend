@@ -46,7 +46,6 @@ const NewWidgetCard = ({
       _hover={{ transform: "scale(1.02)", shadow: "lg", bg: useColorModeValue("gray.100", "#4A5568") }} // Lighter background on hover
       transition="all 0.3s ease"
       cursor="pointer"
-      maxW="400px"
       w="full"
       borderWidth={1} // Optional: adds a border for better visual separation
       borderColor={useColorModeValue("gray.200", "gray.600")} // Border color based on theme

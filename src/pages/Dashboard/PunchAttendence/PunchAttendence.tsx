@@ -13,12 +13,10 @@ const PunchAttendance: React.FC = observer(() => {
 
   useEffect(() => {
     const today = new Date();
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
     const formatDate = (date: any) => format(date, "yyyy-MM-dd");
     getRecentPunch({
       startDate: formatDate(today),
-      endDate: formatDate(tomorrow),
+      endDate: formatDate(today),
       policy : getPolicy()
     })
       .then(() => {})

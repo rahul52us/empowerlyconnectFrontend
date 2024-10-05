@@ -14,11 +14,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
-import {
-  MdLocationOn,
-  MdEvent,
-  MdAttachMoney,
-} from "react-icons/md";
+import { MdLocationOn, MdEvent, MdAttachMoney } from "react-icons/md";
 import ShowData from "../../../../Users/component/UserDetails/component/ShowData";
 import { RiUserAddLine } from "react-icons/ri";
 import AddNewUser from "./AddNewUser";
@@ -31,7 +27,7 @@ interface TripData {
   title: string;
   description: string;
   country: string;
-  totalTripExpense:string;
+  totalTripExpense: string;
   thumbnail: {
     name: string;
     url: string;
@@ -44,7 +40,7 @@ interface TripData {
   company: string;
   companyOrg: string;
   createdAt: string;
-  attach_files:any[],
+  attach_files: any[];
   participants: Array<{
     _id: string;
     username: string;
@@ -74,8 +70,14 @@ interface TripData {
   }>;
 }
 
-const TripDetails: React.FC<{ trip: TripData,setTripData: any,userId : any }> = ({ trip, setTripData }) => {
-  const {auth :  {checkPermission}}=  store
+const TripDetails: React.FC<{
+  trip: TripData;
+  setTripData: any;
+  userId: any;
+}> = ({ trip, setTripData }) => {
+  const {
+    auth: { checkPermission },
+  } = store;
   const bgColor = useColorModeValue("white", "gray.800");
   const textColor = useColorModeValue("gray.700", "gray.200");
   const secondaryTextColor = useColorModeValue("gray.500", "gray.400");
@@ -85,9 +87,8 @@ const TripDetails: React.FC<{ trip: TripData,setTripData: any,userId : any }> = 
     type: null,
     data: null,
     open: false,
-    title : null
+    title: null,
   });
-
 
   return (
     <Box
@@ -114,13 +115,27 @@ const TripDetails: React.FC<{ trip: TripData,setTripData: any,userId : any }> = 
           boxShadow="md"
         />
         <VStack align="start" spacing={4} w="full">
-          <Flex justifyContent="space-between" width={'100%'} alignItems='center'>
-          <Text fontSize="3xl" fontWeight="bold" color={textColor} cursor='pointer'>
-            {trip.title}
-          </Text>
-          <Text fontSize="2xl" fontWeight="bold" color='blue' cursor='pointer'>
-            {trip.totalTripExpense}
-          </Text>
+          <Flex
+            justifyContent="space-between"
+            width={"100%"}
+            alignItems="center"
+          >
+            <Text
+              fontSize="3xl"
+              fontWeight="bold"
+              color={textColor}
+              cursor="pointer"
+            >
+              {trip.title}
+            </Text>
+            <Text
+              fontSize="2xl"
+              fontWeight="bold"
+              color="blue"
+              cursor="pointer"
+            >
+              {trip.totalTripExpense}
+            </Text>
           </Flex>
           <Text color={secondaryTextColor} fontSize="md">
             {trip.description}
@@ -278,17 +293,24 @@ const TripDetails: React.FC<{ trip: TripData,setTripData: any,userId : any }> = 
             <Text fontSize="2xl" fontWeight="bold" color={textColor} mb={6}>
               Participants
             </Text>
-            {checkPermission('trip','edit') && <Button
-              leftIcon={<RiUserAddLine />}
-              variant="outline"
-              size="sm"
-              rounded="full"
-              onClick={
-                () => setAddNewUser({ type: "participants", open: true, data : 'user', title: "New Member" })
-              }
-            >
-              Invite New
-            </Button>}
+            {checkPermission("trip", "edit") && (
+              <Button
+                leftIcon={<RiUserAddLine />}
+                variant="outline"
+                size="sm"
+                rounded="full"
+                onClick={() =>
+                  setAddNewUser({
+                    type: "participants",
+                    open: true,
+                    data: "user",
+                    title: "New Member",
+                  })
+                }
+              >
+                Invite New
+              </Button>
+            )}
           </Flex>
           <Grid templateColumns={{ base: "1fr", lg: "repeat(2, 1fr)" }} gap={6}>
             {trip.participants.map((participant: any) => (
@@ -302,10 +324,8 @@ const TripDetails: React.FC<{ trip: TripData,setTripData: any,userId : any }> = 
           </Grid>
         </Box>
         <Box mt={2}>
-            <ShowAttachments
-              attach_files={trip?.attach_files || []}
-            />
-          </Box>
+          <ShowAttachments attach_files={trip?.attach_files || []} />
+        </Box>
       </Stack>
       {addNewUser.open && addNewUser.data && (
         <AddNewUser
@@ -315,7 +335,14 @@ const TripDetails: React.FC<{ trip: TripData,setTripData: any,userId : any }> = 
           title={addNewUser.title}
           item={trip}
           setFetchData={setTripData}
-          close={() => setAddNewUser({ open: false, data: null, type: null, title : 'user' })}
+          close={() =>
+            setAddNewUser({
+              open: false,
+              data: null,
+              type: null,
+              title: "user",
+            })
+          }
         />
       )}
     </Box>

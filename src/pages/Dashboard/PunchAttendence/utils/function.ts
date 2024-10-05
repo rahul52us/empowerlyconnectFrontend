@@ -1,6 +1,5 @@
 import {
-  convertToReadableIST,
-  formatDate,
+  convertDateToReadable,
 } from "../../../../config/constant/dateUtils";
 
 function calculateWorkingHours(startTime: string, endTime: string) {
@@ -25,9 +24,11 @@ function calculateWorkingHours(startTime: string, endTime: string) {
 
 export const generatePunchResponse = (data: any) => {
   return data.map((item: any) => {
-    const date = formatDate(item.date);
-    const punchInTimeReadable = convertToReadableIST(item.punchInTime);
-    const punchOutTimeReadable = convertToReadableIST(item.punchOutTime);
+    let date: any = new Date(item.date);
+    const formattedDate = date.toLocaleDateString("en-CA");
+    date = formattedDate;
+    const punchInTimeReadable = convertDateToReadable(item.punchInTime);
+    const punchOutTimeReadable = convertDateToReadable(item.punchOutTime);
 
     const workingHours = calculateWorkingHours(
       item.punchInTime,

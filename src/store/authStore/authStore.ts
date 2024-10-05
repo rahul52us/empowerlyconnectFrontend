@@ -59,6 +59,7 @@ class AuthStore {
       hasComponentAccess:action,
       getPolicy:action,
       verifyAppEmail:action,
+      handleContactMail:action
     });
   }
 
@@ -174,6 +175,19 @@ class AuthStore {
       const { token, ...sendData } = value;
       const { data } = await axios.post(
         `/company/create?token=${token}`,
+        sendData
+      );
+      return data;
+    } catch (err: any) {
+      return Promise.reject(err?.response?.data || err.message);
+    }
+  };
+
+  handleContactMail = async (value: any) => {
+    try {
+      const {...sendData } = value;
+      const { data } = await axios.post(
+        `/auth/contact/mail`,
         sendData
       );
       return data;

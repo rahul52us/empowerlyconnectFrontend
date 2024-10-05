@@ -4,9 +4,9 @@ const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
 export const ContactValidation = Yup.object().shape({
-  userName: Yup.string()
-    .email("Invalid username format")
-    .required("Username is required"),
+  email: Yup.string()
+    .email("Invalid email format")
+    .required("Email is required"),
 
   firstName: Yup.string()
     .required("First Name is Required")

@@ -18,8 +18,12 @@ const AddNewUser = observer(
         .then((data) => {
           getSingleTrip({ _id: item?._id })
             .then((dt) => {
+              dt.attach_files = dt.attach_files ? dt?.attach_files?.map((it: any) => ({
+                ...it,
+                file: it.file ? [it.file] : undefined,
+              })) : []
               setFetchData({
-                data: dt,
+                data: dt
               });
               close();
             })

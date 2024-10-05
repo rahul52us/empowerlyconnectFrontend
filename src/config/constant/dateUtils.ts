@@ -31,6 +31,25 @@ export const convertToReadableIST = (isoDate : string) => {
   return formattedDate;
 };
 
+export const convertDateToReadable = (isoDate : string) => {
+  if (!isoDate) {
+    return null;
+  }
+
+  const date = new Date(isoDate);
+  if (isNaN(date.getTime())) {
+    return null;
+  }
+
+  const istDate = new Date(date.getTime());
+
+  // Formatting the date and time in IST
+  const formattedDate = istDate.toISOString().replace('T', ' ').split('.')[0];
+
+  return formattedDate;
+};
+
+
 export function formatDate(date: Date, format?: string): string {
   try
   {
