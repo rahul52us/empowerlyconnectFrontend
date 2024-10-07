@@ -8,6 +8,9 @@ import { removeDataByIndex } from "../../../../../../../config/constant/function
 import { BookValidationSchema } from "../../utils/validation";
 import { languages } from "../../utils/constant";
 import SubmitFormBtn from "../../../../../../../config/component/Button/SubmitFormBtn";
+import { useCallback, useEffect } from "react";
+import store from "../../../../../../../store/store";
+import { getStatusType } from "../../../../../../../config/constant/statusCode";
 
 const BookForm = observer(
   ({
@@ -18,6 +21,28 @@ const BookForm = observer(
     handleSubmit,
     isEdit,
   }: any) => {
+    const {bookLiberary :  {booksCategory, getAllBooksCategory}, auth : {openNotification}} = store
+
+    const fetchRecords = useCallback(
+      (page: number = 1) => {
+        getAllBooksCategory({ page, limit: 10 })
+          .then(() => {})
+          .catch((err: any) => {
+            openNotification({
+              title: "Failed to Retrieve Books Category",
+              message: err?.data?.message,
+              type: getStatusType(err.status),
+            });
+          });
+      },
+      [getAllBooksCategory, openNotification]
+    );
+
+    useEffect(() => {
+      fetchRecords(1)
+    },[])
+
+
     return (
       <Formik
         initialValues={initialValues}
@@ -96,7 +121,7 @@ const BookForm = observer(
                     placeholder="Category"
                     label="Category"
                     type="select"
-                    options={[]}
+                    options={booksCategory.data.map((it : any) => ({label : it.title, value : it._id}))}
                     onChange={(e) => setFieldValue("categories", e)}
                     value={values.categories}
                     isMulti={true}

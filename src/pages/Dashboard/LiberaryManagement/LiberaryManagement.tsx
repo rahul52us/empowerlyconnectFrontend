@@ -67,6 +67,7 @@ const BookLiberary = observer(() => {
       icon: FaBookOpen,
       colorScheme: "teal",
       description: "Total No. of Books Counts",
+      link:dashboard.liberary.books.index
     },
     {
       label: "Total Users",

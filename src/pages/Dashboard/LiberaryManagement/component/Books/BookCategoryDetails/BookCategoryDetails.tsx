@@ -13,6 +13,7 @@ import SummaryWidget from "../../../../../../config/component/WigdetCard/Summary
 import DashPageHeader from "../../../../../../config/component/common/DashPageHeader/DashPageHeader";
 import { liberaryBreadCrumb } from "../../../../utils/breadcrumb.constant";
 import BookDetailDrawer from "../BookDetailDrawers";
+import { dashboard } from "../../../../../../config/constant/routes";
 // import BookCard from "../BooksDetails/element/BookCard";
 
 const BookDetails = observer(() => {
@@ -94,6 +95,7 @@ const BookDetails = observer(() => {
       icon: FaBookReader,
       colorScheme: "teal",
       description: "Here is an description for the users",
+      link:dashboard.liberary.books.category.index
     },
     {
       label: "Total Books",
@@ -102,6 +104,7 @@ const BookDetails = observer(() => {
       icon: FaBookOpen,
       colorScheme: "teal",
       description: "Total No. of Books Counts",
+      link:dashboard.liberary.books.index
     },
     {
       label: "Total Users",
@@ -110,6 +113,7 @@ const BookDetails = observer(() => {
       icon: FaPersonCircleQuestion,
       colorScheme: "teal",
       description: "Here is an description for the users",
+      link:dashboard.liberary.books.users
     },
   ];
 
@@ -129,6 +133,7 @@ const BookDetails = observer(() => {
             colorScheme={data.colorScheme}
             description={data.description}
             loading={data.loading}
+            link={data.link}
           />
         ))}
       </SimpleGrid>

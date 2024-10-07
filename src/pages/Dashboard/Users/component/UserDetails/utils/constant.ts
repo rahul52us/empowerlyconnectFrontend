@@ -5,7 +5,7 @@ import { transformPermissionsForForm } from "./function";
 
 export const defaultPermissions: any = {
   adminAccess:{add : false},
-  dashboard: { view: false },
+  dashboard: { view: true },
   user: { add: false, edit: false, delete: false, view: false },
   personalProfile : { edit: false, delete: false, view: true },
   trip: { add: false, edit: false, view: true, delete: false },
