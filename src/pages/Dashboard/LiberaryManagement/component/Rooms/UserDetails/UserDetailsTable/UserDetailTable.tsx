@@ -123,13 +123,13 @@ const UserDetailsTable = observer(() => {
       },
     },
     {
-      headerName: "Pic",
+      headerName: "Picss",
       key: "designation",
       type: "component",
       metaData: {
         component: (dt: any) => (
           <Box m={1}>
-            <Avatar src={dt?.pic?.url || undefined} name={dt?.name} />
+            <Avatar src={dt?.pic?.url || undefined} name={dt?.name} size={'sm'} />
           </Box>
         ),
       },

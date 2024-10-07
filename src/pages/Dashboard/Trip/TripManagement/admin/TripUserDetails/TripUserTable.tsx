@@ -11,7 +11,11 @@ import CustomDrawer from "../../../../../../config/component/Drawer/CustomDrawer
 import TripUserDetail from "../../user/TripUserDetail";
 
 const TripUsersTable = observer(() => {
-  const [viewDetails, setViewDetails] = useState<any>({open : false, type : 'view', data : null})
+  const [viewDetails, setViewDetails] = useState<any>({
+    open: false,
+    type: "view",
+    data: null,
+  });
   const { getQueryParam, setQueryParam } = useQueryParams();
   const [currentPage, setCurrentPage] = useState(() =>
     getQueryParam("page") ? Number(getQueryParam("page")) : 1
@@ -117,7 +121,11 @@ const TripUsersTable = observer(() => {
       metaData: {
         component: (dt: any) => (
           <Box m={1}>
-            <Avatar src={dt?.pic?.url || undefined} name={dt?.name} />
+            <Avatar
+              src={dt?.pic?.url || undefined}
+              name={dt?.name}
+              size={"sm"}
+            />
           </Box>
         ),
       },
@@ -168,93 +176,101 @@ const TripUsersTable = observer(() => {
 
   return (
     <>
-    <Box>
-      <CustomTable
-        cells={true}
-        actions={{
-          search: {
-            show: true,
-            placeholder: "Search by code and username",
-            searchValue: searchQuery,
-            onSearchChange: (e: any) => setSearchQuery(e.target.value),
-          },
-          applyFilter: {
-            show: true,
-            function: () => applyGetAllUsers({ page: currentPage }),
-          },
-          resetData: {
-            show: true,
-            text: "Reset Data",
-            function: () => resetTableData(),
-          },
-          actionBtn: {
-            addKey: {
-              showAddButton: true,
-              function: () => {
-                alert("This is new");
+      <Box>
+        <CustomTable
+          cells={true}
+          actions={{
+            search: {
+              show: true,
+              placeholder: "Search by code and username",
+              searchValue: searchQuery,
+              onSearchChange: (e: any) => setSearchQuery(e.target.value),
+            },
+            applyFilter: {
+              show: true,
+              function: () => applyGetAllUsers({ page: currentPage }),
+            },
+            resetData: {
+              show: true,
+              text: "Reset Data",
+              function: () => resetTableData(),
+            },
+            actionBtn: {
+              addKey: {
+                showAddButton: true,
+                function: () => {
+                  alert("This is new");
+                },
+              },
+              editKey: {
+                showEditButton: false,
+                function: () => {
+                  alert("alert");
+                },
+              },
+              viewKey: {
+                showViewButton: true,
+                function: (e: any) => {
+                  setViewDetails({ type: "view", open: true, data: e });
+                },
+              },
+              deleteKey: {
+                showDeleteButton: false,
+                function: (dt: string) => {
+                  alert(dt);
+                },
               },
             },
-            editKey: {
-              showEditButton: false,
-              function: () => {
-                alert("alert");
+            pagination: {
+              show: true,
+              onClick: handleChangePage,
+              currentPage: currentPage,
+              totalPages: Users.totalPages,
+            },
+            datePicker: {
+              show: true,
+              isMobile: true,
+              date: {
+                startDate: date.startDate,
+                endDate: date.endDate,
+              },
+              onDateChange: (e: string, type: string) => onDateChange(e, type),
+            },
+            multidropdown: {
+              show: true,
+              title: "Apply Filters",
+              placeholder: "Apply Filters",
+              // search: {
+              //   searchValue: searchQuery,
+              //   visible: true,
+              //   placeholder: "Search Value here",
+              //   onSearchChange: (e: any) => setSearchQuery(e),
+              // },
+              onApply: () => applyGetAllUsers({}),
+              selectedOptions: selectedOptions,
+              onDropdownChange: (value: any, label: string) => {
+                setSelectedOptions((prev: any) => ({
+                  ...prev,
+                  [label]: value,
+                }));
               },
             },
-            viewKey: {
-              showViewButton: true,
-              function: (e : any) => {
-                setViewDetails({type : 'view', open : true, data : e })
-              },
-            },
-            deleteKey: {
-              showDeleteButton: false,
-              function: (dt: string) => {
-                alert(dt);
-              },
-            },
-          },
-          pagination: {
-            show: true,
-            onClick: handleChangePage,
-            currentPage: currentPage,
-            totalPages: Users.totalPages,
-          },
-          datePicker: {
-            show: true,
-            isMobile: true,
-            date: {
-              startDate: date.startDate,
-              endDate: date.endDate,
-            },
-            onDateChange: (e: string, type: string) => onDateChange(e, type),
-          },
-          multidropdown: {
-            show: true,
-            title: "Apply Filters",
-            placeholder: "Apply Filters",
-            // search: {
-            //   searchValue: searchQuery,
-            //   visible: true,
-            //   placeholder: "Search Value here",
-            //   onSearchChange: (e: any) => setSearchQuery(e),
-            // },
-            onApply: () => applyGetAllUsers({}),
-            selectedOptions: selectedOptions,
-            onDropdownChange: (value: any, label: string) => {
-              setSelectedOptions((prev: any) => ({ ...prev, [label]: value }));
-            },
-          },
-        }}
-        title="Users Details"
-        data={generateTableData(Users.data)}
-        columns={UserTableColumns}
-        loading={Users.loading}
-        serial={{ show: false, text: "S.No.", width: "10px" }}
-      />
-    </Box>
-    <CustomDrawer width={'95%'} title="User Details" open={viewDetails.open} close={() => setViewDetails({open : false, type : 'view', data : null})}>
-        <TripUserDetail userId={viewDetails?.data?._id} isDrawer={true}/>
-    </CustomDrawer>
+          }}
+          title="Users Details"
+          data={generateTableData(Users.data)}
+          columns={UserTableColumns}
+          loading={Users.loading}
+          serial={{ show: false, text: "S.No.", width: "10px" }}
+        />
+      </Box>
+      <CustomDrawer
+        width={"95%"}
+        title="User Details"
+        open={viewDetails.open}
+        close={() => setViewDetails({ open: false, type: "view", data: null })}
+      >
+        <TripUserDetail userId={viewDetails?.data?._id} isDrawer={true} />
+      </CustomDrawer>
     </>
   );
 });

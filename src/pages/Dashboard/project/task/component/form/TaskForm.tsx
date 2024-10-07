@@ -237,13 +237,13 @@ const TaskForm = observer(
                       <FieldArray name="assigner">
                         {({ push, remove }) => (
                           <Box>
-                            {values.assigner.length > 0 ? (
+                            {values?.assigner?.length > 0 ? (
                               <Grid
                                 templateColumns={{ base: "1fr", md: "1fr 1fr" }}
                                 gap={4}
                                 mb={4}
                               >
-                                {values.assigner.map(
+                                {values?.assigner.map(
                                   (user: any, index: number) => (
                                     <Box
                                       key={index}

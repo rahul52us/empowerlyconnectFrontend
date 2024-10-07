@@ -27,7 +27,7 @@ const UserDetailsTable = observer(() => {
   const debouncedSearchQuery = useDebounce(searchQuery, 1000);
   const [date, setDate] = useState<any>({
     startDate: new Date(),
-    endDate: new Date()
+    endDate: new Date(),
   });
 
   const [UsereId, setUsereId] = useState<any>();
@@ -91,7 +91,6 @@ const UserDetailsTable = observer(() => {
     setQueryParam("page", page);
   };
 
-
   const resetTableData = () => {
     setCurrentPage(1);
     setPageLimit(tablePageLimit);
@@ -129,9 +128,13 @@ const UserDetailsTable = observer(() => {
       key: "designation",
       type: "component",
       metaData: {
-        component: (dt : any) => (
+        component: (dt: any) => (
           <Box m={1}>
-            <Avatar src={dt?.pic?.url || undefined} name={dt?.name}/>
+            <Avatar
+              src={dt?.pic?.url || undefined}
+              name={dt?.name}
+              size={"sm"}
+            />
           </Box>
         ),
       },
@@ -279,8 +282,13 @@ const UserDetailsTable = observer(() => {
         serial={{ show: false, text: "S.No.", width: "10px" }}
       />
 
-      <CustomDrawer title="profile details" open={isOpen} close={onClose} width={'95vw'}>
-        {isOpen && UsereId && <ProfileIndex userId={UsereId}/>}
+      <CustomDrawer
+        title="profile details"
+        open={isOpen}
+        close={onClose}
+        width={"95vw"}
+      >
+        {isOpen && UsereId && <ProfileIndex userId={UsereId} />}
       </CustomDrawer>
     </Box>
   );

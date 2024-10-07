@@ -85,6 +85,7 @@ const TaskCard = ({ task, setActiveSelectedTask }: any) => {
       <Box
         p={4}
         boxShadow="lg"
+        borderWidth={1}
         borderRadius="xl"
         borderColor={borderColor}
         bg={bgColor}

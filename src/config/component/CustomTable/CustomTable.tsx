@@ -425,10 +425,12 @@ const CustomTable: React.FC<CustomTableProps> = ({
   const titleColor = useColorModeValue("blue.500", "white");
 
   const boxBorder = useColorModeValue("gray.200", "gray.700");
+  const mainBox = useColorModeValue("white", "gray.900");
+  
   return (
     <Box
       rounded={12}
-      // p={4}
+      bg={mainBox}
       boxShadow="rgb(0 0 0 / 20%) 0px 0px 8px"
       border={"1px solid"}
       borderColor={boxBorder}
@@ -437,8 +439,6 @@ const CustomTable: React.FC<CustomTableProps> = ({
         justifyContent="space-between"
         alignItems="center"
         p={title ? 3 : 0}
-        // borderRadius="md"
-        // columnGap={2}
       >
         {title ? (
           <Heading color={titleColor} fontSize={isMobile ? "sm" : "xl"}>
@@ -551,67 +551,9 @@ const CustomTable: React.FC<CustomTableProps> = ({
         minH={"65vh"}
         maxH={"65vh"}
         rounded={2}
+        px={2}
         {...tableProps.tableBox}
       >
-        {/* <Table size={isMobile ? "xs" : "xs"} {...tableProps.table}>
-          <Thead
-            bg="gray.700"
-            position="sticky"
-            top="0"
-            zIndex="9"
-            height="50px"
-          >
-            <Tr>
-              {serial?.show && (
-                <Th color="white" w={serial?.width || undefined}>
-                  {serial?.text || "S.No."}
-                </Th>
-              )}
-              {columns.map((column, colIndex) => (
-                <Th
-                  key={colIndex}
-                  textAlign="center"
-                  {...column?.props?.column}
-                  position={column?.props?.isSticky ? "sticky" : "relative"}
-                  right={column?.props?.isSticky ? "0" : undefined}
-                  bg={headerBg}
-                  fontSize="xs"
-                  color={"white"}
-                  {...cellProps}
-                >
-                  {column.headerName}
-                </Th>
-              ))}
-            </Tr>
-          </Thead>
-          <TableLoader loader={loading} show={data.length}>
-            <Tbody overflowY="auto" bg={bodyBg}>
-              {data.map((row, rowIndex) => (
-                <Tr key={rowIndex}>
-                  {serial?.show && (
-                    <Td
-                      fontWeight="bold"
-                      w={serial?.width || undefined}
-                      border={cells ? "1px solid gray" : undefined}
-                      p={0}
-                    >
-                      {rowIndex + 1}
-                    </Td>
-                  )}
-                  {columns.map((column, colIndex) => (
-                    <GenerateRows
-                      key={colIndex}
-                      column={column}
-                      row={row}
-                      action={actions}
-                      cells={cells}
-                    />
-                  ))}
-                </Tr>
-              ))}
-            </Tbody>
-          </TableLoader>
-        </Table> */}
         <Table
           size={isMobile ? "xs" : "sm"}
           variant="striped"
@@ -662,7 +604,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
           </Thead>
 
           <TableLoader loader={loading} show={data.length}>
-            <Tbody>
+            <Tbody >
               {data.map((row, rowIndex) => (
                 <Tr
                   key={rowIndex}
