@@ -63,7 +63,7 @@ const Documents = observer(({ setSelectedTab, isEditable, userDetails }: any) =>
                 )
                })}
             </Grid>
-            : <Text textAlign="center">No Document exists</Text>
+            : <Text textAlign="center" fontWeight={500}>No Document exists</Text>
           }
         </Stack>
       </Box>
