@@ -125,8 +125,8 @@ export const main = {
   individualHomeCompany: "/:individualCompany",
   ecommerce: {
     products: "/ecommerce/products",
-
   },
+  school:"/school"
 };
 
 export const privateMain = {

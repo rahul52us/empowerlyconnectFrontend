@@ -126,6 +126,7 @@ const Footer = observer(() => {
               />
               <LinkText text="Videos" clickEvent={() => navigate(main.video)} />
               <LinkText text="E-commerce" clickEvent={() => navigate(main.ecommerce.products)} />
+              <LinkText text="School" clickEvent={() => navigate(main.school)} />
             </VStack>
           </Box>
 
