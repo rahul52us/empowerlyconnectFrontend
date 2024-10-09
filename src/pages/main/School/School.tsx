@@ -1,9 +1,9 @@
 import { Box } from "@chakra-ui/react"
-import HeroSection from "./HeroSection/HeroSection"
+import Contact from "../Contact/Contact"
 import AboutSection from "./AboutSection/AboutSection"
-import PrincipalSection from "./PrincipalSection/PrincipalSection"
 import GallerySection from "./GallerySection/GallerySection"
-import ContactSection from "./ContactUs/ContactUs"
+import HeroSection from "./HeroSection/HeroSection"
+import PrincipalSection from "./PrincipalSection/PrincipalSection"
 
 const School = () => {
   return (
@@ -16,7 +16,8 @@ const School = () => {
       {/* <CoursesSection /> */}
       {/* <DepartmentsSection /> */}
       {/* <FeeStructure /> */}
-      <ContactSection />
+    
+      <Contact/>
       
     </Box>
   )
