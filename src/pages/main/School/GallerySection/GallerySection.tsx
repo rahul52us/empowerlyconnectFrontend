@@ -12,20 +12,23 @@ import "slick-carousel/slick/slick-theme.css";
 import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 import { useRef } from "react";
 
-export default function GallerySection() {
+// Define prop types for the component
+interface GallerySectionProps {
+  images: string[]; // Expecting an array of image URLs
+}
+
+export default function GallerySection({ images }: GallerySectionProps) {
   const sliderRef: any = useRef(null);
 
   const settings = {
     className: "center",
     centerMode: true,
     infinite: true,
-    // centerPadding: "10px",
     slidesToShow: 3,
     speed: 500,
     rows: 2, // Display 2 rows of images
     slidesPerRow: 1, // Number of slides per row
   };
-  
 
   return (
     <Box id="gallery" py={16} bg="white">
@@ -34,33 +37,23 @@ export default function GallerySection() {
           School Gallery
         </Heading>
 
-        {/* Slick Slider */}
         <Slider ref={sliderRef} {...settings}>
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14].map((i) => (
-            <Box key={i} p={4}>
+          {images.map((src, index) => (
+            <Box key={index} p={2}>
               <Image
-                src={
-                  "https://images.pexels.com/photos/11366728/pexels-photo-11366728.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                }
+                src={src}
                 rounded={8}
-                objectFit={"contain"}
-                // h={300}
-                // w={500}
-
-                alt={`School image ${i}`}
-
-                // style={{
-                //   width: "100%",
-                //   height: ,
-                //   borderRadius: "8px",
-                //   objectFit: "cover",
-                // }}
+                objectFit={"cover"} // Change to 'cover' for better fit
+                alt={`Gallery image ${index + 1}`}
+                width="100%" // Ensure width takes full space
+                height="auto" // Maintain aspect ratio
+                maxH={"275"}
+                display="block" // Ensures no extra space on sides
               />
             </Box>
           ))}
         </Slider>
 
-        {/* Navigation Buttons */}
         <Stack direction="row" justifyContent="center" mt={4} spacing={4}>
           <IconButton
             aria-label="Previous"
