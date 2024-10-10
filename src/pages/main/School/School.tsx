@@ -3,8 +3,9 @@ import Contact from "../Contact/Contact";
 import AboutSection from "./AboutSection/AboutSection";
 import GallerySection from "./GallerySection/GallerySection";
 // import HeroSection from "./HeroSection/HeroSection";
-import PrincipalSection from "./PrincipalSection/PrincipalSection";
 import HeroCarousal from "./HeroCarousal/HeroCarousal";
+import PrincipalSection from "./PrincipalSection/PrincipalSection";
+import TopperSlider from "./ToppersCard/TopperSlider";
 
 const imageUrls = [
   "https://images.pexels.com/photos/11366728/pexels-photo-11366728.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
@@ -47,8 +48,17 @@ const School = () => {
       <HeroCarousal cards={cards} />
 
       <AboutSection />
+
+      <TopperSlider/>
+{/* <Grid templateColumns={'1fr 1fr 1fr'} m={20}>
+
+      <ToppersCard/>
+</Grid> */}
       <PrincipalSection />
+      <Box my={4}>
+
       <GallerySection images={imageUrls} />
+      </Box>
 
       {/* <CoursesSection /> */}
       {/* <DepartmentsSection /> */}
