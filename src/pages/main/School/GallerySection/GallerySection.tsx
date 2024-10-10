@@ -12,7 +12,6 @@ import "slick-carousel/slick/slick-theme.css";
 import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 import { useRef } from "react";
 
-// Define prop types for the component
 interface GallerySectionProps {
   images: string[]; // Expecting an array of image URLs
 }
@@ -24,17 +23,41 @@ export default function GallerySection({ images }: GallerySectionProps) {
     className: "center",
     centerMode: true,
     infinite: true,
-    slidesToShow: 3,
     speed: 500,
-    rows: 2, // Display 2 rows of images
-    slidesPerRow: 1, // Number of slides per row
+    slidesToShow: 3,
+    rows: 2,
+    slidesPerRow: 1,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          rows: 2,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 2,
+          rows: 1,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          rows: 1,
+          centerMode: false,
+        },
+      },
+    ],
   };
 
   return (
-    <Box id="gallery" py={16} bg="white">
-      <Container maxW="container.xl">
+    <Box id="gallery" py={{ base: 8, md: 16 }} bg="white">
+      <Container maxW="container.xl" px={{ base: 4, md: 8 }}>
         <Heading as="h2" size="xl" textAlign="center" mb={8}>
-          School Gallery
+            Gallery
         </Heading>
 
         <Slider ref={sliderRef} {...settings}>
@@ -43,12 +66,12 @@ export default function GallerySection({ images }: GallerySectionProps) {
               <Image
                 src={src}
                 rounded={8}
-                objectFit={"cover"} // Change to 'cover' for better fit
+                objectFit="cover"
                 alt={`Gallery image ${index + 1}`}
-                width="100%" // Ensure width takes full space
-                height="auto" // Maintain aspect ratio
-                maxH={"275"}
-                display="block" // Ensures no extra space on sides
+                width="100%"
+                height="auto"
+                maxH={{ base: "150px", md: "275px" }}
+                display="block"
               />
             </Box>
           ))}
