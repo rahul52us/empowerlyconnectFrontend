@@ -8,7 +8,7 @@ import IndividualProductPage from "../IndividualProductPage/IndividualProductPag
 // import Phone from '../assets/phone.png'
 import ProductData from "../IndividualProductPage/dummyData.json";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import ProductReviewCard from "../IndividualProductPage/ReviewComponent/ReviewComponent";
 import RatingPerReview from "../IndividualProductPage/ReviewComponent/RatingPerReview";
@@ -16,7 +16,7 @@ import ReviewInsights from "../IndividualProductPage/ReviewInsight/ReviewInsight
 
 const EcomHomePage = () => {
   const [data, setData] = useState<any>({});
-  const options = {
+  const [options] = useState({
     method: "GET",
     url: "https://real-time-product-search.p.rapidapi.com/search",
     params: {
@@ -33,19 +33,20 @@ const EcomHomePage = () => {
       "x-rapidapi-key": "d4c4126cb1mshddd553eb7fe95bap1bdf13jsn19c6b312de3f",
       "x-rapidapi-host": "real-time-product-search.p.rapidapi.com",
     },
-  };
-  const getData = async (data: any) => {
+  });
+
+  const getData = useCallback(async (data: any) => {
     try {
       const response = await axios.request(data);
       setData(response?.data?.data);
     } catch (error) {
       console.error(error);
     }
-  };
+  }, []);
 
   useEffect(() => {
     getData(options);
-  }, []);
+  }, [getData, options]);
 
   console.log("data", data);
 
@@ -62,7 +63,7 @@ const EcomHomePage = () => {
         />
         </Box>
         <Flex gap={4}>
-          
+
         <VerticalCard
         imageSrc={Heels}
         altText="Heels"
@@ -79,11 +80,10 @@ const EcomHomePage = () => {
         </Flex>
         </Grid>  */}
       <IndividualProductPage productData={ProductData} />
-      <Grid templateColumns={'1fr 1fr'} gap={4} mt={4}>
-
-      {ProductData?.reviews.map((review: any) => (
-        <ProductReviewCard review={review} />
-      ))}
+      <Grid templateColumns={"1fr 1fr"} gap={4} mt={4}>
+        {ProductData?.reviews.map((review: any) => (
+          <ProductReviewCard review={review} />
+        ))}
       </Grid>
       {data?.products?.length > 0 && data && (
         <Grid templateColumns={"1fr 1fr 1fr 1fr"} gap={4}>
@@ -95,7 +95,9 @@ const EcomHomePage = () => {
 
       <Box>
         {/* <Text fontSize="2xl" mb={4}>Rating Breakdown</Text> */}
-        <RatingPerReview ratings={ProductData?.reviews_summary.reviews_per_rating} />
+        <RatingPerReview
+          ratings={ProductData?.reviews_summary.reviews_per_rating}
+        />
       </Box>
       {/* <ProductCard product={data} /> */}
       <Box>

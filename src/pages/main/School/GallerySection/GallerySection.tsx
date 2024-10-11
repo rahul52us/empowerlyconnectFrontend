@@ -76,7 +76,6 @@ export default function GallerySection({ images }: GallerySectionProps) {
             </Box>
           ))}
         </Slider>
-
         <Stack direction="row" justifyContent="center" mt={4} spacing={4}>
           <IconButton
             aria-label="Previous"

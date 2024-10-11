@@ -15,7 +15,7 @@ import axios from "axios";
 import { FaRegComments, FaStar } from "react-icons/fa";
 import { FaOpencart } from "react-icons/fa6";
 import Slider from "react-slick";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import PriceDisplay from "./PriceDisplay/PriceDisplay";
@@ -23,16 +23,7 @@ import ProductSpecification from "./ProductSpecification/ProductSpecification";
 
 const IndividualProductPage = ({ productData }: any) => {
   const [mainImage, setMainImage] = useState(productData?.images[0]);
-
-  const settings = {
-    vertical: true,
-    infinite: false,
-    slidesToShow: 4,
-    slidesToScroll: 1,
-    arrows: false,
-  };
-
-  const options = {
+  const [options] = useState({
     method: "GET",
     url: "https://real-time-product-search.p.rapidapi.com/product-details",
     params: {
@@ -44,26 +35,34 @@ const IndividualProductPage = ({ productData }: any) => {
       "x-rapidapi-key": "d4c4126cb1mshddd553eb7fe95bap1bdf13jsn19c6b312de3f",
       "x-rapidapi-host": "real-time-product-search.p.rapidapi.com",
     },
+  })
+
+  const settings = {
+    vertical: true,
+    infinite: false,
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    arrows: false,
   };
-  const getDetails = async () => {
+
+  const getDetails = useCallback(async() => {
     try {
-      const response = await axios.request(options);
-      console.log(response.data);
+      await axios.request(options);
     } catch (error) {
       console.error(error);
     }
-  };
+  },[options]);
 
   useEffect(() => {
     getDetails();
-  }, []);
+  }, [getDetails]);
 
   return (
-    <Box>
+    productData ? <Box>
       <Grid templateColumns={"1fr 3fr 4fr"} gap={4} mb={4}>
         <Box>
           <Slider {...settings}>
-            {productData.images.map((img: any, index: any) => (
+            {productData?.images && productData.images.map((img: any, index: any) => (
               <Box
                 key={index}
                 onClick={() => setMainImage(img)}
@@ -209,7 +208,7 @@ const IndividualProductPage = ({ productData }: any) => {
       <ProductSpecification
         productSpecifications={productData?.product_specifications}
       />
-    </Box>
+    </Box> : null
   );
 };
 
