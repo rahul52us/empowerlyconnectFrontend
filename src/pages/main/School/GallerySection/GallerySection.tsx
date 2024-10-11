@@ -13,7 +13,7 @@ import {
   ModalOverlay,
   Stack,
 } from "@chakra-ui/react";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
@@ -70,35 +70,35 @@ export default function GallerySection({ images }: GallerySectionProps) {
     setIsOpen(false);
   };
 
-  const goToPrevious = () => {
+  const goToPrevious = useCallback(() => {
     setCurrentImageIndex((prevIndex) =>
       prevIndex === 0 ? images.length - 1 : prevIndex - 1
     );
-  };
+  },[images]);
 
-  const goToNext = () => {
+  const goToNext = useCallback(() => {
     setCurrentImageIndex((prevIndex) =>
       prevIndex === images.length - 1 ? 0 : prevIndex + 1
     );
-  };
+  },[images]);
 
-  useEffect(() => {  
-    const handleKeyDown = (event: KeyboardEvent) => {  
-      if (event.key === "ArrowLeft") {  
-        goToPrevious();  
-      } else if (event.key === "ArrowRight") {  
-        goToNext();  
-      }  
-    };  
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "ArrowLeft") {
+        goToPrevious();
+      } else if (event.key === "ArrowRight") {
+        goToNext();
+      }
+    };
 
-    if (isOpen) {  
-      window.addEventListener("keydown", handleKeyDown);  
-    }  
+    if (isOpen) {
+      window.addEventListener("keydown", handleKeyDown);
+    }
 
-    return () => {  
-      window.removeEventListener("keydown", handleKeyDown);  
-    };  
-  }, [isOpen, currentImageIndex]);  
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen, currentImageIndex, goToNext, goToPrevious]);
 
   return (
     <Box id="gallery" py={{ base: 8, md: 16 }} bg="white">
