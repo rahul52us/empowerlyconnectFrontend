@@ -15,12 +15,18 @@ import { useState } from "react";
 import { FaBars } from "react-icons/fa";
 import Logo from "./school_logo.png";
 
-const Navbar = () => {
+const Navbar = ({
+  scrollToSection,
+}: {
+  scrollToSection: (section: string) => void;
+}) => {
   const [activeLink, setActiveLink] = useState("Home");
 
   const handleLinkClick = (link: string) => {
     setActiveLink(link);
+    scrollToSection(link); // Trigger scroll to section
   };
+
   return (
     <Flex
       as="nav"
@@ -39,7 +45,7 @@ const Navbar = () => {
       <Image src={Logo} alt="School logo" objectFit="contain" h="4rem" />
 
       <Flex gap={12} display={{ base: "none", md: "flex" }} fontWeight={500}>
-        {["Home", "About", "Admissions", "Events", "Contact Us"].map((link) => (
+        {["Home", "About", "Admissions", "Gallery", "Contact Us"].map((link) => (
           <Link
             key={link}
             fontSize="lg"
@@ -59,8 +65,7 @@ const Navbar = () => {
             fontWeight={500}
             color={activeLink === "Academics" ? "blue.600" : "gray.600"}
             _hover={{ color: "blue.600", cursor: "pointer" }}
-            onClick={() => handleLinkClick("Academics")}
-            // icon={<ChevronDownIcon />}
+            // onClick={() => handleLinkClick("Academics")}
           >
             Academics
           </MenuButton>
@@ -71,7 +76,10 @@ const Navbar = () => {
             <MenuItem onClick={() => handleLinkClick("Programs")}>
               Programs
             </MenuItem>
-            <MenuItem onClick={() => handleLinkClick("Faculty")}>
+            <MenuItem onClick={() => handleLinkClick("Principal")}>
+              Principal
+            </MenuItem>
+            <MenuItem onClick={() => handleLinkClick("Teachers")}>
               Faculty
             </MenuItem>
           </MenuList>
