@@ -8,6 +8,7 @@ import Navbar from "./Navbar/Navbar";
 import PrincipalSection from "./PrincipalSection/PrincipalSection";
 import TopperSlider from "./ToppersCard/TopperSlider";
 import TeacherCard from "./TeacherCard/TeacherCard";
+import MapSection from "./MapSection/MapSection";
 
 const imageUrls = [
   "https://images.pexels.com/photos/11366728/pexels-photo-11366728.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
@@ -98,6 +99,7 @@ const School = () => {
       </Box>
 
       <Contact />
+      <MapSection/>
     </Box>
   );
 };
