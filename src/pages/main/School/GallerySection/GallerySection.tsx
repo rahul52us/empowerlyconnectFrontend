@@ -119,6 +119,7 @@ export default function GallerySection({ images }: GallerySectionProps) {
                 height="auto"
                 maxH={{ base: "150px", md: "275px" }}
                 display="block"
+                cursor="pointer"
               />
             </Box>
           ))}
