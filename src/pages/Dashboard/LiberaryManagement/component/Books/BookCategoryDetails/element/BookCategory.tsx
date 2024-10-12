@@ -72,7 +72,7 @@ const BookCategory = observer(({ item, onClick }: any) => {
         </Text>
         <Flex justify="space-between">
           <Text fontWeight="bold">Books Available: {item.bookCount}</Text>
-          {checkPermission('bookCategory','add') && <Button
+          {checkPermission('books','add') && <Button
             size="sm"
             colorScheme="teal"
             variant="solid"

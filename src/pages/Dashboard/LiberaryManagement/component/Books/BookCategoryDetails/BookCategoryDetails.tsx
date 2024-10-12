@@ -11,12 +11,15 @@ import { FaBookOpen, FaBookReader, FaPlus } from "react-icons/fa";
 import BookCategory from "./element/BookCategory";
 import SummaryWidget from "../../../../../../config/component/WigdetCard/SummaryWidget";
 import DashPageHeader from "../../../../../../config/component/common/DashPageHeader/DashPageHeader";
-import { liberaryBreadCrumb } from "../../../../utils/breadcrumb.constant";
+import { booksBreadCrumb } from "../../../../utils/breadcrumb.constant";
 import BookDetailDrawer from "../BookDetailDrawers";
 import { dashboard } from "../../../../../../config/constant/routes";
+import PermissionDeniedPage from "../../../../../../config/component/commonPages/PermissionDeniedPage";
+import { useNavigate } from "react-router-dom";
 // import BookCard from "../BooksDetails/element/BookCard";
 
 const BookDetails = observer(() => {
+  const navigate = useNavigate()
   const {
     auth: { openNotification, checkPermission },
     bookLiberary: {
@@ -118,10 +121,14 @@ const BookDetails = observer(() => {
   ];
 
   return (
+    <PermissionDeniedPage
+        show={!checkPermission("bookCategory", "view")}
+        onClick={() => navigate(dashboard.home)}
+      >
     <Box px={{ base: 2, md: 4 }}>
       <DashPageHeader
         title="Dashboard"
-        breadcrumb={liberaryBreadCrumb.liberary}
+        breadcrumb={booksBreadCrumb.category}
       />
       <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6} mb={6}>
         {summaryData.map((data, index) => (
@@ -195,6 +202,7 @@ const BookDetails = observer(() => {
       </Flex>
       <BookDetailDrawer fetchRecords={fetchRecords} />
     </Box>
+    </PermissionDeniedPage>
   );
 });
 

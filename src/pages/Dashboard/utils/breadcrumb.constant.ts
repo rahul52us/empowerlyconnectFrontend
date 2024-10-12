@@ -139,11 +139,23 @@ const attendenceBreadCrumb = {
 
 
 const liberaryBreadCrumb = {
-
   liberary: [
     { label: "Home", link: "/" },
     { label: "Dashboard", link: dashboard.home },
     { label: "Liberay" },
+  ]
+};
+
+const booksBreadCrumb = {
+  index: [
+    { label: "Home", link: "/" },
+    { label: "Dashboard", link: dashboard.home },
+    { label: "Books" },
+  ],
+  category : [
+    { label: "Home", link: "/" },
+    { label: "Dashboard", link: dashboard.home },
+    { label: "Books Category" },
   ]
 };
 
@@ -160,5 +172,6 @@ export {
   attendenceBreadCrumb,
   projectBreadCrumb,
   liberaryBreadCrumb,
-  dashProfileBreadCrumb
+  dashProfileBreadCrumb,
+  booksBreadCrumb
 };

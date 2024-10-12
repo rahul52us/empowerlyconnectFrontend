@@ -1,26 +1,63 @@
 import { Box, Heading, SimpleGrid, Flex, Icon, Button } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useEffect, useState, useCallback } from "react";
-import { FaBook } from "react-icons/fa6";
+import { FaBook, FaPersonCircleQuestion } from "react-icons/fa6";
 import MainPagePagination from "../../../../../../config/component/pagination/MainPagePagination";
 import { getStatusType } from "../../../../../../config/constant/statusCode";
 import store from "../../../../../../store/store";
 import BookCard from "./element/BookCard";
 import NotFoundData from "../../../../../../config/component/commonPages/NotFoundData";
 import { useQueryParams } from "../../../../../../config/component/customHooks/useQuery";
-import { FaPlus } from "react-icons/fa";
+import { FaBookOpen, FaBookReader, FaPlus } from "react-icons/fa";
 import BookDetailDrawer from "../BookDetailDrawers";
+import SummaryWidget from "../../../../../../config/component/WigdetCard/SummaryWidget";
+import { dashboard } from "../../../../../../config/constant/routes";
 
 const BookDetails = observer(() => {
   const {
-    auth: { openNotification, checkPermission },
     bookLiberary: {
+      getBooksCounts,
+      booksCounts,
+      bookCategoryCount,
+      bookUsersCount,
+      getBooksCategoryCounts,
+      getBookUsersCounts,
       getAllBooks,
       booksData,
       handleBookForm,
-      handleBookCategoryForm,
+      handleBookCategoryForm
     },
+    auth: { openNotification, checkPermission },
   } = store;
+
+  const fetchData = (getDataFn: any) =>
+    new Promise((resolve, reject) => {
+      getDataFn().then(resolve).catch(reject);
+    });
+
+  useEffect(() => {
+    Promise.all([
+      fetchData(getBooksCounts),
+      fetchData(getBooksCategoryCounts),
+      fetchData(getBookUsersCounts),
+    ])
+      .then(() => {})
+      .catch((err: any) => {
+        openNotification({
+          title: "Failed to Retrieve Counts",
+          message: err?.data?.message,
+          type: getStatusType(err.status),
+        });
+      });
+  }, [
+    openNotification,
+    getBooksCounts,
+    getBooksCategoryCounts,
+    getBookUsersCounts
+  ]);
+
+
+
 
   const { getQueryParam, setQueryParam } = useQueryParams();
   const [currentPage, setCurrentPage] = useState(() =>
@@ -51,8 +88,51 @@ const BookDetails = observer(() => {
     setQueryParam("page", page.selected);
   };
 
+  const summaryData = [
+    {
+      label: "Books Category",
+      value: bookCategoryCount.data,
+      loading: bookCategoryCount.loading,
+      icon: FaBookReader,
+      colorScheme: "teal",
+      description: "Here is an description for the users",
+      link:dashboard.liberary.books.category.index
+    },
+    {
+      label: "Total Books",
+      value: booksCounts.data,
+      loading: booksCounts.loading,
+      icon: FaBookOpen,
+      colorScheme: "teal",
+      description: "Total No. of Books Counts",
+      link:dashboard.liberary.books.index
+    },
+    {
+      label: "Total Users",
+      value: bookUsersCount.data,
+      loading: bookUsersCount.loading,
+      icon: FaPersonCircleQuestion,
+      colorScheme: "teal",
+      description: "Here is an description for the users",
+    },
+  ];
+
   return (
     <Box>
+      <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6} mb={6}>
+        {summaryData.map((data, index) => (
+          <SummaryWidget
+            key={index}
+            label={data.label}
+            value={data.value}
+            icon={data.icon}
+            colorScheme={data.colorScheme}
+            description={data.description}
+            link={data.link}
+            loading={data.loading}
+          />
+        ))}
+      </SimpleGrid>
       <Flex mb={6} justifyContent={"space-between"}>
         <Heading
           display="flex"

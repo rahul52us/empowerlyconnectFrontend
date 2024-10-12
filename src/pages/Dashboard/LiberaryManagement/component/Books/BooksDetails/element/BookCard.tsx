@@ -87,7 +87,7 @@ const BookCard: React.FC<BookCardProps> = ({ book, handleBookForm }) => {
           >
             {book.title}
           </Heading>
-          {checkPermission('book','edit') &&  <Tooltip label="Edit Book" aria-label="Edit Book">
+          {checkPermission('books','edit') &&  <Tooltip label="Edit Book" aria-label="Edit Book">
             <IconButton
               icon={<EditIcon />}
               onClick={() => handleBookForm(book, "edit")}
