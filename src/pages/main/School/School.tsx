@@ -4,6 +4,7 @@ import AboutSection from "./AboutSection/AboutSection";
 import GallerySection from "./GallerySection/GallerySection";
 // import HeroSection from "./HeroSection/HeroSection";
 import HeroCarousal from "./HeroCarousal/HeroCarousal";
+import Navbar from "./Navbar/Navbar";
 import PrincipalSection from "./PrincipalSection/PrincipalSection";
 import TopperSlider from "./ToppersCard/TopperSlider";
 
@@ -44,25 +45,14 @@ const cards = [
 const School = () => {
   return (
     <Box>
-      {/* <HeroSection /> */}
+      <Navbar/>
       <HeroCarousal cards={cards} />
-
       <AboutSection />
-
-      <TopperSlider/>
-{/* <Grid templateColumns={'1fr 1fr 1fr'} m={20}>
-
-      <ToppersCard/>
-</Grid> */}
+      <TopperSlider />
       <PrincipalSection />
       <Box my={4}>
-
-      <GallerySection images={imageUrls} />
+        <GallerySection images={imageUrls} />
       </Box>
-
-      {/* <CoursesSection /> */}
-      {/* <DepartmentsSection /> */}
-      {/* <FeeStructure /> */}
 
       <Contact />
     </Box>
