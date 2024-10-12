@@ -13,7 +13,7 @@ import BookDetailDrawer from "../BookDetailDrawers";
 
 const BookDetails = observer(() => {
   const {
-    auth: { openNotification },
+    auth: { openNotification, checkPermission },
     bookLiberary: {
       getAllBooks,
       booksData,
@@ -64,7 +64,7 @@ const BookDetails = observer(() => {
           Books
         </Heading>
         <Flex columnGap={4}>
-          <Button
+          {checkPermission('bookCategory','add') && <Button
             leftIcon={<FaPlus />}
             colorScheme="teal"
             variant="solid"
@@ -77,7 +77,8 @@ const BookDetails = observer(() => {
             }
           >
             Add Category
-          </Button>
+          </Button>}
+          {checkPermission('books','add') &&
           <Button
             leftIcon={<FaPlus />}
             colorScheme="teal"
@@ -91,7 +92,7 @@ const BookDetails = observer(() => {
             }
           >
             Add Book
-          </Button>
+          </Button>}
         </Flex>
       </Flex>
       {booksData.data.length === 0 && !booksData.loading ? (

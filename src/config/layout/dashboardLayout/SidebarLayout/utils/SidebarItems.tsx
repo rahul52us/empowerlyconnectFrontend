@@ -271,28 +271,28 @@ const sidebarDatas: SidebarItem[] = [
     name: "Liberary",
     icon: <FaBuilding />,
     url: dashboard.liberary.books.index,
-    role: ["admin", "superadmin"],
+    role: ["admin", "superadmin","user","manager"],
     children: [
       {
         id: 81,
         name: "Book Management",
         icon: <FaUsers />,
         url: dashboard.liberary.books.index,
-        role: ["admin", "superadmin"],
+        role: ["admin", "superadmin","user","manager"],
         children: [
           {
             id: 82,
             name: "Books",
             icon: <FaUsers />,
             url: dashboard.liberary.books.index,
-            role: ["admin", "superadmin"],
+            role: ["admin", "superadmin","user","manager"],
           },
           {
             id: 83,
             name: "Category",
             icon: <FaUsers />,
             url: dashboard.liberary.books.category.index,
-            role: ["admin", "superadmin"],
+            role: ["admin", "superadmin","user","manager"],
           },
           {
             id: 84,

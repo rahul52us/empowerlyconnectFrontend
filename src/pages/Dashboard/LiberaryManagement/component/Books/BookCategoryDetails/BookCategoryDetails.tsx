@@ -18,7 +18,7 @@ import { dashboard } from "../../../../../../config/constant/routes";
 
 const BookDetails = observer(() => {
   const {
-    auth: { openNotification },
+    auth: { openNotification, checkPermission },
     bookLiberary: {
       getAllBooksCategory,
       booksCategory,
@@ -148,7 +148,7 @@ const BookDetails = observer(() => {
           Books Category
         </Heading>
         <Flex columnGap={4}>
-          <Button
+          {checkPermission('bookCategory','add') &&  <Button
             leftIcon={<FaPlus />}
             colorScheme="teal"
             variant="solid"
@@ -161,7 +161,7 @@ const BookDetails = observer(() => {
             }
           >
             Add Category
-          </Button>
+          </Button>}
         </Flex>
       </Flex>
       {booksCategory.data.length === 0 && !booksCategory.loading ? (

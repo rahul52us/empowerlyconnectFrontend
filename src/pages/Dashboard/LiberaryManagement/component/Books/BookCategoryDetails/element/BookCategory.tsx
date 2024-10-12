@@ -14,7 +14,7 @@ import { observer } from "mobx-react-lite";
 import store from "../../../../../../../store/store";
 
 const BookCategory = observer(({ item, onClick }: any) => {
-  const {bookLiberary : {handleBookForm}} = store
+  const {bookLiberary : {handleBookForm} , auth : {checkPermission}} = store
   return (
     <Box
       borderWidth="1px"
@@ -57,7 +57,7 @@ const BookCategory = observer(({ item, onClick }: any) => {
           >
             {item.title}
           </Heading>
-          <Tooltip label="Edit Category" aria-label="Edit Category">
+          {checkPermission('bookCategory','edit') && <Tooltip label="Edit Category" aria-label="Edit Category">
             <IconButton
               icon={<EditIcon />}
               onClick={() => onClick(item, "edit")}
@@ -65,21 +65,21 @@ const BookCategory = observer(({ item, onClick }: any) => {
               colorScheme="teal"
               aria-label="Edit Category"
             />
-          </Tooltip>
+          </Tooltip>}
         </Flex>
         <Text color="gray.500" noOfLines={[1, 2, 3]} minHeight={12}>
           {item.description}
         </Text>
         <Flex justify="space-between">
           <Text fontWeight="bold">Books Available: {item.bookCount}</Text>
-          <Button
+          {checkPermission('bookCategory','add') && <Button
             size="sm"
             colorScheme="teal"
             variant="solid"
             onClick={() => handleBookForm({open : true, type : 'add', data : item})}
           >
             Add Book
-          </Button>{" "}
+          </Button>}
         </Flex>
       </Stack>
     </Box>

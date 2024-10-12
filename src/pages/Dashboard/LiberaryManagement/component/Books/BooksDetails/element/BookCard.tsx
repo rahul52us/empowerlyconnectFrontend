@@ -18,6 +18,7 @@ import {
 } from "@chakra-ui/react";
 import StarRatingIcon from "../../../../../../../config/component/StarRatingIcon/StarRatingIcon";
 import { EditIcon } from "@chakra-ui/icons";
+import store from "../../../../../../../store/store";
 
 interface Book {
   _id: string;
@@ -48,6 +49,7 @@ interface BookCardProps {
 }
 
 const BookCard: React.FC<BookCardProps> = ({ book, handleBookForm }) => {
+  const {auth : {checkPermission}} = store
   const bg = useColorModeValue("white", "gray.800");
   const shadow = useColorModeValue("md", "dark-lg");
   const hoverShadow = useColorModeValue("lg", "dark-lg");
@@ -85,7 +87,7 @@ const BookCard: React.FC<BookCardProps> = ({ book, handleBookForm }) => {
           >
             {book.title}
           </Heading>
-          <Tooltip label="Edit Book" aria-label="Edit Book">
+          {checkPermission('book','edit') &&  <Tooltip label="Edit Book" aria-label="Edit Book">
             <IconButton
               icon={<EditIcon />}
               onClick={() => handleBookForm(book, "edit")}
@@ -93,7 +95,7 @@ const BookCard: React.FC<BookCardProps> = ({ book, handleBookForm }) => {
               colorScheme="teal"
               aria-label="Edit Book"
             />
-          </Tooltip>
+          </Tooltip>}
         </Flex>
         <Text fontSize="sm" isTruncated>
           Author: {book.author}

@@ -163,6 +163,7 @@ const ProjectMainIndex = observer(({ userId }: any) => {
         btnText="CREATE PROJECT"
         title="No projects found"
         subTitle="Start by creating a new project to get started."
+        showCreateButton={checkPermission("project", "add")}
         />
       ) : (
         <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6} mb={8}>

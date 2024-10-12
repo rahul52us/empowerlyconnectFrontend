@@ -14,6 +14,8 @@ export const defaultPermissions: any = {
   project: { add: false, edit: false, view: true, delete: false },
   task: { add: false, edit: false, view: true, delete: false },
   managers: { view: false },
+  books : {view : true, add : false, edit : false, delete : false },
+  bookCategory : {view : true, add : false, edit : false, delete : false }
 };
 
 export const employDropdownData: any = [

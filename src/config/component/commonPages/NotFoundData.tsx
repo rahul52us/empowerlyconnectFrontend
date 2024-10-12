@@ -1,7 +1,7 @@
 import { Flex, Icon, Text, Button, VStack, useTheme, useColorMode } from "@chakra-ui/react";
 import { FaExclamationTriangle, FaPlus } from "react-icons/fa";
 
-const NotFoundData = ({ onClick, title, subTitle, btnText }: any) => {
+const NotFoundData = ({ onClick, title, subTitle, btnText, showCreateButton = true }: any) => {
   const { colorMode } = useColorMode(); // Use the color mode hook
   const theme = useTheme();
 
@@ -41,7 +41,7 @@ const NotFoundData = ({ onClick, title, subTitle, btnText }: any) => {
         >
           {subTitle}
         </Text>
-        <Button
+        {showCreateButton && <Button
           leftIcon={<FaPlus />}
           colorScheme="teal"
           variant="solid"
@@ -54,7 +54,7 @@ const NotFoundData = ({ onClick, title, subTitle, btnText }: any) => {
           _active={{ bg: isDarkMode ? theme.colors.teal[600] : theme.colors.teal[700] }} // Conditional active color
         >
           {btnText}
-        </Button>
+        </Button>}
       </VStack>
     </Flex>
   );
