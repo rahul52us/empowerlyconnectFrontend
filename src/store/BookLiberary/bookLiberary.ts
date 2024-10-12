@@ -3,6 +3,13 @@ import { action, makeObservable, observable } from "mobx";
 import store from "../store";
 
 class BookLiberary {
+
+  userAddedBooks : any = {
+    data : [],
+    users : {},
+    type : 'user'
+  }
+
   booksCounts = {
     loading: false,
     data: 0,
@@ -117,6 +124,7 @@ class BookLiberary {
       roomReserveForm:observable,
       roomSeatData:observable,
       dropDownRooms:observable,
+      userAddedBooks:observable,
       getBooksCounts: action,
       getBooksCategoryCounts: action,
       getBookUsersCounts: action,
@@ -144,9 +152,41 @@ class BookLiberary {
       getAllSeatRooms:action,
       createReserveRoomSeat:action,
       getUserReserveSeat:action,
-      getAllDropdownRooms:action
+      getAllDropdownRooms:action,
+      setUserAddedBooks:action
     });
   }
+
+
+  setUserAddedBooks = async (book: any, action: string, userId: string) => {
+    try {
+      if (!userId) {
+        throw new Error('User ID is required.');
+      }
+
+      if (!this.userAddedBooks.users[userId]) {
+        this.userAddedBooks.users[userId] = [];
+      }
+
+      if (action === 'add') {
+        const bookExists = this.userAddedBooks.users[userId].some((b: any) => b._id === book._id);
+
+        if (!bookExists) {
+          this.userAddedBooks.users[userId].push(book);
+        } else {
+        }
+      } else if (action === 'remove') {
+        const bookExists = this.userAddedBooks.users[userId].some((b: any) => b._id === book._id);
+
+        if (bookExists) {
+          this.userAddedBooks.users[userId] = this.userAddedBooks.users[userId].filter((b: any) => b._id !== book._id);
+        } else {
+        }
+      } else {
+      }
+    } catch (err: any) {
+    }
+  };
 
   getBooksCounts = async () => {
     try {

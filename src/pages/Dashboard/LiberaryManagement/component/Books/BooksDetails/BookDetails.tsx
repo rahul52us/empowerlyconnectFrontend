@@ -25,7 +25,7 @@ const BookDetails = observer(() => {
       getAllBooks,
       booksData,
       handleBookForm,
-      handleBookCategoryForm
+      handleBookCategoryForm,
     },
     auth: { openNotification, checkPermission },
   } = store;

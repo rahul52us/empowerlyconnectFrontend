@@ -15,10 +15,13 @@ import {
   IconButton,
   Wrap,
   WrapItem,
+  Button,
 } from "@chakra-ui/react";
 import StarRatingIcon from "../../../../../../../config/component/StarRatingIcon/StarRatingIcon";
 import { EditIcon } from "@chakra-ui/icons";
 import store from "../../../../../../../store/store";
+import { observer } from "mobx-react-lite";
+import { toJS } from "mobx";
 
 interface Book {
   _id: string;
@@ -48,13 +51,16 @@ interface BookCardProps {
   handleBookForm: any;
 }
 
-const BookCard: React.FC<BookCardProps> = ({ book, handleBookForm }) => {
-  const {auth : {checkPermission}} = store
+const BookCard: React.FC<BookCardProps> = observer(({ book, handleBookForm }) => {
+  const {auth : {checkPermission, user}, CartStore : {setUserAddedItems, userAddedItems}} = store
   const bg = useColorModeValue("white", "gray.800");
   const shadow = useColorModeValue("md", "dark-lg");
   const hoverShadow = useColorModeValue("lg", "dark-lg");
   const placeholderImage =
     "https://via.placeholder.com/300x400?text=No+thumbnail+found";
+
+
+  console.log('the users added items are', toJS(userAddedItems))
 
   return (
     <Box
@@ -129,16 +135,24 @@ const BookCard: React.FC<BookCardProps> = ({ book, handleBookForm }) => {
         </Text>
         {Array.isArray(book.tags) && (
           <Flex wrap="wrap" minH={10}>
-            {book.tags.map((tag: string) => (
-              <Tag key={tag} colorScheme="teal" mr="2" mb="2">
+            {book.tags.map((tag: string, index : number) => (
+              <Tag key={index} colorScheme="teal" mr="2" mb="2">
                 {tag}
               </Tag>
             ))}
           </Flex>
         )}
+        <Button
+            size="sm"
+            colorScheme="teal"
+            variant="solid"
+            onClick={() => setUserAddedItems(book,'add',user._id)}
+          >
+            Add to Card
+          </Button>
       </Stack>
     </Box>
   );
-};
+});
 
 export default BookCard;

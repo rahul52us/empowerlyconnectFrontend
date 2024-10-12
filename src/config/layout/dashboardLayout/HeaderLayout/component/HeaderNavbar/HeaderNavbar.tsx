@@ -7,6 +7,7 @@ import HeaderThemeSwitch from "./HeaderThemeSwitch/HeaderThemeSwitch";
 import HeaderLanguageSwitch from "./HeaderLanguageSwitch/HeaderLanguageSwitch";
 import HeaderChatMessage from "./HeaderChatMessage/HeaderChatMessage";
 import store from "../../../../../../store/store";
+import CartContainer from "./CartContainer/CartContainer";
 
 const HeaderNavbar = observer(() => {
   const {
@@ -27,6 +28,7 @@ const HeaderNavbar = observer(() => {
           <HeaderThemeSwitch />
           <HeaderChatMessage />
           <HeaderNotification />
+          <CartContainer />
           <HeaderProfile />
         </>
       ) : (

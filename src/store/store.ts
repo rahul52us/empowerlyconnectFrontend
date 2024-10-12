@@ -22,6 +22,7 @@ import RequestStore from "./requestStore/requestStore";
 import AttendencePunchStore from "./attendenceStore/attendencePunchStore";
 import Userstore from "./userStore/userStore";
 import BookLiberary from "./BookLiberary/bookLiberary";
+import CartStore from "./cartStore/cartStore";
 
 configure({ enforceActions: "never" });
 
@@ -42,6 +43,7 @@ const store = {
   ExamStore: new ExamStore(),
   BlogStore: new BlogStore(),
   tripStore: new TripStore(),
+  CartStore: new CartStore(),
   bookLiberary: new BookLiberary(),
   // users
   company: new CompanyStore(),
