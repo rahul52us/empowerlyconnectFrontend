@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Grid, Heading } from "@chakra-ui/react";
 import Contact from "../Contact/Contact";
 import AboutSection from "./AboutSection/AboutSection";
 import GallerySection from "./GallerySection/GallerySection";
@@ -7,6 +7,7 @@ import HeroCarousal from "./HeroCarousal/HeroCarousal";
 import Navbar from "./Navbar/Navbar";
 import PrincipalSection from "./PrincipalSection/PrincipalSection";
 import TopperSlider from "./ToppersCard/TopperSlider";
+import TeacherCard from "./TeacherCard/TeacherCard";
 
 const imageUrls = [
   "https://images.pexels.com/photos/11366728/pexels-photo-11366728.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
@@ -42,16 +43,58 @@ const cards = [
   },
   // Add more card objects as needed
 ];
+
+const teachersData = [
+  {
+    id: 1,
+    name: "Gaurav Mishra",
+    subject: "English",
+    imageUrl:
+      "https://img.freepik.com/free-photo/portrait-female-teacher-school-classroom_23-2150911641.jpg?t=st=1728749498~exp=1728753098~hmac=a2afb5c5793f380d1fde2b4196c813aed596fe12854065dc2cedffeb61afc5e4&w=1060",
+  },
+  {
+    id: 2,
+    name: "Anjali Verma",
+    subject: "Mathematics",
+    imageUrl:
+      "https://img.freepik.com/free-photo/portrait-female-teacher-school-classroom_23-2149270711.jpg?w=1060",
+  },
+  {
+    id: 3,
+    name: "Rahul Sharma",
+    subject: "Science",
+    imageUrl:
+      "https://img.freepik.com/free-photo/portrait-female-teacher-school-classroom_23-2150911641.jpg?w=1060",
+  },
+  // Add more dummy data as needed
+];
 const School = () => {
   return (
     <Box>
-      <Navbar/>
+      <Navbar />
       <HeroCarousal cards={cards} />
       <AboutSection />
       <TopperSlider />
+
       <PrincipalSection />
       <Box my={4}>
         <GallerySection images={imageUrls} />
+      </Box>
+      <Box my={10}>
+        <Heading as="h2" size="lg" textAlign="center" mb={8}>
+          Our Teachers
+        </Heading>
+
+        <Grid templateColumns="repeat(6, 1fr)" gap={4} maxW={"90%"} mx={"auto"}>
+          {teachersData.map((teacher) => (
+            <TeacherCard
+              key={teacher.id}
+              name={teacher.name}
+              subject={teacher.subject}
+              imageUrl={teacher.imageUrl}
+            />
+          ))}
+        </Grid>
       </Box>
 
       <Contact />
