@@ -22,44 +22,6 @@ const School = () => {
   const teachersRef = useRef<HTMLDivElement>(null);
   const principalRef = useRef<HTMLDivElement>(null);
 
-  // Function to scroll to the desired section
-  // const scrollToSection = (section: string) => {
-  //   let ref: React.RefObject<HTMLDivElement> | null = null;
-
-  //   switch (section) {
-  //     case "Home":
-  //       ref = homeRef;
-  //       break;
-  //     case "About":
-  //       ref = aboutRef;
-  //       break;
-  //     case "Admissions":
-  //       ref = admissionsRef;
-  //       break;
-  //     case "Gallery":
-  //       ref = eventsRef;
-  //       break;
-  //     case "Contact Us":
-  //       ref = contactRef;
-  //       break;
-  //     case "Academics":
-  //       ref = academicsRef;
-  //       break;
-  //     case "Teachers":
-  //       ref = teachersRef;
-  //       break;
-  //     case "Principal":
-  //       ref = principalRef;
-  //       break;
-  //     default:
-  //       return;
-  //   }
-
-  //   if (ref && ref.current) {
-  //     ref.current.scrollIntoView({ behavior: "smooth" });
-  //   }
-  // };
-
   const scrollToSection = (section: string) => {
     let ref: React.RefObject<HTMLDivElement> | null = null;
 
@@ -125,20 +87,19 @@ const School = () => {
       <Box ref={principalRef} mt={10}>
         <PrincipalSection />
       </Box>
-
-      <Box ref={admissionsRef} my={8}>
-        <Heading as="h2" size="lg" textAlign="center" mb={8}>
-          Admissions
-        </Heading>
-      </Box>
       <Box ref={eventsRef} my={10}>
         <GallerySection images={imageUrls} />
       </Box>
       <Box ref={teachersRef} mt={10}>
-        <Heading as="h2" size="lg" textAlign="center"  mb={6}>
+        <Heading as="h2" size="lg" textAlign="center" mb={6}>
           Our Teachers
         </Heading>
-        <Grid templateColumns="repeat(6, 1fr)" gap={4} maxW={"90%"} mx={"auto"}>
+        <Grid
+          templateColumns={{ base: "repeat(2, 1fr)", lg: "repeat(6, 1fr)" }}
+          gap={4}
+          maxW={"90%"}
+          mx={"auto"}
+        >
           {teachersData.map((teacher) => (
             <TeacherCard
               key={teacher.id}

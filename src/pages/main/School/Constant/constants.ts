@@ -55,5 +55,93 @@ export const cards = [
       imageUrl:
         "https://img.freepik.com/free-photo/portrait-female-teacher-school-classroom_23-2150911641.jpg?w=1060",
     },
+    {
+      id: 3,
+      name: "Rahul Sharma",
+      subject: "Science",
+      imageUrl:
+        "https://img.freepik.com/free-photo/portrait-female-teacher-school-classroom_23-2150911641.jpg?w=1060",
+    },
+    {
+      id: 3,
+      name: "Rahul Sharma",
+      subject: "Science",
+      imageUrl:
+        "https://img.freepik.com/free-photo/portrait-female-teacher-school-classroom_23-2150911641.jpg?w=1060",
+    },
+    {
+      id: 3,
+      name: "Rahul Sharma",
+      subject: "Science",
+      imageUrl:
+        "https://img.freepik.com/free-photo/portrait-female-teacher-school-classroom_23-2150911641.jpg?w=1060",
+    },
     // Add more dummy data as needed
+  ];
+
+  export const toppersData = [
+    {
+      name: "Lara Croft",
+      className: "XI",
+      year: "2022-2024",
+      percentage: 93,
+      imageUrl:
+        "https://as2.ftcdn.net/v2/jpg/10/16/40/19/1000_F_1016401913_Dz4YOrT6I2qsYVi7xzRL2oAaSNEeretl.jpg",
+    },
+    {
+      name: "Lara Croft",
+      className: "XI",
+      year: "2022-2024",
+      percentage: 93,
+      imageUrl:
+        "https://as2.ftcdn.net/v2/jpg/10/16/40/19/1000_F_1016401913_Dz4YOrT6I2qsYVi7xzRL2oAaSNEeretl.jpg",
+    },
+    {
+      name: "Lara Croft",
+      className: "XI",
+      year: "2022-2024",
+      percentage: 93,
+      imageUrl:
+        "https://as2.ftcdn.net/v2/jpg/10/16/40/19/1000_F_1016401913_Dz4YOrT6I2qsYVi7xzRL2oAaSNEeretl.jpg",
+    },
+    {
+      name: "Lara Croft",
+      className: "XI",
+      year: "2022-2024",
+      percentage: 93,
+      imageUrl:
+        "https://as2.ftcdn.net/v2/jpg/10/16/40/19/1000_F_1016401913_Dz4YOrT6I2qsYVi7xzRL2oAaSNEeretl.jpg",
+    },
+    {
+      name: "Lara Croft",
+      className: "XI",
+      year: "2022-2024",
+      percentage: 93,
+      imageUrl:
+        "https://as2.ftcdn.net/v2/jpg/10/16/40/19/1000_F_1016401913_Dz4YOrT6I2qsYVi7xzRL2oAaSNEeretl.jpg",
+    },
+    {
+      name: "Lara Croft",
+      className: "XI",
+      year: "2022-2024",
+      percentage: 93,
+      imageUrl:
+        "https://as2.ftcdn.net/v2/jpg/10/16/40/19/1000_F_1016401913_Dz4YOrT6I2qsYVi7xzRL2oAaSNEeretl.jpg",
+    },
+    {
+      name: "Lara Croft",
+      className: "XI",
+      year: "2022-2024",
+      percentage: 93,
+      imageUrl:
+        "https://as2.ftcdn.net/v2/jpg/10/16/40/19/1000_F_1016401913_Dz4YOrT6I2qsYVi7xzRL2oAaSNEeretl.jpg",
+    },
+    {
+      name: "Lara Croft",
+      className: "XI",
+      year: "2022-2024",
+      percentage: 93,
+      imageUrl:
+        "https://as2.ftcdn.net/v2/jpg/10/16/40/19/1000_F_1016401913_Dz4YOrT6I2qsYVi7xzRL2oAaSNEeretl.jpg",
+    },
   ];
