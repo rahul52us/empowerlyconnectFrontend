@@ -145,3 +145,30 @@ export const cards = [
         "https://as2.ftcdn.net/v2/jpg/10/16/40/19/1000_F_1016401913_Dz4YOrT6I2qsYVi7xzRL2oAaSNEeretl.jpg",
     },
   ];
+
+  export const activityData = [  
+    {  
+      title: 'English Summer Camp',  
+      description: 'Play As You Learn English Summer Camp Nam ullamcorper, diam sit amet euismod pellentesque.'  
+    },  
+    {  
+      title: 'Math Wizards',  
+      description: 'Join us for a fun and interactive Math camp where numbers come to life through games.'  
+    },  
+    {  
+      title: 'Artistic Adventures',  
+      description: 'Explore your creativity in our Art camp filled with painting, drawing, and sculpting.'  
+    },  
+    {  
+      title: 'Science Explorers',  
+      description: 'Discover the wonders of science with experiments, field trips and exciting projects.'  
+    },  
+    {  
+      title: 'Coding Camp',  
+      description: 'Learn the basics of programming and create your own video games and applications.'  
+    },  
+    {  
+      title: 'Outdoor Survival Skills',  
+      description: 'Gain skills in the great outdoors with our camp focused on survival tactics and teamwork.'  
+    }  
+  ];  
