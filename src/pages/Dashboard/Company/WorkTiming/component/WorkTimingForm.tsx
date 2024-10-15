@@ -64,7 +64,7 @@ const WorkTimingForm = observer(({selectedPolicy, selectCompany} : any) => {
           message: err?.data?.message,
         });
       });
-  }, [getWorkTiming, openNotification, getPolicy]);
+  }, [getWorkTiming, openNotification, getPolicy, policy, selectedCompany]);
 
   const handleAddTiming = () => {
     setSelectedTiming({ startTime: "", endTime: "", daysOfWeek: [], isAdd: true });

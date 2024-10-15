@@ -141,11 +141,11 @@ const School = () => {
         </Box>
       </ParallaxSection>
 
-      {/* <Parallax imageSrc="https://img.freepik.com/free-photo/door-leading-magical-world_23-2151038217.jpg?t=st=1728922079~exp=1728925679~hmac=86f3607278ad7da4f7027bfbbf5dd8c45c9898a96bdb2c0bab9643114b3dfe55&w=1060">  
-                <Box textAlign="center" color="black">  
-                    <Heading fontSize="4xl">Welcome to Our Site</Heading>  
-                    <Text fontSize="xl">Experience the beauty of nature</Text>  
-                </Box>  
+      {/* <Parallax imageSrc="https://img.freepik.com/free-photo/door-leading-magical-world_23-2151038217.jpg?t=st=1728922079~exp=1728925679~hmac=86f3607278ad7da4f7027bfbbf5dd8c45c9898a96bdb2c0bab9643114b3dfe55&w=1060">
+                <Box textAlign="center" color="black">
+                    <Heading fontSize="4xl">Welcome to Our Site</Heading>
+                    <Text fontSize="xl">Experience the beauty of nature</Text>
+                </Box>
             </Parallax>   */}
 
       <Box ref={eventsRef} my={10}>

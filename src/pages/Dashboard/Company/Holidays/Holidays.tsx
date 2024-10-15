@@ -44,7 +44,7 @@ const HolidaysDetailTable = observer(({selectedPolicy, selectCompany} : any) => 
           message: err?.data?.message,
         });
       });
-  }, [getHolidays, openNotification, getPolicy]);
+  }, [getHolidays, openNotification, getPolicy, policy, selectedCompany]);
 
   // function to get the data from backend on the page, limit, date and others
   const applyGetAllRecords = () => {

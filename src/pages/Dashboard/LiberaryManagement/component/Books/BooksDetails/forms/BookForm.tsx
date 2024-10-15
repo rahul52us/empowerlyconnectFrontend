@@ -40,7 +40,7 @@ const BookForm = observer(
 
     useEffect(() => {
       fetchRecords(1)
-    },[])
+    },[fetchRecords])
 
 
     return (

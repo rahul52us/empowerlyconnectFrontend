@@ -43,7 +43,7 @@ const WorkLocationDetails = observer(({selectedPolicy, selectCompany} : any) => 
           message: err?.data?.message,
         });
       });
-  }, [getWorkLocations, openNotification, getPolicy]);
+  }, [getWorkLocations, openNotification, getPolicy, policy, selectedCompany]);
 
   // function to get the data from backend on the page, limit, date and others
   const applyGetAllRecords = () => {

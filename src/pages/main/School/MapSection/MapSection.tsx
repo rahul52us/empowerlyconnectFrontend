@@ -13,6 +13,7 @@ const MapSection = () => {
             style={{ border: 0 }}
             allowFullScreen
             loading="lazy"
+            title="map-section"
             referrerPolicy="no-referrer-when-downgrade"
           ></iframe>
         </Box>
