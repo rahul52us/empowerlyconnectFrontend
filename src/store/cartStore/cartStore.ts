@@ -28,10 +28,11 @@ class CartStore {
 
   setUserAddedItems = (
     item: any,
-    action: "add" | "remove",
-    userId: string,
+    action: "add" | "remove" | "removeAll", // Added "removeAll" action
+    user: any,
     TotalNoOfQuantities: number = 1
   ) => {
+    const userId = user._id
     if (!this.userAddedItems.users[userId]) {
       this.userAddedItems.users[userId] = {};
     }
@@ -53,26 +54,35 @@ class CartStore {
           "Quantity must be provided and greater than 0 to add the item."
         );
       }
-    } else if (action === "remove") {
+    } else if (action === "remove" || action === "removeAll") { // Check for "remove" or "removeAll"
       if (this.userAddedItems.users[userId][item._id]) {
-        if (TotalNoOfQuantities && TotalNoOfQuantities > 0) {
-          this.userAddedItems.users[userId][item._id].TotalNoOfQuantities -=
-            TotalNoOfQuantities;
-        } else {
-          this.userAddedItems.users[userId][item._id].TotalNoOfQuantities -= 1;
-        }
+        if (action === "remove") {
+          // Handle partial removal
+          if (TotalNoOfQuantities && TotalNoOfQuantities > 0) {
+            this.userAddedItems.users[userId][item._id].TotalNoOfQuantities -=
+              TotalNoOfQuantities;
+          } else {
+            this.userAddedItems.users[userId][item._id].TotalNoOfQuantities -= 1;
+          }
 
-        this.getTotalCounts(this.userAddedItems.users);
+          this.getTotalCounts(this.userAddedItems.users);
 
-        if (
-          this.userAddedItems.users[userId][item._id].TotalNoOfQuantities <= 0
-        ) {
+          // Remove the item if quantities drop to zero or below
+          if (
+            this.userAddedItems.users[userId][item._id].TotalNoOfQuantities <= 0
+          ) {
+            delete this.userAddedItems.users[userId][item._id];
+            this.getTotalCounts(this.userAddedItems.users);
+          }
+        } else if (action === "removeAll") {
+          // Handle complete removal
           delete this.userAddedItems.users[userId][item._id];
           this.getTotalCounts(this.userAddedItems.users);
         }
       }
     }
   };
+
 }
 
 export default CartStore;

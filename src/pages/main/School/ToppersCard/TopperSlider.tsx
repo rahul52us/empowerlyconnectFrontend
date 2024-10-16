@@ -1,5 +1,13 @@
 import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
-import { Box, IconButton, Stack, useBreakpointValue } from "@chakra-ui/react";
+import {
+  Box,
+  Container,
+  Heading,
+  IconButton,
+  Stack,
+  Text,
+  useBreakpointValue,
+} from "@chakra-ui/react";
 import { useRef } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick-theme.css";
@@ -16,7 +24,7 @@ export default function TopperSlider() {
     sm: 2,
     md: 3,
     lg: 4,
-    xl: 6,
+    xl: 5,
   });
 
   const settings = {
@@ -32,45 +40,64 @@ export default function TopperSlider() {
   };
 
   return (
-    <Box bg="white" p={4}>
-      <Slider ref={sliderRef} {...settings}>
-        {toppersData.map((item, index) => (
-          <Box key={index}>
-            <ToppersCard
-              img={item.imageUrl}
-              name={item.name}
-              classs={item.className}
-              year={item.year}
-              percentage={item.percentage}
-            />
-          </Box>
-        ))}
-      </Slider>
+    <Container maxW="container.xl" px={{ base: 4, md: 8 }}>
+      <Box textAlign="center" mb={4}>
+        <Text
+          as="span"
+          display="block"
+          fontSize={{ base: "sm", md: "md" }}
+          color="gray.500"
+          letterSpacing="widest"
+        >
+          Our Achievers
+        </Text>
+        <Heading
+          as="h2"
+          size={{base : 'md', md : "2xl"}}
+          color="teal.600"
+          fontWeight="bold"
+          letterSpacing="tight"
+          lineHeight="shorter"
+        >
+          Meet Our Top Performers
+        </Heading>
+      </Box>
 
-      <Stack
-        direction="row"
-        justifyContent="end"
-        mt={{ base: 8, md: 4 }}
-        spacing={2}
-        mr={4}
+      <Box
+        p={{ base: 2, md: 4 }} // Adjust padding for smaller screens
+        mt={{ base: 4, md: 0 }} // Add margin-top for mobile screens
       >
-        <IconButton
-          aria-label="Previous"
-          isRound
-          icon={<ArrowBackIcon />}
-          variant={"outline"}
-          onClick={() => sliderRef.current.slickPrev()}
-          colorScheme="blue"
-        />
-        <IconButton
-          variant={"outline"}
-          isRound
-          aria-label="Next"
-          icon={<ArrowForwardIcon />}
-          onClick={() => sliderRef.current.slickNext()}
-          colorScheme="blue"
-        />
-      </Stack>
-    </Box>
+        <Slider ref={sliderRef} {...settings}>
+          {toppersData.map((item, index) => (
+            <Box key={index} px={{ base: 1, md: 2 }}>
+              {" "}
+              {/* Reduce padding on mobile */}
+              <ToppersCard
+                img={item.imageUrl}
+                name={item.name}
+                classs={item.className}
+                year={item.year}
+                percentage={item.percentage}
+              />
+            </Box>
+          ))}
+        </Slider>
+
+        <Stack direction="row" justifyContent="center" mt={10} spacing={4}>
+          <IconButton
+            aria-label="Previous"
+            icon={<ArrowBackIcon />}
+            onClick={() => sliderRef.current.slickPrev()}
+            colorScheme="teal"
+          />
+          <IconButton
+            aria-label="Next"
+            icon={<ArrowForwardIcon />}
+            onClick={() => sliderRef.current.slickNext()}
+            colorScheme="teal"
+          />
+        </Stack>
+      </Box>
+    </Container>
   );
 }

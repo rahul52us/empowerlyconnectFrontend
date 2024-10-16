@@ -146,7 +146,7 @@ const BookCard: React.FC<BookCardProps> = observer(({ book, handleBookForm }) =>
             size="sm"
             colorScheme="teal"
             variant="solid"
-            onClick={() => setUserAddedItems(book,'add',user._id)}
+            onClick={() => setUserAddedItems(book,'add',user)}
           >
             Add to Card
           </Button>

@@ -44,7 +44,7 @@ const HeroCarousal: React.FC<CaptionCarouselProps> = ({
 }) => {
   const [slider, setSlider] = React.useState<Slider | null>(null);
   const top = useBreakpointValue({ base: "90%", md: "50%" });
-  const side = useBreakpointValue({ base: "30%", md: "40px" });
+  const side = useBreakpointValue({ base: "10px", md: "40px" });
 
   // Check if the screen is mobile
   const isMobile = useBreakpointValue({ base: true, md: false });
@@ -52,39 +52,43 @@ const HeroCarousal: React.FC<CaptionCarouselProps> = ({
   return (
     <Box
       position={"relative"}
-      height={{ base: "auto", md: "600px" }}
+      height={{ base: "500px", md: "700px" }}
       width={"full"}
       overflow={"hidden"}
     >
       {/* Left Arrow */}
       <IconButton
         aria-label="left-arrow"
-        variant="ghost"
-        display={{ base: "none", md: "block" }}
+        variant="solid"
+        bg="whiteAlpha.700"
+        _hover={{ bg: "whiteAlpha.900" }}
         position="absolute"
         left={side}
         top={top}
         transform={"translate(0%, -50%)"}
         zIndex={2}
         onClick={() => slider?.slickPrev()}
-      >
-        <BiLeftArrowAlt size="40px" />
-      </IconButton>
+        size="lg"
+        isRound
+        icon={<BiLeftArrowAlt size="30px" />}
+      />
 
       {/* Right Arrow */}
       <IconButton
         aria-label="right-arrow"
-        variant="ghost"
-        display={{ base: "none", md: "block" }}
+        variant="solid"
+        bg="whiteAlpha.700"
+        _hover={{ bg: "whiteAlpha.900" }}
         position="absolute"
         right={side}
         top={top}
         transform={"translate(0%, -50%)"}
         zIndex={2}
         onClick={() => slider?.slickNext()}
-      >
-        <BiRightArrowAlt size="40px" />
-      </IconButton>
+        size="lg"
+        isRound
+        icon={<BiRightArrowAlt size="30px" />}
+      />
 
       {/* Slider */}
       <Slider
@@ -99,34 +103,48 @@ const HeroCarousal: React.FC<CaptionCarouselProps> = ({
             backgroundRepeat="no-repeat"
             backgroundSize="cover"
             backgroundImage={`url(${card.image})`}
-            height={{ base: "350px", md: "600px" }} // Adjust height for mobile
+            height={{ base: "500px", md: "700px" }}
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            _before={{
+              content: '""',
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              bgGradient: "linear(to-b, transparent 40%, blackAlpha.900)",
+              zIndex: 1,
+            }}
           >
-            <Container size="container.lg" height="100%" position="relative">
+            <Container size="container.lg" position="relative" zIndex={2}>
               <Stack
-                spacing={{ base: 2, md: 4 }}
+                spacing={6}
                 w={"full"}
                 maxW={"lg"}
-                position={isMobile ? "relative" : "absolute"} // Change position based on screen size
-                bottom={isMobile ? "unset" : "6%"}
-                top={isMobile ? "70%" : "unset"}
-                transform={isMobile ? "none" : "translateX(80%)"}
-                bg="rgba(0, 0, 0, 0.6)" // Optional: Add a background for better text contrast
-                p={{ base: 2, md: 6 }}
-                rounded="lg"
                 textAlign="center"
-                marginTop={isMobile ? "10px" : "0"}
+                bg="rgba(0, 0, 0, 0.75)"
+                p={{ base: 6, md: 10 }}
+                rounded="lg"
+                color="white"
+                marginTop={isMobile ? "50%" : "auto"}
+                boxShadow="lg"
+                animation="fadeIn 0.5s"
               >
                 <Heading
-                  fontSize={{ base: "xl", md: "3xl" }}
-                  color="white"
-                  textAlign={"center"}
+                  fontSize={{ base: "4xl", md: "6xl" }}
+                  fontWeight="bold"
+                  textTransform="uppercase"
+                  lineHeight="1.2"
+                  letterSpacing="wide"
                 >
                   {card.title}
                 </Heading>
                 <Text
-                  fontSize={{ base: "md", lg: "lg" }}
-                  color="white"
-                  textAlign="center"
+                  fontSize={{ base: "lg", md: "2xl" }}
+                  fontWeight="medium"
+                  px={4}
                 >
                   {card.text}
                 </Text>

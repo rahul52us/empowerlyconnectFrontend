@@ -12,6 +12,8 @@ import {
   ModalContent,
   ModalOverlay,
   Stack,
+  Text,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Slider from "react-slick";
@@ -23,6 +25,10 @@ interface GallerySectionProps {
 }
 
 export default function GallerySection({ images }: GallerySectionProps) {
+  const headingColor = useColorModeValue("teal.500", "teal.300");
+  const subheadingColor = useColorModeValue("gray.600", "gray.400");
+  const bg = useColorModeValue("gray.50", "gray.900");
+
   const sliderRef: any = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -101,11 +107,21 @@ export default function GallerySection({ images }: GallerySectionProps) {
   }, [isOpen, currentImageIndex, goToNext, goToPrevious]);
 
   return (
-    <Box id="gallery" py={{ base: 8, md: 16 }} bg="white">
+    <Box id="gallery" m={{ base: 2, md: 5 }} py={10} bg={bg}>
       <Container maxW="container.xl" px={{ base: 4, md: 8 }}>
-        <Heading as="h2" size="xl" textAlign="center" mb={8}>
-          Gallery
+      <Heading
+          as="h2"
+          size="xl"
+          textAlign="center"
+          mb={3}
+          fontWeight="bold"
+          color={headingColor}
+        >
+          Discover Our School Moments
         </Heading>
+        <Text textAlign="center" fontSize="lg" color={subheadingColor} mb={5}>
+          A glimpse into our cherished school memories and events.
+        </Text>
 
         <Slider ref={sliderRef} {...settings}>
           {images.map((src, index) => (

@@ -15,6 +15,7 @@ import ContactForm from "./component/ContactForm";
 import SocialMediaLink from "../../../config/component/SocialMediaLinkContainer/SocialMediaLink";
 import LinkText from "../../../config/component/LinkText/LinkText";
 
+// Style for Lottie animation on tablet devices
 const BoxStyleFirst = styled(Box)`
   @media only screen and (min-device-width: 800px) and (max-device-width: 1024px) {
     svg {
@@ -25,50 +26,64 @@ const BoxStyleFirst = styled(Box)`
 `;
 
 const Contact = observer(() => {
+  const iconColor = useColorModeValue("blue.500", "white");
+  const textColor = useColorModeValue("gray.700", "gray.300");
+  const bg = useColorModeValue("gray.50", "gray.900");
 
   return (
-    <Container maxW={"7xl"} my={{ base: 2, md: 14 }}>
-      <Heading textAlign="center" fontSize={"4xl"}>
+    <Container maxW={"container.xl"} my={{ base: 5, md: 14 }} bg={bg} py={10} borderRadius="lg" boxShadow="md">
+      <Heading
+        textAlign="center"
+        fontSize={{ base: "2xl", md: "4xl" }}
+        fontWeight="bold"
+        color={iconColor}
+        mb={6}
+      >
         Contact Us
       </Heading>
 
       <Grid
         mt={{ base: 2, md: 6 }}
-        templateColumns={{ md: "1fr 1fr" }}
+        templateColumns={{ base: "1fr", md: "1fr 1fr" }}
         gap={10}
         alignItems="center"
       >
+        {/* Contact Form */}
         <Box order={{ base: 1, md: 0 }}>
           <ContactForm />
         </Box>
+
+        {/* Contact Information and Animation */}
         <Box>
           <BoxStyleFirst
             mx="auto"
             width={{
-              xs: "25rem",
+              base: "20rem",
+              md: "30rem",
               lg: "35rem",
             }}
             height={{
-              xs: "25.6rem",
-              lg: "35.9rem",
+              base: "20rem",
+              md: "30rem",
+              lg: "35rem",
             }}
           >
             <Player autoplay loop src="/img/contactus.json">
               <Controls visible={false} />
             </Player>
           </BoxStyleFirst>
-          <Grid templateColumns="3rem 1fr" alignItems="center" gridRowGap={4}>
-            <Box fontSize="2rem" color={useColorModeValue("blue.500", "white")}>
+
+          <Grid templateColumns="3rem 1fr" alignItems="center" gridRowGap={6} mt={8}>
+            {/* Location */}
+            <Box fontSize="2rem" color={iconColor}>
               <MdLocationPin />
             </Box>
-            <Text>
-              2000+ Our students are subscribe Around the World. Don’t be shy
-              introduce yourself!
+            <Text color={textColor}>
+              2000+ Our students are subscribed Around the World. Don’t be shy, introduce yourself!
             </Text>
-            <Box
-              fontSize="1.6rem"
-              color={useColorModeValue("blue.500", "white")}
-            >
+
+            {/* Phone */}
+            <Box fontSize="1.6rem" color={iconColor}>
               <FaPhoneAlt />
             </Box>
             <LinkText
@@ -76,14 +91,19 @@ const Contact = observer(() => {
                 alert("Call back");
               }}
               text="+91 9696969696"
+              color={iconColor}
             />
-            <Box
-              fontSize="1.8rem"
-              color={useColorModeValue("blue.500", "white")}
-            >
+
+            {/* Email */}
+            <Box fontSize="1.8rem" color={iconColor}>
               <MdMail />
             </Box>
-            <LinkText text="info@sequelstring.com" />
+            <LinkText
+              text="info@sequelstring.com"
+              color={iconColor}
+            />
+
+            {/* Social Media */}
             <Box />
             <SocialMediaLink />
           </Grid>

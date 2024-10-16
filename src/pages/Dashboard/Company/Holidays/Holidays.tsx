@@ -41,7 +41,7 @@ const HolidaysDetailTable = observer(({selectedPolicy, selectCompany} : any) => 
         openNotification({
           type: getStatusType(err.status),
           title: "Failed to get Holidays",
-          message: err?.data?.message,
+          message: err?.data?.message
         });
       });
   }, [getHolidays, openNotification, getPolicy, policy, selectedCompany]);

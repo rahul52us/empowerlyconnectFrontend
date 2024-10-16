@@ -7,7 +7,6 @@ import {
   activityData,
   cards,
   imageUrls,
-  teachersData,
 } from "./Constant/constants";
 import GallerySection from "./GallerySection/GallerySection";
 import HeroCarousal from "./HeroCarousal/HeroCarousal";
@@ -15,13 +14,13 @@ import MapSection from "./MapSection/MapSection";
 import Navbar from "./Navbar/Navbar";
 import PrincipalSection from "./PrincipalSection/PrincipalSection";
 import CampCard from "./SchoolActivityCard/SchoolActivityCard";
-import TeacherCard from "./TeacherCard/TeacherCard";
 import TopperSlider from "./ToppersCard/TopperSlider";
 // import Parallax from "./common/Parallax/Parallax";
 import books from "./SchoolActivityCard/books.png";
 import StatisticsCounter from "./StatisticsCounter/StatisticsCounter";
 import { FaChalkboardTeacher, FaUserGraduate } from "react-icons/fa";
 import { GiLaurelsTrophy } from "react-icons/gi";
+import TeacherSection from "./TeacherSection/TeacherSection";
 
 const metrics: any = [
   { id: 1, label: "Students", target: 1500, icon: FaUserGraduate },
@@ -92,18 +91,15 @@ const School = () => {
         <HeroCarousal cards={cards} />
       </Box>
 
-      <Box ref={aboutRef} my={10}>
+      <Box ref={aboutRef} my={7}>
         <AboutSection />
       </Box>
 
-      <Box ref={academicsRef} my={12}>
-        <Heading as="h2" size="lg" textAlign="center" mb={8}>
-          Toppers
-        </Heading>
+      <Box ref={academicsRef} my={5}>
         <TopperSlider />
       </Box>
-     
-      <Box ref={principalRef} mt={10}>
+
+      <Box ref={principalRef} mt={5}>
         <PrincipalSection />
       </Box>
 
@@ -130,7 +126,7 @@ const School = () => {
         </Box>
       </ParallaxSection>
 
-      <Box ref={eventsRef} my={10}>
+      <Box ref={eventsRef} my={7}>
         <GallerySection images={imageUrls} />
       </Box>
 
@@ -140,25 +136,8 @@ const School = () => {
         backgroundImage="https://img.freepik.com/free-photo/architecture-independence-palace-ho-chi-minh-city_181624-21243.jpg?t=st=1729011322~exp=1729014922~hmac=590a0f1b3700627efd9780676b739c65e5b00bfd9a3cf43a6b287ab872511870&w=1060"
       />
       </Box>
-      <Box ref={teachersRef} mt={10}>
-        <Heading as="h2" size="lg" textAlign="center" mb={6}>
-          Our Teachers
-        </Heading>
-        <Grid
-          templateColumns={{ base: "repeat(2, 1fr)", lg: "repeat(6, 1fr)" }}
-          gap={4}
-          maxW={"90%"}
-          mx={"auto"}
-        >
-          {teachersData.map((teacher) => (
-            <TeacherCard
-              key={teacher.id}
-              name={teacher.name}
-              subject={teacher.subject}
-              imageUrl={teacher.imageUrl}
-            />
-          ))}
-        </Grid>
+      <Box ref={teachersRef} mt={5}>
+        <TeacherSection />
       </Box>
       <Box ref={contactRef} my={8}>
         <Contact />
