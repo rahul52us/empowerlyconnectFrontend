@@ -12,8 +12,15 @@ import { FaBookOpen, FaBookReader, FaPlus } from "react-icons/fa";
 import BookDetailDrawer from "../BookDetailDrawers";
 import SummaryWidget from "../../../../../../config/component/WigdetCard/SummaryWidget";
 import { dashboard } from "../../../../../../config/constant/routes";
+import AddNewUserModel from "../../../../../../config/component/common/AddNewUserModel/AddNewUserModel";
 
 const BookDetails = observer(() => {
+  const [openUserModel, setOpenUserModel] = useState({
+    user: undefined,
+    open: false,
+  });
+  const [selectedBook, setSelectedBook] = useState<any>({})
+
   const {
     bookLiberary: {
       getBooksCounts,
@@ -28,6 +35,7 @@ const BookDetails = observer(() => {
       handleBookCategoryForm,
     },
     auth: { openNotification, checkPermission },
+    CartStore : {setUserAddedItems}
   } = store;
 
   const fetchData = (getDataFn: any) =>
@@ -53,11 +61,8 @@ const BookDetails = observer(() => {
     openNotification,
     getBooksCounts,
     getBooksCategoryCounts,
-    getBookUsersCounts
+    getBookUsersCounts,
   ]);
-
-
-
 
   const { getQueryParam, setQueryParam } = useQueryParams();
   const [currentPage, setCurrentPage] = useState(() =>
@@ -96,7 +101,7 @@ const BookDetails = observer(() => {
       icon: FaBookReader,
       colorScheme: "teal",
       description: "Here is an description for the users",
-      link:dashboard.liberary.books.category.index
+      link: dashboard.liberary.books.category.index,
     },
     {
       label: "Total Books",
@@ -105,7 +110,7 @@ const BookDetails = observer(() => {
       icon: FaBookOpen,
       colorScheme: "teal",
       description: "Total No. of Books Counts",
-      link:dashboard.liberary.books.index
+      link: dashboard.liberary.books.index,
     },
     {
       label: "Total Users",
@@ -116,6 +121,11 @@ const BookDetails = observer(() => {
       description: "Here is an description for the users",
     },
   ];
+
+  const handleAddUserUser = (users : any, books : any = {}) => {
+    setOpenUserModel({...openUserModel, open : false})
+    setUserAddedItems({...selectedBook, ...books, user : users},'add',users)
+  }
 
   return (
     <Box>
@@ -144,40 +154,45 @@ const BookDetails = observer(() => {
           Books
         </Heading>
         <Flex columnGap={4}>
-          {checkPermission('bookCategory','add') && <Button
-            leftIcon={<FaPlus />}
-            colorScheme="teal"
-            variant="solid"
-            size="lg"
-            _hover={{ bg: "teal.600" }}
-            _active={{ bg: "teal.700" }}
-            _focus={{ boxShadow: "outline" }}
-            onClick={() =>
-              handleBookCategoryForm({ open: true, data: null, type: "add" })
-            }
-          >
-            Add Category
-          </Button>}
-          {checkPermission('books','add') &&
-          <Button
-            leftIcon={<FaPlus />}
-            colorScheme="teal"
-            variant="solid"
-            size="lg"
-            _hover={{ bg: "teal.600" }}
-            _active={{ bg: "teal.700" }}
-            _focus={{ boxShadow: "outline" }}
-            onClick={() =>
-              handleBookForm({ open: true, data: null, type: "add" })
-            }
-          >
-            Add Book
-          </Button>}
+          {checkPermission("bookCategory", "add") && (
+            <Button
+              leftIcon={<FaPlus />}
+              colorScheme="teal"
+              variant="solid"
+              size="lg"
+              _hover={{ bg: "teal.600" }}
+              _active={{ bg: "teal.700" }}
+              _focus={{ boxShadow: "outline" }}
+              onClick={() =>
+                handleBookCategoryForm({ open: true, data: null, type: "add" })
+              }
+            >
+              Add Category
+            </Button>
+          )}
+          {checkPermission("books", "add") && (
+            <Button
+              leftIcon={<FaPlus />}
+              colorScheme="teal"
+              variant="solid"
+              size="lg"
+              _hover={{ bg: "teal.600" }}
+              _active={{ bg: "teal.700" }}
+              _focus={{ boxShadow: "outline" }}
+              onClick={() =>
+                handleBookForm({ open: true, data: null, type: "add" })
+              }
+            >
+              Add Book
+            </Button>
+          )}
         </Flex>
       </Flex>
       {booksData.data.length === 0 && !booksData.loading ? (
         <NotFoundData
-          onClick={() =>  handleBookForm({ open: true, data: null, type: "add" })}
+          onClick={() =>
+            handleBookForm({ open: true, data: null, type: "add" })
+          }
           btnText="Add First Book"
           title="No Books found"
           subTitle="Start by creating a new book to get started."
@@ -188,9 +203,12 @@ const BookDetails = observer(() => {
             <BookCard
               book={{ ...item, ratings: item.ratings || [] }}
               key={index}
+              setSelectedBook={setSelectedBook}
+              handleAddUserUser={handleAddUserUser}
               handleBookForm={(item: any, type: string) =>
                 handleBookForm({ open: true, data: item, type: type })
               }
+              setOpenUserModel={setOpenUserModel}
             />
           ))}
         </SimpleGrid>
@@ -203,6 +221,13 @@ const BookDetails = observer(() => {
         />
       </Flex>
       <BookDetailDrawer fetchRecords={fetchRecords} />
+      {
+        <AddNewUserModel
+          open={openUserModel.open}
+          close={() => setOpenUserModel({ ...openUserModel, open: false })}
+          handleSubmit={({values,setSubmitting} : any) => {setSubmitting(false);handleAddUserUser({_id : values?.user?.value , username : values?.user?.label})}}
+        />
+      }
     </Box>
   );
 });

@@ -42,7 +42,7 @@ export default function AboutSection() {
               w="100%"
               maxW={{ base: "100%", md: "520px" }}
               rounded="xl"
-              h={{ base: "300px", md: "380px" }}
+              h={{ base: "100%", md: "380px" }}
               objectFit="cover"
               boxShadow={shadowColor}
               transition="transform 0.3s"

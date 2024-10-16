@@ -14,11 +14,11 @@ import {
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useState } from "react";
-import { HiOutlineShoppingCart } from "react-icons/hi"; // Import empty cart icon
+import { HiOutlineShoppingCart } from "react-icons/hi";
 import CustomDrawer from "../../../../../../component/Drawer/CustomDrawer";
 import store from "../../../../../../../store/store";
 import { FaShoppingCart } from "react-icons/fa";
-import { HiPlus, HiMinus } from "react-icons/hi"; // Icons for add and subtract
+import { HiPlus, HiMinus } from "react-icons/hi";
 
 const CartContainer = observer(() => {
   const [openCart, setOpenCart] = useState({ open: false, loading: false });
@@ -32,19 +32,19 @@ const CartContainer = observer(() => {
   const users: any = userAddedItems.users || {};
   const hasCartData = Object.keys(users).length > 0;
 
-  const bg = useColorModeValue("gray.50", "gray.800"); // Background color
-  const textColor = useColorModeValue("gray.600", "white"); // Text color
-  const subTextColor = useColorModeValue("gray.500", "gray.400"); // Subtext color
-  const iconColor = useColorModeValue("blue.400", "blue.300"); // Icon color
-  const cartItemBg = useColorModeValue("white", "gray.700"); // Cart item background
-  const borderColor = useColorModeValue("gray.200", "gray.600"); // Border color for items
+  const bg = useColorModeValue("gray.50", "gray.800");
+  const textColor = useColorModeValue("gray.600", "white");
+  const subTextColor = useColorModeValue("gray.500", "gray.400");
+  const iconColor = useColorModeValue("blue.400", "blue.300");
+  const cartItemBg = useColorModeValue("white", "gray.700");
+  const borderColor = useColorModeValue("gray.200", "gray.600");
 
   const handleAddQuantity = (item: any) => {
-    setUserAddedItems(item, "add", user);
+    setUserAddedItems({...item, user : item.user}, "add", item.user);
   };
 
   const handleSubtractQuantity = (item: any) => {
-    setUserAddedItems(item, "remove", user);
+    setUserAddedItems({...item, user : item.user}, "remove", item.user);
   };
 
   return (
@@ -80,7 +80,7 @@ const CartContainer = observer(() => {
       </Flex>
 
       <CustomDrawer
-        title="All Users' Carts"
+        title="All Carts"
         open={openCart.open}
         close={closeCart}
       >
@@ -95,10 +95,10 @@ const CartContainer = observer(() => {
                   p={4}
                   bg={cartItemBg}
                   boxShadow="md"
-                  borderColor={borderColor} // Apply border color
+                  borderColor={borderColor}
                 >
-                  <Text fontSize="lg" fontWeight="bold" mb={2} color="blue.600">
-                    User ID: {userId}
+                  <Text fontSize="md" fontWeight="bold" mb={4} color="blue.600">
+                    {userId}
                   </Text>
                   {Object.entries(userCart).length ? (
                     Object.entries(userCart).map(([itemId, item]: any) => (
@@ -185,7 +185,7 @@ const CartContainer = observer(() => {
                               <Button
                                 colorScheme="red"
                                 onClick={() => {
-                                  setUserAddedItems(item, "removeAll", user);
+                                  setUserAddedItems({...item, user : user}, "removeAll", item.user);
                                 }}
                                 aria-label="Remove item"
                                 variant="outline"

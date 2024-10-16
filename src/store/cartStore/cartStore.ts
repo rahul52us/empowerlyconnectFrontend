@@ -32,7 +32,7 @@ class CartStore {
     user: any,
     TotalNoOfQuantities: number = 1
   ) => {
-    const userId = user._id
+    const userId = user.username
     if (!this.userAddedItems.users[userId]) {
       this.userAddedItems.users[userId] = {};
     }

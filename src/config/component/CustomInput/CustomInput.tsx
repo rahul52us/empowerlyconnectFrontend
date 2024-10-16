@@ -665,7 +665,6 @@ const CustomInput: React.FC<CustomInputProps> = ({
           </Box>
         );
         case "real-time-user-search":
-          console.log(name,options,value,userOptions)
           return (
             <Select
               key={name}

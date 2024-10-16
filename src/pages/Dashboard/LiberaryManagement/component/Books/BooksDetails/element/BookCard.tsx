@@ -21,7 +21,6 @@ import StarRatingIcon from "../../../../../../../config/component/StarRatingIcon
 import { EditIcon } from "@chakra-ui/icons";
 import store from "../../../../../../../store/store";
 import { observer } from "mobx-react-lite";
-import { toJS } from "mobx";
 
 interface Book {
   _id: string;
@@ -49,10 +48,13 @@ interface Book {
 interface BookCardProps {
   book: Book;
   handleBookForm: any;
+  setOpenUserModel:any;
+  handleAddUserUser:any;
+  setSelectedBook:any;
 }
 
-const BookCard: React.FC<BookCardProps> = observer(({ book, handleBookForm }) => {
-  const {auth : {checkPermission, user}, CartStore : {setUserAddedItems, userAddedItems}} = store
+const BookCard: React.FC<BookCardProps> = observer(({ book, handleBookForm, setOpenUserModel, handleAddUserUser, setSelectedBook }) => {
+  const {auth : {checkPermission, user}} = store
   const bg = useColorModeValue("white", "gray.800");
   const shadow = useColorModeValue("md", "dark-lg");
   const hoverShadow = useColorModeValue("lg", "dark-lg");
@@ -60,7 +62,15 @@ const BookCard: React.FC<BookCardProps> = observer(({ book, handleBookForm }) =>
     "https://via.placeholder.com/300x400?text=No+thumbnail+found";
 
 
-  console.log('the users added items are', toJS(userAddedItems))
+  const addBooksToUser = (books : any) => {
+    setSelectedBook(books)
+    if(user.role === "admin" || user.role === "superadmin"){
+      setOpenUserModel({open : true})
+    }
+    else {
+      handleAddUserUser(user,books)
+    }
+  }
 
   return (
     <Box
@@ -146,7 +156,7 @@ const BookCard: React.FC<BookCardProps> = observer(({ book, handleBookForm }) =>
             size="sm"
             colorScheme="teal"
             variant="solid"
-            onClick={() => setUserAddedItems(book,'add',user)}
+            onClick={() => addBooksToUser(book)}
           >
             Add to Card
           </Button>

@@ -4,7 +4,7 @@ import { useState } from "react";
 import store from "../../../../../../store/store";
 import { getStatusType } from "../../../../../../config/constant/statusCode";
 import { generateProjectInitialValues } from "../../utils/function";
-import AddNewUserForm from "../../../../../../config/component/common/AddNewUserModel/AddNewUserModel";
+import AddNewUserForm from "../../../../../../config/component/common/AddNewUserModel/AddNewUser";
 
 const AddNewUser = observer(
   ({ type, title, open, close, item, setFetchProjectData }: any) => {

@@ -3,7 +3,7 @@ import FormModel from "../../../../../../config/component/common/FormModel/FormM
 import { useState } from "react";
 import store from "../../../../../../store/store";
 import { getStatusType } from "../../../../../../config/constant/statusCode";
-import AddNewUserForm from "../../../../../../config/component/common/AddNewUserModel/AddNewUserModel";
+import AddNewUserForm from "../../../../../../config/component/common/AddNewUserModel/AddNewUser";
 
 const AddNewUser = observer(
   ({ type, title, open, close, item , setFetchData}: any) => {
