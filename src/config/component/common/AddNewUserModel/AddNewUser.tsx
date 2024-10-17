@@ -12,7 +12,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const AddNewUserForm = observer(
-  ({ initialValues, showError, setShowError, close, handleSubmit }: any) => {
+  ({ initialValues, showError, setShowError, close, handleSubmit, sendMailActive = true }: any) => {
     return (
       <Box p={4}>
         <Formik
@@ -38,7 +38,7 @@ const AddNewUserForm = observer(
                     error={errors.user}
                     showError={showError}
                   />
-                  <CustomInput
+                  {sendMailActive && <CustomInput
                     value={values.isActive}
                     type="checkbox"
                     name="isActive"
@@ -46,7 +46,7 @@ const AddNewUserForm = observer(
                     onChange={(e) =>
                       setFieldValue("isActive", e.target.checked)
                     }
-                  />
+                  />}
                 </Flex>
                 <Divider />
                 <SubmitFormBtn

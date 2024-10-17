@@ -40,11 +40,16 @@ const CartContainer = observer(() => {
   const borderColor = useColorModeValue("gray.200", "gray.600");
 
   const handleAddQuantity = (item: any) => {
-    setUserAddedItems({...item, user : item.user}, "add", item.user);
+    setUserAddedItems("Books", { ...item, user: item.user }, "add", item.user);
   };
 
   const handleSubtractQuantity = (item: any) => {
-    setUserAddedItems({...item, user : item.user}, "remove", item.user);
+    setUserAddedItems(
+      "Books",
+      { ...item, user: item.user },
+      "remove",
+      item.user
+    );
   };
 
   return (
@@ -79,11 +84,7 @@ const CartContainer = observer(() => {
         </Badge>
       </Flex>
 
-      <CustomDrawer
-        title="All Carts"
-        open={openCart.open}
-        close={closeCart}
-      >
+      <CustomDrawer title="All Carts" open={openCart.open} close={closeCart}>
         <Box p={4}>
           <VStack spacing={6} align="stretch">
             {hasCartData ? (
@@ -98,7 +99,12 @@ const CartContainer = observer(() => {
                   borderColor={borderColor}
                 >
                   <Text fontSize="md" fontWeight="bold" mb={4} color="blue.600">
-                    {userId?.split('@')[0]?.replace(/\./g, ' ').charAt(0).toUpperCase() + userId?.split('@')[0]?.replace(/\./g, ' ').slice(1)}
+                    {userId
+                      ?.split("@")[0]
+                      ?.replace(/\./g, " ")
+                      .charAt(0)
+                      .toUpperCase() +
+                      userId?.split("@")[0]?.replace(/\./g, " ").slice(1)}
                   </Text>
                   {Object.entries(userCart).length ? (
                     Object.entries(userCart).map(([itemId, item]: any) => (
@@ -111,7 +117,9 @@ const CartContainer = observer(() => {
                           p={2}
                           mb={2}
                           bg={bg}
-                          _hover={{ bg: useColorModeValue("gray.200", "gray.800") }} // Change on hover
+                          _hover={{
+                            bg: useColorModeValue("gray.200", "gray.800"),
+                          }} // Change on hover
                           borderColor={borderColor} // Apply border color
                           transition="background-color 0.2s, box-shadow 0.2s" // Smooth transition
                           boxShadow="sm"
@@ -185,7 +193,12 @@ const CartContainer = observer(() => {
                               <Button
                                 colorScheme="red"
                                 onClick={() => {
-                                  setUserAddedItems({...item, user : user}, "removeAll", item.user);
+                                  setUserAddedItems(
+                                    "Books",
+                                    { ...item, user: user },
+                                    "removeAll",
+                                    item.user
+                                  );
                                 }}
                                 aria-label="Remove item"
                                 variant="outline"

@@ -2,7 +2,7 @@ import { useState } from "react";
 import FormModel from "../FormModel/FormModel";
 import AddNewUserForm from "./AddNewUser";
 
-const AddNewUserModel = ({ open, close, handleSubmit }: any) => {
+const AddNewUserModel = ({ open, close, handleSubmit, sendMailActive = true }: any) => {
   const [showError, setShowError] = useState(false);
 
 
@@ -21,6 +21,7 @@ const AddNewUserModel = ({ open, close, handleSubmit }: any) => {
         showError={showError}
         setShowError={setShowError}
         handleSubmit={handleSubmit}
+        sendMailActive={sendMailActive}
       />
     </FormModel>
   );

@@ -1,4 +1,6 @@
+import axios from "axios";
 import { action, makeAutoObservable, observable } from "mobx";
+import store from "../store";
 
 class OrderStore {
   userAddedItems: any = {
@@ -26,60 +28,126 @@ class OrderStore {
     this.userAddedItems.totalItems = totalCount;
   };
 
+  addAndUpdateOrder = async (sendData: any) => {
+    try {
+      const { data } = await axios.post(`/order/create`, {
+        ...sendData,
+        company: store.auth.getCurrentCompany(),
+      });
+      return data;
+    } catch (err: any) {
+      return Promise.reject(err?.response || err);
+    }
+  };
+
   setUserAddedItems = (
+    type: any,
     item: any,
     action: "add" | "remove" | "removeAll",
     user: any,
     TotalNoOfQuantities: number = 1
   ) => {
-    const userId = user.username
-    if (!this.userAddedItems.users[userId]) {
-      this.userAddedItems.users[userId] = {};
-    }
-
-    if (action === "add") {
-      if (TotalNoOfQuantities && TotalNoOfQuantities > 0) {
-        if (!this.userAddedItems.users[userId][item._id]) {
-          this.userAddedItems.users[userId][item._id] = {
-            ...item,
-            TotalNoOfQuantities: TotalNoOfQuantities,
-          };
-        } else {
-          this.userAddedItems.users[userId][item._id].TotalNoOfQuantities +=
-            TotalNoOfQuantities;
-        }
-        this.getTotalCounts(this.userAddedItems.users);
-      } else {
-        console.log(
-          "Quantity must be provided and greater than 0 to add the item."
-        );
+    console.log(item)
+    try {
+      const userId = user.username;
+      if (!this.userAddedItems.users[userId]) {
+        this.userAddedItems.users[userId] = {};
       }
-    } else if (action === "remove" || action === "removeAll") { // Check for "remove" or "removeAll"
-      if (this.userAddedItems.users[userId][item._id]) {
-        if (action === "remove") {
-          // Handle partial removal
-          if (TotalNoOfQuantities && TotalNoOfQuantities > 0) {
-            this.userAddedItems.users[userId][item._id].TotalNoOfQuantities -=
-              TotalNoOfQuantities;
+
+      if (action === "add") {
+        if (TotalNoOfQuantities && TotalNoOfQuantities > 0) {
+          if (!this.userAddedItems.users[userId][item._id]) {
+            // Add new item with the specified quantity
+            this.userAddedItems.users[userId][item._id] = {
+              ...item,
+              TotalNoOfQuantities: TotalNoOfQuantities,
+            };
+
+            this.addAndUpdateOrder({
+              user: user?._id,
+              orderId: item._id,
+              title: item.title,
+              description: item.description,
+              image: item.image,
+              quantity: TotalNoOfQuantities,
+              type: type,
+            })
+              .then(() => {})
+              .catch(() => {
+                alert("Error while adding item");
+              });
           } else {
-            this.userAddedItems.users[userId][item._id].TotalNoOfQuantities -= 1;
+            // Update the quantity of an existing item
+            this.userAddedItems.users[userId][item._id].TotalNoOfQuantities +=
+              TotalNoOfQuantities;
+
+            this.addAndUpdateOrder({
+              user: user?._id,
+              orderId: item._id,
+              title: item.title,
+              description: item.description,
+              image: item.image,
+              quantity: this.userAddedItems.users[userId][item._id]
+                .TotalNoOfQuantities, // Just set the updated quantity
+              type: type,
+            })
+              .then(() => {})
+              .catch(() => {
+                alert("Error while updating item");
+              });
           }
 
           this.getTotalCounts(this.userAddedItems.users);
+        } else {
+          console.log(
+            "Quantity must be provided and greater than 0 to add the item."
+          );
+        }
+      } else if (action === "remove" || action === "removeAll") {
+        // Check for "remove" or "removeAll"
+        if (this.userAddedItems.users[userId][item._id]) {
+          if (action === "remove") {
+            // Handle partial removal
+            if (TotalNoOfQuantities && TotalNoOfQuantities > 0) {
+              this.userAddedItems.users[userId][item._id].TotalNoOfQuantities -=
+                TotalNoOfQuantities;
 
-          // Remove the item if quantities drop to zero or below
-          if (
-            this.userAddedItems.users[userId][item._id].TotalNoOfQuantities <= 0
-          ) {
+              this.addAndUpdateOrder({
+                user: user?._id,
+                orderId: item._id,
+                title: item.title,
+                description: item.description,
+                image: item.image,
+                quantity: this.userAddedItems.users[userId][item._id]
+                  .TotalNoOfQuantities, // Set updated quantity
+                type: type,
+              })
+                .then(() => {})
+                .catch(() => {
+                  alert("Error while updating item");
+                });
+            } else {
+              this.userAddedItems.users[userId][item._id].TotalNoOfQuantities -= 1;
+            }
+
+            this.getTotalCounts(this.userAddedItems.users);
+
+            // Remove the item if quantities drop to zero or below
+            if (
+              this.userAddedItems.users[userId][item._id].TotalNoOfQuantities <= 0
+            ) {
+              delete this.userAddedItems.users[userId][item._id];
+              this.getTotalCounts(this.userAddedItems.users);
+            }
+          } else if (action === "removeAll") {
+            // Handle complete removal
             delete this.userAddedItems.users[userId][item._id];
             this.getTotalCounts(this.userAddedItems.users);
           }
-        } else if (action === "removeAll") {
-          // Handle complete removal
-          delete this.userAddedItems.users[userId][item._id];
-          this.getTotalCounts(this.userAddedItems.users);
         }
       }
+    } catch (error) {
+      console.error("An error occurred:", error);
     }
   };
 

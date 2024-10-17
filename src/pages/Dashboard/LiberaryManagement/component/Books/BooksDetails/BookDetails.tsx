@@ -19,7 +19,7 @@ const BookDetails = observer(() => {
     user: undefined,
     open: false,
   });
-  const [selectedBook, setSelectedBook] = useState<any>({})
+  const [selectedBook, setSelectedBook] = useState<any>({});
 
   const {
     bookLiberary: {
@@ -35,7 +35,7 @@ const BookDetails = observer(() => {
       handleBookCategoryForm,
     },
     auth: { openNotification, checkPermission },
-    OrderStore : {setUserAddedItems}
+    OrderStore: { setUserAddedItems },
   } = store;
 
   const fetchData = (getDataFn: any) =>
@@ -122,10 +122,20 @@ const BookDetails = observer(() => {
     },
   ];
 
-  const handleAddUserUser = (users : any, books : any = {}) => {
-    setOpenUserModel({...openUserModel, open : false})
-    setUserAddedItems({...selectedBook, ...books, user : users},'add',users)
-  }
+  const handleAddUserUser = (users: any, books: any = {}) => {
+    setOpenUserModel({ ...openUserModel, open: false });
+    setUserAddedItems(
+      "Books",
+      {
+        ...selectedBook,
+        image: books?.coverImage?.url || selectedBook?.coverImage?.url,
+        ...books,
+        user: users,
+      },
+      "add",
+      users
+    );
+  };
 
   return (
     <Box>
@@ -223,9 +233,16 @@ const BookDetails = observer(() => {
       <BookDetailDrawer fetchRecords={fetchRecords} />
       {
         <AddNewUserModel
+          sendMailActive={false}
           open={openUserModel.open}
           close={() => setOpenUserModel({ ...openUserModel, open: false })}
-          handleSubmit={({values,setSubmitting} : any) => {setSubmitting(false);handleAddUserUser({_id : values?.user?.value , username : values?.user?.label})}}
+          handleSubmit={({ values, setSubmitting }: any) => {
+            setSubmitting(false);
+            handleAddUserUser({
+              _id: values?.user?.value,
+              username: values?.user?.label,
+            });
+          }}
         />
       }
     </Box>
