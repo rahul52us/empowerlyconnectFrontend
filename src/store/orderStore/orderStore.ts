@@ -12,7 +12,52 @@ class OrderStore {
     makeAutoObservable(this, {
       userAddedItems: observable,
       setUserAddedItems: action,
+      fetchUserOrders:action
     });
+  }
+
+  fetchUserOrders = async(sendData : any) => {
+    try {
+      const { data } = await axios.post(`/order/get`, {
+        ...sendData,
+        company: store.auth.getCurrentCompany(),
+        type : store.auth.user?.role
+      });
+      const transformedData : any = {};
+
+      data.data.forEach((book : any) => {
+        const user = book.user[0]; // Assuming there's only one user per book
+        const userEmail = user.username; // Extracting email from user object
+
+        // Check if the user email already exists in the result object
+        if (!transformedData[userEmail]) {
+            transformedData[userEmail] = {}; // Create new entry if it doesn't exist
+        }
+
+        // Add the book to the user's entry
+        transformedData[userEmail][book.orderReferenceId] = {
+            _id: book.orderReferenceId,
+            orderId : book.orderReferenceId,
+            title: book.title,
+            user: {
+                username: user.username,
+                _id: user._id,
+            },
+            company: book.company,
+            description: book.description,
+            image : book.image,
+            TotalNoOfQuantities: book.quantity || 1
+        };
+    });
+
+      this.userAddedItems.users = transformedData
+      this.getTotalCounts(this.userAddedItems.users)
+      console.log(transformedData)
+      return data;
+    } catch (err: any) {
+      console.log(err)
+      return Promise.reject(err?.response || err);
+    }
   }
 
   getTotalCounts = (users: any) => {
@@ -47,7 +92,6 @@ class OrderStore {
     user: any,
     TotalNoOfQuantities: number = 1
   ) => {
-    console.log(item)
     try {
       const userId = user.username;
       if (!this.userAddedItems.users[userId]) {

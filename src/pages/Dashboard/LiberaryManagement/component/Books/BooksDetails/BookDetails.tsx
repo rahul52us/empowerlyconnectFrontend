@@ -130,10 +130,9 @@ const BookDetails = observer(() => {
         ...selectedBook,
         image: books?.coverImage?.url || selectedBook?.coverImage?.url,
         ...books,
-        user: users,
-      },
+        user: { username: users?.username, _id: users?._id }      },
       "add",
-      users
+      {username : users?.username, _id : users?._id}
     );
   };
 

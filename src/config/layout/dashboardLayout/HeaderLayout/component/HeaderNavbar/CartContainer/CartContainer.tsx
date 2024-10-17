@@ -13,7 +13,7 @@ import {
   Icon,
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { HiOutlineShoppingCart } from "react-icons/hi";
 import CustomDrawer from "../../../../../../component/Drawer/CustomDrawer";
 import store from "../../../../../../../store/store";
@@ -26,7 +26,7 @@ const CartContainer = observer(() => {
   const closeCart = () => setOpenCart({ open: false, loading: false });
 
   const {
-    OrderStore: { userAddedItems, setUserAddedItems },
+    OrderStore: { userAddedItems, setUserAddedItems, fetchUserOrders },
     auth: { user },
   } = store;
   const users: any = userAddedItems.users || {};
@@ -40,17 +40,26 @@ const CartContainer = observer(() => {
   const borderColor = useColorModeValue("gray.200", "gray.600");
 
   const handleAddQuantity = (item: any) => {
-    setUserAddedItems("Books", { ...item, user: item.user }, "add", item.user);
+    setUserAddedItems(
+      "Books",
+      { ...item, user: { username: item.user?.username, _id: item.user?._id } },
+      "add",
+      { username: item.user?.username, _id: item.user?._id }
+    );
   };
 
   const handleSubtractQuantity = (item: any) => {
     setUserAddedItems(
       "Books",
-      { ...item, user: item.user },
+      { ...item, user: { username: item.user?.username, _id: item.user?._id } },
       "remove",
-      item.user
+      { username: item.user?.username, _id: item.user?._id }
     );
   };
+
+  useEffect(() => {
+    fetchUserOrders({ user: user._id });
+  }, [fetchUserOrders, user]);
 
   return (
     <>
@@ -125,18 +134,20 @@ const CartContainer = observer(() => {
                           boxShadow="sm"
                         >
                           <Image
-                            src={item.coverImage?.url}
+                            src={item?.image}
                             alt={item.title}
                             boxSize="50px"
                             mr={4}
                             fallbackSrc="https://via.placeholder.com/50"
-                            borderRadius="md" // Rounded corners for image
+                            borderRadius="md"
                           />
                           <Box flex="1">
                             <Text fontWeight="bold">{item.title}</Text>
-                            <Text fontSize="sm" color="gray.600">
-                              {item.author}
-                            </Text>
+                            <Tooltip label={item.description}>
+                            {item?.description && <Text fontSize="sm" color="gray.600" cursor="pointer">
+                              {`${item?.description?.slice(0,30)}...`}
+                            </Text>}
+                            </Tooltip>
                             <HStack spacing={2} mt={2}>
                               <Text fontSize="sm">Quantity:</Text>
                               <Text fontWeight="bold">
