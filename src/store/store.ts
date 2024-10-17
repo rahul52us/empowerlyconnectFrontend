@@ -22,7 +22,7 @@ import RequestStore from "./requestStore/requestStore";
 import AttendencePunchStore from "./attendenceStore/attendencePunchStore";
 import Userstore from "./userStore/userStore";
 import BookLiberary from "./BookLiberary/bookLiberary";
-import CartStore from "./cartStore/cartStore";
+import OrderStore from "./orderStore/orderStore";
 
 configure({ enforceActions: "never" });
 
@@ -43,7 +43,7 @@ const store = {
   ExamStore: new ExamStore(),
   BlogStore: new BlogStore(),
   tripStore: new TripStore(),
-  CartStore: new CartStore(),
+  OrderStore: new OrderStore(),
   bookLiberary: new BookLiberary(),
   // users
   company: new CompanyStore(),

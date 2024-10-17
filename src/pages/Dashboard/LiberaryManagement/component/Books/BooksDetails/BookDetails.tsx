@@ -35,7 +35,7 @@ const BookDetails = observer(() => {
       handleBookCategoryForm,
     },
     auth: { openNotification, checkPermission },
-    CartStore : {setUserAddedItems}
+    OrderStore : {setUserAddedItems}
   } = store;
 
   const fetchData = (getDataFn: any) =>

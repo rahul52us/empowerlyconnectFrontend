@@ -1,6 +1,6 @@
 import { action, makeAutoObservable, observable } from "mobx";
 
-class CartStore {
+class OrderStore {
   userAddedItems: any = {
     users: {},
     totalItems: 0,
@@ -28,7 +28,7 @@ class CartStore {
 
   setUserAddedItems = (
     item: any,
-    action: "add" | "remove" | "removeAll", // Added "removeAll" action
+    action: "add" | "remove" | "removeAll",
     user: any,
     TotalNoOfQuantities: number = 1
   ) => {
@@ -85,4 +85,4 @@ class CartStore {
 
 }
 
-export default CartStore;
+export default OrderStore;

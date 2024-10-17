@@ -26,7 +26,7 @@ const CartContainer = observer(() => {
   const closeCart = () => setOpenCart({ open: false, loading: false });
 
   const {
-    CartStore: { userAddedItems, setUserAddedItems },
+    OrderStore: { userAddedItems, setUserAddedItems },
     auth: { user },
   } = store;
   const users: any = userAddedItems.users || {};
@@ -98,7 +98,7 @@ const CartContainer = observer(() => {
                   borderColor={borderColor}
                 >
                   <Text fontSize="md" fontWeight="bold" mb={4} color="blue.600">
-                    {userId}
+                    {userId?.split('@')[0]?.replace(/\./g, ' ').charAt(0).toUpperCase() + userId?.split('@')[0]?.replace(/\./g, ' ').slice(1)}
                   </Text>
                   {Object.entries(userCart).length ? (
                     Object.entries(userCart).map(([itemId, item]: any) => (

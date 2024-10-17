@@ -17,7 +17,6 @@ import {
 } from "@chakra-ui/react";
 import { preTitle, shortDescription, subTitle } from "./utils/text";
 import CustomCarousel from "../../../config/component/CustomCarousel/CustomCarousel";
-import CoursePage from "../Home/component/CoursePage/CoursePage";
 
 export default function CallToActionWithVideo() {
 
@@ -222,7 +221,6 @@ export default function CallToActionWithVideo() {
         </Box>
       </CustomCarousel>
     </Container>
-    <CoursePage />
     </>
   );
 }
