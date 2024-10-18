@@ -19,8 +19,10 @@ import CustomDrawer from "../../../../../../component/Drawer/CustomDrawer";
 import store from "../../../../../../../store/store";
 import { FaShoppingCart } from "react-icons/fa";
 import { HiPlus, HiMinus } from "react-icons/hi";
+import useRazorpay from "../../../../../../component/customHooks/useRazorPay";
 
 const CartContainer = observer(() => {
+  const { handlePayment } = useRazorpay();
   const [openCart, setOpenCart] = useState({ open: false, loading: false });
 
   const closeCart = () => setOpenCart({ open: false, loading: false });
@@ -144,9 +146,15 @@ const CartContainer = observer(() => {
                           <Box flex="1">
                             <Text fontWeight="bold">{item.title}</Text>
                             <Tooltip label={item.description}>
-                            {item?.description && <Text fontSize="sm" color="gray.600" cursor="pointer">
-                              {`${item?.description?.slice(0,30)}...`}
-                            </Text>}
+                              {item?.description && (
+                                <Text
+                                  fontSize="sm"
+                                  color="gray.600"
+                                  cursor="pointer"
+                                >
+                                  {`${item?.description?.slice(0, 30)}...`}
+                                </Text>
+                              )}
                             </Tooltip>
                             <HStack spacing={2} mt={2}>
                               <Text fontSize="sm">Quantity:</Text>
@@ -222,7 +230,19 @@ const CartContainer = observer(() => {
                               >
                                 Remove
                               </Button>
-                            </Tooltip>
+                              </Tooltip>
+                              <Button
+                                onClick={() =>
+                                  handlePayment(500, {
+                                    name: "rahul",
+                                    email: "rahul52us@gmail.com",
+                                    contact: "8120758780",
+                                    refrenceOrderId : itemId
+                                  })
+                                }
+                              >
+                                Pay Amount
+                              </Button>
                           </Flex>
                         </Box>
                       </Box>
