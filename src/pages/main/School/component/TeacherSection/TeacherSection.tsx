@@ -1,6 +1,6 @@
 import { Box, Grid, Heading, Text, Stack, useColorModeValue } from "@chakra-ui/react";
 import TeacherCard from "./TeacherCard";
-import { teachersData } from "../Constant/constants";
+import { teachersData } from "../../Constant/constants";
 
 const TeacherSection = () => {
   const bg = useColorModeValue("gray.50", "gray.900");

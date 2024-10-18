@@ -1,26 +1,20 @@
-import { Box, Grid, Heading, Image, SimpleGrid } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import { useRef } from "react";
 import Contact from "../Contact/Contact";
-import AboutSection from "./AboutSection/AboutSection";
-import ParallaxSection from "./common/Parallax/Parallax";
-import {
-  activityData,
-  cards,
-  imageUrls,
-} from "./Constant/constants";
-import GallerySection from "./GallerySection/GallerySection";
-import HeroCarousal from "./HeroCarousal/HeroCarousal";
-import MapSection from "./MapSection/MapSection";
-import Navbar from "./Navbar/Navbar";
-import PrincipalSection from "./PrincipalSection/PrincipalSection";
-import CampCard from "./SchoolActivityCard/SchoolActivityCard";
-import TopperSlider from "./ToppersCard/TopperSlider";
-// import Parallax from "./common/Parallax/Parallax";
-import books from "./SchoolActivityCard/books.png";
-import StatisticsCounter from "./StatisticsCounter/StatisticsCounter";
+import AboutSection from "./component/AboutSection/AboutSection";
+import { cards, imageUrls } from "./Constant/constants";
+import GallerySection from "./component/GallerySection/GallerySection";
+import HeroCarousal from "./component/HeroCarousal/HeroCarousal";
+import MapSection from "./component/MapSection/MapSection";
+import Navbar from "./layout/Navbar/Navbar";
+import PrincipalSection from "./component/PrincipalSection/PrincipalSection";
+import TopperSlider from "./component/ToppersCard/TopperSlider";
+import StatisticsCounter from "./component/StatisticsCounter/StatisticsCounter";
 import { FaChalkboardTeacher, FaUserGraduate } from "react-icons/fa";
 import { GiLaurelsTrophy } from "react-icons/gi";
-import TeacherSection from "./TeacherSection/TeacherSection";
+import TeacherSection from "./component/TeacherSection/TeacherSection";
+import { largeHeaderHeight } from "./layout/common/constant";
+import SchoolFeatureSection from "./component/SchoolFeatureSection/SchoolFeatureSection";
 
 const metrics: any = [
   { id: 1, label: "Students", target: 1500, icon: FaUserGraduate },
@@ -86,65 +80,46 @@ const School = () => {
   return (
     <Box>
       <Navbar scrollToSection={scrollToSection} />
-
-      <Box ref={homeRef} mb={4}>
-        <HeroCarousal cards={cards} />
-      </Box>
-
-      <Box ref={aboutRef} my={7}>
-        <AboutSection />
-      </Box>
-
-      <Box ref={academicsRef} my={5}>
-        <TopperSlider />
-      </Box>
-
-      <Box ref={principalRef} mt={5}>
-        <PrincipalSection />
-      </Box>
-
-
-      {/* //  imageUrl="https://img.freepik.com/free-photo/door-leading-magical-world_23-2151038217.jpg?t=st=1728924662~exp=1728928262~hmac=84060247f460e67497a669a91e1cb1b0bcba1b0948ac80885af9ce6df4f06de0&w=1060"> */}
-      <ParallaxSection imageUrl="https://kidslifedev.wpengine.com/wp-content/uploads/2020/03/cloud-bg1.png">
-        <Box maxW={"75%"} mx={"auto"} color={"white"} maxH={"90%"} my={"auto"}>
-          <Heading mb={4} size={"lg"}>
-            Our school has
-          </Heading>
-          <Grid templateColumns={"2fr 1fr"}>
-            <SimpleGrid columns={{ base: 1, md: 2 }} spacing={8}>
-              {activityData.map((camp, index) => (
-                <CampCard
-                  key={index}
-                  title={camp.title}
-                  description={camp.description}
-                />
-              ))}
-            </SimpleGrid>
-
-            <Image src={books} />
-          </Grid>
+      <Box marginTop={largeHeaderHeight}>
+        <Box ref={homeRef} mb={4}>
+          <HeroCarousal cards={cards} />
         </Box>
-      </ParallaxSection>
 
-      <Box ref={eventsRef} my={7}>
-        <GallerySection images={imageUrls} />
-      </Box>
+        <Box ref={aboutRef} my={7}>
+          <AboutSection />
+        </Box>
 
-      <Box>
-      <StatisticsCounter
-        metrics={metrics}
-        backgroundImage="https://img.freepik.com/free-photo/architecture-independence-palace-ho-chi-minh-city_181624-21243.jpg?t=st=1729011322~exp=1729014922~hmac=590a0f1b3700627efd9780676b739c65e5b00bfd9a3cf43a6b287ab872511870&w=1060"
-      />
-      </Box>
-      <Box ref={teachersRef} mt={5}>
-        <TeacherSection />
-      </Box>
-      <Box ref={contactRef} my={8}>
-        <Contact />
-        <MapSection />
+        <Box ref={academicsRef} my={5}>
+          <TopperSlider />
+        </Box>
+
+        <Box ref={principalRef} mt={5}>
+          <PrincipalSection />
+        </Box>
+
+        <Box>
+          <SchoolFeatureSection />
+        </Box>
+
+        <Box ref={eventsRef} my={7}>
+          <GallerySection images={imageUrls} />
+        </Box>
+
+        <Box>
+          <StatisticsCounter
+            metrics={metrics}
+            backgroundImage="https://img.freepik.com/free-photo/architecture-independence-palace-ho-chi-minh-city_181624-21243.jpg?t=st=1729011322~exp=1729014922~hmac=590a0f1b3700627efd9780676b739c65e5b00bfd9a3cf43a6b287ab872511870&w=1060"
+          />
+        </Box>
+        <Box ref={teachersRef} mt={5}>
+          <TeacherSection />
+        </Box>
+        <Box ref={contactRef} my={8}>
+          <Contact />
+          <MapSection />
+        </Box>
       </Box>
     </Box>
   );
 };
-
 export default School;

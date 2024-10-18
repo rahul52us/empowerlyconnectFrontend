@@ -19,7 +19,7 @@ export const cards = [
     },
     // Add more card objects as needed
   ];
-  
+
   export const imageUrls = [
     "https://images.pexels.com/photos/11366728/pexels-photo-11366728.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
     "https://images.pexels.com/photos/1234567/pexels-photo-1234567.jpeg",
@@ -32,7 +32,7 @@ export const cards = [
     "https://images.pexels.com/photos/11366728/pexels-photo-11366728.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
     "https://img.freepik.com/free-photo/students-knowing-right-answer_329181-14271.jpg?t=st=1728568738~exp=1728572338~hmac=1123b00d0fa4648de829e059a73bd392430cf569b51670163c96bfc67f75e9f5&w=1060",
   ];
-  
+
   export const teachersData = [
     {
       id: 1,
@@ -146,29 +146,29 @@ export const cards = [
     },
   ];
 
-  export const activityData = [  
-    {  
-      title: 'English Summer Camp',  
-      description: 'Play As You Learn English Summer Camp Nam ullamcorper, diam sit amet euismod pellentesque.'  
-    },  
-    {  
-      title: 'Math Wizards',  
-      description: 'Join us for a fun and interactive Math camp where numbers come to life through games.'  
-    },  
-    {  
-      title: 'Artistic Adventures',  
-      description: 'Explore your creativity in our Art camp filled with painting, drawing, and sculpting.'  
-    },  
-    {  
-      title: 'Science Explorers',  
-      description: 'Discover the wonders of science with experiments, field trips and exciting projects.'  
-    },  
-    {  
-      title: 'Coding Camp',  
-      description: 'Learn the basics of programming and create your own video games and applications.'  
-    },  
-    {  
-      title: 'Outdoor Survival Skills',  
-      description: 'Gain skills in the great outdoors with our camp focused on survival tactics and teamwork.'  
-    }  
-  ];  
+  export const activityData = [
+    {
+      title: 'English Summer Camp',
+      description: 'Play As You Learn English Summer Camp Nam ullamcorper, diam sit amet euismod pellentesque.'
+    },
+    {
+      title: 'Math Wizards',
+      description: 'Join us for a fun and interactive Math camp where numbers come to life through games.'
+    },
+    {
+      title: 'Artistic Adventures',
+      description: 'Explore your creativity in our Art camp filled with painting, drawing, and sculpting.'
+    },
+    {
+      title: 'Science Explorers',
+      description: 'Discover the wonders of science with experiments, field trips and exciting projects.'
+    },
+    {
+      title: 'Coding Camp',
+      description: 'Learn the basics of programming and create your own video games and applications.'
+    },
+    {
+      title: 'Outdoor Survival Skills',
+      description: 'Gain skills in the great outdoors with our camp focused on survival tactics and teamwork.'
+    }
+  ];

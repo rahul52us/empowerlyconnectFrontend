@@ -20,7 +20,7 @@ const StatisticsCounter = ({
   const [isVisible, setIsVisible] = useState(false);
   const [counts, setCounts] = useState<any>({});
 
-  const ref: any = useRef();
+  const ref = useRef<HTMLDivElement | null>(null); // Specify the type of ref
 
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
@@ -32,16 +32,18 @@ const StatisticsCounter = ({
       });
     });
 
-    if (ref.current) {
-      observer.observe(ref.current);
+    const currentRef = ref.current; // Copy ref.current to a variable
+
+    if (currentRef) {
+      observer.observe(currentRef);
     }
 
     return () => {
-      if (ref.current) {
-        observer.unobserve(ref.current);
+      if (currentRef) {
+        observer.unobserve(currentRef); // Use the stored variable in cleanup
       }
     };
-  }, []);
+  }, [ref.current]); // No changes required here
 
   useEffect(() => {
     if (isVisible) {

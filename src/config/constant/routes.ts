@@ -132,3 +132,7 @@ export const main = {
 export const privateMain = {
   createBlog: "/blog/create",
 };
+
+export const web = {
+  school : '/school'
+}

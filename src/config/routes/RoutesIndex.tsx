@@ -10,6 +10,8 @@ import { mainPrivateRoutes } from "./PrivateMainRoutes";
 import PrivateMainLayout from "../layout/PrivateMainLayout/PrivateMainLayout";
 
 import store from "../../store/store";
+import WebLayout from "../layout/webLayout/WebLayout";
+import { WebRoutes } from "./webRoutes";
 
 const RouterIndex = observer(() => {
   const {
@@ -20,6 +22,12 @@ const RouterIndex = observer(() => {
     <Routes>
       <Route element={<PrivateMainLayout />}>
         {mainPrivateRoutes.map((item, index) => {
+          return <Route key={index} path={item.path} element={item.element} />;
+        })}
+      </Route>
+
+      <Route element={<WebLayout />}>
+        {WebRoutes.map((item, index) => {
           return <Route key={index} path={item.path} element={item.element} />;
         })}
       </Route>
@@ -37,11 +45,13 @@ const RouterIndex = observer(() => {
           return <Route path={item.path} key={index} element={item.element} />;
         })}
       </Route>
+
       <Route element={<DashboardLayout />}>
         {DashboardRoutes.map((item, index) => {
           return <Route path={item.path} key={index} element={item.element} />;
         })}
       </Route>
+
     </Routes>
   );
 });
