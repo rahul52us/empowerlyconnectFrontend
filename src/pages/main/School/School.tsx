@@ -15,6 +15,7 @@ import { GiLaurelsTrophy } from "react-icons/gi";
 import TeacherSection from "./component/TeacherSection/TeacherSection";
 import { largeHeaderHeight } from "./layout/common/constant";
 import SchoolFeatureSection from "./component/SchoolFeatureSection/SchoolFeatureSection";
+import FaqSection from "./component/FaqSection/FaqSection";
 
 const metrics: any = [
   { id: 1, label: "Students", target: 1500, icon: FaUserGraduate },
@@ -31,6 +32,7 @@ const School = () => {
   const contactRef = useRef<HTMLDivElement>(null);
   const academicsRef = useRef<HTMLDivElement>(null);
   const teachersRef = useRef<HTMLDivElement>(null);
+  const faqRef = useRef<HTMLDivElement>(null);
   const principalRef = useRef<HTMLDivElement>(null);
 
   const scrollToSection = (section: string) => {
@@ -61,6 +63,10 @@ const School = () => {
       case "Principal":
         ref = principalRef;
         break;
+      case "FAQ":
+          ref = faqRef;
+          break;
+
       default:
         return;
     }
@@ -113,6 +119,9 @@ const School = () => {
         </Box>
         <Box ref={teachersRef} mt={5}>
           <TeacherSection />
+        </Box>
+        <Box ref={faqRef} mt={5}>
+          <FaqSection />
         </Box>
         <Box ref={contactRef} my={8}>
           <Contact />

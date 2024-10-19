@@ -73,7 +73,7 @@ const Navbar = ({
         fontWeight={500}
         color={colorMode === "dark" ? "white" : "gray.700"}
       >
-        {["Home", "About", "Admissions", "Gallery", "Contact Us"].map((link) => (
+        {["Home", "About", "Gallery", "Contact Us", "FAQ"].map((link) => (
           <Link
             key={link}
             fontSize="lg"
@@ -181,11 +181,11 @@ const Navbar = ({
       <Flex align="center" gap={4}>
         <Button
           display={{ base: "none", md: "inline-flex" }}
-          colorScheme="blue"
+          colorScheme="teal"
           borderRadius="full"
           boxShadow="md"
           _hover={{
-            bg: "blue.600",
+            bg: "teal.600",
             transform: "scale(1.05)",
             transition: "transform 0.3s ease",
           }}
@@ -214,7 +214,7 @@ const Navbar = ({
           <DrawerCloseButton />
           <DrawerBody>
             <Stack spacing={6} p={4}>
-              {["Home", "About", "Admissions", "Gallery", "Contact Us"].map(
+              {["Home", "About", "Gallery", "FAQ", "Contact Us"].map(
                 (link) => (
                   <Link
                     key={link}
