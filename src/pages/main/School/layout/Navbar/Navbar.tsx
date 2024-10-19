@@ -24,11 +24,7 @@ import { FaBars } from "react-icons/fa";
 import Logo from "./school_logo.png";
 import { largeHeaderHeight } from "../common/constant";
 
-const Navbar = ({
-  scrollToSection,
-}: {
-  scrollToSection: (section: string) => void;
-}) => {
+const Navbar = ({ scrollToSection }: { scrollToSection: (section: string) => void }) => {
   const [activeLink, setActiveLink] = useState("Home");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { colorMode } = useColorMode();
@@ -58,13 +54,7 @@ const Navbar = ({
       height={largeHeaderHeight}
       transition="background-color 0.3s ease, box-shadow 0.3s ease"
     >
-      <Image
-        src={Logo}
-        alt="School logo"
-        objectFit="contain"
-        h="3.5rem"
-        ml={4}
-      />
+      <Image src={Logo} alt="School logo" objectFit="contain" h="3.5rem" ml={4} />
 
       <Flex
         gap={8}
@@ -80,15 +70,13 @@ const Navbar = ({
             position="relative"
             color={
               activeLink === link
-                ? "blue.500"
+                ? "teal.800"
                 : colorMode === "dark"
                 ? "gray.200"
                 : "gray.600"
             }
             onClick={() => handleLinkClick(link)}
-            _hover={{
-              color: "blue.600",
-            }}
+            _hover={{ color: "teal.800" }}
             _after={{
               content: '""',
               position: "absolute",
@@ -96,7 +84,7 @@ const Navbar = ({
               height: "2px",
               bottom: "-4px",
               left: "0",
-              bg: "blue.500",
+              bg: "teal.500",
               transition: "width 0.3s ease",
             }}
             cursor="pointer"
@@ -114,14 +102,12 @@ const Navbar = ({
             position="relative"
             color={
               activeLink === "Academics"
-                ? "blue.500"
+                ? "teal.500"
                 : colorMode === "dark"
                 ? "gray.200"
                 : "gray.600"
             }
-            _hover={{
-              color: "blue.600",
-            }}
+            _hover={{ color: "teal.800" }}
             _after={{
               content: '""',
               position: "absolute",
@@ -129,7 +115,7 @@ const Navbar = ({
               height: "2px",
               bottom: "-4px",
               left: "0",
-              bg: "blue.500",
+              bg: "teal.500",
               transition: "width 0.3s ease",
             }}
             cursor="pointer"
@@ -144,7 +130,7 @@ const Navbar = ({
           >
             <MenuItem
               onClick={() => handleLinkClick("Departments")}
-              _hover={{ bg: colorMode === "dark" ? "gray.600" : "blue.50" }}
+              _hover={{ bg: colorMode === "dark" ? "gray.600" : "teal.50" }}
               borderRadius="md"
               px={4}
             >
@@ -152,7 +138,7 @@ const Navbar = ({
             </MenuItem>
             <MenuItem
               onClick={() => handleLinkClick("Programs")}
-              _hover={{ bg: colorMode === "dark" ? "gray.600" : "blue.50" }}
+              _hover={{ bg: colorMode === "dark" ? "gray.600" : "teal.50" }}
               borderRadius="md"
               px={4}
             >
@@ -160,7 +146,7 @@ const Navbar = ({
             </MenuItem>
             <MenuItem
               onClick={() => handleLinkClick("Principal")}
-              _hover={{ bg: colorMode === "dark" ? "gray.600" : "blue.50" }}
+              _hover={{ bg: colorMode === "dark" ? "gray.600" : "teal.50" }}
               borderRadius="md"
               px={4}
             >
@@ -168,7 +154,7 @@ const Navbar = ({
             </MenuItem>
             <MenuItem
               onClick={() => handleLinkClick("Teachers")}
-              _hover={{ bg: colorMode === "dark" ? "gray.600" : "blue.50" }}
+              _hover={{ bg: colorMode === "dark" ? "gray.600" : "teal.50" }}
               borderRadius="md"
               px={4}
             >
@@ -213,82 +199,50 @@ const Navbar = ({
         <DrawerContent bg={colorMode === "dark" ? "gray.800" : "white"}>
           <DrawerCloseButton />
           <DrawerBody>
-            <Stack spacing={6} p={4}>
-              {["Home", "About", "Gallery", "FAQ", "Contact Us"].map(
-                (link) => (
-                  <Link
-                    key={link}
-                    fontSize="xl"
-                    color={
-                      activeLink === link
-                        ? "blue.500"
-                        : colorMode === "dark"
-                        ? "gray.200"
-                        : "gray.700"
-                    }
-                    onClick={() => {
-                      handleLinkClick(link);
-                      onClose();
-                    }}
-                    _hover={{
-                      color: "blue.600",
-                      transition: "color 0.3s ease",
-                    }}
-                    cursor="pointer"
-                  >
-                    {link}
-                  </Link>
-                )
-              )}
+            <Stack spacing={4} p={4}>
+              <Text fontSize="xl" fontWeight="bold" color={colorMode === "dark" ? "white" : "black"}>
+                Main Menu
+              </Text>
+              {["Home", "About", "Gallery", "FAQ", "Contact Us"].map((link) => (
+                <Link
+                  key={link}
+                  fontSize="lg"
+                  color={activeLink === link ? "teal.500" : colorMode === "dark" ? "gray.200" : "gray.700"}
+                  onClick={() => {
+                    handleLinkClick(link);
+                    onClose();
+                  }}
+                  _hover={{
+                    color: "teal.600",
+                    transition: "color 0.3s ease",
+                  }}
+                  cursor="pointer"
+                >
+                  {link}
+                </Link>
+              ))}
 
-              <Text
-                fontSize="xl"
-                color={colorMode === "dark" ? "gray.200" : "gray.700"}
-                fontWeight={500}
-              >
+              <Text fontSize="xl" fontWeight="bold" color={colorMode === "dark" ? "white" : "black"}>
                 Academics
               </Text>
               <Stack spacing={2} ml={4}>
-                <Link
-                  fontSize="lg"
-                  color={colorMode === "dark" ? "gray.200" : "gray.700"}
-                  onClick={() => {
-                    handleLinkClick("Departments");
-                    onClose();
-                  }}
-                >
-                  Departments
-                </Link>
-                <Link
-                  fontSize="lg"
-                  color={colorMode === "dark" ? "gray.200" : "gray.700"}
-                  onClick={() => {
-                    handleLinkClick("Programs");
-                    onClose();
-                  }}
-                >
-                  Programs
-                </Link>
-                <Link
-                  fontSize="lg"
-                  color={colorMode === "dark" ? "gray.200" : "gray.700"}
-                  onClick={() => {
-                    handleLinkClick("Principal");
-                    onClose();
-                  }}
-                >
-                  Principal
-                </Link>
-                <Link
-                  fontSize="lg"
-                  color={colorMode === "dark" ? "gray.200" : "gray.700"}
-                  onClick={() => {
-                    handleLinkClick("Teachers");
-                    onClose();
-                  }}
-                >
-                  Faculty
-                </Link>
+                {["Departments", "Programs", "Principal", "Teachers"].map((subLink) => (
+                  <Link
+                    key={subLink}
+                    fontSize="lg"
+                    color={colorMode === "dark" ? "gray.200" : "gray.700"}
+                    onClick={() => {
+                      handleLinkClick(subLink);
+                      onClose();
+                    }}
+                    _hover={{
+                      color: "teal.600",
+                      transition: "color 0.3s ease",
+                    }}
+                  >
+                    {subLink}
+                  </Link>
+                ))}
               </Stack>
             </Stack>
           </DrawerBody>
