@@ -43,23 +43,32 @@ const Navbar = ({
       as="nav"
       align="center"
       p={4}
-      borderBottom="2px solid"
-      borderColor={colorMode === "dark" ? "gray.600" : "gray.300"}
       justify="space-between"
       position="fixed"
       top={0}
       left={0}
       right={0}
       zIndex={10}
-      bg={colorMode === "dark" ? "gray.800" : "white"}
-      boxShadow="md"
+      bgGradient={
+        colorMode === "dark"
+          ? "linear(to-r, gray.800, gray.900)"
+          : "linear(to-r, blue.50, white)"
+      }
+      boxShadow="lg"
       height={largeHeaderHeight}
-      transition="background-color 0.3s ease"
+      transition="background-color 0.3s ease, box-shadow 0.3s ease"
     >
-      <Image src={Logo} alt="School logo" objectFit="contain" h="4rem" />
+      <Image
+        src={Logo}
+        alt="School logo"
+        objectFit="contain"
+        h="3.5rem"
+        ml={4}
+      />
 
       <Flex
         gap={8}
+        align="center"
         display={{ base: "none", md: "flex" }}
         fontWeight={500}
         color={colorMode === "dark" ? "white" : "gray.700"}
@@ -68,12 +77,27 @@ const Navbar = ({
           <Link
             key={link}
             fontSize="lg"
-            color={activeLink === link ? "blue.400" : colorMode === "dark" ? "gray.200" : "gray.600"}
+            position="relative"
+            color={
+              activeLink === link
+                ? "blue.500"
+                : colorMode === "dark"
+                ? "gray.200"
+                : "gray.600"
+            }
             onClick={() => handleLinkClick(link)}
             _hover={{
-              color: "blue.500",
-              textDecoration: "underline",
-              transition: "color 0.3s ease",
+              color: "blue.600",
+            }}
+            _after={{
+              content: '""',
+              position: "absolute",
+              width: activeLink === link ? "100%" : "0",
+              height: "2px",
+              bottom: "-4px",
+              left: "0",
+              bg: "blue.500",
+              transition: "width 0.3s ease",
             }}
             cursor="pointer"
           >
@@ -81,31 +105,73 @@ const Navbar = ({
           </Link>
         ))}
 
+        {/* Academics Dropdown */}
         <Menu>
           <MenuButton
             as={Text}
             fontSize="lg"
             fontWeight={500}
-            color={activeLink === "Academics" ? "blue.400" : colorMode === "dark" ? "gray.200" : "gray.600"}
+            position="relative"
+            color={
+              activeLink === "Academics"
+                ? "blue.500"
+                : colorMode === "dark"
+                ? "gray.200"
+                : "gray.600"
+            }
             _hover={{
-              color: "blue.500",
-              cursor: "pointer",
-              textDecoration: "underline",
+              color: "blue.600",
             }}
+            _after={{
+              content: '""',
+              position: "absolute",
+              width: activeLink === "Academics" ? "100%" : "0",
+              height: "2px",
+              bottom: "-4px",
+              left: "0",
+              bg: "blue.500",
+              transition: "width 0.3s ease",
+            }}
+            cursor="pointer"
           >
             Academics
           </MenuButton>
-          <MenuList bg={colorMode === "dark" ? "gray.700" : "white"}>
-            <MenuItem onClick={() => handleLinkClick("Departments")}>
+          <MenuList
+            bg={colorMode === "dark" ? "gray.700" : "white"}
+            borderRadius="md"
+            shadow="lg"
+            p={2}
+          >
+            <MenuItem
+              onClick={() => handleLinkClick("Departments")}
+              _hover={{ bg: colorMode === "dark" ? "gray.600" : "blue.50" }}
+              borderRadius="md"
+              px={4}
+            >
               Departments
             </MenuItem>
-            <MenuItem onClick={() => handleLinkClick("Programs")}>
+            <MenuItem
+              onClick={() => handleLinkClick("Programs")}
+              _hover={{ bg: colorMode === "dark" ? "gray.600" : "blue.50" }}
+              borderRadius="md"
+              px={4}
+            >
               Programs
             </MenuItem>
-            <MenuItem onClick={() => handleLinkClick("Principal")}>
+            <MenuItem
+              onClick={() => handleLinkClick("Principal")}
+              _hover={{ bg: colorMode === "dark" ? "gray.600" : "blue.50" }}
+              borderRadius="md"
+              px={4}
+            >
               Principal
             </MenuItem>
-            <MenuItem onClick={() => handleLinkClick("Teachers")}>
+            <MenuItem
+              onClick={() => handleLinkClick("Teachers")}
+              _hover={{ bg: colorMode === "dark" ? "gray.600" : "blue.50" }}
+              borderRadius="md"
+              px={4}
+            >
               Faculty
             </MenuItem>
           </MenuList>
@@ -124,7 +190,7 @@ const Navbar = ({
             transition: "transform 0.3s ease",
           }}
           px={6}
-          onClick={() => handleLinkClick('Contact Us')}
+          onClick={() => handleLinkClick("Contact Us")}
         >
           Apply Now
         </Button>
@@ -153,14 +219,19 @@ const Navbar = ({
                   <Link
                     key={link}
                     fontSize="xl"
-                    color={activeLink === link ? "blue.400" : colorMode === "dark" ? "gray.200" : "gray.700"}
+                    color={
+                      activeLink === link
+                        ? "blue.500"
+                        : colorMode === "dark"
+                        ? "gray.200"
+                        : "gray.700"
+                    }
                     onClick={() => {
                       handleLinkClick(link);
                       onClose();
                     }}
                     _hover={{
-                      color: "blue.500",
-                      textDecoration: "underline",
+                      color: "blue.600",
                       transition: "color 0.3s ease",
                     }}
                     cursor="pointer"
@@ -170,7 +241,11 @@ const Navbar = ({
                 )
               )}
 
-              <Text fontSize="xl" color={colorMode === "dark" ? "gray.200" : "gray.700"} fontWeight={500}>
+              <Text
+                fontSize="xl"
+                color={colorMode === "dark" ? "gray.200" : "gray.700"}
+                fontWeight={500}
+              >
                 Academics
               </Text>
               <Stack spacing={2} ml={4}>
