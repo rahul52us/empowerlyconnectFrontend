@@ -18,16 +18,17 @@ import {
   DrawerCloseButton,
   DrawerBody,
   useColorMode,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { FaBars } from "react-icons/fa";
+import { FaBars, FaSun, FaMoon } from "react-icons/fa"; // Importing icons for theme toggle
 import Logo from "./school_logo.png";
 import { largeHeaderHeight } from "../common/constant";
 
 const Navbar = ({ scrollToSection }: { scrollToSection: (section: string) => void }) => {
   const [activeLink, setActiveLink] = useState("Home");
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { colorMode } = useColorMode();
+  const { colorMode, toggleColorMode } = useColorMode(); // Destructure toggleColorMode from useColorMode
 
   const handleLinkClick = (link: string) => {
     setActiveLink(link);
@@ -45,16 +46,12 @@ const Navbar = ({ scrollToSection }: { scrollToSection: (section: string) => voi
       left={0}
       right={0}
       zIndex={10}
-      bgGradient={
-        colorMode === "dark"
-          ? "linear(to-r, gray.800, gray.900)"
-          : "linear(to-r, blue.50, white)"
-      }
-      boxShadow="lg"
+      bg={useColorModeValue("white", "gray.800")}
+      boxShadow="md"
       height={largeHeaderHeight}
       transition="background-color 0.3s ease, box-shadow 0.3s ease"
     >
-      <Image src={Logo} alt="School logo" objectFit="contain" h="3.5rem" ml={4} />
+      <Image src={Logo} alt="School logo" objectFit="contain" h="4rem" ml={4} />
 
       <Flex
         gap={8}
@@ -70,7 +67,7 @@ const Navbar = ({ scrollToSection }: { scrollToSection: (section: string) => voi
             position="relative"
             color={
               activeLink === link
-                ? "teal.800"
+                ? "teal.500"
                 : colorMode === "dark"
                 ? "gray.200"
                 : "gray.600"
@@ -128,43 +125,32 @@ const Navbar = ({ scrollToSection }: { scrollToSection: (section: string) => voi
             shadow="lg"
             p={2}
           >
-            <MenuItem
-              onClick={() => handleLinkClick("Departments")}
-              _hover={{ bg: colorMode === "dark" ? "gray.600" : "teal.50" }}
-              borderRadius="md"
-              px={4}
-            >
-              Departments
-            </MenuItem>
-            <MenuItem
-              onClick={() => handleLinkClick("Programs")}
-              _hover={{ bg: colorMode === "dark" ? "gray.600" : "teal.50" }}
-              borderRadius="md"
-              px={4}
-            >
-              Programs
-            </MenuItem>
-            <MenuItem
-              onClick={() => handleLinkClick("Principal")}
-              _hover={{ bg: colorMode === "dark" ? "gray.600" : "teal.50" }}
-              borderRadius="md"
-              px={4}
-            >
-              Principal
-            </MenuItem>
-            <MenuItem
-              onClick={() => handleLinkClick("Teachers")}
-              _hover={{ bg: colorMode === "dark" ? "gray.600" : "teal.50" }}
-              borderRadius="md"
-              px={4}
-            >
-              Faculty
-            </MenuItem>
+            {["Departments", "Programs", "Principal", "Teachers"].map((subLink) => (
+              <MenuItem
+                key={subLink}
+                onClick={() => handleLinkClick(subLink)}
+                _hover={{ bg: colorMode === "dark" ? "gray.600" : "teal.50" }}
+                borderRadius="md"
+                px={4}
+              >
+                {subLink}
+              </MenuItem>
+            ))}
           </MenuList>
         </Menu>
       </Flex>
 
       <Flex align="center" gap={4}>
+        <IconButton
+          aria-label="Toggle theme"
+          icon={colorMode === "dark" ? <FaSun /> : <FaMoon />} // Toggle between sun and moon icons
+          onClick={toggleColorMode}
+          variant="outline"
+          colorScheme="teal"
+          size="lg"
+          rounded="full"
+        />
+
         <Button
           display={{ base: "none", md: "inline-flex" }}
           colorScheme="teal"
