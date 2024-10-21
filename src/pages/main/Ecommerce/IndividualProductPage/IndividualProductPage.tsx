@@ -2,6 +2,7 @@ import { ArrowForwardIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
+  Container,
   Divider,
   Flex,
   Grid,
@@ -20,14 +21,18 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import PriceDisplay from "./PriceDisplay/PriceDisplay";
 import ProductSpecification from "./ProductSpecification/ProductSpecification";
+import productData from "../IndividualProductPage/JSON/phoneData.json";
+import ColorOptions from "./ColorOptions/ColorOptions";
+// import productData from '../IndividualProductPage/JSON/tvData.json'
+// import productData from '../IndividualProductPage/dummyData.json'
 
-const IndividualProductPage = ({ productData }: any) => {
-  const [mainImage, setMainImage] = useState(productData?.images[0]);
+const IndividualProductPage = () => {
+  const [mainImage, setMainImage] = useState<any>(productData?.images[0]);
   const [options] = useState({
     method: "GET",
-    url: "https://real-time-product-search.p.rapidapi.com/product-details",
+    // url: "https://real-time-product-search.p.rapidapi.com/product-details",
     params: {
-      product_id: "11577822456427762145",
+      product_id: "9222453800837864433",
       country: "us",
       language: "en",
     },
@@ -35,7 +40,7 @@ const IndividualProductPage = ({ productData }: any) => {
       "x-rapidapi-key": "d4c4126cb1mshddd553eb7fe95bap1bdf13jsn19c6b312de3f",
       "x-rapidapi-host": "real-time-product-search.p.rapidapi.com",
     },
-  })
+  });
 
   const settings = {
     vertical: true,
@@ -45,41 +50,42 @@ const IndividualProductPage = ({ productData }: any) => {
     arrows: false,
   };
 
-  const getDetails = useCallback(async() => {
+  const getDetails = useCallback(async () => {
     try {
       await axios.request(options);
     } catch (error) {
       console.error(error);
     }
-  },[options]);
+  }, [options]);
 
   useEffect(() => {
     getDetails();
   }, [getDetails]);
 
-  return (
-    productData ? <Box>
+  return productData ? (
+    <Container maxW={"8xl"} mx={"auto"} my={{ base: 2, md: 12 }}>
       <Grid templateColumns={"1fr 3fr 4fr"} gap={4} mb={4}>
         <Box>
           <Slider {...settings}>
-            {productData?.images && productData.images.map((img: any, index: any) => (
-              <Box
-                key={index}
-                onClick={() => setMainImage(img)}
-                boxSize={"6rem"}
-              >
-                <Image
-                  src={img}
-                  rounded={"2xl"}
+            {productData?.images &&
+              productData.images.map((img: any, index: any) => (
+                <Box
+                  key={index}
+                  onClick={() => setMainImage(img)}
                   boxSize={"6rem"}
-                  objectFit={"cover"}
-                  cursor={"pointer"}
-                />
-              </Box>
-            ))}
+                >
+                  <Image
+                    src={img}
+                    rounded={"2xl"}
+                    boxSize={"6rem"}
+                    objectFit={"cover"}
+                    cursor={"pointer"}
+                  />
+                </Box>
+              ))}
           </Slider>
         </Box>
-        <Box  >
+        <Box>
           <Image
             w={"100%"}
             mx={{ base: 0, md: "auto" }}
@@ -96,7 +102,7 @@ const IndividualProductPage = ({ productData }: any) => {
                 {productData.name}
               </Heading>
               <Text fontSize={"lg"} color={"gray"}>
-                {productData.description}
+                {productData.short_desc}
               </Text>
             </Box>
 
@@ -135,33 +141,38 @@ const IndividualProductPage = ({ productData }: any) => {
               />
             </Box>
 
-            <Flex align={"center"} gap={8}>
-              <Text fontWeight={500}>Select Size</Text>
-              <Button
-                rightIcon={<ArrowForwardIcon />}
-                color={"gray"}
-                rounded={"full"}
-                variant="link"
-              >
-                Size Guide
-              </Button>
-            </Flex>
-            <Flex gap={6}>
-              {productData.available_sizes.map((size: any) => (
-                <Button
-                  key={size}
-                  boxSize={9}
-                  variant={"outline"}
-                  borderWidth={2}
-                  rounded={12}
-                  fontSize={"sm"}
-                  _hover={{ bg: "blackAlpha.800", color: "white" }}
-                >
-                  {size}
-                </Button>
-              ))}
-            </Flex>
-            <Box>
+            {productData?.available_sizes.length > 0 && (
+              <>
+                <Flex align={"center"} gap={8}>
+                  <Text fontWeight={500}>Select Size</Text>
+                  <Button
+                    rightIcon={<ArrowForwardIcon />}
+                    color={"gray"}
+                    rounded={"full"}
+                    variant="link"
+                  >
+                    Size Guide
+                  </Button>
+                </Flex>
+                <Flex gap={6}>
+                  {productData?.available_sizes?.map((size: any) => (
+                    <Button
+                      key={size}
+                      boxSize={9}
+                      variant={"outline"}
+                      borderWidth={2}
+                      rounded={12}
+                      fontSize={"sm"}
+                      _hover={{ bg: "blackAlpha.800", color: "white" }}
+                    >
+                      {size}
+                    </Button>
+                  ))}
+                </Flex>
+              </>
+            )}
+            <ColorOptions colors={productData.available_colors} />
+            {/* <Box>
               <Text fontWeight={500} mb={1}>
                 Colors Available
               </Text>
@@ -177,7 +188,7 @@ const IndividualProductPage = ({ productData }: any) => {
                   </Box>
                 ))}
               </Flex>
-            </Box>
+            </Box> */}
             <Flex mt={2} w={"100%"}>
               <Button
                 bg={"blue.300"}
@@ -208,8 +219,8 @@ const IndividualProductPage = ({ productData }: any) => {
       <ProductSpecification
         productSpecifications={productData?.product_specifications}
       />
-    </Box> : null
-  );
+    </Container>
+  ) : null;
 };
 
 export default IndividualProductPage;

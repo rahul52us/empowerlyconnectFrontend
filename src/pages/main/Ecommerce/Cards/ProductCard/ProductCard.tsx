@@ -23,7 +23,10 @@ const ProductCard = ({ product }: any) => {
       boxShadow="base"
       backdropFilter="blur(10px)"
       pb={2}
-      onClick={() => {if(false)navigate(`${main.ecommerce.products}/${product?.product_id}`)}}
+      onClick={() => {
+        navigate(`${main.ecommerce.products}/${product?.product_id}`);
+        
+      }}
     >
       <Box h="300px" overflow="hidden" position="relative">
         <Image

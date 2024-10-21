@@ -53,57 +53,6 @@
       { "star": 1, "count": 8 }
     ]
   },
-  "reviews":[  
-  {  
-    "reviewer": {  
-      "name": "John Doe",  
-      "avatar": "https://randomuser.me/api/portraits/men/1.jpg" 
-    },  
-    "rating": 4,  
-    "reviewText":  
-      "This product is amazing! It exceeded my expectations in every way. Highly recommended!",  
-    "photos": [  
-      "https://via.placeholder.com/150",  
-      "https://via.placeholder.com/150",  
-      "https://via.placeholder.com/150"  
-    ],  
-    "likes": 25,  
-    "dislikes": 3,  
-    "timestamp": "2023-04-15T12:34:56Z"
-  },  
-  {  
-    "reviewer": {  
-      "name": "Jane Smith",  
-      "avatar": "https://randomuser.me/api/portraits/women/2.jpg" 
-    },  
-    "rating": 3,  
-    "reviewText":  
-      "The product was decent, but I had a few issues with it. The customer service was helpful, though.",  
-    "photos": ["https://via.placeholder.com/150"],  
-    "likes": 12,  
-    "dislikes": 5,  
-    "timestamp": "2023-03-22T09:15:00Z"  
-  },  
-  {  
-    "reviewer": {  
-      "name": "Michael Johnson",  
-      "avatar": "https://randomuser.me/api/portraits/men/3.jpg"
-    },  
-    "rating": 5,  
-    "reviewText":  
-      "I absolutely love this product! It's been a game-changer for me, and I highly recommend it to everyone.",  
-    "photos": [  
-      "https://via.placeholder.com/150",  
-      "https://via.placeholder.com/150",  
-      "https://via.placeholder.com/150",  
-      "https://via.placeholder.com/150"
-    ],  
-    "likes": 42,  
-    "dislikes": 1,  
-    "timestamp": "2023-02-08T18:27:30Z"
-  }
-],
- 
   "product_specifications": [
     { "label": "Brand", "value": "U.S. Polo Assn." },
     { "label": "Material", "value": "Pure Cotton" },
@@ -113,6 +62,7 @@
     { "label": "Occasion", "value": "Casual Wear" },
     { "label": "Care Instructions", "value": "Machine Washable" }
   ],
+
   "reviews_insights": [
     {
       "attribute": "Attractive",
@@ -141,6 +91,54 @@
       "positive_count": 32,
       "negative": "Poorly made",
       "negative_count": 2
+    }
+  ],
+
+  "reviews": [
+    {
+      "reviewer": {
+        "name": "John Doe",
+        "avatar": "https://randomuser.me/api/portraits/men/1.jpg"
+      },
+      "rating": 4,
+      "reviewText": "This product is amazing! It exceeded my expectations in every way. Highly recommended!",
+      "photos": [
+        "https://via.placeholder.com/150",
+        "https://via.placeholder.com/150",
+        "https://via.placeholder.com/150"
+      ],
+      "likes": 25,
+      "dislikes": 3,
+      "timestamp": "2023-04-15T12:34:56Z"
+    },
+    {
+      "reviewer": {
+        "name": "Jane Smith",
+        "avatar": "https://randomuser.me/api/portraits/women/2.jpg"
+      },
+      "rating": 3,
+      "reviewText": "The product was decent, but I had a few issues with it. The customer service was helpful, though.",
+      "photos": ["https://via.placeholder.com/150"],
+      "likes": 12,
+      "dislikes": 5,
+      "timestamp": "2023-03-22T09:15:00Z"
+    },
+    {
+      "reviewer": {
+        "name": "Michael Johnson",
+        "avatar": "https://randomuser.me/api/portraits/men/3.jpg"
+      },
+      "rating": 5,
+      "reviewText": "I absolutely love this product! It's been a game-changer for me, and I highly recommend it to everyone.",
+      "photos": [
+        "https://via.placeholder.com/150",
+        "https://via.placeholder.com/150",
+        "https://via.placeholder.com/150",
+        "https://via.placeholder.com/150"
+      ],
+      "likes": 42,
+      "dislikes": 1,
+      "timestamp": "2023-02-08T18:27:30Z"
     }
   ]
 }
