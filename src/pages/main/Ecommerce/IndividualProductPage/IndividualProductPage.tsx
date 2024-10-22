@@ -1,4 +1,8 @@
-import { ArrowForwardIcon } from "@chakra-ui/icons";
+import {
+  ArrowForwardIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+} from "@chakra-ui/icons";
 import {
   Box,
   Button,
@@ -8,6 +12,7 @@ import {
   Grid,
   Heading,
   Icon,
+  IconButton,
   Image,
   Text,
   VStack,
@@ -16,7 +21,7 @@ import axios from "axios";
 import { FaRegComments, FaStar } from "react-icons/fa";
 import { FaOpencart } from "react-icons/fa6";
 import Slider from "react-slick";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import PriceDisplay from "./PriceDisplay/PriceDisplay";
@@ -42,12 +47,29 @@ const IndividualProductPage = () => {
     },
   });
 
+  const [currentSlide, setCurrentSlide] = useState<any>(0);
+
+  const handlePrevSlide = () => {
+    if (currentSlide > 0) {
+      slider.current.slickPrev();
+    }
+  };
+
+  const handleNextSlide = () => {
+    if (currentSlide < productData.images.length - 4) {
+      slider.current.slickNext();
+    }
+  };
+
+  const slider: any = useRef(null);
+
   const settings = {
     vertical: true,
     infinite: false,
-    slidesToShow: 4,
+    slidesToShow: 4.5,
     slidesToScroll: 1,
     arrows: false,
+    beforeChange: (newIndex: number) => setCurrentSlide(newIndex),
   };
 
   const getDetails = useCallback(async () => {
@@ -65,27 +87,52 @@ const IndividualProductPage = () => {
   return productData ? (
     <Container maxW={"8xl"} mx={"auto"} my={{ base: 2, md: 12 }}>
       <Grid templateColumns={"1fr 3fr 4fr"} gap={4} mb={4}>
-        <Box>
-          <Slider {...settings}>
-            {productData?.images &&
-              productData.images.map((img: any, index: any) => (
-                <Box
-                  key={index}
-                  onClick={() => setMainImage(img)}
-                  boxSize={"6rem"}
-                >
-                  <Image
-                    src={img}
-                    rounded={"2xl"}
+        <Box position="relative">
+          <Box>
+            <Slider ref={slider} {...settings}>
+              {productData?.images &&
+                productData.images.map((img: any, index: any) => (
+                  <Box
+                    key={index}
+                    onClick={() => setMainImage(img)}
                     boxSize={"6rem"}
-                    objectFit={"cover"}
-                    cursor={"pointer"}
-                  />
-                </Box>
-              ))}
-          </Slider>
+                  >
+                    <Image
+                      src={img}
+                      rounded={"2xl"}
+                      // onMouseEnter={() => setMainImage(img)}
+                      boxSize={"6rem"}
+                      shadow={"md"}
+                      objectFit={"cover"}
+                      cursor={"pointer"}
+                    />
+                  </Box>
+                ))}
+            </Slider>
+          </Box>
+          <Box m={2}>
+            <IconButton
+              aria-label="Previous slide"
+              colorScheme="blackAlpha"
+              size={"sm"}
+              icon={<ChevronUpIcon />}
+              isRound
+              onClick={handlePrevSlide}
+              isDisabled={currentSlide === 0}
+            />
+            <IconButton
+              aria-label="Next slide"
+              colorScheme="blackAlpha"
+              isRound
+              size={"sm"}
+              icon={<ChevronDownIcon />}
+              onClick={handleNextSlide}
+              isDisabled={currentSlide >= productData.images.length - 4}
+              ml={4}
+            />
+          </Box>
         </Box>
-        <Box>
+        <Flex align={"center"} h={"80%"}>
           <Image
             w={"100%"}
             mx={{ base: 0, md: "auto" }}
@@ -94,16 +141,22 @@ const IndividualProductPage = () => {
             maxH={"78vh"}
             src={mainImage}
           />
-        </Box>
-        <Box p={5}>
-          <VStack spacing={5} align={"start"}>
+        </Flex>
+        <Box
+          p={5}
+          position="sticky"
+          top={0}
+          maxW={{ lg: "4fr" }}
+          overflow={"auto"}
+          maxH={"80vh"}
+          className="custom-scrollbar"
+        >
+          <VStack spacing={6} align={"start"}>
             <Box>
               <Heading mb={2} fontSize={"2xl"}>
                 {productData.name}
               </Heading>
-              <Text fontSize={"lg"} color={"gray"}>
-                {productData.short_desc}
-              </Text>
+              <Text color={"gray"}>{productData.short_desc}</Text>
             </Box>
 
             <Flex gap={12}>
@@ -171,24 +224,9 @@ const IndividualProductPage = () => {
                 </Flex>
               </>
             )}
-            <ColorOptions colors={productData.available_colors} />
-            {/* <Box>
-              <Text fontWeight={500} mb={1}>
-                Colors Available
-              </Text>
-              <Flex gap={3}>
-                {productData.available_colors.map((color: any) => (
-                  <Box p={"0.5"} borderWidth={2} rounded={"full"} key={color}>
-                    <Box
-                      cursor={"pointer"}
-                      bg={color.hex_code}
-                      boxSize={6}
-                      rounded={"full"}
-                    ></Box>
-                  </Box>
-                ))}
-              </Flex>
-            </Box> */}
+            {productData?.available_colors.length > 0 && (
+              <ColorOptions colors={productData.available_colors} />
+            )}
             <Flex mt={2} w={"100%"}>
               <Button
                 bg={"blue.300"}
@@ -213,12 +251,39 @@ const IndividualProductPage = () => {
                 </Flex>
               ))}
             </Grid>
+            <ProductSpecification
+              productSpecifications={productData?.product_specifications}
+            />
           </VStack>
         </Box>
       </Grid>
-      <ProductSpecification
-        productSpecifications={productData?.product_specifications}
-      />
+
+      <style>
+        {`
+ 
+
+.custom-scrollbar::-webkit-scrollbar-track {  
+  background-color: transparent; /* Color of the track (the area behind the scrollbar) */  
+}  
+
+.custom-scrollbar::-webkit-scrollbar-thumb {  
+  background-color: transparent; /* Color of the scrollbar thumb */  
+  border-radius: 4px; /* Rounded corners of the scrollbar thumb */  
+}  
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {  
+  background-color: #666; /* Color of the scrollbar thumb on hover */  
+}  
+
+.custom-scrollbar::-webkit-scrollbar-button {  
+  display: none; /* Hides the scrollbar buttons */  
+}  
+
+.custom-scrollbar::-webkit-scrollbar-corner {  
+  background-color: transparent; /* Color of the corner where the horizontal and vertical scrollbars meet */  
+}
+        `}
+      </style>
     </Container>
   ) : null;
 };
