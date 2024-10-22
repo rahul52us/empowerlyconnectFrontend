@@ -20,18 +20,17 @@ const RouterIndex = observer(() => {
 
   return (
     <Routes>
-      <Route element={<PrivateMainLayout />}>
-        {mainPrivateRoutes.map((item, index) => {
-          return <Route key={index} path={item.path} element={item.element} />;
-        })}
-      </Route>
-
       <Route element={<WebLayout />}>
         {WebRoutes.map((item, index) => {
           return <Route key={index} path={item.path} element={item.element} />;
         })}
       </Route>
 
+      <Route element={<PrivateMainLayout />}>
+        {mainPrivateRoutes.map((item, index) => {
+          return <Route key={index} path={item.path} element={item.element} />;
+        })}
+      </Route>
       <Route element={<MainLayout />}>
         {MainPublicRoutes.map((item, index) =>
           user === null && item.publicRoute === false ? null : (
@@ -51,7 +50,6 @@ const RouterIndex = observer(() => {
           return <Route path={item.path} key={index} element={item.element} />;
         })}
       </Route>
-
     </Routes>
   );
 });

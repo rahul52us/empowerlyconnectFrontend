@@ -1,11 +1,8 @@
 import { lazy } from "react";
 import AddingparaForm from "../../pages/main/Contact/AddingparaForm";
-import Ecommerce from "../../pages/main/Ecommerce/Ecommerce";
 import Home2 from "../../pages/main/Home/Home2";
 import SingleProduct from "../../pages/main/Product/component/SingleProduct";
 import { main } from "../constant/routes";
-import IndividualProductPage from "../../pages/main/Ecommerce/IndividualProductPage/IndividualProductPage";
-import School from "../../pages/main/School/School";
 // const Home = lazy(() => import("../../pages/main/Home/Home"));
 const About = lazy(() => import("../../pages/main/About/About"));
 const PageNotFound = lazy(() => import("../component/common/WebPages/PageNotFound"));
@@ -131,23 +128,6 @@ export const MainPublicRoutes = [
     path: main.individualHomeCompany,
     publicRoutes:true
   },
-  {
-    element : <Ecommerce />,
-    path: main.ecommerce.products,
-    publicRoutes:true
-  },
-  {
-    element : <School />,
-    path: main.school,
-    publicRoutes:true
-  },
-  {
-    element: <IndividualProductPage />,
-    path: `${main.ecommerce.products}/:id`, // Dynamic route with :id
-    publicRoutes: true
-  },
-  // Not found
-
   {
     element : <PageNotFound />,
     path : '/*',

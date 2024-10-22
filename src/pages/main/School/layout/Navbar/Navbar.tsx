@@ -25,7 +25,7 @@ import { FaBars, FaSun, FaMoon } from "react-icons/fa"; // Importing icons for t
 import Logo from "./school_logo.png";
 import { largeHeaderHeight } from "../common/constant";
 
-const Navbar = ({ scrollToSection }: { scrollToSection: (section: string) => void }) => {
+const Header = ({ scrollToSection }: { scrollToSection: (section: string) => void }) => {
   const [activeLink, setActiveLink] = useState("Home");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { colorMode, toggleColorMode } = useColorMode(); // Destructure toggleColorMode from useColorMode
@@ -238,4 +238,4 @@ const Navbar = ({ scrollToSection }: { scrollToSection: (section: string) => voi
   );
 };
 
-export default Navbar;
+export default Header;

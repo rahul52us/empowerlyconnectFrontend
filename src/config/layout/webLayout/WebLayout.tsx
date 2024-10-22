@@ -10,31 +10,53 @@ import { observer } from "mobx-react-lite";
 import { useColorModeValue, useMediaQuery, useTheme } from "@chakra-ui/react";
 import styled from "styled-components";
 import FooterLayout from "../MainLayout/FooterLayout/FooterLayout";
+import MainLayout from "../MainLayout/MainLayout"; // Import Main Layout
+import EcommerceLayout from "../../../pages/main/Ecommerce/layout/MainLayout"; // Import Ecommerce Layout
+import SchoolLayout from "../../../pages/main/School/layout/MainLayout";
 
 const WebLayout = observer(() => {
   const theme = useTheme();
   const location = useLocation();
   const [sizeStatus] = useMediaQuery(`(max-width: ${theme.breakpoints.xl})`);
 
+  // Move useColorModeValue outside of getLayout function
+  const backgroundColor = useColorModeValue("#ffffff", "#1A202C");
+
   // Scroll to top when the location changes (new page is opened)
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
 
-  return (
-    <div
-      style={{
-        backgroundColor: useColorModeValue("#ffffff", "#1A202C"),
-      }}
-    >
-      <ContentContainer sizeStatus={sizeStatus}>
-        <Suspense fallback={<Loader height="90vh" />}>
-          <Outlet />
-        </Suspense>
-        <FooterLayout />
-      </ContentContainer>
-    </div>
-  );
+  // Function to determine the layout based on the path
+  const getLayout = () => {
+    const { pathname } = location;
+
+    switch (true) {
+      case pathname.startsWith("/ecommerce"):
+        return <EcommerceLayout />; // Render EcommerceLayout for ecommerce paths
+      case pathname.startsWith("/school"):
+        return <SchoolLayout />; // If there's no layout yet for school, return null
+      case pathname.startsWith("/main"):
+        return <MainLayout />; // Render MainLayout for main paths
+      default:
+        return (
+          <div
+            style={{
+              backgroundColor: backgroundColor, // Use backgroundColor here
+            }}
+          >
+            <ContentContainer sizeStatus={sizeStatus}>
+              <Suspense fallback={<Loader height="90vh" />}>
+                <Outlet /> {/* Render default Outlet for other paths */}
+              </Suspense>
+              <FooterLayout />
+            </ContentContainer>
+          </div>
+        );
+    }
+  };
+
+  return getLayout(); // Return the appropriate layout based on the path
 });
 
 const ContentContainer = styled.div<{ sizeStatus: Boolean }>`

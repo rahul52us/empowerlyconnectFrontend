@@ -120,7 +120,7 @@ const School = () => {
         <Box ref={teachersRef} mt={5}>
           <TeacherSection />
         </Box>
-        <Box ref={faqRef} mt={5}>
+        <Box ref={faqRef} my={5}>
           <FaqSection />
         </Box>
         <Box ref={contactRef} my={8}>

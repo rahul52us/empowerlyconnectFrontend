@@ -9,7 +9,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import { main } from "../../../../../config/constant/routes";
+import { web } from "../../../../../config/constant/routes";
 
 const ProductCard = ({ product }: any) => {
   const navigate = useNavigate();
@@ -24,8 +24,8 @@ const ProductCard = ({ product }: any) => {
       backdropFilter="blur(10px)"
       pb={2}
       onClick={() => {
-        navigate(`${main.ecommerce.products}/${product?.product_id}`);
-        
+        navigate(`${web.ecommerce.products}/${product?.product_id}`);
+
       }}
     >
       <Box h="300px" overflow="hidden" position="relative">

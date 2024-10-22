@@ -96,7 +96,7 @@ const FaqSection = () => {
               transition="background-color 0.2s, box-shadow 0.2s"
             >
               <Flex alignItems="center" flex="1" textAlign="left">
-                <InfoIcon boxSize={5} color={textColor} mr={2} display={{base : 'none', md : undefined}}/>
+                <InfoIcon boxSize={5} color={textColor} mr={2} display={{base : 'none', md : 'inline'}}/>
                 <Text
                   fontWeight="bold"
                   fontSize={{base : 'sm', md : "lg"}}

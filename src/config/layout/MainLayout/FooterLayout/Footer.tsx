@@ -22,7 +22,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import LinkText from "../../../component/LinkText/LinkText";
 import SocialMediaLink from "../../../component/SocialMediaLinkContainer/SocialMediaLink";
-import { dashboard, main } from "../../../constant/routes";
+import { dashboard, main, web } from "../../../constant/routes";
 import FooterBottom from "./element/FooterBottom";
 
 const Footer = observer(() => {
@@ -125,11 +125,10 @@ const Footer = observer(() => {
                 clickEvent={() => navigate(main.testimonial)}
               />
               <LinkText text="Videos" clickEvent={() => navigate(main.video)} />
-              <LinkText text="E-commerce" clickEvent={() => navigate(main.ecommerce.products)} />
-              <LinkText text="School" clickEvent={() => navigate(main.school)} />
+              <LinkText text="E-commerce" clickEvent={() => navigate(web.ecommerce.products)} />
+              <LinkText text="School" clickEvent={() => navigate(web.school)} />
             </VStack>
           </Box>
-
           <Box>
             <Heading fontSize={"xl"} color={headingColor} mb={4}>
               Our Company

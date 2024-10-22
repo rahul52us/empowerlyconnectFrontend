@@ -1,3 +1,5 @@
+import { ecommerce } from "./constant";
+
 export const authentication = {
   login: "/login",
   register: "/register",
@@ -123,9 +125,6 @@ export const main = {
   quizTitle: "/quiz/:quizTitle",
   quizQuestionIndex: "/quiz/:quizTitle/:categoryTitle",
   individualHomeCompany: "/:individualCompany",
-  ecommerce: {
-    products: "/ecommerce/products",
-  },
   school:"/school"
 };
 
@@ -134,5 +133,9 @@ export const privateMain = {
 };
 
 export const web = {
-  school : '/school'
+  school : '/school',
+  ecommerce : {
+    index : `${ecommerce}`,
+    products: `${ecommerce}/products`
+  }
 }
