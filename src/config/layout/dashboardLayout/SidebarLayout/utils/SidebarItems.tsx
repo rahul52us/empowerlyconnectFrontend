@@ -90,6 +90,13 @@ const sidebarDatas: SidebarItem[] = [
       },
     ],
   },
+    {
+      id: 9,
+      name: "SalaryStructure",
+      icon: <FaUsers />,
+      url: `${dashboard.salaryStructure.salaryStructure}`,
+      role: ["user","admin","manager","superadmin"],
+    },
   {
     id: 11,
     name: "Request",

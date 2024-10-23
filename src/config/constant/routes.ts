@@ -75,6 +75,10 @@ export const dashboard = {
     userList : `/${dashboardName}/attendence/users`,
     uniqueUser : `/${dashboardName}/attendence/users/:userId`
   },
+
+  salaryStructure : {
+    salaryStructure : `/${dashboardName}/salaryStructure`
+  },
   application:{
     project : `/${dashboardName}/project?page=1`
   },

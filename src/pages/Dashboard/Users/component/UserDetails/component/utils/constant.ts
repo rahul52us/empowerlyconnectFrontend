@@ -6,6 +6,7 @@ export const sideTabs = [
     { title: "Documents", key: "documents" },
     { title: "Qualifications", key: "qualifications" },
     { key: "work-experience", title: "Work Experience" },
+    { key: "salary-structure", title: "Salary Structure" },
     { key: "permissions", title: "Permissions" },
 
 ]
