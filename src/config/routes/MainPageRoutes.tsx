@@ -32,6 +32,7 @@ const QuizQuestionIndex = lazy(() => import("../../pages/main/quiz/pages/QuizQue
 const ProjectIndex = lazy(() => import("../../pages/main/project/ProjectIndex"))
 const IndividualCompanyHome = lazy(() => import("../../pages/main/IndividualCompanyHome/IndividualCompanyHome"))
 
+
 export const MainPublicRoutes = [
   {
     element: <Home2 />,

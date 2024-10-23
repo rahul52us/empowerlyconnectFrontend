@@ -12,6 +12,7 @@ import PersonalWorkExperience from "./forms/PersonalWorkExperience";
 import PersonalDocuments from "./forms/PersonalDocuments";
 import PersonalPermissions from "./forms/PersonalPermissions";
 import PersonalQualifications from "./forms/PersonalQualification";
+import PersonalSalaryStructureForm from "./forms/PersonalSalaryStructureForm";
 
 const UserContainer = observer(
   ({
@@ -98,17 +99,17 @@ const UserContainer = observer(
             />
           );
         case "qualifications":
-            return (
-              <PersonalQualifications
-                type={type}
-                profileData={profileData}
-                handleSubmitProfile={handleSubmitProfile}
-                initialValues={initialValues?.qualifications}
-                validations={validations}
-                files={files}
-                setFiles={setFiles}
-              />
-            );
+          return (
+            <PersonalQualifications
+              type={type}
+              profileData={profileData}
+              handleSubmitProfile={handleSubmitProfile}
+              initialValues={initialValues?.qualifications}
+              validations={validations}
+              files={files}
+              setFiles={setFiles}
+            />
+          );
         case "company-details":
           return (
             <PersonalCompanyDetails
@@ -121,6 +122,8 @@ const UserContainer = observer(
               setFiles={setFiles}
             />
           );
+        case "salary-structure":
+          return <PersonalSalaryStructureForm />;
         case "permissions":
           return (
             <PersonalPermissions
@@ -207,17 +210,17 @@ const UserContainer = observer(
             />
           );
         case "qualifications":
-            return (
-              <PersonalQualifications
-                type={type}
-                profileData={profileData}
-                handleSubmitProfile={handleSubmitProfile}
-                initialValues={initialValues?.qualifications}
-                validations={validations}
-                files={files}
-                setFiles={setFiles}
-              />
-            );
+          return (
+            <PersonalQualifications
+              type={type}
+              profileData={profileData}
+              handleSubmitProfile={handleSubmitProfile}
+              initialValues={initialValues?.qualifications}
+              validations={validations}
+              files={files}
+              setFiles={setFiles}
+            />
+          );
         case "company-details":
           return (
             <PersonalCompanyDetails
@@ -230,6 +233,8 @@ const UserContainer = observer(
               setFiles={setFiles}
             />
           );
+        case "salary-structure":
+          return <PersonalSalaryStructureForm />;
         case "permissions":
           return (
             <PersonalPermissions
@@ -244,9 +249,7 @@ const UserContainer = observer(
           return (
             <Button
               onClick={() =>
-                navigate(
-                  `${dashboard.Users.details}/new?tab=profile-details`
-                )
+                navigate(`${dashboard.Users.details}/new?tab=profile-details`)
               }
             >
               Something went here
@@ -258,7 +261,7 @@ const UserContainer = observer(
     return (
       <Box p={{ base: 1.5, lg: 0 }}>
         <Grid gridTemplateColumns={{ lg: "0.25fr 1fr" }} gap={5} mt={3} mb={10}>
-          <Box >
+          <Box>
             <UserFormSidebar type={type} />
           </Box>
           <Box border="1px solid #e9ecef" borderRadius={5}>
