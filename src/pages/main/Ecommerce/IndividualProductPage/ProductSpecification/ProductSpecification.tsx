@@ -7,8 +7,8 @@ const ProductSpecification = ({ productSpecifications }: any) => {
   const rightColumn = productSpecifications?.slice(midIndex);
 
   return (
-    <Box p={6} borderWidth={1} shadow={'base'}  rounded={12} w={'100%'}>
-      <Text fontSize="xl" fontWeight="bold" mb={2}>
+    <Box mt={4} w={"100%"}>
+      <Text fontWeight="bold" mb={2}>
         Specifications
       </Text>
       <Grid templateColumns="repeat(2, 1fr)" gap={6}>
