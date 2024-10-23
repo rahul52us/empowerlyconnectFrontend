@@ -39,18 +39,6 @@
     "https://img.freepik.com/free-photo/black-smartphone-with-light-background_23-2149118238.jpg?size=626&ext=jpg"
   ],
   "available_sizes": [],
-  "product_attributes": {
-    "Brand": "Galaxy",
-    "Display": "6.8-inch Dynamic AMOLED2X",
-    "Resolution": "3200 x1440 pixels",
-    "Camera": "108 MP (Triple Camera)",
-    "Front Camera": "40 MP",
-    "RAM": "12 GB",
-    "Storage Options": "256 GB /512 GB",
-    "Battery": "5000 mAh",
-    "Operating System": "Android13",
-    "5G Support": "Yes"
-  },
   "features": [
     "Exceptional camera performance",
     "Immersive display experience",
@@ -144,36 +132,6 @@
     {
       "label": "5G Support",
       "value": "Yes"
-    }
-  ],
-  "reviews_insights": [
-    {
-      "attribute": "Camera Quality",
-      "positive": "Outstanding",
-      "positive_count": 1300,
-      "negative": "Average",
-      "negative_count": 15
-    },
-    {
-      "attribute": "Battery Life",
-      "positive": "Excellent",
-      "positive_count": 1200,
-      "negative": "Drains fast under heavy use",
-      "negative_count": 80
-    },
-    {
-      "attribute": "Display Quality",
-      "positive": "Vibrant",
-      "positive_count": 1400,
-      "negative": "Glare under bright sunlight",
-      "negative_count": 25
-    },
-    {
-      "attribute": "Performance",
-      "positive": "Fast",
-      "positive_count": 1350,
-      "negative": "Lags with too many apps open",
-      "negative_count": 30
     }
   ],
   "reviews": [

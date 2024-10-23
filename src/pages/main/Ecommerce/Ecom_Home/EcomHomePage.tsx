@@ -84,7 +84,7 @@ const EcomHomePage = () => {
         ))}
       </Grid> */}
       {ProductList?.length > 0 && ProductList && (
-        <Grid templateColumns={"1fr 1fr 1fr 1fr"} gap={4}>
+        <Grid templateColumns={"1fr 1fr 1fr 1fr 1fr"} gap={4}>
           {ProductList?.map((item: any) => (
             <ProductCard product={item} />
           ))}

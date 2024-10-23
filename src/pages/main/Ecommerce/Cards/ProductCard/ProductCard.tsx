@@ -18,10 +18,12 @@ const ProductCard = ({ product }: any) => {
     <Box
       maxW="300px"
       overflow="hidden"
+      rounded={8}
       position="relative"
+      borderWidth={1}
       bg={useColorModeValue("whiteAlpha.800", "blackAlpha.400")}
       boxShadow="base"
-      backdropFilter="blur(10px)"
+      // backdropFilter="blur(10px)"
       pb={2}
       onClick={() => {
         navigate(`${web.ecommerce.products}/${product?.product_id}`);
@@ -45,6 +47,7 @@ const ProductCard = ({ product }: any) => {
             variant={"outline"}
             left="10px"
             borderRadius="full"
+            size={'sm'}
             px="3"
             py="1"
             colorScheme="pink"

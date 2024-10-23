@@ -26,10 +26,10 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import PriceDisplay from "./PriceDisplay/PriceDisplay";
 import ProductSpecification from "./ProductSpecification/ProductSpecification";
-import productData from "../IndividualProductPage/JSON/phoneData.json";
 import ColorOptions from "./ColorOptions/ColorOptions";
 import ProductFeatures from "./FeatureDescription/FeatureDescription";
-// import productData from '../IndividualProductPage/JSON/tvData.json'
+import productData from "../IndividualProductPage/JSON/phoneData.json";
+// import productData from "../IndividualProductPage/JSON/tvData.json";
 // import productData from '../IndividualProductPage/dummyData.json'
 
 const IndividualProductPage = () => {
@@ -88,8 +88,8 @@ const IndividualProductPage = () => {
   return productData ? (
     <Container maxW={"8xl"} mx={"auto"} my={{ base: 2, md: 12 }}>
       <Grid templateColumns={"1fr 3fr 4fr"} gap={4} mb={4}>
-        <Box position="relative">
-          <Box>
+        <Box>
+          <Box maxH={"70vh"} h={"fit-content"} overflow={'auto'}>
             <Slider ref={slider} {...settings}>
               {productData?.images &&
                 productData.images.map((img: any, index: any) => (
@@ -208,11 +208,11 @@ const IndividualProductPage = () => {
                     Size Guide
                   </Button>
                 </Flex>
-                <Flex gap={6}>
+                <Flex gap={4}>
                   {productData?.available_sizes?.map((size: any) => (
                     <Button
                       key={size}
-                      boxSize={9}
+                      w={"fit-content"}
                       variant={"outline"}
                       borderWidth={2}
                       rounded={12}
