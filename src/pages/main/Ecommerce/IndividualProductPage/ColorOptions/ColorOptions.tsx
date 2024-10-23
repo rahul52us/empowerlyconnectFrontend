@@ -3,19 +3,18 @@ import { Box, Text, VStack, Image, HStack, Heading } from "@chakra-ui/react";
 const ColorOptions = ({ colors }: { colors: any[] }) => {
   return (
     <Box>
-      <Heading fontSize="lg" mb={4}>
-        Available Colors
-      </Heading>
+      <Heading mb={4}>Available Colors</Heading>
       <HStack spacing={4}>
         {colors.map((color, index) => (
           <VStack key={index} align="center">
             <Box
               boxSize="80px"
-              rounded="md"
+              rounded="base"
               borderWidth="2px"
               borderColor="gray.300"
               overflow="hidden"
               boxShadow="md"
+              cursor={"pointer"}
               _hover={{ transform: "scale(1.05)" }}
               transition="0.3s ease"
             >

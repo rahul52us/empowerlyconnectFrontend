@@ -28,6 +28,7 @@ import PriceDisplay from "./PriceDisplay/PriceDisplay";
 import ProductSpecification from "./ProductSpecification/ProductSpecification";
 import productData from "../IndividualProductPage/JSON/phoneData.json";
 import ColorOptions from "./ColorOptions/ColorOptions";
+import ProductFeatures from "./FeatureDescription/FeatureDescription";
 // import productData from '../IndividualProductPage/JSON/tvData.json'
 // import productData from '../IndividualProductPage/dummyData.json'
 
@@ -132,7 +133,7 @@ const IndividualProductPage = () => {
             />
           </Box>
         </Box>
-        <Flex align={"center"} h={"80%"}>
+        <Flex align={"center"} justify={"center"} h={"80%"}>
           <Image
             w={"100%"}
             mx={{ base: 0, md: "auto" }}
@@ -254,6 +255,7 @@ const IndividualProductPage = () => {
             <ProductSpecification
               productSpecifications={productData?.product_specifications}
             />
+            <ProductFeatures aboutItem={productData?.about_item} />
           </VStack>
         </Box>
       </Grid>
