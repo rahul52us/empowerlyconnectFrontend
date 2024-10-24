@@ -3,7 +3,7 @@ import { Box, Text, VStack, Image, HStack, Heading } from "@chakra-ui/react";
 const ColorOptions = ({ colors }: { colors: any[] }) => {
   return (
     <Box>
-      <Heading mb={4}>Available Colors</Heading>
+      <Heading mb={4} size={'sm'}>Available Colors</Heading>
       <HStack spacing={4}>
         {colors.map((color, index) => (
           <VStack key={index} align="center">

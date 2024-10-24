@@ -133,7 +133,8 @@
             "original_price": null,
             "product_condition": "NEW",
             "top_quality_store": false
-        }
+        },
+        "isNew":true
     },
     {
         "product_id": "4230178614358911281",
