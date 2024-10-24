@@ -95,7 +95,9 @@ class Userstore {
       getUsersSubOrdinateActionsDetails:action,
       getManagersOfUsers:action,
       getUsersRoleCount:action,
-      getCompanyDetailsById:action
+      getCompanyDetailsById:action,
+      updateSalaryStructure:action,
+      getSalaryDetailsStructure:action
     });
   }
 
@@ -251,6 +253,15 @@ class Userstore {
     }
   };
 
+  getSalaryDetailsStructure = async (datas: any) => {
+    try {
+      const { data } = await axios.post(`/User/salaryStructure`,{user : datas.user});
+      return data;
+    } catch (err: any) {
+      return Promise.reject(err?.response?.data || err);
+    }
+  };
+
   getCompanyDetailsById = async (id: any) => {
     try {
       const { data } = await axios.get(`/User/details/${id}`);
@@ -275,6 +286,19 @@ class Userstore {
       return data;
     } catch (err: any) {
       return Promise.reject(err?.response || err);
+    }
+  };
+
+
+  updateSalaryStructure = async (sendData: any) => {
+    try {
+      const { data } = await axios.put(
+        `User/salaryStructure/${sendData.id}`,
+        sendData
+      );
+      return data;
+    } catch (err: any) {
+      return Promise.reject(err?.response?.data || err);
     }
   };
 

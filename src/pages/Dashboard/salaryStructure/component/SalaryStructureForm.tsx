@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import {
   Box,
   Button,
@@ -13,30 +12,8 @@ import {
 import { Formik, Field, Form, FieldArray } from "formik";
 import * as Yup from "yup";
 import CustomInput from "../../../../config/component/CustomInput/CustomInput";
+import { observer } from "mobx-react-lite";
 
-interface SalaryComponent {
-  head: string;
-  monthlyValue: number;
-  yearlyValue: number;
-  frequency: "Monthly" | "Yearly";
-}
-
-interface SalaryFormValues {
-  effectiveFrom: any;
-  disbursementFrom: any;
-  salaryComponents: SalaryComponent[];
-  benefits: SalaryComponent[];
-  grossSalary: {
-    monthly: number;
-    yearly: number;
-  };
-  ctc: {
-    monthly: number;
-    yearly: number;
-  };
-  inHandSalary: number;
-  remarks: string;
-}
 
 const validationSchema = Yup.object().shape({
   effectiveFrom: Yup.string().typeError("effective from date is required"),
@@ -85,36 +62,21 @@ const getError = (errors: any, errorType: any, type: string, index: number) => {
   };
 
 
-const SalaryStructureForm: React.FC = () => {
-  const [showError, setShowError] = useState(false);
+const SalaryStructureForm = observer(({initialValues, showError, setShowError, handleSubmit} : any) => {
   const bgColor = useColorModeValue("white", "gray.800");
   const formControlBorderColor = useColorModeValue("teal.300", "teal.600");
   const headingColor = useColorModeValue("teal.500", "teal.200");
 
-  const initialValues: SalaryFormValues = {
-    effectiveFrom: undefined,
-    disbursementFrom: undefined,
-    salaryComponents: [
-      { head: "", monthlyValue: 0, yearlyValue: 0, frequency: "Monthly" },
-    ],
-    benefits: [
-      { head: "", monthlyValue: 0, yearlyValue: 0, frequency: "Monthly" },
-    ],
-    grossSalary: { monthly: 0, yearly: 0 },
-    ctc: { monthly: 0, yearly: 0 },
-    inHandSalary: 0,
-    remarks: "",
-  };
-
   return (
     <Formik
+      enableReinitialize={true}
       initialValues={initialValues}
       validationSchema={validationSchema}
-      onSubmit={(values) => {
-        console.log(values);
+      onSubmit={(values, {resetForm, setSubmitting}) => {
+        handleSubmit({values, resetForm, setSubmitting})
       }}
     >
-      {({ values, handleChange, setFieldValue, errors }) => {
+      {({ values, handleChange, setFieldValue, errors, isSubmitting } : any) => {
         return (
           <Form>
             <Box bg={bgColor} p={4} rounded="md" shadow="lg" mx="auto">
@@ -160,7 +122,7 @@ const SalaryStructureForm: React.FC = () => {
                   {({ push, remove }) => (
                     <Box>
                       <FormLabel fontWeight="bold">Salary Details</FormLabel>
-                      {values.salaryComponents.map((item: any, index) => (
+                      {values.salaryComponents.map((item: any, index : number) => (
                         <Grid
                           templateColumns={{
                             base: "1fr",
@@ -279,7 +241,7 @@ const SalaryStructureForm: React.FC = () => {
                   {({ push, remove }) => (
                     <Box>
                       <FormLabel fontWeight="bold">Benefits</FormLabel>
-                      {values.benefits.map((benefit: any, index) => (
+                      {values.benefits.map((benefit: any, index : number) => (
                         <Grid
                           templateColumns={{
                             base: "1fr",
@@ -468,6 +430,7 @@ const SalaryStructureForm: React.FC = () => {
                   variant="solid"
                   mt={6}
                   width="full"
+                  isLoading={isSubmitting}
                   onClick={() => setShowError(true)}
                 >
                   Submit
@@ -479,6 +442,6 @@ const SalaryStructureForm: React.FC = () => {
       }}
     </Formik>
   );
-};
+});
 
 export default SalaryStructureForm;
