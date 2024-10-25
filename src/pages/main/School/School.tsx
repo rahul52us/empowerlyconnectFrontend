@@ -1,5 +1,5 @@
-import { Box } from "@chakra-ui/react";
-import { useRef } from "react";
+import { Box, useColorModeValue } from "@chakra-ui/react";
+import React, { useRef } from "react";
 import Contact from "../Contact/Contact";
 import AboutSection from "./component/AboutSection/AboutSection";
 import { cards, imageUrls } from "./Constant/constants";
@@ -16,119 +16,91 @@ import TeacherSection from "./component/TeacherSection/TeacherSection";
 import { largeHeaderHeight } from "./layout/common/constant";
 import SchoolFeatureSection from "./component/SchoolFeatureSection/SchoolFeatureSection";
 import FaqSection from "./component/FaqSection/FaqSection";
+import CurriculumSection from "./component/curriculumSection/CurriculumSection";
 
-const metrics: any = [
+// Metrics data
+const metrics = [
   { id: 1, label: "Students", target: 1500, icon: FaUserGraduate },
   { id: 2, label: "Teachers", target: 100, icon: FaChalkboardTeacher },
   { id: 3, label: "Awards", target: 30, icon: GiLaurelsTrophy },
   // Add more metrics as needed
 ];
+
+// Configuration for dynamic sections
+const sectionsConfig = [
+  { id: "home", component: HeroCarousal, props: { cards } },
+  { id: "about", component: AboutSection, props: {} },
+  { id: "principal", component: PrincipalSection, props: {} },
+  { id: "curriculum", component: CurriculumSection, props: {} },
+  { id: "statistics", component: StatisticsCounter, props: { metrics } },
+  { id: "topper", component: TopperSlider, props: {} },
+  { id: "teachers", component: TeacherSection, props: {} },
+  { id: "features", component: SchoolFeatureSection, props: {} },
+  { id: "gallery", component: GallerySection, props: { images: imageUrls } },
+  { id: "faq", component: FaqSection, props: {} },
+  { id: "contact", component: Contact, props: {} },
+  { id: "map", component: MapSection, props: {} }
+];
+
 const School = () => {
-  // Create refs for each section
-  const homeRef = useRef<HTMLDivElement>(null);
-  const aboutRef = useRef<HTMLDivElement>(null);
-  const admissionsRef = useRef<HTMLDivElement>(null);
-  const eventsRef = useRef<HTMLDivElement>(null);
-  const contactRef = useRef<HTMLDivElement>(null);
-  const academicsRef = useRef<HTMLDivElement>(null);
-  const teachersRef = useRef<HTMLDivElement>(null);
-  const faqRef = useRef<HTMLDivElement>(null);
-  const principalRef = useRef<HTMLDivElement>(null);
+  // Create refs for each section dynamically
+  const sectionRefs = useRef<Record<string, React.RefObject<HTMLDivElement>>>(
+    sectionsConfig.reduce((acc, section) => {
+      acc[section.id] = React.createRef<HTMLDivElement>();
+      return acc;
+    }, {} as Record<string, React.RefObject<HTMLDivElement>>)
+  );
 
-  const scrollToSection = (section: string) => {
-    let ref: React.RefObject<HTMLDivElement> | null = null;
-
-    switch (section) {
-      case "Home":
-        ref = homeRef;
-        break;
-      case "About":
-        ref = aboutRef;
-        break;
-      case "Admissions":
-        ref = admissionsRef;
-        break;
-      case "Gallery":
-        ref = eventsRef;
-        break;
-      case "Contact Us":
-        ref = contactRef;
-        break;
-      case "Academics":
-        ref = academicsRef;
-        break;
-      case "Teachers":
-        ref = teachersRef;
-        break;
-      case "Principal":
-        ref = principalRef;
-        break;
-      case "FAQ":
-          ref = faqRef;
-          break;
-
-      default:
-        return;
-    }
-
+  const scrollToSection = (sectionId: string) => {
+    const ref = sectionRefs.current[sectionId];
     if (ref && ref.current) {
-      // Get the navbar height (adjust this value based on your navbar's actual height)
-      const navbarHeight = 60; // Example: 60px
-
-      // Calculate the position to scroll to
-      const sectionTop =
-        ref.current.getBoundingClientRect().top + window.scrollY - navbarHeight;
-
-      // Scroll to the calculated position
+      const navbarHeight = 60; // Adjust as necessary
+      const sectionTop = ref.current.getBoundingClientRect().top + window.scrollY - navbarHeight;
       window.scrollTo({ top: sectionTop, behavior: "smooth" });
     }
   };
+
+  // Move useColorModeValue calls into the component where needed
+  const curriculumTitleColor = useColorModeValue("teal.500", "teal.300");
+  const curriculumSectionBgColor = useColorModeValue("white", "gray.800");
+  const curriculumBorderColor = "teal.200";
+  const curriculumTextColor = "gray.600";
+  const statisticsBackgroundImage = "https://img.freepik.com/free-photo/architecture-independence-palace-ho-chi-minh-city_181624-21243.jpg?t=st=1729011322~exp=1729014922~hmac=590a0f1b3700627efd9780676b739c65e5b00bfd9a3cf43a6b287ab872511870&w=1060";
+
   return (
     <Box>
       <Navbar scrollToSection={scrollToSection} />
       <Box marginTop={largeHeaderHeight}>
-        <Box ref={homeRef} mb={4}>
-          <HeroCarousal cards={cards} />
-        </Box>
+        {sectionsConfig.map(({ id, component: Component, props }) => {
+          // Add specific props based on the section
+          let sectionProps : any = { ...props };
 
-        <Box ref={aboutRef} my={7}>
-          <AboutSection />
-        </Box>
+          if (id === "curriculum") {
+            sectionProps = {
+              ...props,
+              titleColor: curriculumTitleColor,
+              sectionBgColor: curriculumSectionBgColor,
+              borderColor: curriculumBorderColor,
+              textColor: curriculumTextColor
+            };
+          }
 
-        <Box ref={academicsRef} my={5}>
-          <TopperSlider />
-        </Box>
+          if (id === "statistics") {
+            sectionProps = {
+              ...props,
+              backgroundImage: statisticsBackgroundImage
+            };
+          }
 
-        <Box ref={principalRef} mt={5}>
-          <PrincipalSection />
-        </Box>
-
-        <Box>
-          <SchoolFeatureSection />
-        </Box>
-
-        <Box ref={eventsRef} my={7}>
-          <GallerySection images={imageUrls} />
-        </Box>
-
-        <Box>
-          <StatisticsCounter
-            metrics={metrics}
-            backgroundImage="https://img.freepik.com/free-photo/architecture-independence-palace-ho-chi-minh-city_181624-21243.jpg?t=st=1729011322~exp=1729014922~hmac=590a0f1b3700627efd9780676b739c65e5b00bfd9a3cf43a6b287ab872511870&w=1060"
-          />
-        </Box>
-        <Box ref={teachersRef} mt={5}>
-          <TeacherSection />
-        </Box>
-        <Box ref={faqRef} my={5}>
-          <FaqSection />
-        </Box>
-        <Box ref={contactRef} my={8}>
-          <Contact />
-          <MapSection />
-        </Box>
+          return (
+            <Box key={id} ref={sectionRefs.current[id]} my={7}>
+              <Component {...sectionProps} />
+            </Box>
+          );
+        })}
       </Box>
     </Box>
   );
 };
+
 export default School;

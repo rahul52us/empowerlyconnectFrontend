@@ -57,7 +57,6 @@ const PersonalSalaryStructureForm = observer(() => {
   const getSalaryStructure = useCallback(() => {
     getSalaryDetailsStructure({ user: id })
       .then((data : any) => {
-        console.log(data.data)
         if(data?.data?.currentSalaryStructure){
           setInitialValues({...data?.data?.currentSalaryStructure, effectiveFrom : new Date(data?.data?.currentSalaryStructure?.effectiveFrom),
             disbursementFrom : new Date(data?.data?.currentSalaryStructure?.disbursementFrom),
@@ -74,11 +73,11 @@ const PersonalSalaryStructureForm = observer(() => {
         });
       })
       .finally(() => {});
-  }, [id]);
+  }, [id,getSalaryDetailsStructure,openNotification]);
 
   useEffect(() => {
     getSalaryStructure();
-  }, []);
+  }, [getSalaryStructure]);
 
   const handleSubmit = ({ values, setSubmitting }: any) => {
 

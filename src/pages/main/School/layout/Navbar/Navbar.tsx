@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   Flex,
   IconButton,
@@ -21,15 +20,14 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { FaBars, FaSun, FaMoon } from "react-icons/fa"; // Importing icons for theme toggle
+import { FaBars, FaSun, FaMoon } from "react-icons/fa";
 import Logo from "./school_logo.png";
 import { largeHeaderHeight } from "../common/constant";
 
 const Header = ({ scrollToSection }: { scrollToSection: (section: string) => void }) => {
   const [activeLink, setActiveLink] = useState("Home");
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { colorMode, toggleColorMode } = useColorMode(); // Destructure toggleColorMode from useColorMode
-
+  const { colorMode, toggleColorMode } = useColorMode();
   const handleLinkClick = (link: string) => {
     setActiveLink(link);
     scrollToSection(link);
@@ -60,7 +58,7 @@ const Header = ({ scrollToSection }: { scrollToSection: (section: string) => voi
         fontWeight={500}
         color={colorMode === "dark" ? "white" : "gray.700"}
       >
-        {["Home", "About", "Gallery", "Contact Us", "FAQ"].map((link) => (
+        {["home", "about", "gallery", "contact", "faq"].map((link) => (
           <Link
             key={link}
             fontSize="lg"
@@ -86,7 +84,7 @@ const Header = ({ scrollToSection }: { scrollToSection: (section: string) => voi
             }}
             cursor="pointer"
           >
-            {link}
+            {link.charAt(0).toUpperCase() + link.slice(1)} {/* Capitalize first letter */}
           </Link>
         ))}
 
@@ -98,7 +96,7 @@ const Header = ({ scrollToSection }: { scrollToSection: (section: string) => voi
             fontWeight={500}
             position="relative"
             color={
-              activeLink === "Academics"
+              activeLink === "academics"
                 ? "teal.500"
                 : colorMode === "dark"
                 ? "gray.200"
@@ -108,7 +106,7 @@ const Header = ({ scrollToSection }: { scrollToSection: (section: string) => voi
             _after={{
               content: '""',
               position: "absolute",
-              width: activeLink === "Academics" ? "100%" : "0",
+              width: activeLink === "academics" ? "100%" : "0",
               height: "2px",
               bottom: "-4px",
               left: "0",
@@ -119,38 +117,35 @@ const Header = ({ scrollToSection }: { scrollToSection: (section: string) => voi
           >
             Academics
           </MenuButton>
-          <MenuList
-            bg={colorMode === "dark" ? "gray.700" : "white"}
-            borderRadius="md"
-            shadow="lg"
-            p={2}
-          >
-            {["Departments", "Programs", "Principal", "Teachers"].map((subLink) => (
-              <MenuItem
-                key={subLink}
-                onClick={() => handleLinkClick(subLink)}
-                _hover={{ bg: colorMode === "dark" ? "gray.600" : "teal.50" }}
-                borderRadius="md"
-                px={4}
-              >
-                {subLink}
-              </MenuItem>
-            ))}
+          <MenuList>
+            <MenuItem onClick={() => handleLinkClick("curriculum")}>
+              Curriculum
+            </MenuItem>
+            <MenuItem onClick={() => handleLinkClick("teachers")}>
+              Teachers
+            </MenuItem>
           </MenuList>
         </Menu>
       </Flex>
 
-      <Flex align="center" gap={4}>
+      <Flex align="center">
         <IconButton
-          aria-label="Toggle theme"
-          icon={colorMode === "dark" ? <FaSun /> : <FaMoon />} // Toggle between sun and moon icons
+          icon={colorMode === "light" ? <FaMoon /> : <FaSun />}
           onClick={toggleColorMode}
+          aria-label="Toggle color mode"
           variant="outline"
           colorScheme="teal"
-          size="lg"
-          rounded="full"
+          mr={{base : 2, md : 5}}
         />
 
+        <IconButton
+          icon={<FaBars style={{marginLeft : '10px'}}/>}
+          aria-label="Open menu"
+          variant="outline"
+          colorScheme="teal"
+          onClick={onOpen}
+          display={{ md: "none" }}
+        />
         <Button
           display={{ base: "none", md: "inline-flex" }}
           colorScheme="teal"
@@ -162,74 +157,45 @@ const Header = ({ scrollToSection }: { scrollToSection: (section: string) => voi
             transition: "transform 0.3s ease",
           }}
           px={6}
-          onClick={() => handleLinkClick("Contact Us")}
+          onClick={() => handleLinkClick("contact")}
         >
           Apply Now
         </Button>
-
-        <Box display={{ base: "block", md: "none" }}>
-          <IconButton
-            icon={<FaBars />}
-            aria-label="Open menu"
-            variant="outline"
-            colorScheme="blue"
-            onClick={onOpen}
-            _hover={{ bg: "blue.100" }}
-          />
-        </Box>
       </Flex>
 
-      {/* Mobile Menu Drawer */}
+      {/* Drawer Menu */}
       <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
         <DrawerOverlay />
-        <DrawerContent bg={colorMode === "dark" ? "gray.800" : "white"}>
+        <DrawerContent>
           <DrawerCloseButton />
           <DrawerBody>
-            <Stack spacing={4} p={4}>
-              <Text fontSize="xl" fontWeight="bold" color={colorMode === "dark" ? "white" : "black"}>
-                Main Menu
-              </Text>
-              {["Home", "About", "Gallery", "FAQ", "Contact Us"].map((link) => (
-                <Link
+            <Stack spacing={4} mt={4}>
+              {["home", "about", "gallery", "contact", "faq"].map((link) => (
+                <Button
                   key={link}
-                  fontSize="lg"
-                  color={activeLink === link ? "teal.500" : colorMode === "dark" ? "gray.200" : "gray.700"}
+                  w="full"
                   onClick={() => {
                     handleLinkClick(link);
                     onClose();
                   }}
-                  _hover={{
-                    color: "teal.600",
-                    transition: "color 0.3s ease",
-                  }}
-                  cursor="pointer"
                 >
-                  {link}
-                </Link>
+                  {link.charAt(0).toUpperCase() + link.slice(1)}
+                </Button>
               ))}
 
-              <Text fontSize="xl" fontWeight="bold" color={colorMode === "dark" ? "white" : "black"}>
-                Academics
-              </Text>
-              <Stack spacing={2} ml={4}>
-                {["Departments", "Programs", "Principal", "Teachers"].map((subLink) => (
-                  <Link
-                    key={subLink}
-                    fontSize="lg"
-                    color={colorMode === "dark" ? "gray.200" : "gray.700"}
-                    onClick={() => {
-                      handleLinkClick(subLink);
-                      onClose();
-                    }}
-                    _hover={{
-                      color: "teal.600",
-                      transition: "color 0.3s ease",
-                    }}
-                  >
-                    {subLink}
-                  </Link>
-                ))}
-              </Stack>
+              <Menu>
+                <MenuButton as={Button} w="full">
+                  Academics
+                </MenuButton>
+                <MenuList>
+                  <MenuItem onClick={() => handleLinkClick("curriculum")}>
+                    Curriculum
+                  </MenuItem>
+                  <MenuItem onClick={() => handleLinkClick("teachers")}>
+                    Teachers
+                  </MenuItem>
+                </MenuList>
+              </Menu>
             </Stack>
           </DrawerBody>
         </DrawerContent>
