@@ -18,10 +18,10 @@ const PriceDisplay: React.FC<PriceProps> = ({
     <Flex
       alignItems="center"
       justifyContent="space-between"
-      w="100%"
-      maxW="500px"
+      w="fit-content"
+      // maxW="500px"
       gap={4}
-      mx="auto"
+      // mx="auto"
       fontFamily="Arial, sans-serif"
     >
       <Flex alignItems="center">

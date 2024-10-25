@@ -10,14 +10,13 @@ import {
 } from "@chakra-ui/react";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 
-
 const ProductFeatures = ({aboutItem}:any) => {
   const { isOpen, onToggle } = useDisclosure();
 
   return (
     <Box
       border="1px solid #E2E8F0"
-      borderRadius="xl"
+      borderRadius="sm"
       p={3}
       cursor="pointer"
       onClick={onToggle}

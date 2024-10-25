@@ -8,7 +8,7 @@ const ProductSpecification = ({ productSpecifications }: any) => {
 
   return (
     <Box mt={4} w={"100%"}>
-      <Text fontWeight="bold" mb={2}>
+      <Text fontWeight="bold" mb={2} fontSize={'lg'}>
         Specifications
       </Text>
       <Grid templateColumns="repeat(2, 1fr)" gap={6}>
