@@ -17,6 +17,7 @@ import { largeHeaderHeight } from "./layout/common/constant";
 import SchoolFeatureSection from "./component/SchoolFeatureSection/SchoolFeatureSection";
 import FaqSection from "./component/FaqSection/FaqSection";
 import CurriculumSection from "./component/curriculumSection/CurriculumSection";
+import TestimonialsSection from "./component/TestimonialSection/TestimonialSection";
 
 // Metrics data
 const metrics = [
@@ -37,6 +38,7 @@ const initialSectionsConfig = [
   { id: "teachers", component: TeacherSection, props: {} },
   { id: "features", component: SchoolFeatureSection, props: {} },
   { id: "gallery", component: GallerySection, props: { images: imageUrls } },
+  {id : "testimonial", component : TestimonialsSection, props : {}},
   { id: "faq", component: FaqSection, props: {} },
   { id: "contact", component: Contact, props: {} },
   { id: "map", component: MapSection, props: {} },
@@ -74,6 +76,7 @@ const School = () => {
           "teachers",
           "gallery",
           "features",
+          "testimonial",
           "faq",
           "contact",
           "map",
@@ -104,52 +107,57 @@ const School = () => {
   const statisticsBackgroundImage =
     "https://img.freepik.com/free-photo/architecture-independence-palace-ho-chi-minh-city_181624-21243.jpg?t=st=1729011322~exp=1729014922~hmac=590a0f1b3700627efd9780676b739c65e5b00bfd9a3cf43a6b287ab872511870&w=1060";
 
+  const activeSectionIds = [
+    "home",
+    "about",
+    "principal",
+    "statistics",
+    "topper",
+    "curriculum",
+    "teachers",
+    "gallery",
+    "features",
+    "testimonial",
+    "faq",
+    "contact",
+    "map",
+  ];
+
   return (
     <Box>
       <Navbar
         scrollToSection={scrollToSection}
-        linksConfig={[
-          "home",
-          "about",
-          "curriculum",
-          "gallery",
-          "features",
-          "faq",
-          "principal",
-          "topper",
-          "teachers",
-          "statistics",
-          "contact",
-          "map",
-        ].map((item: any) => ({ id: item, name: item }))}
+        linksConfig={activeSectionIds.map((item) => ({ id: item, name: item.charAt(0).toUpperCase() + item.slice(1) }))}
       />
       <Box marginTop={largeHeaderHeight}>
-        {sectionsConfig.map(({ id, component: Component, props }) => {
-          let sectionProps: any = { ...props };
+        {sectionsConfig
+          .filter(({ id }) => activeSectionIds.includes(id)) // Only render components in activeSectionIds
+          .map(({ id, component: Component, props }) => {
+            let sectionProps: any = { ...props };
 
-          if (id === "curriculum") {
-            sectionProps = {
-              ...props,
-              titleColor: curriculumTitleColor,
-              sectionBgColor: curriculumSectionBgColor,
-              borderColor: curriculumBorderColor,
-              textColor: curriculumTextColor,
-            };
-          }
+            if (id === "curriculum") {
+              sectionProps = {
+                ...props,
+                titleColor: curriculumTitleColor,
+                sectionBgColor: curriculumSectionBgColor,
+                borderColor: curriculumBorderColor,
+                textColor: curriculumTextColor,
+              };
+            }
 
-          if (id === "statistics") {
-            sectionProps = {
-              ...props,
-              backgroundImage: statisticsBackgroundImage,
-            };
-          }
+            if (id === "statistics") {
+              sectionProps = {
+                ...props,
+                backgroundImage: statisticsBackgroundImage,
+              };
+            }
 
-          return (
-            <Box key={id} ref={sectionRefs.current[id]} my={7}>
-              <Component {...sectionProps} />
-            </Box>
-          );
-        })}
+            return (
+              <Box key={id} ref={sectionRefs.current[id]} my={7}>
+                <Component {...sectionProps} />
+              </Box>
+            );
+          })}
       </Box>
     </Box>
   );
