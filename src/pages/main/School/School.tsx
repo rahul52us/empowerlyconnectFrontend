@@ -1,5 +1,5 @@
 import { Box, useColorModeValue } from "@chakra-ui/react";
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import Contact from "../Contact/Contact";
 import AboutSection from "./component/AboutSection/AboutSection";
 import { cards, imageUrls } from "./Constant/constants";
@@ -27,7 +27,7 @@ const metrics = [
 ];
 
 // Configuration for dynamic sections
-const sectionsConfig = [
+const initialSectionsConfig = [
   { id: "home", component: HeroCarousal, props: { cards } },
   { id: "about", component: AboutSection, props: {} },
   { id: "principal", component: PrincipalSection, props: {} },
@@ -39,13 +39,13 @@ const sectionsConfig = [
   { id: "gallery", component: GallerySection, props: { images: imageUrls } },
   { id: "faq", component: FaqSection, props: {} },
   { id: "contact", component: Contact, props: {} },
-  { id: "map", component: MapSection, props: {} }
+  { id: "map", component: MapSection, props: {} },
 ];
 
 const School = () => {
-  // Create refs for each section dynamically
+  const [sectionsConfig, setSectionsConfig] = useState(initialSectionsConfig);
   const sectionRefs = useRef<Record<string, React.RefObject<HTMLDivElement>>>(
-    sectionsConfig.reduce((acc, section) => {
+    initialSectionsConfig.reduce((acc, section) => {
       acc[section.id] = React.createRef<HTMLDivElement>();
       return acc;
     }, {} as Record<string, React.RefObject<HTMLDivElement>>)
@@ -55,25 +55,77 @@ const School = () => {
     const ref = sectionRefs.current[sectionId];
     if (ref && ref.current) {
       const navbarHeight = 60; // Adjust as necessary
-      const sectionTop = ref.current.getBoundingClientRect().top + window.scrollY - navbarHeight;
+      const sectionTop =
+        ref.current.getBoundingClientRect().top + window.scrollY - navbarHeight;
       window.scrollTo({ top: sectionTop, behavior: "smooth" });
     }
   };
 
-  // Move useColorModeValue calls into the component where needed
+  const fetchUserPreferences = async () => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve([
+          "home",
+          "about",
+          "principal",
+          "statistics",
+          "topper",
+          "curriculum",
+          "teachers",
+          "gallery",
+          "features",
+          "faq",
+          "contact",
+          "map",
+        ]);
+      }, 1000);
+    });
+  };
+
+  useEffect(() => {
+    const getUserPreferences = async () => {
+      const preferences: any = await fetchUserPreferences();
+      const orderedSections = preferences
+        .map((preferenceId: any) =>
+          initialSectionsConfig.find((section) => section.id === preferenceId)
+        )
+        .filter((section: any) => section); // Remove any undefined values
+
+      setSectionsConfig(orderedSections);
+    };
+
+    getUserPreferences();
+  }, []);
+
   const curriculumTitleColor = useColorModeValue("teal.500", "teal.300");
   const curriculumSectionBgColor = useColorModeValue("white", "gray.800");
   const curriculumBorderColor = "teal.200";
   const curriculumTextColor = "gray.600";
-  const statisticsBackgroundImage = "https://img.freepik.com/free-photo/architecture-independence-palace-ho-chi-minh-city_181624-21243.jpg?t=st=1729011322~exp=1729014922~hmac=590a0f1b3700627efd9780676b739c65e5b00bfd9a3cf43a6b287ab872511870&w=1060";
+  const statisticsBackgroundImage =
+    "https://img.freepik.com/free-photo/architecture-independence-palace-ho-chi-minh-city_181624-21243.jpg?t=st=1729011322~exp=1729014922~hmac=590a0f1b3700627efd9780676b739c65e5b00bfd9a3cf43a6b287ab872511870&w=1060";
 
   return (
     <Box>
-      <Navbar scrollToSection={scrollToSection} />
+      <Navbar
+        scrollToSection={scrollToSection}
+        linksConfig={[
+          "home",
+          "about",
+          "curriculum",
+          "gallery",
+          "features",
+          "faq",
+          "principal",
+          "topper",
+          "teachers",
+          "statistics",
+          "contact",
+          "map",
+        ].map((item: any) => ({ id: item, name: item }))}
+      />
       <Box marginTop={largeHeaderHeight}>
         {sectionsConfig.map(({ id, component: Component, props }) => {
-          // Add specific props based on the section
-          let sectionProps : any = { ...props };
+          let sectionProps: any = { ...props };
 
           if (id === "curriculum") {
             sectionProps = {
@@ -81,14 +133,14 @@ const School = () => {
               titleColor: curriculumTitleColor,
               sectionBgColor: curriculumSectionBgColor,
               borderColor: curriculumBorderColor,
-              textColor: curriculumTextColor
+              textColor: curriculumTextColor,
             };
           }
 
           if (id === "statistics") {
             sectionProps = {
               ...props,
-              backgroundImage: statisticsBackgroundImage
+              backgroundImage: statisticsBackgroundImage,
             };
           }
 
