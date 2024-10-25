@@ -22,6 +22,7 @@ import {
   DrawerOverlay,
   Flex,
   Center,
+  Image,
 } from "@chakra-ui/react";
 import { FaHistory } from "react-icons/fa";
 import DashPageHeader from "../../../config/component/common/DashPageHeader/DashPageHeader";
@@ -31,7 +32,7 @@ import { getStatusType } from "../../../config/constant/statusCode";
 import SpinnerLoader from "../../../config/component/Loader/SpinnerLoader";
 
 const SalaryStructureView: React.FC = () => {
-  const [fetchLoading,setFetchLoading] = useState<any>(true)
+  const [fetchLoading, setFetchLoading] = useState<any>(true);
   const {
     User: { getSalaryDetailsStructure },
     auth: { user, openNotification },
@@ -41,7 +42,7 @@ const SalaryStructureView: React.FC = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const getSalaryStructure = useCallback(() => {
-    setFetchLoading(true)
+    setFetchLoading(true);
     getSalaryDetailsStructure({ user: user?._id })
       .then((data: any) => {
         console.log(data.data);
@@ -65,13 +66,13 @@ const SalaryStructureView: React.FC = () => {
         });
       })
       .finally(() => {
-        setFetchLoading(false)
+        setFetchLoading(false);
       });
-  }, [user._id]);
+  }, [user._id, openNotification, getSalaryDetailsStructure]);
 
   useEffect(() => {
     getSalaryStructure();
-  }, []);
+  }, [getSalaryStructure]);
 
   // Color schemes
   const tableHeaderBg = useColorModeValue("orange.400", "orange.600");
@@ -128,22 +129,38 @@ const SalaryStructureView: React.FC = () => {
   return (
     <>
       <DashPageHeader title="Request" breadcrumb={requestBreadCrumb.index} />
-      {fetchLoading === true ? <Center mt={'32vh'}>
-         <SpinnerLoader />
-      </Center> : null}
-      {fetchLoading === false && Object.keys(initialValues).length === 0 && <Center mt={"32vh"}>
-        {fetchLoading === false && Object.keys(initialValues).length === 0 ? <Text
-          fontSize="xl"
-          fontWeight="bold"
-          cursor="pointer"
-          color="red.500"
-          maxW="600"
-          textAlign="center"
-        >
-          Oops! It seems like there’s no salary information available at the
-          moment. Please check back later.
-        </Text> : null}
-      </Center>}
+      {fetchLoading === true ? (
+        <Center mt={"32vh"}>
+          <SpinnerLoader />
+        </Center>
+      ) : null}
+      {fetchLoading === false && Object.keys(initialValues).length === 0 ? (
+        <Center mt={"5vh"}>
+            <Flex
+              justifyContent="center"
+              flexDirection="column"
+              alignItems="center"
+              maxW={{base : "300", md : '500'}}
+            >
+              <Image
+                src="/img/emptyData.jpg"
+                alt=""
+                width={{base : "180px", md : "400px"}}
+                height={{base : "180px", md : "400px"}}
+              />
+              <Text
+                fontSize={{base : 'sm', md : 'md'}}
+                fontWeight="bold"
+                cursor="pointer"
+                color="blue.500"
+                textAlign="center"
+              >
+                Oops! It seems like there’s no salary information available at
+                the moment. Please check back later.
+              </Text>
+            </Flex>
+        </Center>
+      ) : null}
       <Box
         p={4}
         pt={5}
