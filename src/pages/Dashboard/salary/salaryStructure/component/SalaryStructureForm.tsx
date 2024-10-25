@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { Formik, Field, Form, FieldArray } from "formik";
 import * as Yup from "yup";
-import CustomInput from "../../../../config/component/CustomInput/CustomInput";
+import CustomInput from "../../../../../config/component/CustomInput/CustomInput";
 import { observer } from "mobx-react-lite";
 
 

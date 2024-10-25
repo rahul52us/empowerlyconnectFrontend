@@ -153,14 +153,14 @@ const LiberaryRoomUserDetails =lazy(() => import("../../pages/Dashboard/Liberary
 
 // Salary Structure
 
-const SalaryStructure = lazy(() => import("../../pages/Dashboard/salaryStructure/SalaryStructure"))
-
+const SalaryStructure = lazy(() => import("../../pages/Dashboard/salary/salaryStructure/SalaryStructure"))
+const SalarySlip = lazy(() => import("../../pages/Dashboard/salary/salarySlip/SalarySlip"))
 
 export const DashboardRoutes = [
   {
     element: <DashboardIndex />,
     path: dashboard.home,
-    privateRoutes: true,
+    privateRoutes: true
   },
   {
     element: <ProfileIndex />,
@@ -366,8 +366,13 @@ export const DashboardRoutes = [
   // Salary Structure
   {
     element :<SalaryStructure />,
-    path : dashboard.salaryStructure.salaryStructure
+    path : dashboard.links.salaryStructure
   },
+  {
+    element :<SalarySlip />,
+    path : dashboard.links.salarySlip
+  },
+
   // Books Liberary
   {
     element : <LiberaryManagement />,

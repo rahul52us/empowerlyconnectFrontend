@@ -3,16 +3,17 @@ import { useColorModeValue } from "@chakra-ui/color-mode";
 import CustomInput from "../../../../config/component/CustomInput/CustomInput";
 import { Box, Grid, Heading } from "@chakra-ui/layout";
 import { observer } from "mobx-react-lite";
-import { useTranslation } from "react-i18next";
 import { Form, Formik } from "formik";
 import { ContactValidation } from "../utils/validation";
 import { useState } from "react";
 import store from "../../../../store/store";
 
 const ContactForm = observer(() => {
-  const {auth : {handleContactMail, openNotification}} = store
+  const {
+    auth: { handleContactMail, openNotification },
+  } = store;
   const [showError, setShowError] = useState(false);
-  const { t } = useTranslation();
+  const headingColor = useColorModeValue("teal.500", "teal.300");
 
   return (
     <Box
@@ -30,26 +31,26 @@ const ContactForm = observer(() => {
           description: "",
         }}
         validationSchema={ContactValidation}
-        onSubmit={(values, { setSubmitting , resetForm}) => {
-          handleContactMail({...values})
-              .then((data: any) => {
-                openNotification({
-                  title: "mail has been sent",
-                  message: data.message,
-                  type: "success",
-                });
-                resetForm()
-              })
-              .catch((error: Error) => {
-                openNotification({
-                  title: "Something went wrong",
-                  message: error.message,
-                  type: "error",
-                });
-              })
-              .finally(() => {
-                setSubmitting(false);
+        onSubmit={(values, { setSubmitting, resetForm }) => {
+          handleContactMail({ ...values })
+            .then((data: any) => {
+              openNotification({
+                title: "mail has been sent",
+                message: data.message,
+                type: "success",
               });
+              resetForm();
+            })
+            .catch((error: Error) => {
+              openNotification({
+                title: "Something went wrong",
+                message: error.message,
+                type: "error",
+              });
+            })
+            .finally(() => {
+              setSubmitting(false);
+            });
         }}
       >
         {({
@@ -63,9 +64,7 @@ const ContactForm = observer(() => {
           return (
             <Form onSubmit={handleSubmit}>
               <Grid gap={3}>
-                <Heading fontSize="3xl">
-                  {t("contact.contact_form_title")}
-                </Heading>
+                <Heading fontSize="3xl" color={headingColor}>How Can We Assist You?</Heading>
                 <Grid templateColumns={{ md: "1fr 1fr" }} gap={6}>
                   <CustomInput
                     placeholder="Enter First Name"
@@ -124,9 +123,9 @@ const ContactForm = observer(() => {
                 <Button
                   type="submit"
                   h={{ base: "45px", md: "56px" }}
-                  bg={useColorModeValue("blue.500", "white")}
-                  color={useColorModeValue("white", "blue.500")}
-                  fontSize={{ md: "lg" }}
+                  bg={useColorModeValue("teal.500", "teal.800")}
+                  color={useColorModeValue("white", "white")}
+                  fontSize={{ md: "2xl" }}
                   transition=".3s ease-in-out"
                   _hover={{
                     transform: "scale(.9)",

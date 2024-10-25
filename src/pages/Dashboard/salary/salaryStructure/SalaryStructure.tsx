@@ -25,11 +25,11 @@ import {
   Image,
 } from "@chakra-ui/react";
 import { FaHistory } from "react-icons/fa";
-import DashPageHeader from "../../../config/component/common/DashPageHeader/DashPageHeader";
-import { requestBreadCrumb } from "../utils/breadcrumb.constant";
-import store from "../../../store/store";
-import { getStatusType } from "../../../config/constant/statusCode";
-import SpinnerLoader from "../../../config/component/Loader/SpinnerLoader";
+import DashPageHeader from "../../../../config/component/common/DashPageHeader/DashPageHeader";
+import { requestBreadCrumb } from "../../utils/breadcrumb.constant";
+import store from "../../../../store/store";
+import { getStatusType } from "../../../../config/constant/statusCode";
+import SpinnerLoader from "../../../../config/component/Loader/SpinnerLoader";
 
 const SalaryStructureView: React.FC = () => {
   const [fetchLoading, setFetchLoading] = useState<any>(true);

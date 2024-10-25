@@ -90,13 +90,29 @@ const sidebarDatas: SidebarItem[] = [
       },
     ],
   },
-    {
-      id: 9,
-      name: "SalaryStructure",
-      icon: <FaUsers />,
-      url: `${dashboard.salaryStructure.salaryStructure}`,
-      role: ["user","admin","manager","superadmin"],
-    },
+  {
+    id: 301,
+    name: "Links",
+    icon: <FaUsers />,
+    url: "/dashboard/salaryStructure",
+    role: ["user","admin","manager","superadmin"],
+    children: [
+      {
+        id: 302,
+        name: "My CTC",
+        icon: <CalendarIcon />,
+        url: `${dashboard.links.salaryStructure}`,
+        role: ["user","admin","manager","superadmin"],
+      },
+      {
+        id: 303,
+        name: "Salary Slip",
+        icon: <CalendarIcon />,
+        url: `${dashboard.links.salarySlip}`,
+        role: ["user","admin","manager","superadmin"],
+      },
+    ],
+  },
   {
     id: 11,
     name: "Request",

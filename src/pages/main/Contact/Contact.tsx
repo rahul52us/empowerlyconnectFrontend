@@ -5,6 +5,9 @@ import {
   Grid,
   useColorModeValue,
   Heading,
+  VStack,
+  HStack,
+  Icon,
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { Controls, Player } from "@lottiefiles/react-lottie-player";
@@ -26,46 +29,56 @@ const BoxStyleFirst = styled(Box)`
 `;
 
 const Contact = observer(() => {
-  const iconColor = useColorModeValue("blue.500", "white");
-  const textColor = useColorModeValue("gray.700", "gray.300");
-  const bg = useColorModeValue("gray.50", "gray.900");
+  const iconColor = useColorModeValue("teal.600", "teal.300");
+  const headingColor = useColorModeValue("teal.500", "teal.300");
+  const subheadingColor = useColorModeValue("gray.600", "gray.400");
 
   return (
-    <Container maxW={"container.xl"} my={{ base: 5, md: 14 }} bg={bg} py={10} borderRadius="lg" boxShadow="md">
-      <Heading
-        textAlign="center"
-        fontSize={{ base: "2xl", md: "4xl" }}
-        fontWeight="bold"
-        color={iconColor}
-        mb={6}
-      >
-        Contact Us
-      </Heading>
+    <Container
+      maxW={{base : "99%", md : "93%"}}
+      my={{ base: 5, md: 5 }}
+      py={12}
+      borderRadius="lg"
+      boxShadow="xl"
+      p={{ base: 6, md: 5 }}
+    >
+      <VStack spacing={2} textAlign="center" mb={10}>
+        <Heading
+          fontSize={{ base: "3xl", md: "4xl" }}
+          fontWeight="extrabold"
+          color={headingColor}
+          lineHeight="1.2"
+        >
+          Get in Touch with Us
+        </Heading>
+        <Text
+          fontSize={{ base: "md", md: "lg" }}
+          color={subheadingColor}
+          maxW="lg"
+        >
+          We’re here to help you with all your questions. Reach out, and let’s
+          make a connection!
+        </Text>
+      </VStack>
 
       <Grid
-        mt={{ base: 2, md: 6 }}
         templateColumns={{ base: "1fr", md: "1fr 1fr" }}
-        gap={10}
+        gap={5}
         alignItems="center"
       >
         {/* Contact Form */}
-        <Box order={{ base: 1, md: 0 }}>
+        <Box p={{base : 2, md : 6}} borderRadius="lg" boxShadow="lg">
           <ContactForm />
         </Box>
 
         {/* Contact Information and Animation */}
-        <Box>
+        <VStack spacing={8} align="center">
           <BoxStyleFirst
             mx="auto"
             width={{
-              base: "20rem",
-              md: "30rem",
-              lg: "35rem",
-            }}
-            height={{
-              base: "20rem",
-              md: "30rem",
-              lg: "35rem",
+              base: "18rem",
+              md: "28rem",
+              lg: "32rem",
             }}
           >
             <Player autoplay loop src="/img/contactus.json">
@@ -73,41 +86,46 @@ const Contact = observer(() => {
             </Player>
           </BoxStyleFirst>
 
-          <Grid templateColumns="3rem 1fr" alignItems="center" gridRowGap={6} mt={8}>
+          <VStack spacing={5} mt={8} w="full">
             {/* Location */}
-            <Box fontSize="2rem" color={iconColor}>
-              <MdLocationPin />
-            </Box>
-            <Text color={textColor}>
-              2000+ Our students are subscribed Around the World. Don’t be shy, introduce yourself!
-            </Text>
+            <HStack
+              _hover={{ transform: "scale(1.05)" }}
+              transition="transform 0.2s"
+            >
+              <Icon as={MdLocationPin} fontSize="2.2rem" color={iconColor} />
+              <Text fontSize="lg" color={headingColor} fontWeight="medium" cursor="pointer" textAlign="center">
+                We'd love to hear from you! Reach out with any questions or just
+                say hello.
+              </Text>
+            </HStack>
 
             {/* Phone */}
-            <Box fontSize="1.6rem" color={iconColor}>
-              <FaPhoneAlt />
-            </Box>
-            <LinkText
-              clickEvent={() => {
-                alert("Call back");
-              }}
-              text="+91 9696969696"
-              color={iconColor}
-            />
+            <HStack
+              _hover={{ color: iconColor }}
+              transition="color 0.2s"
+            >
+              <Icon as={FaPhoneAlt} fontSize="xl" color={iconColor} />
+              <LinkText
+                clickEvent={() => alert("Call back")}
+                text="+91 9696969696"
+                color={iconColor}
+              />
+            </HStack>
 
-            {/* Email */}
-            <Box fontSize="1.8rem" color={iconColor}>
-              <MdMail />
-            </Box>
-            <LinkText
-              text="info@sequelstring.com"
-              color={iconColor}
-            />
+            <HStack
+              _hover={{ color: iconColor }}
+              transition="color 0.2s"
+            >
+              <Icon as={MdMail} fontSize="xl" color={iconColor} />
+              <LinkText text="info@sequelstring.com" color={iconColor} />
+            </HStack>
 
             {/* Social Media */}
-            <Box />
-            <SocialMediaLink />
-          </Grid>
-        </Box>
+            <Box pt={4}>
+              <SocialMediaLink />
+            </Box>
+          </VStack>
+        </VStack>
       </Grid>
     </Container>
   );

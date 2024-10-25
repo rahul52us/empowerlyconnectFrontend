@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import SalaryStructureForm from "../../../../../salaryStructure/component/SalaryStructureForm";
+import SalaryStructureForm from "../../../../../salary/salaryStructure/component/SalaryStructureForm";
 import { useCallback, useEffect, useState } from "react";
 import store from "../../../../../../../store/store";
 import { useParams } from "react-router-dom";

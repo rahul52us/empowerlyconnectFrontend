@@ -24,6 +24,10 @@ export const dashboard = {
 
   // Profile
 
+  links : {
+    salaryStructure : `/${dashboardName}/salaryStructure`,
+    salarySlip:`/${dashboardName}/salary-slip`
+  },
   profile : `/${dashboardName}/profile`,
   profileEditIndex: `/${dashboardName}/profile/edit/:id`,
   student: {
@@ -74,10 +78,6 @@ export const dashboard = {
     leave : `/${dashboardName}/request/leave`,
     userList : `/${dashboardName}/attendence/users`,
     uniqueUser : `/${dashboardName}/attendence/users/:userId`
-  },
-
-  salaryStructure : {
-    salaryStructure : `/${dashboardName}/salaryStructure`
   },
   application:{
     project : `/${dashboardName}/project?page=1`
