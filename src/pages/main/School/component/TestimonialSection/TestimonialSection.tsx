@@ -102,7 +102,7 @@ const TestimonialsSlider = () => {
               borderRadius="lg"
               boxShadow="md"
               bg={cardBg}
-              margin={4}
+              margin={{base : 2, md : 4}}
               transition="0.3s"
               _hover={{ boxShadow: "xl", transform: "scale(1.02)" }}
             >
