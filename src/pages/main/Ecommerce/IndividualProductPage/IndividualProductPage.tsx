@@ -29,6 +29,8 @@ import ProductSpecification from "./ProductSpecification/ProductSpecification";
 import ColorOptions from "./ColorOptions/ColorOptions";
 import ProductFeatures from "./FeatureDescription/FeatureDescription";
 import productData from "../IndividualProductPage/JSON/phoneData.json";
+import RatingPerReview from "./ReviewComponent/RatingPerReview";
+import ProductReviewCard from "./ReviewComponent/ReviewComponent";
 // import productData from "../IndividualProductPage/JSON/tvData.json";
 // import productData from '../IndividualProductPage/dummyData.json'
 
@@ -68,7 +70,7 @@ const IndividualProductPage = () => {
     vertical: true,
     infinite: false,
     slidesToShow: 4.5,
-    slidesToScroll: 1,
+    slidesToScroll: 3,
     arrows: false,
     beforeChange: (newIndex: number) => setCurrentSlide(newIndex),
   };
@@ -87,9 +89,9 @@ const IndividualProductPage = () => {
 
   return productData ? (
     <Container maxW={"8xl"} mx={"auto"} my={{ base: 2, md: 12 }}>
-      <Grid templateColumns={"1fr 3fr 4fr"} gap={4} mb={4}>
+      <Grid templateColumns={"0.55fr 3fr 4fr"} gap={4} mb={4}>
         <Box>
-          <Box maxH={"70vh"} h={"fit-content"} overflow={'auto'}>
+          <Box maxH={"70vh"} h={"fit-content"} overflow={"auto"}>
             <Slider ref={slider} {...settings}>
               {productData?.images &&
                 productData.images.map((img: any, index: any) => (
@@ -111,7 +113,7 @@ const IndividualProductPage = () => {
                 ))}
             </Slider>
           </Box>
-          <Box m={2}>
+          <Box mt={2}>
             <IconButton
               aria-label="Previous slide"
               colorScheme="blackAlpha"
@@ -133,7 +135,7 @@ const IndividualProductPage = () => {
             />
           </Box>
         </Box>
-        <Flex align={"center"} justify={"center"} h={"80%"}>
+        <Flex align={"center"} justify={"center"} h={"80%"} p={2}>
           <Image
             w={"100%"}
             mx={{ base: 0, md: "auto" }}
@@ -152,7 +154,7 @@ const IndividualProductPage = () => {
           maxH={"80vh"}
           className="custom-scrollbar"
         >
-          <VStack spacing={6} align={"start"}>
+          <VStack spacing={6} align={"stretch"}>
             <Box>
               <Heading mb={2} fontSize={"2xl"}>
                 {productData.name}
@@ -256,14 +258,20 @@ const IndividualProductPage = () => {
               productSpecifications={productData?.product_specifications}
             />
             <ProductFeatures aboutItem={productData?.about_item} />
+            <RatingPerReview
+              ratings={productData?.reviews_summary?.reviews_per_rating}
+            />
+
+       {productData?.reviews.map((review: any) => (
+          <ProductReviewCard review={review} />
+        ))}
+
           </VStack>
         </Box>
       </Grid>
 
       <style>
         {`
- 
-
 .custom-scrollbar::-webkit-scrollbar-track {  
   background-color: transparent; /* Color of the track (the area behind the scrollbar) */  
 }  

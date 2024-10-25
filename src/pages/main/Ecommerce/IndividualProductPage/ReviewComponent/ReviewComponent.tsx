@@ -17,9 +17,9 @@ const ProductReviewCard = ({ review }:any) => {
     review;  
 
   return (  
-    <Box borderWidth={1} borderRadius="lg" overflow="hidden" mb={6} p={4}>  
-      <Flex direction={{ base: "column", md: "row" }} alignItems="center">  
-        <Flex alignItems="center" mr={4}>  
+    <Box borderWidth={1} borderRadius="lg" overflow="hidden" p={3}>  
+      <Flex direction={{ base: "column", md: "row" }} alignItems="center" justify={'space-between'}>  
+        <Flex alignItems="center" mr={4} justify={'space-between'}>  
           <Avatar name={reviewer.name} src={reviewer.avatar} mr={4} />  
           <VStack align="start" spacing={1}>  
             <Heading size="sm" fontWeight="bold">  
@@ -40,6 +40,20 @@ const ProductReviewCard = ({ review }:any) => {
               {new Date(review.timestamp).toLocaleDateString()}  
             </Text>  
           </VStack>  
+
+        </Flex>  
+
+          <Flex alignItems="center" mt={2}>  
+          <HStack spacing={2}>  
+            <Button variant="ghost" colorScheme="blue" size={'sm'}>  
+              <Icon as={FaThumbsUp} />  
+              <Text ml={1}>{likes}</Text>  
+            </Button>  
+            <Button variant="ghost" colorScheme="blue" size={'sm'}>  
+              <Icon as={FaThumbsDown} />  
+              <Text ml={1}>{dislikes}</Text>  
+            </Button>  
+          </HStack>  
         </Flex>  
       </Flex>  
       <Box mt={2}>  
@@ -56,18 +70,7 @@ const ProductReviewCard = ({ review }:any) => {
             />  
           ))}  
         </Flex>  
-        <Flex alignItems="center" mt={2}>  
-          <HStack spacing={2}>  
-            <Button variant="ghost" colorScheme="blue">  
-              <Icon as={FaThumbsUp} />  
-              <Text>{likes}</Text>  
-            </Button>  
-            <Button variant="ghost" colorScheme="blue">  
-              <Icon as={FaThumbsDown} />  
-              <Text>{dislikes}</Text>  
-            </Button>  
-          </HStack>  
-        </Flex>  
+      
       </Box>  
     </Box>  
   );  
