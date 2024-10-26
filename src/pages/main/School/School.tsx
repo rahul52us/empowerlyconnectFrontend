@@ -19,16 +19,29 @@ import FaqSection from "./component/FaqSection/FaqSection";
 import CurriculumSection from "./component/curriculumSection/CurriculumSection";
 import TestimonialsSection from "./component/TestimonialSection/TestimonialSection";
 
-// Metrics data
-const metrics = [
+// Metrics data with explicit typing
+interface Metric {
+  id: number;
+  label: string;
+  target: number;
+  icon: any; // Can be more specific if needed
+}
+
+// Configuration for dynamic sections
+interface SectionConfig {
+  id: string;
+  component: React.FC<any>; // Using 'any' for props, can be further refined
+  props: any; // Define specific props types if known
+}
+
+const metrics: Metric[] = [
   { id: 1, label: "Students", target: 1500, icon: FaUserGraduate },
   { id: 2, label: "Teachers", target: 100, icon: FaChalkboardTeacher },
   { id: 3, label: "Awards", target: 30, icon: GiLaurelsTrophy },
-  // Add more metrics as needed
 ];
 
-// Configuration for dynamic sections
-const initialSectionsConfig = [
+// Initial sections configuration with typing
+const initialSectionsConfig: SectionConfig[] = [
   { id: "home", component: HeroCarousal, props: { cards } },
   { id: "about", component: AboutSection, props: {} },
   { id: "principal", component: PrincipalSection, props: {} },
@@ -38,14 +51,15 @@ const initialSectionsConfig = [
   { id: "teachers", component: TeacherSection, props: {} },
   { id: "features", component: SchoolFeatureSection, props: {} },
   { id: "gallery", component: GallerySection, props: { images: imageUrls } },
-  {id : "testimonial", component : TestimonialsSection, props : {}},
+  { id: "testimonial", component: TestimonialsSection, props: {} },
   { id: "faq", component: FaqSection, props: {} },
   { id: "contact", component: Contact, props: {} },
   { id: "map", component: MapSection, props: {} },
 ];
 
-const School = () => {
-  const [sectionsConfig, setSectionsConfig] = useState(initialSectionsConfig);
+const School: React.FC = () => {
+  const [sectionsConfig, setSectionsConfig] = useState<SectionConfig[]>(initialSectionsConfig);
+  const [activeSection, setActiveSection] = useState<string>("home");
   const sectionRefs = useRef<Record<string, React.RefObject<HTMLDivElement>>>(
     initialSectionsConfig.reduce((acc, section) => {
       acc[section.id] = React.createRef<HTMLDivElement>();
@@ -56,14 +70,13 @@ const School = () => {
   const scrollToSection = (sectionId: string) => {
     const ref = sectionRefs.current[sectionId];
     if (ref && ref.current) {
-      const navbarHeight = 60; // Adjust as necessary
-      const sectionTop =
-        ref.current.getBoundingClientRect().top + window.scrollY - navbarHeight;
+      const navbarHeight = 60;
+      const sectionTop = ref.current.getBoundingClientRect().top + window.scrollY - navbarHeight;
       window.scrollTo({ top: sectionTop, behavior: "smooth" });
     }
   };
 
-  const fetchUserPreferences = async () => {
+  const fetchUserPreferences = async (): Promise<string[]> => {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve([
@@ -87,18 +100,39 @@ const School = () => {
 
   useEffect(() => {
     const getUserPreferences = async () => {
-      const preferences: any = await fetchUserPreferences();
+      const preferences = await fetchUserPreferences();
       const orderedSections = preferences
-        .map((preferenceId: any) =>
+        .map((preferenceId) =>
           initialSectionsConfig.find((section) => section.id === preferenceId)
         )
-        .filter((section: any) => section); // Remove any undefined values
+        .filter((section): section is SectionConfig => section !== undefined);
 
       setSectionsConfig(orderedSections);
     };
 
     getUserPreferences();
   }, []);
+
+  useEffect(() => {
+    const handleIntersection = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveSection(entry.target.id);
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(handleIntersection, {
+      rootMargin: "-50% 0px -50% 0px", // Trigger when section is around the middle of the viewport
+    });
+
+    sectionsConfig.forEach(({ id }) => {
+      const ref = sectionRefs.current[id].current;
+      if (ref) observer.observe(ref);
+    });
+
+    return () => observer.disconnect();
+  }, [sectionsConfig]);
 
   const curriculumTitleColor = useColorModeValue("teal.500", "teal.300");
   const curriculumSectionBgColor = useColorModeValue("white", "gray.800");
@@ -107,33 +141,23 @@ const School = () => {
   const statisticsBackgroundImage =
     "https://img.freepik.com/free-photo/architecture-independence-palace-ho-chi-minh-city_181624-21243.jpg?t=st=1729011322~exp=1729014922~hmac=590a0f1b3700627efd9780676b739c65e5b00bfd9a3cf43a6b287ab872511870&w=1060";
 
-  const activeSectionIds = [
-    "home",
-    "about",
-    "principal",
-    "statistics",
-    "topper",
-    "curriculum",
-    "teachers",
-    "gallery",
-    "features",
-    "testimonial",
-    "faq",
-    "contact",
-    "map",
-  ];
+  const activeSectionIds = initialSectionsConfig.map(section => section.id);
 
   return (
     <Box>
       <Navbar
         scrollToSection={scrollToSection}
-        linksConfig={activeSectionIds.map((item) => ({ id: item, name: item.charAt(0).toUpperCase() + item.slice(1) }))}
+        activeSection={activeSection}
+        linksConfig={activeSectionIds.map((item) => ({
+          id: item,
+          name: item.charAt(0).toUpperCase() + item.slice(1),
+        }))}
       />
       <Box marginTop={largeHeaderHeight}>
         {sectionsConfig
-          .filter(({ id }) => activeSectionIds.includes(id)) // Only render components in activeSectionIds
+          .filter(({ id }) => activeSectionIds.includes(id))
           .map(({ id, component: Component, props }) => {
-            let sectionProps: any = { ...props };
+            let sectionProps = { ...props };
 
             if (id === "curriculum") {
               sectionProps = {
@@ -153,7 +177,7 @@ const School = () => {
             }
 
             return (
-              <Box key={id} ref={sectionRefs.current[id]} my={7}>
+              <Box key={id} ref={sectionRefs.current[id]} my={7} id={id}>
                 <Component {...sectionProps} />
               </Box>
             );

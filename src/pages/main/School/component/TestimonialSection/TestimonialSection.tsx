@@ -40,7 +40,7 @@ const testimonialsData = [
   },
 ];
 
-const TestimonialsSlider = () => {
+const TestimonialsSection = () => {
   const bg = useColorModeValue("gray.50", "gray.900");
   const cardBg = useColorModeValue("white", "gray.800");
   const borderColor = useColorModeValue("gray.200", "gray.600");
@@ -127,4 +127,4 @@ const TestimonialsSlider = () => {
   );
 };
 
-export default TestimonialsSlider;
+export default TestimonialsSection;

@@ -20,8 +20,13 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 
+interface GalleryImage {
+  src: string;
+  caption?: string;
+}
+
 interface GallerySectionProps {
-  images: string[];
+  images: GalleryImage[];
 }
 
 export default function GallerySection({ images }: GallerySectionProps) {
@@ -80,13 +85,13 @@ export default function GallerySection({ images }: GallerySectionProps) {
     setCurrentImageIndex((prevIndex) =>
       prevIndex === 0 ? images.length - 1 : prevIndex - 1
     );
-  },[images]);
+  }, [images]);
 
   const goToNext = useCallback(() => {
     setCurrentImageIndex((prevIndex) =>
       prevIndex === images.length - 1 ? 0 : prevIndex + 1
     );
-  },[images]);
+  }, [images]);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -104,12 +109,12 @@ export default function GallerySection({ images }: GallerySectionProps) {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [isOpen, currentImageIndex, goToNext, goToPrevious]);
+  }, [isOpen, goToNext, goToPrevious]);
 
   return (
     <Box id="gallery" m={{ base: 2, md: 5 }} py={10} bg={bg}>
       <Container maxW="container.xl" px={{ base: 4, md: 8 }}>
-      <Heading
+        <Heading
           as="h2"
           size="xl"
           textAlign="center"
@@ -124,10 +129,10 @@ export default function GallerySection({ images }: GallerySectionProps) {
         </Text>
 
         <Slider ref={sliderRef} {...settings}>
-          {images.map((src, index) => (
+          {images.map((image, index) => (
             <Box key={index} p={2} onClick={() => openModal(index)}>
               <Image
-                src={src}
+                src={image.src}
                 rounded={8}
                 objectFit="cover"
                 alt={`Gallery image ${index + 1}`}
@@ -136,10 +141,12 @@ export default function GallerySection({ images }: GallerySectionProps) {
                 maxH={{ base: "150px", md: "275px" }}
                 display="block"
                 cursor="pointer"
+                loading="lazy"
               />
             </Box>
           ))}
         </Slider>
+
         <Stack direction="row" justifyContent="center" mt={4} spacing={4}>
           <IconButton
             aria-label="Previous"
@@ -159,7 +166,7 @@ export default function GallerySection({ images }: GallerySectionProps) {
           <ModalOverlay />
           <ModalContent h="90vh" bg={"blackAlpha.900"}>
             <Flex position="relative" height="100%">
-              <ModalCloseButton color={'white'} />
+              <ModalCloseButton color={"white"} />
               <IconButton
                 aria-label="Previous Image"
                 icon={<ArrowBackIcon />}
@@ -187,18 +194,50 @@ export default function GallerySection({ images }: GallerySectionProps) {
                 zIndex="overlay"
               />
               <ModalBody
+                aria-live="polite"
+                aria-label={`Image ${currentImageIndex + 1} of ${
+                  images.length
+                }`}
                 display="flex"
+                flexDirection="column"
                 justifyContent="center"
                 alignItems="center"
                 height="100%"
               >
                 <Image
-                  src={images[currentImageIndex]}
+                  src={images[currentImageIndex].src}
                   alt={`Gallery image ${currentImageIndex + 1}`}
                   maxW="100%"
                   maxH="100%"
                   objectFit="contain"
+                  loading="lazy"
                 />
+                {images[currentImageIndex].caption && (
+                  <Box
+                    bg="blackAlpha.800"
+                    color="white"
+                    px={6}
+                    py={3}
+                    mt={4}
+                    position="absolute"
+                    bottom={5}
+                    maxW="75%"
+                    borderRadius="lg"
+                    textAlign="center"
+                    fontSize={{ base: "sm", md: "md" }}
+                    boxShadow="lg"
+                    backdropFilter="blur(4px)"
+                    width="auto"
+                  >
+                    <Text
+                      fontWeight="semibold"
+                      textShadow="0px 2px 4px rgba(0, 0, 0, 0.6)"
+                      textAlign="center"
+                    >
+                      {images[currentImageIndex].caption}
+                    </Text>
+                  </Box>
+                )}
               </ModalBody>
             </Flex>
           </ModalContent>

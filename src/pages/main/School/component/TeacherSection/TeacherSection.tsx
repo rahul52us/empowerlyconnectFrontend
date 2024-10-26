@@ -41,12 +41,15 @@ const TeacherSection = () => {
         maxW="85%"
         mx="auto"
       >
-        {teachersData.map((teacher) => (
+        {teachersData.map((teacher, index) => (
           <TeacherCard
             key={teacher.id}
             name={teacher.name}
             subject={teacher.subject}
             imageUrl={teacher.imageUrl}
+            bio={teacher.bio}
+            index={index}
+            totalItems={teachersData.length}
           />
         ))}
       </Grid>

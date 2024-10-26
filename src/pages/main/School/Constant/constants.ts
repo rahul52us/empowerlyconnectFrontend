@@ -20,64 +20,95 @@ export const cards = [
     // Add more card objects as needed
   ];
 
-  export const imageUrls = [
-    "https://images.pexels.com/photos/11366728/pexels-photo-11366728.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    "https://images.pexels.com/photos/1234567/pexels-photo-1234567.jpeg",
-    "https://images.pexels.com/photos/11366728/pexels-photo-11366728.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    "https://img.freepik.com/free-photo/medium-shot-boy-holding-book_23-2148892765.jpg?t=st=1728568866~exp=1728572466~hmac=d55a9b98e8071642da19161729ad21831ff788957baf392afb3cabc18355e37a&w=740",
-    "https://images.pexels.com/photos/1234567/pexels-photo-1234567.jpeg",
-    "https://img.freepik.com/free-photo/empty-classroom-due-coronavirus-pandemic_637285-8845.jpg?t=st=1728568792~exp=1728572392~hmac=7db40890456a0763732b87bcb1df8479aa9ae1319b0af0db9b65667609cc7d83&w=1060",
-    "https://images.pexels.com/photos/11366728/pexels-photo-11366728.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    "https://images.pexels.com/photos/1234567/pexels-photo-1234567.jpeg",
-    "https://images.pexels.com/photos/11366728/pexels-photo-11366728.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    "https://img.freepik.com/free-photo/students-knowing-right-answer_329181-14271.jpg?t=st=1728568738~exp=1728572338~hmac=1123b00d0fa4648de829e059a73bd392430cf569b51670163c96bfc67f75e9f5&w=1060",
-  ];
+ // src/galleryImages.js
+export const imageUrls = [
+  {
+    src: "https://images.pexels.com/photos/11366728/pexels-photo-11366728.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    caption: "A serene moment in the classroom & Students engaged in learning & Students engaged in learning || A serene moment in the classroom & Students engaged in learning & Students engaged in learning"
+  },
+  {
+    src: "https://images.pexels.com/photos/1234567/pexels-photo-1234567.jpeg",
+    caption: "Students engaged in learning"
+  },
+  {
+    src: "https://images.pexels.com/photos/11366728/pexels-photo-11366728.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    caption: "Quiet classroom ambiance"
+  },
+  {
+    src: "https://img.freepik.com/free-photo/medium-shot-boy-holding-book_23-2148892765.jpg?t=st=1728568866~exp=1728572466~hmac=d55a9b98e8071642da19161729ad21831ff788957baf392afb3cabc18355e37a&w=740",
+    caption: "A student with a passion for books"
+  },
+  {
+    src: "https://images.pexels.com/photos/1234567/pexels-photo-1234567.jpeg",
+    caption: "Group activities in the classroom"
+  },
+  {
+    src: "https://img.freepik.com/free-photo/empty-classroom-due-coronavirus-pandemic_637285-8845.jpg?t=st=1728568792~exp=1728572392~hmac=7db40890456a0763732b87bcb1df8479aa9ae1319b0af0db9b65667609cc7d83&w=1060",
+    caption: "An empty classroom prepared for students"
+  },
+  {
+    src: "https://images.pexels.com/photos/11366728/pexels-photo-11366728.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    caption: "Preparing for a day of learning"
+  },
+  {
+    src: "https://images.pexels.com/photos/1234567/pexels-photo-1234567.jpeg",
+    caption: "A focused student in class"
+  },
+  {
+    src: "https://images.pexels.com/photos/11366728/pexels-photo-11366728.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    caption: "Bright and engaging learning space"
+  },
+  {
+    src: "https://img.freepik.com/free-photo/students-knowing-right-answer_329181-14271.jpg?t=st=1728568738~exp=1728572338~hmac=1123b00d0fa4648de829e059a73bd392430cf569b51670163c96bfc67f75e9f5&w=1060",
+    caption: "Celebrating student success"
+  }
+];
 
-  export const teachersData = [
-    {
-      id: 1,
-      name: "Gaurav Mishra",
-      subject: "English",
-      imageUrl:
-        "https://img.freepik.com/free-photo/portrait-female-teacher-school-classroom_23-2150911641.jpg?t=st=1728749498~exp=1728753098~hmac=a2afb5c5793f380d1fde2b4196c813aed596fe12854065dc2cedffeb61afc5e4&w=1060",
-    },
-    {
-      id: 2,
-      name: "Anjali Verma",
-      subject: "Mathematics",
-      imageUrl:
-        "https://img.freepik.com/free-photo/portrait-female-teacher-school-classroom_23-2149270711.jpg?w=1060",
-    },
-    {
-      id: 3,
-      name: "Rahul Sharma",
-      subject: "Science",
-      imageUrl:
-        "https://img.freepik.com/free-photo/portrait-female-teacher-school-classroom_23-2150911641.jpg?w=1060",
-    },
-    {
-      id: 3,
-      name: "Rahul Sharma",
-      subject: "Science",
-      imageUrl:
-        "https://img.freepik.com/free-photo/portrait-female-teacher-school-classroom_23-2150911641.jpg?w=1060",
-    },
-    {
-      id: 3,
-      name: "Rahul Sharma",
-      subject: "Science",
-      imageUrl:
-        "https://img.freepik.com/free-photo/portrait-female-teacher-school-classroom_23-2150911641.jpg?w=1060",
-    },
-    {
-      id: 3,
-      name: "Rahul Sharma",
-      subject: "Science",
-      imageUrl:
-        "https://img.freepik.com/free-photo/portrait-female-teacher-school-classroom_23-2150911641.jpg?w=1060",
-    },
-    // Add more dummy data as needed
-  ];
+
+export const teachersData = [
+  {
+    id: 1,
+    name: "Gaurav Mishra",
+    subject: "English",
+    imageUrl:
+      "https://img.freepik.com/free-photo/portrait-female-teacher-school-classroom_23-2150911641.jpg?t=st=1728749498~exp=1728753098~hmac=a2afb5c5793f380d1fde2b4196c813aed596fe12854065dc2cedffeb61afc5e4&w=1060",
+    bio: "Gaurav has a passion for literature and aims to inspire his students to explore the world of books. With over 5 years of teaching experience, he specializes in creative writing and poetry."
+  },
+  {
+    id: 2,
+    name: "Anjali Verma",
+    subject: "Mathematics",
+    imageUrl:
+      "https://img.freepik.com/free-photo/portrait-female-teacher-school-classroom_23-2149270711.jpg?w=1060",
+    bio: "Anjali believes that mathematics is the key to understanding the world. With a strong background in algebra and geometry, she has been teaching for over 7 years, helping students build confidence in their math skills."
+  },
+  {
+    id: 3,
+    name: "Rahul Sharma",
+    subject: "Science",
+    imageUrl:
+      "https://img.freepik.com/free-photo/portrait-female-teacher-school-classroom_23-2150911641.jpg?w=1060",
+    bio: "Rahul is dedicated to making science accessible and exciting for all students. With a focus on hands-on learning, he has 8 years of teaching experience in biology and chemistry."
+  },
+  {
+    id: 4,
+    name: "Priya Gupta",
+    subject: "History",
+    imageUrl:
+      "https://img.freepik.com/free-photo/portrait-female-teacher-school-classroom_23-2150911641.jpg?w=1060",
+    bio: "Priya has a deep love for history and enjoys bringing the past to life for her students. With a Master's in History, she has been teaching for 6 years and emphasizes critical thinking and analysis."
+  },
+  {
+    id: 5,
+    name: "Vikram Mehta",
+    subject: "Physical Education",
+    imageUrl:
+      "https://img.freepik.com/free-photo/portrait-female-teacher-school-classroom_23-2150911641.jpg?w=1060",
+    bio: "Vikram is committed to promoting physical fitness and healthy living among his students. With over 10 years of experience, he encourages teamwork and perseverance through sports."
+  },
+  // Add more dummy data as needed
+];
+
 
   export const toppersData = [
     {

@@ -17,14 +17,14 @@ import {
   DrawerCloseButton,
   DrawerBody,
   useColorMode,
-  useColorModeValue,
+  useColorModeValue
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { FaBars, FaSun, FaMoon } from "react-icons/fa";
 import Logo from "./school_logo.png";
 import { largeHeaderHeight } from "../common/constant";
 
-const Header = ({ scrollToSection, linksConfig = [] }: any) => {
+const Header = ({  scrollToSection, linksConfig = [] }: any) => {
   const [activeLink, setActiveLink] = useState("home");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { colorMode, toggleColorMode } = useColorMode();
@@ -33,6 +33,8 @@ const Header = ({ scrollToSection, linksConfig = [] }: any) => {
     setActiveLink(linkId);
     scrollToSection(linkId);
   };
+
+  const dropdownMenuColor = useColorModeValue("white", "gray.700")
 
   return (
     <Flex
@@ -102,11 +104,28 @@ const Header = ({ scrollToSection, linksConfig = [] }: any) => {
             fontWeight={500}
             position="relative"
             color={colorMode === "dark" ? "gray.200" : "gray.600"}
-            _hover={{ color: "teal.800" }}
+            _hover={{ color: "teal.800", bg: "teal.100", borderRadius: "md" }}
+            px={3}
+            py={1}
+            borderRadius="md"
+            cursor="pointer"
+            display={linksConfig?.length > 4 ? undefined : "none"}
           >
             More
           </MenuButton>
-          <MenuList>
+          <MenuList
+            bg={useColorModeValue("white", "gray.700")}
+            border="1px solid"
+            borderColor={useColorModeValue("gray.200", "gray.600")}
+            boxShadow="lg"
+            rounded="md"
+            minW="150px"
+            mt={2}
+            p={1}
+            overflow="hidden"
+            transformOrigin="top center"
+            transition="all 0.2s ease-in-out"
+          >
             {linksConfig.slice(5).map((link: any) => {
               const linkConfig = linksConfig.find(
                 (item: any) => item.id === link.id
@@ -116,6 +135,12 @@ const Header = ({ scrollToSection, linksConfig = [] }: any) => {
                   <MenuItem
                     key={link.id}
                     onClick={() => handleLinkClick(link.id)}
+                    bg={dropdownMenuColor}
+                    _hover={{ bg: "teal.100", color: "teal.800" }}
+                    px={4}
+                    py={2}
+                    borderRadius="md"
+                    fontWeight="500"
                   >
                     {linkConfig.name.charAt(0).toUpperCase() +
                       linkConfig.name.slice(1)}
