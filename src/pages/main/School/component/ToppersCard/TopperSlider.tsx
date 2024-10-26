@@ -24,7 +24,7 @@ export default function TopperSlider() {
     sm: 2,
     md: 3,
     lg: 4,
-    xl: 5,
+    xl: 4,
   });
 
   const settings = {
@@ -69,11 +69,12 @@ export default function TopperSlider() {
       >
         <Slider ref={sliderRef} {...settings}>
           {toppersData.map((item, index) => (
-            <Box key={index} px={{ base: 1, md: 2 }}>
+            <Box key={index} px={{ base: 1, md: 1 }}>
               {" "}
               {/* Reduce padding on mobile */}
               <ToppersCard
                 img={item.imageUrl}
+                bio={item.bio}
                 name={item.name}
                 classs={item.className}
                 year={item.year}

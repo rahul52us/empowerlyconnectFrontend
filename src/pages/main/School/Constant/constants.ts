@@ -110,72 +110,81 @@ export const teachersData = [
 ];
 
 
-  export const toppersData = [
-    {
-      name: "Lara Croft",
-      className: "XI",
-      year: "2022-2024",
-      percentage: 93,
-      imageUrl:
-        "https://as2.ftcdn.net/v2/jpg/10/16/40/19/1000_F_1016401913_Dz4YOrT6I2qsYVi7xzRL2oAaSNEeretl.jpg",
-    },
-    {
-      name: "Lara Croft",
-      className: "XI",
-      year: "2022-2024",
-      percentage: 93,
-      imageUrl:
-        "https://as2.ftcdn.net/v2/jpg/10/16/40/19/1000_F_1016401913_Dz4YOrT6I2qsYVi7xzRL2oAaSNEeretl.jpg",
-    },
-    {
-      name: "Lara Croft",
-      className: "XI",
-      year: "2022-2024",
-      percentage: 93,
-      imageUrl:
-        "https://as2.ftcdn.net/v2/jpg/10/16/40/19/1000_F_1016401913_Dz4YOrT6I2qsYVi7xzRL2oAaSNEeretl.jpg",
-    },
-    {
-      name: "Lara Croft",
-      className: "XI",
-      year: "2022-2024",
-      percentage: 93,
-      imageUrl:
-        "https://as2.ftcdn.net/v2/jpg/10/16/40/19/1000_F_1016401913_Dz4YOrT6I2qsYVi7xzRL2oAaSNEeretl.jpg",
-    },
-    {
-      name: "Lara Croft",
-      className: "XI",
-      year: "2022-2024",
-      percentage: 93,
-      imageUrl:
-        "https://as2.ftcdn.net/v2/jpg/10/16/40/19/1000_F_1016401913_Dz4YOrT6I2qsYVi7xzRL2oAaSNEeretl.jpg",
-    },
-    {
-      name: "Lara Croft",
-      className: "XI",
-      year: "2022-2024",
-      percentage: 93,
-      imageUrl:
-        "https://as2.ftcdn.net/v2/jpg/10/16/40/19/1000_F_1016401913_Dz4YOrT6I2qsYVi7xzRL2oAaSNEeretl.jpg",
-    },
-    {
-      name: "Lara Croft",
-      className: "XI",
-      year: "2022-2024",
-      percentage: 93,
-      imageUrl:
-        "https://as2.ftcdn.net/v2/jpg/10/16/40/19/1000_F_1016401913_Dz4YOrT6I2qsYVi7xzRL2oAaSNEeretl.jpg",
-    },
-    {
-      name: "Lara Croft",
-      className: "XI",
-      year: "2022-2024",
-      percentage: 93,
-      imageUrl:
-        "https://as2.ftcdn.net/v2/jpg/10/16/40/19/1000_F_1016401913_Dz4YOrT6I2qsYVi7xzRL2oAaSNEeretl.jpg",
-    },
-  ];
+export const toppersData = [
+  {
+    name: "Lara Croft",
+    className: "XI",
+    year: "2022-2024",
+    percentage: 93,
+    imageUrl:
+      "https://as2.ftcdn.net/v2/jpg/10/16/40/19/1000_F_1016401913_Dz4YOrT6I2qsYVi7xzRL2oAaSNEeretl.jpg",
+    bio: "An adventurous learner with a passion for archaeology and history.",
+  },
+  {
+    name: "John Doe",
+    className: "XI",
+    year: "2022-2024",
+    percentage: 95,
+    imageUrl:
+      "https://as2.ftcdn.net/v2/jpg/10/16/40/19/1000_F_1016401913_Dz4YOrT6I2qsYVi7xzRL2oAaSNEeretl.jpg",
+    bio: "A dedicated student who excels in mathematics and science.",
+  },
+  {
+    name: "Emma Watson",
+    className: "XI",
+    year: "2022-2024",
+    percentage: 92,
+    imageUrl:
+      "https://as2.ftcdn.net/v2/jpg/10/16/40/19/1000_F_1016401913_Dz4YOrT6I2qsYVi7xzRL2oAaSNEeretl.jpg",
+    bio: "An advocate for education and a leader in the student council.",
+  },
+  {
+    name: "Peter Parker",
+    className: "XI",
+    year: "2022-2024",
+    percentage: 94,
+    imageUrl:
+      "https://as2.ftcdn.net/v2/jpg/10/16/40/19/1000_F_1016401913_Dz4YOrT6I2qsYVi7xzRL2oAaSNEeretl.jpg",
+    bio: "A creative thinker with a keen interest in photography.",
+  },
+  {
+    name: "Bruce Wayne",
+    className: "XI",
+    year: "2022-2024",
+    percentage: 96,
+    imageUrl:
+      "https://as2.ftcdn.net/v2/jpg/10/16/40/19/1000_F_1016401913_Dz4YOrT6I2qsYVi7xzRL2oAaSNEeretl.jpg",
+    bio: "A philanthropist who is passionate about helping others.",
+  },
+  {
+    name: "Clark Kent",
+    className: "XI",
+    year: "2022-2024",
+    percentage: 91,
+    imageUrl:
+      "https://as2.ftcdn.net/v2/jpg/10/16/40/19/1000_F_1016401913_Dz4YOrT6I2qsYVi7xzRL2oAaSNEeretl.jpg",
+    bio: "A journalist with a curiosity for the truth and a love for writing.",
+  },
+  {
+    name: "Diana Prince",
+    className: "XI",
+    year: "2022-2024",
+    percentage: 97,
+    imageUrl:
+      "https://as2.ftcdn.net/v2/jpg/10/16/40/19/1000_F_1016401913_Dz4YOrT6I2qsYVi7xzRL2oAaSNEeretl.jpg",
+    bio: "A champion for justice and a leader in community service.",
+  },
+  {
+    name: "Tony Stark",
+    className: "XI",
+    year: "2022-2024",
+    percentage: 98,
+    imageUrl:
+      "https://as2.ftcdn.net/v2/jpg/10/16/40/19/1000_F_1016401913_Dz4YOrT6I2qsYVi7xzRL2oAaSNEeretl.jpg",
+    bio: "An innovator with a talent for technology and engineering.",
+  },
+];
+
 
   export const activityData = [
     {
