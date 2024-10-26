@@ -1,19 +1,18 @@
 import { Button } from "@chakra-ui/react";
 import { useColorModeValue } from "@chakra-ui/color-mode";
-import CustomInput from "../../../../config/component/CustomInput/CustomInput";
 import { Box, Grid, Heading } from "@chakra-ui/layout";
 import { observer } from "mobx-react-lite";
 import { Form, Formik } from "formik";
-import { ContactValidation } from "../utils/validation";
 import { useState } from "react";
-import store from "../../../../store/store";
+import store from "../../../../../../store/store";
+import CustomInput from "../../../../../../config/component/CustomInput/CustomInput";
+import { ContactValidation } from "../utils/validation";
 
-const ContactForm = observer(() => {
+const ContactForm = observer(({ colors }: any) => {
   const {
     auth: { handleContactMail, openNotification },
-  } : any = store;
+  } = store;
   const [showError, setShowError] = useState(false);
-  const headingColor = useColorModeValue("teal.500", "teal.300");
 
   return (
     <Box
@@ -64,7 +63,15 @@ const ContactForm = observer(() => {
           return (
             <Form onSubmit={handleSubmit}>
               <Grid gap={3}>
-                <Heading fontSize="3xl" color={headingColor}>How Can We Assist You?</Heading>
+                <Heading
+                  fontSize="3xl"
+                  color={useColorModeValue(
+                    colors?.headingColor?.light,
+                    colors?.headingColor?.dark
+                  )}
+                >
+                  How Can We Assist You?
+                </Heading>
                 <Grid templateColumns={{ md: "1fr 1fr" }} gap={6}>
                   <CustomInput
                     placeholder="Enter First Name"

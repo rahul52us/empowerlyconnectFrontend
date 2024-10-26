@@ -20,18 +20,9 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 
-interface GalleryImage {
-  src: string;
-  caption?: string;
-}
 
-interface GallerySectionProps {
-  images: GalleryImage[];
-}
 
-export default function GallerySection({ images }: GallerySectionProps) {
-  const headingColor = useColorModeValue("teal.500", "teal.300");
-  const subheadingColor = useColorModeValue("gray.600", "gray.400");
+export default function GallerySection({ images, colors }: any) {
   const bg = useColorModeValue("gray.50", "gray.900");
 
   const sliderRef: any = useRef(null);
@@ -120,16 +111,21 @@ export default function GallerySection({ images }: GallerySectionProps) {
           textAlign="center"
           mb={3}
           fontWeight="bold"
-          color={headingColor}
-        >
+          color={useColorModeValue(
+            colors?.headingColor?.light,
+            colors?.headingColor?.dark
+          )}        >
           Discover Our School Moments
         </Heading>
-        <Text textAlign="center" fontSize="lg" color={subheadingColor} mb={5}>
+        <Text textAlign="center" fontSize="lg" color={useColorModeValue(
+          colors?.subHeadingColor?.light,
+          colors?.subHeadingColor?.dark
+        )} mb={5}>
           A glimpse into our cherished school memories and events.
         </Text>
 
         <Slider ref={sliderRef} {...settings}>
-          {images.map((image, index) => (
+          {images.map((image : any, index : number) => (
             <Box key={index} p={2} onClick={() => openModal(index)}>
               <Image
                 src={image.src}

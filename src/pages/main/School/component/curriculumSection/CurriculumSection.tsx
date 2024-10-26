@@ -18,6 +18,7 @@ const CurriculumSection = ({
   titleColor,
   borderColor,
   textColor,
+  colors
 }: any) => {
   const bg = useColorModeValue("gray.50", "gray.900");
   const sectionBgColor = useColorModeValue("white", "gray.800");
@@ -60,7 +61,10 @@ const CurriculumSection = ({
           textAlign="center"
           mb={3}
           fontWeight="bold"
-          color={titleColor}
+          color={useColorModeValue(
+            colors?.headingColor?.light,
+            colors?.headingColor?.dark
+          )}
         >
           {curriculumData.title}
         </Heading>
@@ -71,6 +75,10 @@ const CurriculumSection = ({
         maxW={{ base: "100%", md: "600px" }}
         mx="auto"
         fontSize={{ base: "md", md: "lg" }}
+        color={useColorModeValue(
+          colors?.subHeadingColor?.light,
+          colors?.subHeadingColor?.dark
+        )}
       >
         {curriculumData.description}
       </Text>

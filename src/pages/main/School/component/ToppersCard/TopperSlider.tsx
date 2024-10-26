@@ -7,6 +7,7 @@ import {
   Stack,
   Text,
   useBreakpointValue,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { useRef } from "react";
 import Slider from "react-slick";
@@ -15,7 +16,7 @@ import "slick-carousel/slick/slick.css";
 import ToppersCard from "./ToppersCard";
 import { toppersData } from "../../Constant/constants";
 
-export default function TopperSlider() {
+export default function TopperSlider({colors} : any) {
   const sliderRef: any = useRef(null);
 
   // Define number of slides to show based on the screen size
@@ -45,8 +46,11 @@ export default function TopperSlider() {
         <Text
           as="span"
           display="block"
-          fontSize={{ base: "sm", md: "md" }}
-          color="gray.500"
+          fontSize={{ base: "sm", md: "xl" }}
+          color={useColorModeValue(
+            colors?.headingColor?.light,
+            colors?.headingColor?.dark
+          )}
           letterSpacing="widest"
         >
           Our Achievers
@@ -54,10 +58,13 @@ export default function TopperSlider() {
         <Heading
           as="h2"
           size={{base : 'md', md : "2xl"}}
-          color="teal.600"
           fontWeight="bold"
           letterSpacing="tight"
           lineHeight="shorter"
+          color={useColorModeValue(
+            colors?.headingColor?.light,
+            colors?.headingColor?.dark
+          )}
         >
           Meet Our Top Performers
         </Heading>

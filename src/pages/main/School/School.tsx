@@ -1,4 +1,4 @@
-import { Box, useColorModeValue } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import React, { useRef, useState, useEffect, Suspense } from "react";
 import { FaChalkboardTeacher, FaUserGraduate } from "react-icons/fa";
 import { GiLaurelsTrophy } from "react-icons/gi";
@@ -6,7 +6,7 @@ import { cards, imageUrls } from "./Constant/constants";
 import { largeHeaderHeight } from "./layout/common/constant";
 
 // Lazy-loaded components
-const Contact = React.lazy(() => import("../Contact/Contact"));
+const Contact = React.lazy(() => import("./component/ContactUs/Contact"));
 const AboutSection = React.lazy(() => import("./component/AboutSection/AboutSection"));
 const GallerySection = React.lazy(() => import("./component/GallerySection/GallerySection"));
 const HeroCarousal = React.lazy(() => import("./component/HeroCarousal/HeroCarousal"));
@@ -21,19 +21,19 @@ const FaqSection = React.lazy(() => import("./component/FaqSection/FaqSection"))
 const CurriculumSection = React.lazy(() => import("./component/curriculumSection/CurriculumSection"));
 const TestimonialsSection = React.lazy(() => import("./component/TestimonialSection/TestimonialSection"));
 
-// Metrics data with explicit typing
+// Metrics data
 interface Metric {
   id: number;
   label: string;
   target: number;
-  icon: React.ElementType; // More specific type for icons
+  icon: React.ElementType;
 }
 
-// Configuration for dynamic sections
+// Section configuration
 interface SectionConfig {
   id: string;
-  component: React.FC<any>; // Using 'any' for props, can be refined
-  props: any; // Define specific props types if known
+  component: React.FC<any>;
+  props: any;
 }
 
 const metrics: Metric[] = [
@@ -42,7 +42,6 @@ const metrics: Metric[] = [
   { id: 3, label: "Awards", target: 30, icon: GiLaurelsTrophy },
 ];
 
-// Initial sections configuration with typing
 const initialSectionsConfig: SectionConfig[] = [
   { id: "home", component: HeroCarousal, props: { cards } },
   { id: "about", component: AboutSection, props: {} },
@@ -60,6 +59,11 @@ const initialSectionsConfig: SectionConfig[] = [
 ];
 
 const School: React.FC = () => {
+  const [colors, setColors] = useState<any>({
+    headingColor: { light: "teal.500", dark: "teal.300" },
+    subHeadingColor: { light: "gray.600", dark: "gray.400" }
+  });
+
   const [sectionsConfig, setSectionsConfig] = useState<SectionConfig[]>(initialSectionsConfig);
   const [activeSection, setActiveSection] = useState<string>("home");
 
@@ -73,7 +77,7 @@ const School: React.FC = () => {
   const scrollToSection = (sectionId: string) => {
     const ref = sectionRefs.current[sectionId];
     if (ref && ref.current) {
-      const navbarHeight = 60; // Adjust this if your navbar height changes
+      const navbarHeight = 60;
       const sectionTop = ref.current.getBoundingClientRect().top + window.scrollY - navbarHeight;
       window.scrollTo({ top: sectionTop, behavior: "smooth" });
     }
@@ -83,23 +87,34 @@ const School: React.FC = () => {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve([
-          "home",
-          "about",
-          "principal",
-          "statistics",
-          "topper",
-          "curriculum",
-          "teachers",
-          "gallery",
-          "features",
-          "testimonial",
-          "faq",
-          "contact",
-          "map",
+          "home", "about", "principal", "statistics", "topper", "curriculum", "teachers",
+          "gallery", "features", "testimonial", "faq", "contact", "map"
         ]);
       }, 1000);
     });
   };
+
+  const fetchColorSettings = async () => {
+    try {
+      // Simulate API call here
+      const colorSettings = {
+        headingColor: { light: "blue.500", dark: "blue.300" },
+        subHeadingColor: { light: "gray.700", dark: "gray.500" },
+        curriculumTitleColor: "purple.500",
+        curriculumSectionBgColor: "purple.50",
+        curriculumBorderColor: "purple.200",
+        curriculumTextColor: "purple.700",
+        statisticsBackgroundImage: "https://img.freepik.com/free-photo/sample-image.jpg"
+      };
+      setColors(colorSettings);
+    } catch (error) {
+      console.error("Failed to fetch color settings:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchColorSettings();
+  }, []);
 
   useEffect(() => {
     const getUserPreferences = async () => {
@@ -126,7 +141,7 @@ const School: React.FC = () => {
     };
 
     const observer = new IntersectionObserver(handleIntersection, {
-      rootMargin: "-50% 0px -50% 0px", // Trigger when section is around the middle of the viewport
+      rootMargin: "-50% 0px -50% 0px",
     });
 
     sectionsConfig.forEach(({ id }) => {
@@ -136,13 +151,6 @@ const School: React.FC = () => {
 
     return () => observer.disconnect();
   }, [sectionsConfig]);
-
-  const curriculumTitleColor = useColorModeValue("teal.500", "teal.300");
-  const curriculumSectionBgColor = useColorModeValue("white", "gray.800");
-  const curriculumBorderColor = "teal.200";
-  const curriculumTextColor = "gray.600";
-  const statisticsBackgroundImage =
-    "https://img.freepik.com/free-photo/architecture-independence-palace-ho-chi-minh-city_181624-21243.jpg?t=st=1729011322~exp=1729014922~hmac=590a0f1b3700627efd9780676b739c65e5b00bfd9a3cf43a6b287ab872511870&w=1060";
 
   const activeSectionIds = initialSectionsConfig.map(section => section.id);
 
@@ -156,29 +164,31 @@ const School: React.FC = () => {
             id: item,
             name: item.charAt(0).toUpperCase() + item.slice(1),
           }))}
+          colors={colors}
         />
         <Box marginTop={largeHeaderHeight}>
           {sectionsConfig
             .filter(({ id }) => activeSectionIds.includes(id))
             .map(({ id, component: Component, props }) => {
-              let sectionProps = { ...props };
+              let sectionProps = { ...props, colors };
 
-              // Custom props for Curriculum section
               if (id === "curriculum") {
                 sectionProps = {
                   ...props,
-                  titleColor: curriculumTitleColor,
-                  sectionBgColor: curriculumSectionBgColor,
-                  borderColor: curriculumBorderColor,
-                  textColor: curriculumTextColor,
+                  colors: {
+                    ...colors,
+                    titleColor: colors.curriculumTitleColor,
+                    sectionBgColor: colors.curriculumSectionBgColor,
+                    borderColor: colors.curriculumBorderColor,
+                    textColor: colors.curriculumTextColor,
+                  }
                 };
               }
 
-              // Custom props for Statistics section
               if (id === "statistics") {
                 sectionProps = {
                   ...props,
-                  backgroundImage: statisticsBackgroundImage,
+                  backgroundImage: colors.statisticsBackgroundImage
                 };
               }
 

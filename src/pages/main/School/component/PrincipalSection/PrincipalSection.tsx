@@ -8,12 +8,12 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 
-export default function PrincipalSection() {
+export default function PrincipalSection({ colors }: any) {
   // Dynamic color modes for light and dark themes
   const textColor = useColorModeValue("gray.700", "gray.300");
-  const headingColor = useColorModeValue("teal.500", "teal.300");
-  const subheadingColor = useColorModeValue("gray.600", "gray.400");
   const bg = useColorModeValue("gray.50", "gray.900");
+
+  console.log('the colors are', colors)
 
   return (
     <Box m={{ base: 2, md: 5 }} py={10} bg={bg}>
@@ -22,8 +22,11 @@ export default function PrincipalSection() {
           as="h2"
           size="xl"
           textAlign="center"
-          mb={4}  // Adjusted margin for subheading
-          color={headingColor}
+          mb={4} // Adjusted margin for subheading
+          color={useColorModeValue(
+            colors?.headingColor?.light,
+            colors?.headingColor?.dark
+          )}
           fontWeight="bold"
         >
           A Message From Our Principal
@@ -32,10 +35,14 @@ export default function PrincipalSection() {
         <Text
           textAlign="center"
           fontSize="lg"
-          mb={8}  // Space below subheading
-          color={subheadingColor}
+          mb={8} // Space below subheading
+          color={useColorModeValue(
+            colors?.subHeadingColor?.light,
+            colors?.subHeadingColor?.dark
+          )}
         >
-          Guiding the way to excellence with experience, passion, and a commitment to shaping the future.
+          Guiding the way to excellence with experience, passion, and a
+          commitment to shaping the future.
         </Text>
 
         <Flex
@@ -64,7 +71,10 @@ export default function PrincipalSection() {
               size="lg"
               mb={4}
               fontWeight="bold"
-              color={headingColor}
+              color={useColorModeValue(
+                colors?.headingColor?.light,
+                colors?.headingColor?.dark
+              )}
             >
               Dr. Jane Smith
             </Heading>

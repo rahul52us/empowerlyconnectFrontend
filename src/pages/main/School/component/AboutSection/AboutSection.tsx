@@ -9,25 +9,40 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 
-export default function AboutSection() {
+export default function AboutSection({ colors }: any) {
   // Background, text, and shadow color based on the light/dark mode
   const bg = useColorModeValue("gray.50", "gray.900");
   const textColor = useColorModeValue("gray.700", "gray.300");
   const shadowColor = useColorModeValue("lg", "dark-lg");
 
   return (
-    <Box m={{base : 2, md : 5}} py={10} bg={bg}>
+    <Box m={{ base: 2, md: 5 }} py={10} bg={bg}>
       <Container maxW="container.xl">
         <Heading
           as="h2"
           size="2xl"
           textAlign="center"
-          mb={12}
+          mb={4}
           fontWeight="bold"
-          color={useColorModeValue("teal.500", "teal.300")}
+          color={useColorModeValue(
+            colors?.headingColor?.light,
+            colors?.headingColor?.dark
+          )}
         >
           About Our School
         </Heading>
+
+        <Text
+          fontSize={{ base: "lg", md: "xl" }}
+          textAlign="center"
+          mb={12}
+          color={useColorModeValue(
+            colors?.subHeadingColor?.light,
+            colors?.subHeadingColor?.dark
+          )}
+        >
+          Dedicated to Excellence in Education
+        </Text>
 
         <Flex
           direction={{ base: "column", md: "row" }}

@@ -2,10 +2,8 @@ import { Box, Grid, Heading, Text, Stack, useColorModeValue } from "@chakra-ui/r
 import TeacherCard from "./TeacherCard";
 import { teachersData } from "../../Constant/constants";
 
-const TeacherSection = () => {
+const TeacherSection = ({colors} : any) => {
   const bg = useColorModeValue("gray.50", "gray.900");
-  const textColor = useColorModeValue("gray.600", "gray.300");
-  const headingColor = useColorModeValue("teal.600", "teal.300");
 
   return (
     <Box m={{ base: 2, md: 5 }} py={10} bg={bg}>
@@ -14,13 +12,19 @@ const TeacherSection = () => {
           as="h2"
           size={{ base: "lg", md: "xl" }}
           fontWeight="bold"
-          color={headingColor}
+          color={useColorModeValue(
+            colors?.headingColor?.light,
+            colors?.headingColor?.dark
+          )}
         >
           Meet Our Dedicated Teachers
         </Heading>
         <Text
           fontSize={{ base: "md", md: "lg" }}
-          color={textColor}
+          color={useColorModeValue(
+            colors?.subHeadingColor?.light,
+            colors?.subHeadingColor?.dark
+          )}
           maxW={{ base: "100%", md: "600px" }}
           mx="auto"
         >

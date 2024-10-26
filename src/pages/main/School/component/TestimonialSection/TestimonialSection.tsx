@@ -40,13 +40,12 @@ const testimonialsData = [
   },
 ];
 
-const TestimonialsSection = () => {
+const TestimonialsSection = ({colors} : any) => {
   const bg = useColorModeValue("gray.50", "gray.900");
   const cardBg = useColorModeValue("white", "gray.800");
   const borderColor = useColorModeValue("gray.200", "gray.600");
   const textColor = useColorModeValue("teal.600", "teal.400");
   const testimonialColor = useColorModeValue("gray.600", "gray.300");
-  const subheadingColor = useColorModeValue("gray.600", "gray.400");
 
   const settings = {
     dots: true, // Show dots for navigation
@@ -80,10 +79,16 @@ const TestimonialsSection = () => {
       maxW={{ base: "98%", md: "100%" }}
       p={{ base: 5, md: 10 }}
     >
-      <Heading as="h2" size="xl" textAlign="center" mb={4} color={textColor}>
+      <Heading as="h2" size="xl" textAlign="center" mb={4} color={useColorModeValue(
+          colors?.headingColor?.light,
+          colors?.headingColor?.dark
+        )}>
         What Our Community Says
       </Heading>
-      <Text textAlign="center" fontSize="lg" color={subheadingColor} mb={6}>
+      <Text textAlign="center" fontSize="lg" color={useColorModeValue(
+          colors?.subHeadingColor?.light,
+          colors?.subHeadingColor?.dark
+        )} mb={6}>
         Hear from parents, students, and alumni about their experiences.
       </Text>
       <Slider {...settings}>
