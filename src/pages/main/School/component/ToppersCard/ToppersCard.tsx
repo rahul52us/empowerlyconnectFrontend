@@ -226,7 +226,10 @@ export default function ToppersCard({
                     colors?.buttonTextColor?.light,
                     colors?.buttonTextColor?.dark
                   )}
-                  _hover={{ bg: useColorModeValue("teal.600", "teal.500") }}
+                  _hover={{ bg: useColorModeValue(
+                    colors?.buttonColor?.light,
+                    colors?.buttonColor?.dark
+                  )}}
                 >
                   Close
                 </Button>
