@@ -20,10 +20,12 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
+import { useSectionColorContext } from "../../School";
 
 
 
-export default function GallerySection({ images, colors }: any) {
+export default function GallerySection({ images }: any) {
+  const {colors} = useSectionColorContext()
   const bg = useColorModeValue("gray.50", "gray.900");
   const {colorMode} = useColorMode()
   const sliderRef: any = useRef(null);

@@ -7,8 +7,11 @@ import {
   Image,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { useSectionColorContext } from "../../School";
 
-export default function PrincipalSection({ colors }: any) {
+export default function PrincipalSection() {
+  const {colors} = useSectionColorContext()
+
   // Dynamic color modes for light and dark themes
   const textColor = useColorModeValue("gray.700", "gray.300");
   const bg = useColorModeValue("gray.50", "gray.900");

@@ -17,6 +17,7 @@ import { FaPhoneAlt } from "react-icons/fa";
 import LinkText from "../../../../../config/component/LinkText/LinkText";
 import SocialMediaLink from "../../../../../config/component/SocialMediaLinkContainer/SocialMediaLink";
 import ContactForm from "./component/ContactForm";
+import { useSectionColorContext } from "../../School";
 
 // Style for Lottie animation on tablet devices
 const BoxStyleFirst = styled(Box)`
@@ -28,7 +29,8 @@ const BoxStyleFirst = styled(Box)`
   }
 `;
 
-const Contact = observer(({ colors }: any) => {
+const Contact = observer(() => {
+  const {colors} = useSectionColorContext()
   const iconColor = useColorModeValue(colors?.iconColor?.light, colors?.iconColor?.dark);
 
   return (
@@ -72,7 +74,7 @@ const Contact = observer(({ colors }: any) => {
       >
         {/* Contact Form */}
         <Box p={{ base: 2, md: 6 }} borderRadius="lg" boxShadow="lg">
-          <ContactForm colors={colors}/>
+          <ContactForm />
         </Box>
 
         {/* Contact Information and Animation */}

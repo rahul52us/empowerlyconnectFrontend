@@ -15,7 +15,7 @@ interface StatisticsCounterProps {
 
 const StatisticsCounter = ({
   metrics,
-  backgroundImage,
+  backgroundImage, // Destructure backgroundImage prop
 }: StatisticsCounterProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const [counts, setCounts] = useState<any>({});
@@ -69,11 +69,13 @@ const StatisticsCounter = ({
     }
   }, [isVisible, metrics]);
 
+  console.log(backgroundImage);
+
   return (
     <Box
       ref={ref}
       position="relative"
-      bgImage={`url(${backgroundImage})`}
+      bgImage={`url(${backgroundImage})`} // Use the backgroundImage prop here
       bgSize="cover"
       bgPosition="center"
       width="100%"

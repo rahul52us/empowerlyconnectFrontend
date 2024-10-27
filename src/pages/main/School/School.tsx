@@ -1,5 +1,5 @@
 import { Box } from "@chakra-ui/react";
-import React, { useRef, useState, useEffect, Suspense } from "react";
+import React, { useRef, useState, useEffect, Suspense, createContext, useContext } from "react";
 import { FaChalkboardTeacher, FaUserGraduate } from "react-icons/fa";
 import { GiLaurelsTrophy } from "react-icons/gi";
 import { cards, imageUrls } from "./Constant/constants";
@@ -36,6 +36,9 @@ interface SectionConfig {
   props: any;
 }
 
+// Create a context for sections and colors
+const SectionColorContext = createContext<any>(null);
+
 const metrics: Metric[] = [
   { id: 1, label: "Students", target: 1500, icon: FaUserGraduate },
   { id: 2, label: "Teachers", target: 100, icon: FaChalkboardTeacher },
@@ -59,12 +62,14 @@ const initialSectionsConfig: SectionConfig[] = [
 ];
 
 const School: React.FC = () => {
-  const [colors, setColors] = useState<any>({
-    headingColor: { light: "teal.500", dark: "teal.300" },
-    subHeadingColor: { light: "gray.600", dark: "gray.400" }
+  const [sectionColorSettings, setSectionColorSettings] = useState<any>({
+    sections: initialSectionsConfig,
+    colors: {
+      headingColor: { light: "teal.500", dark: "teal.300" },
+      subHeadingColor: { light: "gray.600", dark: "gray.400" },
+    },
   });
 
-  const [sectionsConfig, setSectionsConfig] = useState<SectionConfig[]>(initialSectionsConfig);
   const [activeSection, setActiveSection] = useState<string>("home");
 
   const sectionRefs = useRef<Record<string, React.RefObject<HTMLDivElement>>>(
@@ -107,9 +112,12 @@ const School: React.FC = () => {
         curriculumSectionBgColor: "purple.50",
         curriculumBorderColor: "purple.200",
         curriculumTextColor: "purple.700",
-        statisticsBackgroundImage: "https://img.freepik.com/free-photo/sample-image.jpg"
+        statisticsBackgroundImage: "https://thumbs.dreamstime.com/b/multi-ethnic-group-people-study-concepts-42042945.jpg",
       };
-      setColors(colorSettings);
+      setSectionColorSettings((prev : any) => ({
+        ...prev,
+        colors: colorSettings,
+      }));
     } catch (error) {
       console.error("Failed to fetch color settings:", error);
     }
@@ -128,7 +136,10 @@ const School: React.FC = () => {
         )
         .filter((section): section is SectionConfig => section !== undefined);
 
-      setSectionsConfig(orderedSections);
+      setSectionColorSettings((prev : any) => ({
+        ...prev,
+        sections: orderedSections,
+      }));
     };
 
     getUserPreferences();
@@ -147,64 +158,69 @@ const School: React.FC = () => {
       rootMargin: "-50% 0px -50% 0px",
     });
 
-    sectionsConfig.forEach(({ id }) => {
+    sectionColorSettings.sections.forEach(({ id } : any) => {
       const ref = sectionRefs.current[id].current;
       if (ref) observer.observe(ref);
     });
 
     return () => observer.disconnect();
-  }, [sectionsConfig]);
+  }, [sectionColorSettings.sections]);
 
-  const activeSectionIds = initialSectionsConfig.map(section => section.id);
+  const activeSectionIds = initialSectionsConfig.map((section) => section.id);
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <Box>
-        <Navbar
-          scrollToSection={scrollToSection}
-          activeSection={activeSection}
-          linksConfig={activeSectionIds.map((item) => ({
-            id: item,
-            name: item.charAt(0).toUpperCase() + item.slice(1),
-          }))}
-          colors={colors}
-        />
-        <Box marginTop={largeHeaderHeight}>
-          {sectionsConfig
-            .filter(({ id }) => activeSectionIds.includes(id))
-            .map(({ id, component: Component, props }) => {
-              let sectionProps = { ...props, colors };
+    <SectionColorContext.Provider value={sectionColorSettings}>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Box>
+          <Navbar
+            scrollToSection={scrollToSection}
+            activeSection={activeSection}
+            linksConfig={activeSectionIds.map((item) => ({
+              id: item,
+              name: item.charAt(0).toUpperCase() + item.slice(1),
+            }))}
+            colors={sectionColorSettings.colors}
+          />
+          <Box marginTop={largeHeaderHeight}>
+            {sectionColorSettings.sections
+              .filter(({ id } : any) => activeSectionIds.includes(id))
+              .map(({ id, component: Component, props } : any) => {
+                let sectionProps = { ...props, colors: sectionColorSettings.colors };
 
-              if (id === "curriculum") {
-                sectionProps = {
-                  ...props,
-                  colors: {
-                    ...colors,
-                    titleColor: colors.curriculumTitleColor,
-                    sectionBgColor: colors.curriculumSectionBgColor,
-                    borderColor: colors.curriculumBorderColor,
-                    textColor: colors.curriculumTextColor,
-                  }
-                };
-              }
+                if (id === "curriculum") {
+                  sectionProps = {
+                    ...props,
+                    colors: {
+                      ...sectionColorSettings.colors,
+                      titleColor: sectionColorSettings.colors.curriculumTitleColor,
+                      sectionBgColor: sectionColorSettings.colors.curriculumSectionBgColor,
+                      borderColor: sectionColorSettings.colors.curriculumBorderColor,
+                      textColor: sectionColorSettings.colors.curriculumTextColor,
+                    },
+                  };
+                }
 
-              if (id === "statistics") {
-                sectionProps = {
-                  ...props,
-                  backgroundImage: colors.statisticsBackgroundImage
-                };
-              }
+                if (id === "statistics") {
+                  sectionProps = {
+                    ...props,
+                    backgroundImage: sectionColorSettings.colors.statisticsBackgroundImage,
+                  };
+                }
 
-              return (
-                <Box key={id} ref={sectionRefs.current[id]} my={7} id={id}>
-                  <Component {...sectionProps} />
-                </Box>
-              );
-            })}
+                return (
+                  <Box key={id} ref={sectionRefs.current[id]} my={7} id={id}>
+                    <Component {...sectionProps} />
+                  </Box>
+                );
+              })}
+          </Box>
         </Box>
-      </Box>
-    </Suspense>
+      </Suspense>
+    </SectionColorContext.Provider>
   );
 };
+
+// Custom hooks to use the context
+export const useSectionColorContext = () => useContext(SectionColorContext);
 
 export default School;

@@ -1,7 +1,9 @@
 import { Box, Image, Tag, Text, useDisclosure, useColorModeValue, Divider } from "@chakra-ui/react";
 import TeacherDetailModal from "./TeacherDetailModel";
+import { useSectionColorContext } from "../../School";
 
 const TeacherCard = ({ name, subject, imageUrl, bio, index, totalItems }: any) => {
+  const {colors} = useSectionColorContext()
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   // Define colors and styles based on the color mode
@@ -62,6 +64,7 @@ const TeacherCard = ({ name, subject, imageUrl, bio, index, totalItems }: any) =
         imageUrl={imageUrl}
         bio={bio}
         index={index}
+        colors={colors}
         totalItems={totalItems} // Pass total number of items
       />
     </>

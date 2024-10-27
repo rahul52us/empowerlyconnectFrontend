@@ -1,8 +1,11 @@
 import { Box, Grid, Heading, Text, Stack, useColorModeValue } from "@chakra-ui/react";
 import TeacherCard from "./TeacherCard";
 import { teachersData } from "../../Constant/constants";
+import { useSectionColorContext } from "../../School";
 
-const TeacherSection = ({colors} : any) => {
+const TeacherSection = () => {
+  const {colors} = useSectionColorContext()
+
   const bg = useColorModeValue("gray.50", "gray.900");
 
   return (
@@ -54,6 +57,7 @@ const TeacherSection = ({colors} : any) => {
             bio={teacher.bio}
             index={index}
             totalItems={teachersData.length}
+            colors={colors}
           />
         ))}
       </Grid>

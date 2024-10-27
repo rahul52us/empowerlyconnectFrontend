@@ -8,8 +8,11 @@ import {
   VStack,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { useSectionColorContext } from "../../School";
 
-export default function AboutSection({ colors }: any) {
+export default function AboutSection() {
+  const {colors} = useSectionColorContext()
+
   // Background, text, and shadow color based on the light/dark mode
   const bg = useColorModeValue("gray.50", "gray.900");
   const textColor = useColorModeValue("gray.700", "gray.300");

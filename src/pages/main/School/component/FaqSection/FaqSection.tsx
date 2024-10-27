@@ -13,6 +13,7 @@ import {
   UnorderedList,
   ListItem,
 } from "@chakra-ui/react";
+import { useSectionColorContext } from "../../School";
 
 // FAQ Data
 const faqData = [
@@ -54,7 +55,8 @@ const faqData = [
   },
 ];
 
-const FaqSection = ({ colors }: any) => {
+const FaqSection = () => {
+  const {colors} = useSectionColorContext()
   const buttonHoverColor = useColorModeValue("teal.50", "teal.700");
   const buttonExpandedColor = useColorModeValue("teal.100", "teal.600");
   const textColor = useColorModeValue("gray.800", "gray.200");

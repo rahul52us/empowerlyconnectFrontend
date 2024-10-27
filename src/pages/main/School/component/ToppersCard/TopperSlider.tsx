@@ -16,8 +16,10 @@ import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import ToppersCard from "./ToppersCard";
 import { toppersData } from "../../Constant/constants";
+import { useSectionColorContext } from "../../School";
 
-export default function TopperSlider({ colors }: any) {
+export default function TopperSlider() {
+  const {colors} = useSectionColorContext()
   const sliderRef: any = useRef(null);
   const { colorMode } = useColorMode();
 

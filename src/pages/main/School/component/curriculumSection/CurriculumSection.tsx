@@ -13,13 +13,15 @@ import {
   Icon,
 } from "@chakra-ui/react";
 import { FaBookOpen } from "react-icons/fa"; // Example icon, you can choose any other
+import { useSectionColorContext } from "../../School";
 
 const CurriculumSection = ({
   titleColor,
   borderColor,
-  textColor,
-  colors
+  textColor
 }: any) => {
+  const {colors} = useSectionColorContext()
+
   const bg = useColorModeValue("gray.50", "gray.900");
   const sectionBgColor = useColorModeValue("white", "gray.800");
 

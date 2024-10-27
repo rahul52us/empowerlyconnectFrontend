@@ -1,7 +1,9 @@
 import { Box, Grid, Text, VStack, HStack, Icon, Divider, useColorMode } from "@chakra-ui/react";
 import { MdLocationOn, MdPhone, MdEmail } from "react-icons/md";
+import { useSectionColorContext } from "../../School";
 
-const MapSection = ({colors} : any) => {
+const MapSection = () => {
+  const {colors} = useSectionColorContext()
   const {colorMode} = useColorMode()
   return (
     <Box my={10} width="100%" p={5}>

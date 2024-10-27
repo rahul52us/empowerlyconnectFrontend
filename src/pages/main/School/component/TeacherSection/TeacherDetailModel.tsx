@@ -21,6 +21,7 @@ import {
     bio,
     index,
     totalItems,
+    colors
   }: any) => {
     const modalBodyRef = useRef<any>(null);
     const bg = useColorModeValue("white", "gray.800");
@@ -66,7 +67,7 @@ import {
           <Button
             onClick={onClose}
             variant="ghost"
-            color={useColorModeValue("gray.600", "gray.300")}
+            color={useColorModeValue(colors?.iconColor?.light, colors?.iconColor?.dark)}
             position="absolute"
             top={4}
             right={4}
@@ -78,7 +79,6 @@ import {
           >
             ✖
           </Button>
-
           <ModalBody
             ref={modalBodyRef}
             onMouseEnter={() => setIsHovering(true)}
@@ -114,12 +114,13 @@ import {
               </Text>
               <Button
                 mt={4}
-                colorScheme="teal"
+                bgColor={useColorModeValue(colors?.buttonColor?.light, colors?.buttonColor?.dark)}
+                color={useColorModeValue(colors?.buttonTextColor?.light, colors?.buttonTextColor?.dark)}
                 onClick={onClose}
                 width="full"
                 borderRadius="md"
                 _hover={{
-                  bg: useColorModeValue("teal.600", "teal.400"),
+                  bg: useColorModeValue(colors?.buttonColor?.light, colors?.buttonColor?.dark),
                   transform: "scale(1.05)",
                 }}
                 transition="background 0.2s, transform 0.2s"

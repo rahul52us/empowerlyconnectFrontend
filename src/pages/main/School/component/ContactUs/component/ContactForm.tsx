@@ -7,8 +7,11 @@ import { useState } from "react";
 import store from "../../../../../../store/store";
 import CustomInput from "../../../../../../config/component/CustomInput/CustomInput";
 import { ContactValidation } from "../utils/validation";
+import { useSectionColorContext } from "../../../School";
 
-const ContactForm = observer(({ colors }: any) => {
+const ContactForm = observer(() => {
+  const {colors} = useSectionColorContext()
+
   const {
     auth: { handleContactMail, openNotification },
   } = store;

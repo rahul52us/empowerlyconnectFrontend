@@ -7,6 +7,7 @@ import {
   Heading,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { useSectionColorContext } from "../../School";
 
 // Sample testimonials data
 const testimonialsData = [
@@ -40,7 +41,8 @@ const testimonialsData = [
   },
 ];
 
-const TestimonialsSection = ({colors} : any) => {
+const TestimonialsSection = () => {
+  const {colors} = useSectionColorContext()
   const bg = useColorModeValue("gray.50", "gray.900");
   const cardBg = useColorModeValue("white", "gray.800");
   const borderColor = useColorModeValue("gray.200", "gray.600");
