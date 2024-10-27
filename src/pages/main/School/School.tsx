@@ -1,25 +1,57 @@
 import { Box } from "@chakra-ui/react";
-import React, { useRef, useState, useEffect, Suspense, createContext, useContext } from "react";
+import React, {
+  useRef,
+  useState,
+  useEffect,
+  Suspense,
+  createContext,
+  useContext,
+} from "react";
 import { FaChalkboardTeacher, FaUserGraduate } from "react-icons/fa";
 import { GiLaurelsTrophy } from "react-icons/gi";
 import { cards, imageUrls } from "./Constant/constants";
 import { largeHeaderHeight } from "./layout/common/constant";
+import { useQueryParams } from "../../../config/component/customHooks/useQuery";
 
 // Lazy-loaded components
 const Contact = React.lazy(() => import("./component/ContactUs/Contact"));
-const AboutSection = React.lazy(() => import("./component/AboutSection/AboutSection"));
-const GallerySection = React.lazy(() => import("./component/GallerySection/GallerySection"));
-const HeroCarousal = React.lazy(() => import("./component/HeroCarousal/HeroCarousal"));
-const MapSection = React.lazy(() => import("./component/MapSection/MapSection"));
+const AboutSection = React.lazy(
+  () => import("./component/AboutSection/AboutSection")
+);
+const GallerySection = React.lazy(
+  () => import("./component/GallerySection/GallerySection")
+);
+const HeroCarousal = React.lazy(
+  () => import("./component/HeroCarousal/HeroCarousal")
+);
+const MapSection = React.lazy(
+  () => import("./component/MapSection/MapSection")
+);
 const Navbar = React.lazy(() => import("./layout/Navbar/Navbar"));
-const PrincipalSection = React.lazy(() => import("./component/PrincipalSection/PrincipalSection"));
-const TopperSlider = React.lazy(() => import("./component/ToppersCard/TopperSlider"));
-const StatisticsCounter = React.lazy(() => import("./component/StatisticsCounter/StatisticsCounter"));
-const TeacherSection = React.lazy(() => import("./component/TeacherSection/TeacherSection"));
-const SchoolFeatureSection = React.lazy(() => import("./component/SchoolFeatureSection/SchoolFeatureSection"));
-const FaqSection = React.lazy(() => import("./component/FaqSection/FaqSection"));
-const CurriculumSection = React.lazy(() => import("./component/curriculumSection/CurriculumSection"));
-const TestimonialsSection = React.lazy(() => import("./component/TestimonialSection/TestimonialSection"));
+const PrincipalSection = React.lazy(
+  () => import("./component/PrincipalSection/PrincipalSection")
+);
+const TopperSlider = React.lazy(
+  () => import("./component/ToppersCard/TopperSlider")
+);
+const StatisticsCounter = React.lazy(
+  () => import("./component/StatisticsCounter/StatisticsCounter")
+);
+const TeacherSection = React.lazy(
+  () => import("./component/TeacherSection/TeacherSection")
+);
+const SchoolFeatureSection = React.lazy(
+  () => import("./component/SchoolFeatureSection/SchoolFeatureSection")
+);
+const FaqSection = React.lazy(
+  () => import("./component/FaqSection/FaqSection")
+);
+const CurriculumSection = React.lazy(
+  () => import("./component/curriculumSection/CurriculumSection")
+);
+const TestimonialsSection = React.lazy(
+  () => import("./component/TestimonialSection/TestimonialSection")
+);
 
 // Metrics data
 interface Metric {
@@ -62,12 +94,15 @@ const initialSectionsConfig: SectionConfig[] = [
 ];
 
 const School: React.FC = () => {
+  const {getQueryParam} = useQueryParams()
+
   const [sectionColorSettings, setSectionColorSettings] = useState<any>({
     sections: initialSectionsConfig,
     colors: {
       headingColor: { light: "teal.500", dark: "teal.300" },
       subHeadingColor: { light: "gray.600", dark: "gray.400" },
     },
+    websiteMode : null
   });
 
   const [activeSection, setActiveSection] = useState<string>("home");
@@ -83,7 +118,8 @@ const School: React.FC = () => {
     const ref = sectionRefs.current[sectionId];
     if (ref && ref.current) {
       const navbarHeight = 60;
-      const sectionTop = ref.current.getBoundingClientRect().top + window.scrollY - navbarHeight;
+      const sectionTop =
+        ref.current.getBoundingClientRect().top + window.scrollY - navbarHeight;
       window.scrollTo({ top: sectionTop, behavior: "smooth" });
     }
   };
@@ -92,8 +128,19 @@ const School: React.FC = () => {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve([
-          "home", "about", "principal", "statistics", "topper", "curriculum", "teachers",
-          "gallery", "features", "testimonial", "faq", "contact", "map"
+          "home",
+          "about",
+          "principal",
+          "statistics",
+          "topper",
+          "curriculum",
+          "teachers",
+          "gallery",
+          "features",
+          "testimonial",
+          "faq",
+          "contact",
+          "map",
         ]);
       }, 1000);
     });
@@ -112,11 +159,13 @@ const School: React.FC = () => {
         curriculumSectionBgColor: "purple.50",
         curriculumBorderColor: "purple.200",
         curriculumTextColor: "purple.700",
-        statisticsBackgroundImage: "https://thumbs.dreamstime.com/b/multi-ethnic-group-people-study-concepts-42042945.jpg",
+        statisticsBackgroundImage:
+          "https://thumbs.dreamstime.com/b/multi-ethnic-group-people-study-concepts-42042945.jpg",
       };
-      setSectionColorSettings((prev : any) => ({
+      setSectionColorSettings((prev: any) => ({
         ...prev,
         colors: colorSettings,
+        websiteMode:getQueryParam('mode') ? true : false
       }));
     } catch (error) {
       console.error("Failed to fetch color settings:", error);
@@ -136,7 +185,7 @@ const School: React.FC = () => {
         )
         .filter((section): section is SectionConfig => section !== undefined);
 
-      setSectionColorSettings((prev : any) => ({
+      setSectionColorSettings((prev: any) => ({
         ...prev,
         sections: orderedSections,
       }));
@@ -158,7 +207,7 @@ const School: React.FC = () => {
       rootMargin: "-50% 0px -50% 0px",
     });
 
-    sectionColorSettings.sections.forEach(({ id } : any) => {
+    sectionColorSettings.sections.forEach(({ id }: any) => {
       const ref = sectionRefs.current[id].current;
       if (ref) observer.observe(ref);
     });
@@ -183,19 +232,26 @@ const School: React.FC = () => {
           />
           <Box marginTop={largeHeaderHeight}>
             {sectionColorSettings.sections
-              .filter(({ id } : any) => activeSectionIds.includes(id))
-              .map(({ id, component: Component, props } : any) => {
-                let sectionProps = { ...props, colors: sectionColorSettings.colors };
+              .filter(({ id }: any) => activeSectionIds.includes(id))
+              .map(({ id, component: Component, props }: any) => {
+                let sectionProps = {
+                  ...props,
+                  colors: sectionColorSettings.colors,
+                };
 
                 if (id === "curriculum") {
                   sectionProps = {
                     ...props,
                     colors: {
                       ...sectionColorSettings.colors,
-                      titleColor: sectionColorSettings.colors.curriculumTitleColor,
-                      sectionBgColor: sectionColorSettings.colors.curriculumSectionBgColor,
-                      borderColor: sectionColorSettings.colors.curriculumBorderColor,
-                      textColor: sectionColorSettings.colors.curriculumTextColor,
+                      titleColor:
+                        sectionColorSettings.colors.curriculumTitleColor,
+                      sectionBgColor:
+                        sectionColorSettings.colors.curriculumSectionBgColor,
+                      borderColor:
+                        sectionColorSettings.colors.curriculumBorderColor,
+                      textColor:
+                        sectionColorSettings.colors.curriculumTextColor,
                     },
                   };
                 }
@@ -203,7 +259,8 @@ const School: React.FC = () => {
                 if (id === "statistics") {
                   sectionProps = {
                     ...props,
-                    backgroundImage: sectionColorSettings.colors.statisticsBackgroundImage,
+                    backgroundImage:
+                      sectionColorSettings.colors.statisticsBackgroundImage,
                   };
                 }
 

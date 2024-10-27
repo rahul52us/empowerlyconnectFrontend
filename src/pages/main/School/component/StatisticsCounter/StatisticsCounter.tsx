@@ -69,8 +69,6 @@ const StatisticsCounter = ({
     }
   }, [isVisible, metrics]);
 
-  console.log(backgroundImage);
-
   return (
     <Box
       ref={ref}
