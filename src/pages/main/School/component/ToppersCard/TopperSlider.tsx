@@ -7,6 +7,7 @@ import {
   Stack,
   Text,
   useBreakpointValue,
+  useColorMode,
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useRef } from "react";
@@ -16,8 +17,9 @@ import "slick-carousel/slick/slick.css";
 import ToppersCard from "./ToppersCard";
 import { toppersData } from "../../Constant/constants";
 
-export default function TopperSlider({colors} : any) {
+export default function TopperSlider({ colors }: any) {
   const sliderRef: any = useRef(null);
+  const { colorMode } = useColorMode();
 
   // Define number of slides to show based on the screen size
   const slidesToShow = useBreakpointValue({
@@ -57,7 +59,7 @@ export default function TopperSlider({colors} : any) {
         </Text>
         <Heading
           as="h2"
-          size={{base : 'md', md : "2xl"}}
+          size={{ base: "md", md: "2xl" }}
           fontWeight="bold"
           letterSpacing="tight"
           lineHeight="shorter"
@@ -96,13 +98,37 @@ export default function TopperSlider({colors} : any) {
             aria-label="Previous"
             icon={<ArrowBackIcon />}
             onClick={() => sliderRef.current.slickPrev()}
-            colorScheme="teal"
+            color={colorMode === "light" ? "white" : "white"}
+            bgColor={
+              colorMode === "light"
+                ? colors?.iconColor?.light
+                : colors?.iconColor?.dark
+            }
+            _hover={{
+              bgColor:
+                colorMode === "light"
+                  ? colors?.iconColor?.light
+                  : colors?.iconColor?.dark,
+              color: colorMode === "light" ? "white" : "white",
+            }}
           />
           <IconButton
             aria-label="Next"
             icon={<ArrowForwardIcon />}
             onClick={() => sliderRef.current.slickNext()}
-            colorScheme="teal"
+            bgColor={
+              colorMode === "light"
+                ? colors?.iconColor?.light
+                : colors?.iconColor?.dark
+            }
+            color={colorMode === "light" ? "white" : "white"}
+            _hover={{
+              bgColor:
+                colorMode === "light"
+                  ? colors?.iconColor?.light
+                  : colors?.iconColor?.dark,
+              color: colorMode === "light" ? "white" : "white",
+            }}
           />
         </Stack>
       </Box>

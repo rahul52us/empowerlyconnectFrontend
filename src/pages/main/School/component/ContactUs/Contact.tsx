@@ -29,7 +29,7 @@ const BoxStyleFirst = styled(Box)`
 `;
 
 const Contact = observer(({ colors }: any) => {
-  const iconColor = useColorModeValue("teal.600", "teal.300");
+  const iconColor = useColorModeValue(colors?.iconColor?.light, colors?.iconColor?.dark);
 
   return (
     <Container
@@ -129,7 +129,7 @@ const Contact = observer(({ colors }: any) => {
 
             {/* Social Media */}
             <Box pt={4}>
-              <SocialMediaLink />
+              <SocialMediaLink iconColor={iconColor}/>
             </Box>
           </VStack>
         </VStack>

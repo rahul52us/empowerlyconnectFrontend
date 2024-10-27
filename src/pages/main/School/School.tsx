@@ -100,6 +100,9 @@ const School: React.FC = () => {
       const colorSettings = {
         headingColor: { light: "blue.500", dark: "blue.300" },
         subHeadingColor: { light: "gray.700", dark: "gray.500" },
+        iconColor: { light: "blue.500", dark: "blue.300" },
+        buttonColor: { light: "blue.500", dark: "blue.300" },
+        buttonTextColor: { light: "white", dark: "white" },
         curriculumTitleColor: "purple.500",
         curriculumSectionBgColor: "purple.50",
         curriculumBorderColor: "purple.200",

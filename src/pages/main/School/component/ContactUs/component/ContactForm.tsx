@@ -130,8 +130,8 @@ const ContactForm = observer(({ colors }: any) => {
                 <Button
                   type="submit"
                   h={{ base: "45px", md: "56px" }}
-                  bg={useColorModeValue("teal.500", "teal.800")}
-                  color={useColorModeValue("white", "white")}
+                  bg={useColorModeValue(colors?.buttonColor?.light,colors?.buttonColor?.dark)}
+                  color={useColorModeValue(colors?.buttonTextColor?.light,colors?.buttonTextColor?.dark)}
                   fontSize={{ md: "2xl" }}
                   transition=".3s ease-in-out"
                   _hover={{

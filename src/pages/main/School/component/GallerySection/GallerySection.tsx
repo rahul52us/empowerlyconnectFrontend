@@ -13,6 +13,7 @@ import {
   ModalOverlay,
   Stack,
   Text,
+  useColorMode,
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -24,7 +25,7 @@ import "slick-carousel/slick/slick.css";
 
 export default function GallerySection({ images, colors }: any) {
   const bg = useColorModeValue("gray.50", "gray.900");
-
+  const {colorMode} = useColorMode()
   const sliderRef: any = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -148,13 +149,37 @@ export default function GallerySection({ images, colors }: any) {
             aria-label="Previous"
             icon={<ArrowBackIcon />}
             onClick={() => sliderRef.current.slickPrev()}
-            colorScheme="teal"
+            color={colorMode === "light" ? "white" : "white"}
+            bgColor={
+              colorMode === "light"
+                ? colors?.iconColor?.light
+                : colors?.iconColor?.dark
+            }
+            _hover={{
+              bgColor:
+                colorMode === "light"
+                  ? colors?.iconColor?.light
+                  : colors?.iconColor?.dark,
+              color: colorMode === "light" ? "white" : "white",
+            }}
           />
           <IconButton
             aria-label="Next"
             icon={<ArrowForwardIcon />}
             onClick={() => sliderRef.current.slickNext()}
-            colorScheme="teal"
+            bgColor={
+              colorMode === "light"
+                ? colors?.iconColor?.light
+                : colors?.iconColor?.dark
+            }
+            color={colorMode === "light" ? "white" : "white"}
+            _hover={{
+              bgColor:
+                colorMode === "light"
+                  ? colors?.iconColor?.light
+                  : colors?.iconColor?.dark,
+              color: colorMode === "light" ? "white" : "white",
+            }}
           />
         </Stack>
 

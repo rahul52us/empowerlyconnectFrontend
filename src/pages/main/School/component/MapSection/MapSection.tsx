@@ -1,7 +1,8 @@
-import { Box, Grid, Text, VStack, HStack, Icon, Divider } from "@chakra-ui/react";
+import { Box, Grid, Text, VStack, HStack, Icon, Divider, useColorMode } from "@chakra-ui/react";
 import { MdLocationOn, MdPhone, MdEmail } from "react-icons/md";
 
-const MapSection = () => {
+const MapSection = ({colors} : any) => {
+  const {colorMode} = useColorMode()
   return (
     <Box my={10} width="100%" p={5}>
       <Grid templateColumns={{ base: "1fr", md: "2fr 1fr" }} gap={6}>
@@ -38,40 +39,40 @@ const MapSection = () => {
           _hover={{ boxShadow: "2xl" }} // Softer hover effect
           _dark={{ bg: 'gray.800', borderColor: 'teal.600' }} // Dark mode support
         >
-          <Text fontWeight="bold" fontSize="3xl" color="teal.600">
+          <Text fontWeight="bold" fontSize="3xl" color={colorMode === "dark" ? colors?.headingColor?.dark : colors?.headingColor?.light}>
             Aarya Kid's Garden School
           </Text>
 
           <Divider orientation="horizontal" borderColor="gray.200" />
 
           <HStack spacing={3}>
-            <Icon as={MdLocationOn} boxSize={8} color="teal.500" aria-label="Location" />
-            <Text fontSize="lg" color="gray.700" _dark={{ color: 'gray.300' }}>
+            <Icon as={MdLocationOn} boxSize={8} color={colorMode === "dark" ? colors?.iconColor?.dark : colors?.iconColor?.light} aria-label="Location" />
+            <Text fontSize="md" color={colorMode === "dark" ? colors?.headingColor?.dark : colors?.headingColor?.light} _dark={{ color: 'gray.300' }}>
               Plot No. 123, ABC Street, XYZ Nagar, New Delhi, 110001
             </Text>
           </HStack>
 
           <HStack spacing={3}>
-            <Icon as={MdPhone} boxSize={8} color="teal.500" aria-label="Phone" />
-            <Text fontSize="lg" color="gray.700" _dark={{ color: 'gray.300' }}>
+            <Icon as={MdPhone} boxSize={8} color={colorMode === "dark" ? colors?.iconColor?.dark : colors?.iconColor?.light} aria-label="Phone" />
+            <Text fontSize="md" color={colorMode === "dark" ? colors?.headingColor?.dark : colors?.headingColor?.light} _dark={{ color: 'gray.300' }}>
               +91 12345 67890
             </Text>
           </HStack>
 
           <HStack spacing={3}>
-            <Icon as={MdEmail} boxSize={8} color="teal.500" aria-label="Email" />
-            <Text fontSize="lg" color="gray.700" _dark={{ color: 'gray.300' }}>
+            <Icon as={MdEmail} boxSize={8} color={colorMode === "dark" ? colors?.headingColor?.dark : colors?.headingColor?.light} aria-label="Email" />
+            <Text fontSize="md" color={colorMode === "dark" ? colors?.headingColor?.dark : colors?.headingColor?.light} _dark={{ color: 'gray.300' }}>
               info@aaryakids.com
             </Text>
           </HStack>
 
-          <Text fontSize="lg" color="gray.700" _dark={{ color: 'gray.300' }}>
+          <Text fontSize="md" color={colorMode === "dark" ? colors?.headingColor?.dark : colors?.headingColor?.light} _dark={{ color: 'gray.300' }}>
             Website:{" "}
             <a
               href="https://www.aaryakids.com"
               target="_blank"
               rel="noopener noreferrer"
-              style={{ color: "teal", textDecoration: "underline" }}
+              style={{ color: colorMode === "dark" ? colors?.headingColor?.dark : colors?.headingColor?.light, textDecoration: "underline" }}
             >
               www.aaryakids.com
             </a>

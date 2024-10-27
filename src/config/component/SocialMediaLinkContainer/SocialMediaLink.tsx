@@ -1,9 +1,8 @@
-import { Flex, useColorModeValue } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import SocialMediaLinkLogo from "./element/SocialMediaLinkLogo";
 import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
 
-const SocialMediaLink = () => {
-  const iconColor = useColorModeValue("teal.600", "teal.300");
+const SocialMediaLink = ({iconColor} : any) => {
 
   return (
     <Flex alignItems={"center"} gap={5}>

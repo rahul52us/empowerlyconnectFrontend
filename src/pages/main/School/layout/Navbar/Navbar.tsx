@@ -24,7 +24,7 @@ import { FaBars, FaSun, FaMoon } from "react-icons/fa";
 import Logo from "./school_logo.png";
 import { largeHeaderHeight } from "../common/constant";
 
-const Header = ({  scrollToSection, linksConfig = [] }: any) => {
+const Header = ({  scrollToSection, linksConfig = [], colors }: any) => {
   const [activeLink, setActiveLink] = useState("home");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { colorMode, toggleColorMode } = useColorMode();
@@ -34,8 +34,10 @@ const Header = ({  scrollToSection, linksConfig = [] }: any) => {
     scrollToSection(linkId);
   };
 
+  const contactButtonColor = useColorModeValue(colors?.buttonColor?.light,colors?.buttonColor?.dark)
+  const buttonTextColor = useColorModeValue(colors?.buttonTextColor?.light,colors?.buttonTextColor?.dark)
   const dropdownMenuColor = useColorModeValue("white", "gray.700")
-
+  const menuHoverColor = useColorModeValue("black",'white')
   return (
     <Flex
       as="nav"
@@ -72,13 +74,13 @@ const Header = ({  scrollToSection, linksConfig = [] }: any) => {
               position="relative"
               color={
                 activeLink === link.id
-                  ? "teal.500"
+                  ? colors?.headingColor?.light
                   : colorMode === "dark"
-                  ? "gray.200"
-                  : "gray.600"
+                  ? colors?.headingColor?.dark
+                  : colors?.headingColor?.light
               }
               onClick={() => handleLinkClick(link.id)}
-              _hover={{ color: "teal.800" }}
+              _hover={{ color: menuHoverColor}}
               _after={{
                 content: '""',
                 position: "absolute",
@@ -86,7 +88,7 @@ const Header = ({  scrollToSection, linksConfig = [] }: any) => {
                 height: "2px",
                 bottom: "-4px",
                 left: "0",
-                bg: "teal.500",
+                bg: colors?.headingColor?.dark,
                 transition: "width 0.3s ease",
               }}
               cursor="pointer"
@@ -103,8 +105,8 @@ const Header = ({  scrollToSection, linksConfig = [] }: any) => {
             fontSize="lg"
             fontWeight={500}
             position="relative"
-            color={colorMode === "dark" ? "gray.200" : "gray.600"}
-            _hover={{ color: "teal.800", bg: "teal.100", borderRadius: "md" }}
+            color={colorMode === "dark" ? colors?.buttonColor?.dark : colors?.buttonColor?.light}
+            _hover={{ color: menuHoverColor, borderRadius: "md" }}
             px={3}
             py={1}
             borderRadius="md"
@@ -136,7 +138,7 @@ const Header = ({  scrollToSection, linksConfig = [] }: any) => {
                     key={link.id}
                     onClick={() => handleLinkClick(link.id)}
                     bg={dropdownMenuColor}
-                    _hover={{ bg: "teal.100", color: "teal.800" }}
+                    _hover={{ bg: colors?.buttonColor?.light, color: colors?.buttonTextColor?.dark }}
                     px={4}
                     py={2}
                     borderRadius="md"
@@ -159,7 +161,7 @@ const Header = ({  scrollToSection, linksConfig = [] }: any) => {
           onClick={toggleColorMode}
           aria-label="Toggle color mode"
           variant="outline"
-          colorScheme="teal"
+          color={colorMode === "light" ? colors?.iconColor?.light : colors?.iconColor?.dark}
           mr={{ base: 2, md: 5 }}
         />
 
@@ -174,11 +176,12 @@ const Header = ({  scrollToSection, linksConfig = [] }: any) => {
         {linksConfig.find((link: any) => link.id === "contact") && (
           <Button
             display={{ base: "none", md: "inline-flex" }}
-            colorScheme="teal"
+            bgColor={contactButtonColor}
+            color={buttonTextColor}
             borderRadius="full"
             boxShadow="md"
             _hover={{
-              bg: "teal.600",
+              bg:contactButtonColor,
               transform: "scale(1.05)",
               transition: "transform 0.3s ease",
             }}
