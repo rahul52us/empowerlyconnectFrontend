@@ -22,8 +22,6 @@ import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import { useSectionColorContext } from "../../School";
 
-
-
 export default function GallerySection({ images }: any) {
   const {colors} = useSectionColorContext()
   const bg = useColorModeValue("gray.50", "gray.900");

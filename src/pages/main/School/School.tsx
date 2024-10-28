@@ -12,6 +12,7 @@ import { GiLaurelsTrophy } from "react-icons/gi";
 import { cards, imageUrls } from "./Constant/constants";
 import { largeHeaderHeight } from "./layout/common/constant";
 import { useQueryParams } from "../../../config/component/customHooks/useQuery";
+import WebLoader from "../../../config/component/Loader/WebLoader";
 
 // Lazy-loaded components
 const Contact = React.lazy(() => import("./component/ContactUs/Contact"));
@@ -219,7 +220,7 @@ const School: React.FC = () => {
 
   return (
     <SectionColorContext.Provider value={sectionColorSettings}>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<WebLoader />}>
         <Box>
           <Navbar
             scrollToSection={scrollToSection}

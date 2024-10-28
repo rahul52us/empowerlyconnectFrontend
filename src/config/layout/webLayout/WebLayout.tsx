@@ -9,7 +9,6 @@ import {
 import { observer } from "mobx-react-lite";
 import { useColorModeValue, useMediaQuery, useTheme } from "@chakra-ui/react";
 import styled from "styled-components";
-import FooterLayout from "../MainLayout/FooterLayout/FooterLayout";
 import MainLayout from "../MainLayout/MainLayout"; // Import Main Layout
 import EcommerceLayout from "../../../pages/main/Ecommerce/layout/MainLayout"; // Import Ecommerce Layout
 import SchoolLayout from "../../../pages/main/School/layout/MainLayout";
@@ -49,7 +48,6 @@ const WebLayout = observer(() => {
               <Suspense fallback={<Loader height="90vh" />}>
                 <Outlet /> {/* Render default Outlet for other paths */}
               </Suspense>
-              <FooterLayout />
             </ContentContainer>
           </div>
         );
