@@ -16,21 +16,20 @@ const ProductCard = ({ product }: any) => {
 
   return (
     <Box
-      maxW="300px"
+      cursor={"pointer"}
       overflow="hidden"
       rounded={8}
       position="relative"
       borderWidth={1}
-      bg={useColorModeValue("whiteAlpha.800", "blackAlpha.400")}
+      bg={useColorModeValue("whiteAlpha.800", "blackAlpha.500")}
       boxShadow="base"
       // backdropFilter="blur(10px)"
       pb={2}
       onClick={() => {
         navigate(`${web.ecommerce.products}/${product?.product_id}`);
-
       }}
     >
-      <Box h="300px" overflow="hidden" position="relative">
+      <Box h="300px" overflow="hidden" position="relative" p={1}>
         <Image
           src={product?.product_photos[0]}
           alt={product?.product_title}
@@ -47,7 +46,7 @@ const ProductCard = ({ product }: any) => {
             variant={"outline"}
             left="10px"
             borderRadius="full"
-            size={'sm'}
+            size={"sm"}
             px="3"
             py="1"
             colorScheme="pink"
@@ -59,16 +58,16 @@ const ProductCard = ({ product }: any) => {
 
       <Box p="2" px={4}>
         <VStack align="start" mt="2">
-          <Flex justify={"space-between"} w={"100%"}>
+          <Flex justify={"space-between"} w={"100%"} gap={1}>
             <Box>
-              <Text as="h3" fontWeight="bold" noOfLines={1} w={"100%"}>
+              <Text as="h3" fontWeight="500" noOfLines={2} w={"100%"}>
                 {product?.product_title}
               </Text>
               <Text color={"gray"} fontSize={"sm"}>
                 {product?.offer?.store_name}
               </Text>
             </Box>
-            <Text fontSize="lg" fontWeight="bold" color={"blue.700"}>
+            <Text fontSize="lg" fontWeight="500" color={"blue.700"}>
               {product?.offer?.price}
             </Text>
           </Flex>

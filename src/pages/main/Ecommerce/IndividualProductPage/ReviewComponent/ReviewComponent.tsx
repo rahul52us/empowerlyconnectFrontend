@@ -17,7 +17,7 @@ const ProductReviewCard = ({ review }:any) => {
     review;  
 
   return (  
-    <Box borderWidth={1} borderRadius="lg" overflow="hidden" p={3}>  
+    <Box borderWidth={1} borderRadius="sm" overflow="hidden" p={3}>  
       <Flex direction={{ base: "column", md: "row" }} alignItems="center" justify={'space-between'}>  
         <Flex alignItems="center" mr={4} justify={'space-between'}>  
           <Avatar name={reviewer.name} src={reviewer.avatar} mr={4} />  
@@ -56,14 +56,14 @@ const ProductReviewCard = ({ review }:any) => {
           </HStack>  
         </Flex>  
       </Flex>  
-      <Box mt={2}>  
+      <Box mt={1}>  
         <Text fontSize="sm">{reviewText}</Text>  
-        <Flex gap={4} mt={4}>  
+        <Flex gap={4} mt={2}>  
           {photos.map((photo:any, index:any) => (  
             <Image  
               key={index}  
               src={photo}  
-              boxSize="5rem"  
+              boxSize="4.5rem"  
               alt={`Review Image ${index + 1}`}  
               borderRadius="md"  
               objectFit="cover"  

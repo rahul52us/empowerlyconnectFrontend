@@ -10,6 +10,7 @@ import { observer } from "mobx-react-lite";
 import ProductData from "../IndividualProductPage/dummyData.json";
 import ProductList from '../IndividualProductPage/JSON/productsList.json';
 import RatingPerReview from "../IndividualProductPage/ReviewComponent/RatingPerReview";
+import ProductsCategory from "./ProductsCategory/ProductsCategory";
 // import ReviewInsights from "../IndividualProductPage/ReviewInsight/ReviewInsight";
 
 const EcomHomePage = () => {
@@ -49,7 +50,9 @@ const EcomHomePage = () => {
   // console.log("data", data);
 
   return (
-    <Container maxW={"8xl"} mx={"auto"} my={{ base: 2, md: 12 }}>
+    <Container maxW={"8xl"} mx={"auto"} mb={{ base: 2, md: 12 }}>
+
+<ProductsCategory/>
       {/* <Grid templateColumns={"1fr 1fr"}>
         <Box>
 
