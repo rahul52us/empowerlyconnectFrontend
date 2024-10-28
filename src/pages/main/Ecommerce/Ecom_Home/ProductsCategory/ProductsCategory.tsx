@@ -47,7 +47,7 @@ const categoryArray = [
 
 const ProductsCategory = () => {
   return (
-    <Box py={4} mb={2} bg={"teal.700"} rounded={"2xl"}>
+    <Box py={4} mb={2} bg={"teal.600"} rounded={"2xl"}>
       <Flex gap={20} justify={"center"} mx={"auto"}>
         {categoryArray.map((value) => (
           <Flex
@@ -65,7 +65,7 @@ const ProductsCategory = () => {
               boxSize={16}
               p={2}
               rounded={"full"}
-              shadow={"lg"}
+              shadow={"dark-lg"}
               border={"1px solid "}
               borderColor={"gray.200"}
             />
