@@ -14,7 +14,7 @@ import {
   useColorModeValue,
   SimpleGrid,
   Tooltip,
-  Icon
+  Icon,
 } from "@chakra-ui/react";
 import { SketchPicker } from "react-color";
 import { FaPalette } from "react-icons/fa"; // Icon for the color picker
@@ -30,7 +30,32 @@ const colorPalette = [
   "#33FFF8", "#C70039", "#581845", "#FFC300", "#900C3F",
 ];
 
-const ColorPickerComponent: React.FC<ColorPickerProps> = ({ label, color, onChangeComplete }) => {
+const ColorBox: React.FC<{ color: string; onClick: () => void; isSelected: boolean }> = ({
+  color,
+  onClick,
+  isSelected,
+}) => (
+  <Tooltip label={color} placement="top" hasArrow>
+    <Box
+      width="50px"
+      height="50px"
+      bg={color}
+      borderRadius="md"
+      cursor="pointer"
+      onClick={onClick}
+      _hover={{ transform: "scale(1.1)", transition: "0.2s", boxShadow: "lg" }}
+      border={isSelected ? "3px solid teal" : "none"}
+      boxShadow="md"
+      transition="all 0.2s" // Added smooth transition
+    />
+  </Tooltip>
+);
+
+const ColorPickerComponent: React.FC<ColorPickerProps> = ({
+  label,
+  color,
+  onChangeComplete,
+}) => {
   const [isLightOpen, setLightOpen] = useState(false);
   const [isDarkOpen, setDarkOpen] = useState(false);
   const [tempColorLight, setTempColorLight] = useState(color.light);
@@ -133,18 +158,12 @@ const ColorPickerComponent: React.FC<ColorPickerProps> = ({ label, color, onChan
 
                 <SimpleGrid columns={5} spacing={2}>
                   {colorPalette.map((colorHex) => (
-                    <Tooltip key={colorHex} label={colorHex} placement="top" hasArrow>
-                      <Box
-                        width="50px"
-                        height="50px"
-                        bg={colorHex}
-                        borderRadius="md"
-                        cursor="pointer"
-                        onClick={() => setTempColorLight(colorHex)}
-                        _hover={{ transform: "scale(1.1)", transition: "0.2s", boxShadow: "lg" }}
-                        border={tempColorLight === colorHex ? "3px solid teal" : "none"}
-                      />
-                    </Tooltip>
+                    <ColorBox
+                      key={colorHex}
+                      color={colorHex}
+                      onClick={() => setTempColorLight(colorHex)}
+                      isSelected={tempColorLight === colorHex}
+                    />
                   ))}
                 </SimpleGrid>
 
@@ -186,18 +205,12 @@ const ColorPickerComponent: React.FC<ColorPickerProps> = ({ label, color, onChan
 
                 <SimpleGrid columns={5} spacing={2}>
                   {colorPalette.map((colorHex) => (
-                    <Tooltip key={colorHex} label={colorHex} placement="top" hasArrow>
-                      <Box
-                        width="50px"
-                        height="50px"
-                        bg={colorHex}
-                        borderRadius="md"
-                        cursor="pointer"
-                        onClick={() => setTempColorDark(colorHex)}
-                        _hover={{ transform: "scale(1.1)", transition: "0.2s", boxShadow: "lg" }}
-                        border={tempColorDark === colorHex ? "3px solid teal" : "none"}
-                      />
-                    </Tooltip>
+                    <ColorBox
+                      key={colorHex}
+                      color={colorHex}
+                      onClick={() => setTempColorDark(colorHex)}
+                      isSelected={tempColorDark === colorHex}
+                    />
                   ))}
                 </SimpleGrid>
 

@@ -10,7 +10,7 @@ import {
 import { useSectionColorContext } from "../../School";
 
 export default function PrincipalSection() {
-  const {colors} = useSectionColorContext()
+  const {colors} = useSectionColorContext() || {colors : {}}
 
   // Dynamic color modes for light and dark themes
   const textColor = useColorModeValue("gray.700", "gray.300");

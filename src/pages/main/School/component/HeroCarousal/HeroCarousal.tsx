@@ -54,7 +54,7 @@ const HeroCarousal: React.FC<CaptionCarouselProps> = ({
       position={"relative"}
       height={{ base: "auto", md: "600px" }}
       width={"full"}
-      overflow={"hidden"}
+      // overflow={"hidden"}
     >
       {/* Left Arrow */}
       <IconButton

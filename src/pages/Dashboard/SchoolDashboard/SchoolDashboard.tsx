@@ -1,10 +1,11 @@
 import { observer } from "mobx-react-lite"
-import ColorSettingsForm from "./component/ColorSettingsForm"
+import WebsiteBuilder from "./component/WebsiteBuilder"
 
 const SchoolDashboard = observer(() => {
+
   return (
     <div>
-      <ColorSettingsForm />
+      <WebsiteBuilder />
     </div>
   )
 })

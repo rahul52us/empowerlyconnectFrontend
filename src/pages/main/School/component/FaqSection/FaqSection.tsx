@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { InfoIcon, EditIcon, CheckIcon, CloseIcon } from "@chakra-ui/icons";
 import {
   Box,
   Text,
@@ -17,186 +16,371 @@ import {
   IconButton,
   Textarea,
   useColorMode,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  Button,
+  CloseButton,
 } from "@chakra-ui/react";
+import { InfoIcon, EditIcon, AddIcon, DeleteIcon } from "@chakra-ui/icons";
 import { useSectionColorContext } from "../../School";
 
-// Initial FAQ Data
-const initialFaqData = [
-  {
-    question: "How do I apply for admission?",
-    answer: [
-      "Visit our online application portal and create an account.",
-      "Fill out the required personal and academic information.",
-      "Upload necessary documents such as transcripts and identification.",
-      "Submit your application before the deadline.",
-      "For details on the admission timeline and requirements, visit our admissions page.",
-    ],
-  },
-  {
-    question: "What facilities does the school provide?",
-    answer: [
-      "Modern classrooms with interactive technology for enhanced learning.",
-      "A library with a vast selection of books, periodicals, and digital resources.",
-      "State-of-the-art science labs for hands-on experiments.",
-      "Computer labs equipped with high-speed internet and educational software.",
-      "Sports facilities including a gymnasium and swimming pool.",
-    ],
-  },
-  {
-    question: "Are there extracurricular activities available?",
-    answer: [
-      "Yes, we offer a variety of sports teams and clubs.",
-      "Students can participate in music, drama, and art classes.",
-      "We have various interest-based clubs promoting student engagement.",
-      "Regular events and competitions are organized throughout the year.",
-    ],
-  },
-  {
-    question: "What are the school hours?",
-    answer: [
-      "The school operates from 9:00 AM to 3:30 PM, Monday to Friday.",
-      "There is early dismissal at 1:00 PM on Fridays.",
-      "After-school activities may extend the hours for participants.",
-    ],
-  },
-  {
-    question: "How can parents get involved in school activities?",
-    answer: [
-      "Parents can volunteer for school events and activities.",
-      "Joining the Parent-Teacher Association (PTA) is encouraged.",
-      "They can participate in committees and attend school board meetings.",
-      "Parents are invited to contribute ideas and feedback during events.",
-    ],
-  },
-];
+interface Faq {
+  question: string;
+  answer: string[];
+}
 
-const FaqSection = () => {
+const FaqSection = ({ setContent, content, webColor }: any) => {
   const { colorMode } = useColorMode();
-  const { colors, websiteMode } = useSectionColorContext();
+  const { colors, websiteMode } = useSectionColorContext() || {
+    colors: webColor || {},
+    websiteMode: true,
+  };
+
   const buttonHoverColor = useColorModeValue("teal.50", "teal.700");
   const buttonExpandedColor = useColorModeValue("teal.100", "teal.600");
   const textColor = useColorModeValue("gray.800", "gray.200");
   const panelBgColor = useColorModeValue("gray.50", "gray.700");
   const borderColor = useColorModeValue("gray.200", "gray.600");
 
-  const [faqData, setFaqData] = useState(initialFaqData);
-  const [editIndex, setEditIndex] = useState(null);
-  const [editedContent, setEditedContent] = useState<any>({ question: "", answer: [] });
+  // Updated background color for modal
+  const modalBgColor = useColorModeValue("white", "gray.800");
 
-  // State for Title and Subtitle
-  const [title, setTitle] = useState("Frequently Asked Questions");
-  const [subtitle, setSubtitle] = useState("Find answers to common questions about admissions, facilities, and programs.");
-  const [isEditingTitle, setIsEditingTitle] = useState(false);
+  const [faqSection, setFaqSection] = useState(content);
+  const [isFaqEditing, setIsFaqEditing] = useState<boolean>(false);
+  const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  const [editedContent, setEditedContent] = useState<Faq>({
+    question: "",
+    answer: [],
+  });
 
-  const handleEdit = (index : any) => {
-    setEditIndex(index);
-    setEditedContent({ question: faqData[index].question, answer: [...faqData[index].answer] });
+  const handleEditFaq = (index: number) => {
+    setEditingIndex(index);
+    setEditedContent({ ...faqSection.faqData[index] });
+    setIsFaqEditing(true);
   };
 
-  const handleSave = (index : any) => {
-    const updatedFaqData = [...faqData];
-    updatedFaqData[index] = { ...editedContent };
-    setFaqData(updatedFaqData);
-    setEditIndex(null);
+  const handleSaveFaq = () => {
+    if (editingIndex !== null) {
+      setFaqSection((prev: any) => {
+        const updatedData: any = [...prev.faqData];
+        updatedData[editingIndex] = {
+          ...editedContent,
+        };
+        return { ...prev, faqData: updatedData };
+      });
+
+      handleUpdatedFaq(editedContent);
+    }
+
+    setIsFaqEditing(false);
+    setEditingIndex(null);
   };
 
-  const handleCancel = () => {
-    setEditIndex(null);
+  const handleUpdatedFaq = (updatedFaq: Faq) => {
+    console.log("Handling updated FAQ:", updatedFaq);
   };
 
-  const handleQuestionChange = (e : any) => {
+  const handleCancelFaq = () => {
+    setIsFaqEditing(false);
+    setEditingIndex(null);
+  };
+
+  const handleQuestionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEditedContent({ ...editedContent, question: e.target.value });
   };
 
-  const handleAnswerChange = (value : any, idx : number) => {
-    const updatedAnswers : any = [...editedContent.answer];
-    updatedAnswers[idx] = value;
-    setEditedContent({ ...editedContent, answer: updatedAnswers });
+  const handleAnswerChange = (value: string, idx: number) => {
+    setEditedContent((prev) => {
+      const updatedAnswers = [...prev.answer];
+      updatedAnswers[idx] = value;
+      return { ...prev, answer: updatedAnswers };
+    });
   };
 
-  // Functions to handle title and subtitle changes
-  const handleTitleChange = (e : any) => {
-    setTitle(e.target.value);
+  const handleAddAnswer = () => {
+    setEditedContent((prev) => ({
+      ...prev,
+      answer: [...prev.answer, ""],
+    }));
   };
 
-  const handleSubtitleChange = (e : any) => {
-    setSubtitle(e.target.value);
+  const handleDeleteAnswer = (idx: number) => {
+    setEditedContent((prev) => {
+      const updatedAnswers = prev.answer.filter((_, index) => index !== idx);
+      return { ...prev, answer: updatedAnswers };
+    });
   };
 
-  const saveTitleAndSubtitle = () => {
-    setIsEditingTitle(false);
+  const handleAddFaq = () => {
+    setFaqSection((prev: any) => ({
+      ...prev,
+      faqData: [...prev.faqData, { question: "", answer: [""] }],
+    }));
+    setEditingIndex(faqSection.faqData.length);
+    setEditedContent({ question: "", answer: [""] });
+    setIsFaqEditing(true);
+  };
+
+  const handleDeleteFaq = (index: number) => {
+    setFaqSection((prev: any) => ({
+      ...prev,
+      faqData: prev.faqData.filter((_ : any, idx : number) => idx !== index),
+    }));
+  };
+
+  const handleSaveAllFaqs = () => {
+    setContent(faqSection);
   };
 
   return (
-    <Box id="FAQ" p={4} mx="auto" borderRadius="md" m={0} mr={{ base: 2, md: 10 }} ml={{ base: 2, md: 10 }}>
-      {isEditingTitle ? (
-        <Box mb={4}>
-          <Input value={title} onChange={handleTitleChange} mb={2} />
-          <Input value={subtitle} onChange={handleSubtitleChange} mb={2} />
-          <Flex justifyContent="flex-end">
-            <IconButton icon={<CheckIcon />} aria-label="Save Title" onClick={saveTitleAndSubtitle} colorScheme="green" mr={2} />
-            <IconButton icon={<CloseIcon />} aria-label="Cancel" onClick={() => setIsEditingTitle(false)} colorScheme="red" />
-          </Flex>
-        </Box>
-      ) : (
-        <Flex direction="column" alignItems="center" mb={4}>
-          <Heading as="h2" size="xl" textAlign="center" fontWeight="bold" color={colorMode === "light" ? colors?.headingColor?.light : colors?.headingColor?.dark}>
-            {title}
-          </Heading>
-          <Text mt={4} textAlign="center" fontSize="lg" color={colorMode === "light" ? colors?.subHeadingColor?.light : colors?.subHeadingColor?.dark}>
-            {subtitle}
-          </Text>
-        </Flex>
-      )}
-      {websiteMode && (  // Conditionally render the edit button based on websiteMode
+    <Box
+      id="FAQ"
+      p={4}
+      mx="auto"
+      borderRadius="md"
+      m={0}
+      mr={{ base: 2, md: 10 }}
+      ml={{ base: 2, md: 10 }}
+    >
+      <Flex direction="column" alignItems="center" mb={4}>
+        <Heading
+          as="h2"
+          size="xl"
+          textAlign="center"
+          fontWeight="bold"
+          color={
+            colorMode === "light"
+              ? colors?.headingColor?.light
+              : colors?.headingColor?.dark
+          }
+        >
+          {faqSection.title}
+        </Heading>
+        <Text
+          mt={4}
+          textAlign="center"
+          fontSize="lg"
+          color={
+            colorMode === "light"
+              ? colors?.subHeadingColor?.light
+              : colors?.subHeadingColor?.dark
+          }
+        >
+          {faqSection.subtitle}
+        </Text>
+      </Flex>
+      {websiteMode && (
         <Flex justifyContent="end" mb={2}>
-          <IconButton icon={<EditIcon />} aria-label="Edit Title" onClick={() => setIsEditingTitle(true)} colorScheme="teal" mt={2} />
+          <Button
+            color={
+              colorMode === "light"
+                ? webColor.buttonTextColor?.light
+                : webColor.buttonTextColor?.dark
+            }
+            backgroundColor={
+              colorMode === "light"
+                ? webColor.buttonColor?.light
+                : webColor.buttonColor?.dark
+            }
+            _hover={{
+              backgroundColor:
+                colorMode === "light"
+                  ? webColor.buttonHoverColor?.light
+                  : webColor.buttonHoverColor?.dark,
+
+              color:
+                colorMode === "light"
+                  ? webColor.buttonTextHoverColor?.light
+                  : webColor.buttonTextHoverColor?.dark,
+            }}
+            onClick={handleAddFaq}
+            leftIcon={<AddIcon />}
+          >
+            Add FAQ
+          </Button>
+          <Button
+            color={
+              colorMode === "light"
+                ? webColor.buttonTextColor?.light
+                : webColor.buttonTextColor?.dark
+            }
+            backgroundColor={
+              colorMode === "light"
+                ? webColor.buttonColor?.light
+                : webColor.buttonColor?.dark
+            }
+            _hover={{
+              backgroundColor:
+                colorMode === "light"
+                  ? webColor.buttonHoverColor?.light
+                  : webColor.buttonHoverColor?.dark,
+
+              color:
+                colorMode === "light"
+                  ? webColor.buttonTextHoverColor?.light
+                  : webColor.buttonTextHoverColor?.dark,
+            }}
+            onClick={handleSaveAllFaqs}
+            ml={2}
+          >
+            Save All FAQs
+          </Button>
         </Flex>
       )}
       <Accordion allowToggle>
-        {faqData.map((faq, index) => (
-          <AccordionItem key={index} border="1px" borderColor={borderColor} borderRadius="md" mb={3}>
-            <AccordionButton _hover={{ bg: buttonHoverColor, boxShadow: "md" }} p={6} _expanded={{ bg: buttonExpandedColor }} transition="background-color 0.2s, box-shadow 0.2s">
+        {faqSection.faqData.map((faq: any, index: number) => (
+          <AccordionItem
+            key={index}
+            border="1px"
+            borderColor={borderColor}
+            borderRadius="md"
+            mb={3}
+          >
+            <AccordionButton
+              _hover={{ bg: buttonHoverColor, boxShadow: "md" }}
+              p={6}
+              _expanded={{ bg: buttonExpandedColor }}
+              transition="background-color 0.2s, box-shadow 0.2s"
+            >
               <Flex alignItems="center" flex="1" textAlign="left">
-                <InfoIcon boxSize={5} color={textColor} mr={2} display={{ base: "none", md: "inline" }} />
-                <Text fontWeight="bold" fontSize={{ base: "sm", md: "lg" }} color={textColor}>
-                  {editIndex === index ? editedContent.question : faq.question}
+                <InfoIcon boxSize={5} color={textColor} mr={2} />
+                <Text
+                  fontWeight="bold"
+                  fontSize={{ base: "sm", md: "lg" }}
+                  color={textColor}
+                >
+                  {faq.question}
                 </Text>
               </Flex>
               <AccordionIcon color={textColor} />
             </AccordionButton>
-            <AccordionPanel fontSize="md" pb={4} p={4} bg={panelBgColor} borderRadius="md" boxShadow="sm">
-              {editIndex === index ? (
-                <Box>
-                  <Input value={editedContent.question} onChange={handleQuestionChange} mb={3} />
-                  <UnorderedList spacing={2} color={textColor}>
-                    {editedContent.answer.map((point : any, idx : number) => (
-                      <ListItem key={idx} cursor="pointer">
-                        <Textarea value={point} onChange={(e) => handleAnswerChange(e.target.value, idx)} mb={2} />
-                      </ListItem>
-                    ))}
-                  </UnorderedList>
-                  <Flex mt={3} justifyContent="flex-end">
-                    <IconButton icon={<CheckIcon />} aria-label="Save" onClick={() => handleSave(index)} colorScheme="green" mr={2} />
-                    <IconButton icon={<CloseIcon />} aria-label="Cancel" onClick={handleCancel} colorScheme="red" />
-                  </Flex>
-                </Box>
-              ) : (
-                <UnorderedList spacing={2} color={textColor}>
-                  {faq.answer.map((point, idx) => (
-                    <ListItem key={idx}>{point}</ListItem>
-                  ))}
-                </UnorderedList>
-              )}
-              {!editIndex && websiteMode && (
-                <Flex mt={3} justifyContent="flex-end">
-                  <IconButton icon={<EditIcon />} aria-label="Edit FAQ" onClick={() => handleEdit(index)} colorScheme="teal" />
-                </Flex>
-              )}
+            <AccordionPanel
+              fontSize="md"
+              pb={4}
+              p={4}
+              bg={panelBgColor}
+              borderRadius="md"
+              boxShadow="sm"
+            >
+              <UnorderedList spacing={2} color={textColor}>
+                {faq.answer.map((point: any, idx: number) => (
+                  <ListItem key={idx}>{point}</ListItem>
+                ))}
+              </UnorderedList>
+              <Flex mt={3} justifyContent="flex-end">
+                <IconButton
+                  icon={<EditIcon
+                    color={
+                      colorMode === "light"
+                        ? webColor.iconTextColor?.light
+                        : webColor.iconTextColor?.dark
+                    }
+                    _hover={{
+                        color:
+                          colorMode === "light"
+                            ? webColor.iconTextHoverColor?.light
+                            : webColor.iconTextHoverColor?.dark,
+                      }}
+                  />}
+                  color={
+                    colorMode === "light"
+                      ? webColor.buttonTextHoverColor?.light
+                      : webColor.buttonTextHoverColor?.dark
+                  }                _hover={{
+                      backgroundColor:
+                        colorMode === "light"
+                          ? webColor.buttonHoverColor?.light
+                          : webColor.buttonHoverColor?.dark,
+                    }}
+                    backgroundColor={
+                      colorMode === "light"
+                        ? webColor.buttonColor?.light
+                        : webColor.buttonColor?.dark
+                    }
+                  aria-label="Edit FAQ"
+                  onClick={() => handleEditFaq(index)}
+                  colorScheme="teal"
+                />
+                <IconButton
+                  icon={<DeleteIcon />}
+                  aria-label="Delete FAQ"
+                  onClick={() => handleDeleteFaq(index)}
+                  colorScheme="red"
+                  ml={2}
+                />
+              </Flex>
             </AccordionPanel>
           </AccordionItem>
         ))}
       </Accordion>
+
+      <Modal isOpen={isFaqEditing} onClose={handleCancelFaq} size="md">
+        <ModalOverlay />
+        <ModalContent
+          borderRadius="lg"
+          bg={modalBgColor}
+          boxShadow="lg"
+          transition="all 0.3s"
+        >
+          <ModalHeader
+            bg={useColorModeValue("teal.300", "teal.600")}
+            color="white"
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+            borderTopRadius="lg"
+          >
+            {editingIndex !== null ? "Edit FAQ" : "Add FAQ"}
+            <CloseButton onClick={handleCancelFaq} />
+          </ModalHeader>
+          <ModalBody p={6}>
+            <Input
+              placeholder="Question"
+              value={editedContent.question}
+              onChange={handleQuestionChange}
+              mb={4}
+            />
+            {editedContent.answer.map((answer: string, idx: number) => (
+              <Flex key={idx} mb={2} alignItems="center">
+                <Textarea
+                  value={answer}
+                  onChange={(e) => handleAnswerChange(e.target.value, idx)}
+                  placeholder={`Answer ${idx + 1}`}
+                  variant="filled"
+                  mr={2}
+                  flex="1"
+                />
+                <IconButton
+                  icon={<DeleteIcon />}
+                  aria-label="Delete Answer"
+                  onClick={() => handleDeleteAnswer(idx)}
+                  colorScheme="red"
+                />
+              </Flex>
+            ))}
+            <Button
+              leftIcon={<AddIcon />}
+              colorScheme="teal"
+              onClick={handleAddAnswer}
+              mt={2}
+            >
+              Add Answer
+            </Button>
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="blue" onClick={handleSaveFaq}>
+              Save
+            </Button>
+            <Button colorScheme="gray" onClick={handleCancelFaq} ml={3}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Box>
   );
 };

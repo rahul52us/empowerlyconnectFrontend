@@ -7,80 +7,121 @@ import {
   Image,
   VStack,
   useColorModeValue,
-  Center,
   Button,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalCloseButton,
+  ModalFooter,
+  Input,
+  Textarea,
+  Grid,
+  GridItem,
+  IconButton,
+  useColorMode,
 } from "@chakra-ui/react";
-import { useSectionColorContext } from "../../School";
 import { useState } from "react";
+import { DeleteIcon } from "@chakra-ui/icons";
+import { useSectionColorContext } from "../../School";
 
-export default function AboutSection() {
-  const { colors, websiteMode } = useSectionColorContext();
-
-  // Background, text, and shadow color based on the light/dark mode
+export default function AboutSection({
+  content,
+  setContent,
+  webColor,
+  isEditable = false,
+}: any) {
+  const { colorMode } = useColorMode();
+  const { colors } = useSectionColorContext() || { colors: webColor || {} };
   const bg = useColorModeValue("gray.50", "gray.900");
   const textColor = useColorModeValue("gray.700", "gray.300");
-  const shadowColor = useColorModeValue("lg", "dark-lg");
 
-  // Initialize static data in state
-  const [aboutContent, setAboutContent] = useState({
-    title: "About Our School",
-    subtitle: "Dedicated to Excellence in Education",
-    description: [
-      "Welcome to Evergreen Academy, a place where students from all backgrounds thrive through intellectual growth and personal development. Our diverse learning environment encourages curiosity, collaboration, and exploration.",
-      "Our faculty members, passionate and skilled, strive for excellence, fostering a spirit of innovation and curiosity in every student. They are dedicated to guiding each learner to realize their full potential.",
-      "Since 1995, Evergreen Academy has set the benchmark for educational excellence. We are proud of our alumni's significant contributions across various fields, and their impact is felt globally.",
-      "Looking toward the future, we continue to invest in top-tier resources, state-of-the-art facilities, and innovative learning methodologies. We are committed to preparing each student to meet the challenges of an evolving world with confidence and knowledge."
-  ],
-    imageUrl: "https://img.freepik.com/free-photo/anime-school-building-illustration_23-2151150989.jpg",
-  });
+  const [isOpen, setIsOpen] = useState(false);
+  const onOpen = () => setIsOpen(true);
+  const onClose = () => setIsOpen(false);
 
-  // Local edit state to hold temporary edits
-  const [editContent, setEditContent] = useState({ ...aboutContent });
+  const [editContent, setEditContent] = useState({ ...content });
 
-  // Save handler
   const handleSave = () => {
-    setAboutContent(editContent); // Save changes to main content state
-    // Here you can add a call to save `editContent` to the database if needed
-    console.log("Content saved:", editContent);
+    setContent(editContent);
+    onClose();
+  };
+
+  const addDescription = () => {
+    setEditContent((prev: any) => ({
+      ...prev,
+      description: [...prev.description, ""],
+    }));
+  };
+
+  const deleteDescription = (index: number) => {
+    const newDescription = editContent.description.filter(
+      (_: any, idx: number) => idx !== index
+    );
+    setEditContent({ ...editContent, description: newDescription });
   };
 
   return (
-    <Box m={{ base: 2, md: 5 }} py={10} bg={bg}>
+    <Box m={{ base: 2, md: 5 }} py={10} bg={bg} borderRadius="lg">
       <Container maxW="container.xl">
-        <Center>
-          <Box maxW={{ base: "90%", md: "75%", lg: "60%" }}>
+        <Flex justify="space-between" align="center" mb={8}>
+          <Box textAlign="center" flex="1">
             <Heading
               as="h2"
-              size="2xl"
+              size="xl"
               textAlign="center"
-              mb={4}
-              contentEditable={websiteMode}
-              suppressContentEditableWarning={true}
               fontWeight="bold"
-              color={useColorModeValue(
-                colors?.headingColor?.light,
-                colors?.headingColor?.dark
-              )}
-              onInput={(e : any) => setEditContent({ ...editContent, title: e.target.innerText })}
+              mb={3}
+              color={
+                colorMode === "light"
+                  ? colors?.headingColor?.light
+                  : colors?.headingColor?.dark
+              }
             >
-              {editContent.title}
+              {content.title}
             </Heading>
             <Text
+              color={
+                colorMode === "light"
+                  ? colors?.subHeadingColor?.light
+                  : colors?.subHeadingColor?.dark
+              }
               fontSize={{ base: "lg", md: "xl" }}
-              textAlign="center"
               mb={12}
-              contentEditable={websiteMode}
-              suppressContentEditableWarning={true}
-              color={useColorModeValue(
-                colors?.subHeadingColor?.light,
-                colors?.subHeadingColor?.dark
-              )}
-              onInput={(e : any) => setEditContent({ ...editContent, subtitle: e.target.innerText })}
             >
-              {editContent.subtitle}
+              {content.subtitle}
             </Text>
           </Box>
-        </Center>
+          {isEditable && (
+            <Button
+              color={
+                colorMode === "light"
+                  ? webColor.buttonTextColor?.light
+                  : webColor.buttonTextColor?.dark
+              }
+              backgroundColor={
+                colorMode === "light"
+                  ? webColor.buttonColor?.light
+                  : webColor.buttonColor?.dark
+              }
+              _hover={{
+                backgroundColor:
+                  colorMode === "light"
+                    ? webColor.buttonHoverColor?.light
+                    : webColor.buttonHoverColor?.dark,
+
+                color:
+                  colorMode === "light"
+                    ? webColor.buttonTextHoverColor?.light
+                    : webColor.buttonTextHoverColor?.dark,
+              }}
+              onClick={onOpen}
+            >
+              Edit Content
+            </Button>
+          )}
+        </Flex>
 
         <Flex
           direction={{ base: "column", md: "row" }}
@@ -88,57 +129,151 @@ export default function AboutSection() {
           align="center"
           justify="space-between"
         >
-          <Box flex="1" data-aos="fade-right">
+          <Box flex="1">
             <Image
-              src={editContent.imageUrl}
+              src={content.imageUrl}
               alt="School campus"
               w="100%"
               maxW={{ base: "100%", md: "520px" }}
               rounded="xl"
               h={{ base: "100%", md: "380px" }}
               objectFit="cover"
-              boxShadow={shadowColor}
-              transition="transform 0.3s"
-              _hover={{ transform: "scale(1.05)" }}
+              boxShadow="lg"
             />
           </Box>
 
-          <Box flex="1" data-aos="fade-left">
+          <Box flex="1">
             <VStack
               color={textColor}
               fontSize={{ base: "md", md: "lg" }}
               spacing={6}
               textAlign="left"
             >
-              {editContent.description.map((paragraph, index) => (
-                <Text
-                  key={index}
-                  contentEditable={websiteMode}
-                  suppressContentEditableWarning={true}
-                  onInput={(e : any) => {
-                    const newDescription = [...editContent.description];
-                    newDescription[index] = e.target.innerText;
-                    setEditContent((prevContent) => ({
-                      ...prevContent,
-                      description: newDescription,
-                    }));
-                  }}
-                >
-                  {paragraph}
-                </Text>
+              {content.description.map((paragraph: any, index: number) => (
+                <Text key={index}>{paragraph}</Text>
               ))}
             </VStack>
           </Box>
         </Flex>
 
-        {/* Save Button */}
-        {websiteMode && (
-          <Center mt={8} justifyContent="end">
-            <Button colorScheme="blue" onClick={handleSave}>
-              Save Changes
-            </Button>
-          </Center>
-        )}
+        <Modal isOpen={isOpen} onClose={onClose} size="2xl" isCentered>
+          <ModalOverlay />
+          <ModalContent borderRadius="lg">
+            <ModalHeader fontSize="lg" fontWeight="bold" color={textColor}>
+              Edit About Section
+            </ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <VStack spacing={4}>
+                <Input
+                  placeholder="Title"
+                  value={editContent.title}
+                  onChange={(e) =>
+                    setEditContent({ ...editContent, title: e.target.value })
+                  }
+                  borderColor="blue.300"
+                  _focus={{ borderColor: "blue.500" }}
+                />
+                <Input
+                  placeholder="Subtitle"
+                  value={editContent.subtitle}
+                  onChange={(e) =>
+                    setEditContent({ ...editContent, subtitle: e.target.value })
+                  }
+                  borderColor="blue.300"
+                  _focus={{ borderColor: "blue.500" }}
+                />
+
+                <Grid templateColumns="repeat(1, 1fr)" gap={4} width="100%">
+                  <GridItem>
+                    <Text fontWeight="bold">Description Points</Text>
+                  </GridItem>
+                  {editContent.description.map(
+                    (paragraph: any, index: number) => (
+                      <GridItem key={index}>
+                        <Flex>
+                          <Textarea
+                            placeholder={`Description ${index + 1}`}
+                            value={paragraph}
+                            onChange={(e) => {
+                              const newDescription = [
+                                ...editContent.description,
+                              ];
+                              newDescription[index] = e.target.value;
+                              setEditContent({
+                                ...editContent,
+                                description: newDescription,
+                              });
+                            }}
+                            borderColor="blue.300"
+                            _focus={{ borderColor: "blue.500" }}
+                            mr={2}
+                          />
+                          <IconButton
+                            aria-label="Delete Description"
+                            icon={<DeleteIcon />}
+                            onClick={() => deleteDescription(index)}
+                            colorScheme="red"
+                            variant="outline"
+                            size="sm"
+                          />
+                        </Flex>
+                      </GridItem>
+                    )
+                  )}
+                </Grid>
+
+                <Button
+                  colorScheme="green"
+                  onClick={addDescription}
+                  width="full"
+                >
+                  Add Description Point
+                </Button>
+
+                <Input
+                  placeholder="Image URL"
+                  value={editContent.imageUrl}
+                  onChange={(e) =>
+                    setEditContent({ ...editContent, imageUrl: e.target.value })
+                  }
+                  borderColor="blue.300"
+                  _focus={{ borderColor: "blue.500" }}
+                />
+              </VStack>
+            </ModalBody>
+
+            <ModalFooter>
+              <Button
+                color={
+                  colorMode === "light"
+                    ? webColor.buttonTextColor?.light
+                    : webColor.buttonTextColor?.dark
+                }
+                backgroundColor={
+                  colorMode === "light"
+                    ? webColor.buttonColor?.light
+                    : webColor.buttonColor?.dark
+                }
+                _hover={{
+                  backgroundColor:
+                    colorMode === "light"
+                      ? webColor.buttonHoverColor?.light
+                      : webColor.buttonHoverColor?.dark,
+
+                  color:
+                    colorMode === "light"
+                      ? webColor.buttonTextHoverColor?.light
+                      : webColor.buttonTextHoverColor?.dark,
+                }}
+                onClick={handleSave}
+                width="full"
+              >
+                Save Changes
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
       </Container>
     </Box>
   );
