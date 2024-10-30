@@ -44,17 +44,17 @@ const HeroCarousal: React.FC<CaptionCarouselProps> = ({
 }) => {
   const [slider, setSlider] = React.useState<Slider | null>(null);
   const top = useBreakpointValue({ base: "90%", md: "50%" });
-  const side = useBreakpointValue({ base: "30%", md: "40px" });
+  const side = useBreakpointValue({ base: "10px", md: "40px" });
 
   // Check if the screen is mobile
   const isMobile = useBreakpointValue({ base: true, md: false });
 
   return (
     <Box
-      position={"relative"}
+      position="relative"
+      width="100%"
       height={{ base: "auto", md: "600px" }}
-      width={"full"}
-      // overflow={"hidden"}
+      overflow="hidden"
     >
       {/* Left Arrow */}
       <IconButton
@@ -64,7 +64,7 @@ const HeroCarousal: React.FC<CaptionCarouselProps> = ({
         position="absolute"
         left={side}
         top={top}
-        transform={"translate(0%, -50%)"}
+        transform="translate(0%, -50%)"
         zIndex={2}
         onClick={() => slider?.slickPrev()}
       >
@@ -79,7 +79,7 @@ const HeroCarousal: React.FC<CaptionCarouselProps> = ({
         position="absolute"
         right={side}
         top={top}
-        transform={"translate(0%, -50%)"}
+        transform="translate(0%, -50%)"
         zIndex={2}
         onClick={() => slider?.slickNext()}
       >
@@ -99,18 +99,18 @@ const HeroCarousal: React.FC<CaptionCarouselProps> = ({
             backgroundRepeat="no-repeat"
             backgroundSize="cover"
             backgroundImage={`url(${card.image})`}
-            height={{ base: "350px", md: "600px" }} // Adjust height for mobile
+            height={{ base: "350px", md: "600px" }}
           >
             <Container size="container.lg" height="100%" position="relative">
               <Stack
                 spacing={{ base: 2, md: 4 }}
-                w={"full"}
-                maxW={"lg"}
-                position={isMobile ? "relative" : "absolute"} // Change position based on screen size
-                bottom={isMobile ? "unset" : "6%"}
+                w="full"
+                maxW="lg"
+                position={isMobile ? "relative" : "absolute"}
+                bottom={isMobile ? "unset" : "10%"}
                 top={isMobile ? "70%" : "unset"}
-                transform={isMobile ? "none" : "translateX(80%)"}
-                bg="rgba(0, 0, 0, 0.6)" // Optional: Add a background for better text contrast
+                transform={isMobile ? "none" : "translateX(10%)"}
+                bg="rgba(0, 0, 0, 0.6)"
                 p={{ base: 2, md: 6 }}
                 rounded="lg"
                 textAlign="center"
@@ -119,7 +119,7 @@ const HeroCarousal: React.FC<CaptionCarouselProps> = ({
                 <Heading
                   fontSize={{ base: "xl", md: "3xl" }}
                   color="white"
-                  textAlign={"center"}
+                  textAlign="center"
                 >
                   {card.title}
                 </Heading>

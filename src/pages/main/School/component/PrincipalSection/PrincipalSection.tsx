@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Box,
   Container,
@@ -6,46 +7,95 @@ import {
   Flex,
   Image,
   useColorModeValue,
+  Button,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Input,
+  Textarea,
+  useDisclosure,
+  IconButton,
+  VStack,
+  HStack,
+  FormControl,
+  FormLabel,
+  Divider,
 } from "@chakra-ui/react";
+import { AddIcon, DeleteIcon } from "@chakra-ui/icons";
 import { useSectionColorContext } from "../../School";
 
-export default function PrincipalSection() {
-  const {colors} = useSectionColorContext() || {colors : {}}
+export default function PrincipalSection({ content, setContent, webColor }: any) {
+  const { websiteMode } = useSectionColorContext() || {
+    colors: webColor || {},
+    websiteMode: true,
+  };
 
-  // Dynamic color modes for light and dark themes
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const textColor = useColorModeValue("gray.700", "gray.300");
   const bg = useColorModeValue("gray.50", "gray.900");
+  const [editContent, setEditContent] = useState<any>(content);
 
-  console.log('the colors are', colors)
+  const handleInputChange = (field: string, value: string) => {
+    setEditContent((prev: any) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  const handleBioChange = (index: number, value: string) => {
+    const newBio = [...editContent.bio];
+    newBio[index] = value;
+    setEditContent((prev: any) => ({ ...prev, bio: newBio }));
+  };
+
+  const addBioParagraph = () => {
+    setEditContent((prev: any) => ({
+      ...prev,
+      bio: [...prev.bio, ""],
+    }));
+  };
+
+  const removeBioParagraph = (index: number) => {
+    const newBio = [...editContent.bio];
+    newBio.splice(index, 1);
+    setEditContent((prev: any) => ({ ...prev, bio: newBio }));
+  };
+
+  const handleSave = () => {
+    setContent(editContent);
+    onClose();
+  };
 
   return (
-    <Box m={{ base: 2, md: 5 }} py={10} bg={bg}>
+    <Box py={10} bg={bg}>
       <Container maxW="container.xl">
         <Heading
           as="h2"
           size="xl"
           textAlign="center"
-          mb={4} // Adjusted margin for subheading
+          mb={4}
           color={useColorModeValue(
-            colors?.headingColor?.light,
-            colors?.headingColor?.dark
+            webColor?.headingColor?.light,
+            webColor?.headingColor?.dark
           )}
           fontWeight="bold"
         >
-          A Message From Our Principal
+          {content.title}
         </Heading>
 
         <Text
           textAlign="center"
           fontSize="lg"
-          mb={8} // Space below subheading
+          mb={8}
           color={useColorModeValue(
-            colors?.subHeadingColor?.light,
-            colors?.subHeadingColor?.dark
+            webColor?.subHeadingColor?.light,
+            webColor?.subHeadingColor?.dark
           )}
         >
-          Guiding the way to excellence with experience, passion, and a
-          commitment to shaping the future.
+          {content.subheading}
         </Text>
 
         <Flex
@@ -53,13 +103,17 @@ export default function PrincipalSection() {
           gap={10}
           align="center"
           justify="center"
+          wrap="wrap"
         >
-          <Box flex="1" textAlign="center" data-aos="fade-up">
+          <Box
+            flex="1"
+            textAlign="center"
+            data-aos="fade-up"
+          >
             <Image
-              src="https://img.freepik.com/free-photo/experienced-businessman-standing-office-room-indian-content-office-employee-eyeglasses-smiling-posing-with-folded-hands-business-management-corporation-concept_74855-11681.jpg?t=st=1728491985~exp=1728495585~hmac=8fe791a61b6d34227a8bdcbd839d354c7246e23959e2c847ff9a0addd188e3a4&w=1060"
-              alt="Principal"
-              width={{ base: "250px", md: "300px" }}
-              height={{ base: "250px", md: "300px" }}
+              src={content.imageUrl}
+              alt={content.name}
+              boxSize={{ base: "200px", md: "300px" }}
               objectFit="cover"
               rounded="full"
               boxShadow="2xl"
@@ -75,28 +129,124 @@ export default function PrincipalSection() {
               mb={4}
               fontWeight="bold"
               color={useColorModeValue(
-                colors?.headingColor?.light,
-                colors?.headingColor?.dark
+                webColor?.headingColor?.light,
+                webColor?.headingColor?.dark
               )}
             >
-              Dr. Jane Smith
+              {content.name}
             </Heading>
 
-            <Text mb={4} color={textColor} fontSize="lg" lineHeight="tall">
-              Dr. Jane Smith has been the principal of Evergreen Academy for
-              over a decade. With her visionary leadership and commitment to
-              educational excellence, she has transformed our school into one of
-              the top-performing institutions in the region.
-            </Text>
-
-            <Text color={textColor} fontSize="lg" lineHeight="tall">
-              Dr. Smith holds a Ph.D. in Education from Harvard University and
-              has over 25 years of experience in the field of education. Her
-              innovative approaches to teaching and learning have inspired both
-              students and faculty to achieve their highest potential.
-            </Text>
+            {content.bio.map((paragraph: string, index: number) => (
+              <Text
+                key={index}
+                mb={4}
+                color={textColor}
+                fontSize={{ base: "md", md: "lg" }}
+                lineHeight="tall"
+              >
+                {paragraph}
+              </Text>
+            ))}
           </Box>
         </Flex>
+
+        {websiteMode && <Button mt={8} onClick={onOpen} colorScheme="blue">
+          Edit Principal’s Message
+        </Button>}
+
+        <Modal isOpen={isOpen} onClose={onClose} size="2xl" isCentered>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader fontSize="2xl" fontWeight="bold" pb={1}>
+              Edit Principal’s Message
+            </ModalHeader>
+            <Divider mb={4} />
+            <ModalBody>
+              <VStack spacing={4} align="stretch">
+                <FormControl>
+                  <FormLabel fontWeight="bold">Title</FormLabel>
+                  <Input
+                    value={editContent.title}
+                    onChange={(e) => handleInputChange("title", e.target.value)}
+                    placeholder="Enter title"
+                  />
+                </FormControl>
+
+                <FormControl>
+                  <FormLabel fontWeight="bold">Subheading</FormLabel>
+                  <Textarea
+                    value={editContent.subheading}
+                    onChange={(e) => handleInputChange("subheading", e.target.value)}
+                    placeholder="Enter subheading"
+                  />
+                </FormControl>
+
+                <FormControl>
+                  <FormLabel fontWeight="bold">Principal's Name</FormLabel>
+                  <Input
+                    value={editContent.name}
+                    onChange={(e) => handleInputChange("name", e.target.value)}
+                    placeholder="Enter principal's name"
+                  />
+                </FormControl>
+
+                <FormControl>
+                  <FormLabel fontWeight="bold">Image URL</FormLabel>
+                  <Input
+                    value={editContent.imageUrl}
+                    onChange={(e) => handleInputChange("imageUrl", e.target.value)}
+                    placeholder="Enter image URL"
+                  />
+                </FormControl>
+
+                <FormControl>
+                  <FormLabel fontWeight="bold">Bio</FormLabel>
+                  <VStack
+                    align="stretch"
+                    spacing={3}
+                    overflowY="auto"
+                    maxHeight="200px"
+                    p={2}
+                    border="1px solid"
+                    borderColor="gray.200"
+                    rounded="md"
+                  >
+                    {editContent.bio.map((paragraph: string, index: number) => (
+                      <HStack key={index} align="stretch">
+                        <Textarea
+                          value={paragraph}
+                          onChange={(e) => handleBioChange(index, e.target.value)}
+                          placeholder={`Paragraph ${index + 1}`}
+                          resize="none"
+                        />
+                        <IconButton
+                          icon={<DeleteIcon />}
+                          aria-label="Delete paragraph"
+                          colorScheme="red"
+                          onClick={() => removeBioParagraph(index)}
+                        />
+                      </HStack>
+                    ))}
+                    <Button
+                      leftIcon={<AddIcon />}
+                      colorScheme="green"
+                      onClick={addBioParagraph}
+                      variant="outline"
+                    >
+                      Add Paragraph
+                    </Button>
+                  </VStack>
+                </FormControl>
+              </VStack>
+            </ModalBody>
+            <ModalFooter>
+              <Button colorScheme="blue" mr={3} onClick={handleSave}>
+                Save
+              </Button>
+              <Button onClick={onClose}>Cancel</Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
       </Container>
     </Box>
   );
