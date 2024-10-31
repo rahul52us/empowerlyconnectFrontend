@@ -137,6 +137,7 @@ export const privateMain = {
 };
 
 export const web = {
+  index : "/:title",
   school : '/school',
   schoolDashboard : {
     index : `${dashboardName}/school`

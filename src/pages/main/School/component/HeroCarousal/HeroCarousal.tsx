@@ -22,7 +22,7 @@ interface CarouselCard {
 
 // Props for the CaptionCarousel
 interface CaptionCarouselProps {
-  cards: CarouselCard[];
+  content: CarouselCard[];
   sliderSettings?: object; // Optional slider settings
 }
 
@@ -39,8 +39,8 @@ const defaultSettings = {
 };
 
 const HeroCarousal: React.FC<CaptionCarouselProps> = ({
-  cards,
-  sliderSettings,
+  content,
+  sliderSettings = {},
 }) => {
   const [slider, setSlider] = React.useState<Slider | null>(null);
   const top = useBreakpointValue({ base: "90%", md: "50%" });
@@ -91,7 +91,7 @@ const HeroCarousal: React.FC<CaptionCarouselProps> = ({
         {...{ ...defaultSettings, ...sliderSettings }}
         ref={(slider) => setSlider(slider)}
       >
-        {cards.map((card, index) => (
+        {content.map((card, index) => (
           <Box
             key={index}
             position="relative"

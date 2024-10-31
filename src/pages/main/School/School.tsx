@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Center, Image } from "@chakra-ui/react";
 import React, {
   useRef,
   useState,
@@ -9,10 +9,13 @@ import React, {
 } from "react";
 import { FaChalkboardTeacher, FaUserGraduate } from "react-icons/fa";
 import { GiLaurelsTrophy } from "react-icons/gi";
-import { cards, imageUrls } from "./Constant/constants";
+import { imageUrls } from "./Constant/constants";
 import { largeHeaderHeight } from "./layout/common/constant";
 import { useQueryParams } from "../../../config/component/customHooks/useQuery";
 import WebLoader from "../../../config/component/Loader/WebLoader";
+import { observer } from "mobx-react-lite";
+import store from "../../../store/store";
+import { useParams } from "react-router-dom";
 
 // Lazy-loaded components
 const Contact = React.lazy(() => import("./component/ContactUs/Contact"));
@@ -79,7 +82,7 @@ const metrics: Metric[] = [
 ];
 
 const initialSectionsConfig: SectionConfig[] = [
-  { id: "home", component: HeroCarousal, props: { cards } },
+  { id: "hero", component: HeroCarousal, props: {} },
   { id: "about", component: AboutSection, props: {} },
   { id: "principal", component: PrincipalSection, props: {} },
   { id: "curriculum", component: CurriculumSection, props: {} },
@@ -94,19 +97,28 @@ const initialSectionsConfig: SectionConfig[] = [
   { id: "map", component: MapSection, props: {} },
 ];
 
-const School: React.FC = () => {
-  const {getQueryParam} = useQueryParams()
+const School = observer(() => {
+  const [fetchData, setFetchData] = useState({
+    loading: true,
+    data: {},
+  });
+
+  const { title } = useParams();
+  const {
+    WebTemplateStore: { getWebTemplate },
+    auth: { openNotification },
+  } = store;
+  const { getQueryParam } = useQueryParams();
 
   const [sectionColorSettings, setSectionColorSettings] = useState<any>({
+    sectionLayout: [],
     sections: initialSectionsConfig,
     colors: {
       headingColor: { light: "teal.500", dark: "teal.300" },
       subHeadingColor: { light: "gray.600", dark: "gray.400" },
     },
-    websiteMode : null
+    websiteMode: null,
   });
-
-  const [activeSection, setActiveSection] = useState<string>("home");
 
   const sectionRefs = useRef<Record<string, React.RefObject<HTMLDivElement>>>(
     initialSectionsConfig.reduce((acc, section) => {
@@ -114,6 +126,47 @@ const School: React.FC = () => {
       return acc;
     }, {} as Record<string, React.RefObject<HTMLDivElement>>)
   );
+
+  useEffect(() => {
+    setFetchData({ loading: true, data: {} });
+    getWebTemplate(title)
+      .then((dt: any) => {
+        const orderedSections = dt.data?.sectionsLayout
+          .map((preferenceId: any) => {
+            const section = initialSectionsConfig.find(
+              (section) => section.id === preferenceId.page
+            );
+            if (section) {
+              return {
+                ...section,
+                props: dt?.data?.webInfo?.sections[section.id],
+              };
+            }
+            return undefined;
+          })
+          .filter(
+            (section: any): section is SectionConfig => section !== undefined
+          );
+
+        setSectionColorSettings((prev: any) => ({
+          ...prev,
+          sections: dt?.data?.webInfo?.sections,
+          sectionLayout: orderedSections,
+          colors: dt.data?.webInfo?.colorSetting,
+          websiteMode: getQueryParam("mode") ? true : false,
+        }));
+        setFetchData({ loading: false, data: dt?.data });
+      })
+      .catch(() => {
+        setFetchData({ loading: false, data: {} });
+        // openNotification({
+        //   title: "GET TEMPLATE SUCCESSFULLY",
+        //   message: err.message,
+        //   type: "error",
+        // });
+      })
+      .finally(() => {});
+  }, [openNotification]);
 
   const scrollToSection = (sectionId: string) => {
     const ref = sectionRefs.current[sectionId];
@@ -125,118 +178,33 @@ const School: React.FC = () => {
     }
   };
 
-  const fetchUserPreferences = async (): Promise<string[]> => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve([
-          "home",
-          "about",
-          "principal",
-          "statistics",
-          "topper",
-          "curriculum",
-          "teachers",
-          "gallery",
-          "features",
-          "testimonial",
-          "faq",
-          "contact",
-          "map",
-        ]);
-      }, 1000);
-    });
-  };
+  const activeSectionIds = sectionColorSettings.sectionLayout.map((section : any) => section.id);
 
-  const fetchColorSettings = async () => {
-    try {
-      // Simulate API call here
-      const colorSettings = {
-        headingColor: { light: "blue.500", dark: "blue.300" },
-        subHeadingColor: { light: "gray.700", dark: "gray.500" },
-        iconColor: { light: "blue.500", dark: "blue.300" },
-        buttonColor: { light: "blue.500", dark: "blue.300" },
-        buttonTextColor: { light: "white", dark: "white" },
-        curriculumTitleColor: "purple.500",
-        curriculumSectionBgColor: "purple.50",
-        curriculumBorderColor: "purple.200",
-        curriculumTextColor: "purple.700",
-        statisticsBackgroundImage:
-          "https://thumbs.dreamstime.com/b/multi-ethnic-group-people-study-concepts-42042945.jpg",
-      };
-      setSectionColorSettings((prev: any) => ({
-        ...prev,
-        colors: colorSettings,
-        websiteMode:getQueryParam('mode') ? true : false
-      }));
-    } catch (error) {
-      console.error("Failed to fetch color settings:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchColorSettings();
-  }, []);
-
-  useEffect(() => {
-    const getUserPreferences = async () => {
-      const preferences = await fetchUserPreferences();
-      const orderedSections = preferences
-        .map((preferenceId) =>
-          initialSectionsConfig.find((section) => section.id === preferenceId)
-        )
-        .filter((section): section is SectionConfig => section !== undefined);
-
-      setSectionColorSettings((prev: any) => ({
-        ...prev,
-        sections: orderedSections,
-      }));
-    };
-
-    getUserPreferences();
-  }, []);
-
-  useEffect(() => {
-    const handleIntersection = (entries: IntersectionObserverEntry[]) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          setActiveSection(entry.target.id);
-        }
-      });
-    };
-
-    const observer = new IntersectionObserver(handleIntersection, {
-      rootMargin: "-50% 0px -50% 0px",
-    });
-
-    sectionColorSettings.sections.forEach(({ id }: any) => {
-      const ref = sectionRefs.current[id].current;
-      if (ref) observer.observe(ref);
-    });
-
-    return () => observer.disconnect();
-  }, [sectionColorSettings.sections]);
-
-  const activeSectionIds = initialSectionsConfig.map((section) => section.id);
-
-  return (
+  return (fetchData.loading === false &&
+    Object.keys(fetchData.data || {}).length === 0) ? (
+    <Center mt={'25vh'}>
+    <Image src="/img/emptyData.jpg" alt="" w={350} h={350} borderRadius={50}/>
+    </Center>
+  ) : fetchData.loading === false ? (
     <SectionColorContext.Provider value={sectionColorSettings}>
       <Suspense fallback={<WebLoader />}>
         <Box>
           <Navbar
             scrollToSection={scrollToSection}
-            activeSection={activeSection}
-            linksConfig={activeSectionIds.map((item) => ({
+            linksConfig={activeSectionIds.map((item : any) => ({
               id: item,
               name: item.charAt(0).toUpperCase() + item.slice(1),
             }))}
             colors={sectionColorSettings.colors}
           />
           <Box marginTop={largeHeaderHeight}>
-            {sectionColorSettings.sections
+            {sectionColorSettings.sectionLayout
               .filter(({ id }: any) => activeSectionIds.includes(id))
               .map(({ id, component: Component, props }: any) => {
                 let sectionProps = {
                   ...props,
+                  content: props,
+                  webColor: sectionColorSettings.colors,
                   colors: sectionColorSettings.colors,
                 };
 
@@ -275,8 +243,10 @@ const School: React.FC = () => {
         </Box>
       </Suspense>
     </SectionColorContext.Provider>
+  ) : (
+    <WebLoader />
   );
-};
+});
 
 // Custom hooks to use the context
 export const useSectionColorContext = () => useContext(SectionColorContext);

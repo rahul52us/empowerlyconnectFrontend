@@ -24,24 +24,30 @@ import PrincipalSection from "../../../main/School/component/PrincipalSection/Pr
 import ColorSettingsForm from "./ColorSettingsForm";
 import HeroCarousal from "../../../main/School/component/HeroCarousal/HeroCarousal";
 import MetadataSettingsForm from "./metaDataSettingsForm";
+import { observer } from "mobx-react-lite";
+import store from "../../../../store/store";
+import { getStatusType } from "../../../../config/constant/statusCode";
 
-const WebsiteBuilder: React.FC = () => {
+const WebsiteBuilder = observer(() => {
+  const {WebTemplateStore : {createWebTemplate}, auth : {openNotification}} = store;
+
   const [webContent, setWebContent] = useState({
     metaData: {
       name: "Evergreen Academy",
       title: "Welcome to Evergreen Academy",
       description: "A place where students thrive through intellectual growth.",
       keywords: "education, school, academy, learning",
-      author: "John Doe",                         // New field for Author
+      author: "John Doe", // New field for Author
       viewport: "width=device-width, initial-scale=1", // New field for Viewport
-      language: "en-US",                          // New field for Language
-      robots: "index, follow",                    // New field for Robots
-      themeColor: "#ffffff",                      // New field for Theme Color
-      ogTitle: "Evergreen Academy",               // New field for Open Graph Title
-      ogDescription: "A place where students thrive through intellectual growth.", // New field for Open Graph Description
+      language: "en-US", // New field for Language
+      robots: "index, follow", // New field for Robots
+      themeColor: "#ffffff", // New field for Theme Color
+      ogTitle: "Evergreen Academy", // New field for Open Graph Title
+      ogDescription:
+        "A place where students thrive through intellectual growth.", // New field for Open Graph Description
       ogImageUrl: "https://example.com/image.jpg", // New field for Open Graph Image URL
       faviconUrl: "https://example.com/favicon.ico", // New field for Favicon URL
-      canonicalUrl: "https://example.com/page"   // New field for Canonical URL
+      canonicalUrl: "https://example.com/page", // New field for Canonical URL
     },
 
     hero: [
@@ -77,7 +83,7 @@ const WebsiteBuilder: React.FC = () => {
       imageUrl:
         "https://img.freepik.com/free-photo/anime-school-building-illustration_23-2151150989.jpg",
     },
-    principal : {
+    principal: {
       name: "Dr. Jane Smith",
       imageUrl:
         "https://img.freepik.com/free-photo/experienced-businessman-standing-office-room-indian-content-office-employee-eyeglasses-smiling-posing-with-folded-hands-business-management-corporation-concept_74855-11681.jpg?t=st=1728491985~exp=1728495585~hmac=8fe791a61b6d34227a8bdcbd839d354c7246e23959e2c847ff9a0addd188e3a4&w=1060",
@@ -132,8 +138,14 @@ const WebsiteBuilder: React.FC = () => {
   });
 
   const { colorMode, toggleColorMode } = useColorMode();
-  const [sections, setSections] = useState<string[]>(["MetaData", "Home", "About", "Principal", "Faq"]);
-  const [currentSection, setCurrentSection] = useState<string>(sections[0]);
+  const [sections, setSections] = useState<any[]>([
+    { label: "MetaData", page: "metaData", key : "metaData1" },
+    { label: "Hero", page: "hero", key : "hero1" },
+    { label: "About", page: "about", key : "about1" },
+    { label: "Principal", page: "principal",key : "principal1" },
+    { label: "Faq", page: "faq", key : "faq1" },
+  ]);
+  const [currentSection, setCurrentSection] = useState<any>(sections[0]);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const handleKeyPress = (section: string, e: React.KeyboardEvent) => {
@@ -141,6 +153,26 @@ const WebsiteBuilder: React.FC = () => {
       setCurrentSection(section);
     }
   };
+
+  const saveWebTemplate = () => {
+    createWebTemplate({sectionsLayout:sections, webInfo : webContent, webType : 'school', colorSetting : colorSetting})
+    .then((data) => {
+      openNotification({
+        title: "Successfully Created",
+        message: `${data.message}`,
+        type: "success",
+      });
+    })
+    .catch((err) => {
+      openNotification({
+        title: "Successfully Created",
+        message: err?.data?.message,
+        type: getStatusType(err.status),
+      });
+    })
+    .finally(() => {
+    })}
+
 
   return (
     <HStack align="flex-start" p={1} spacing={2} h="87vh">
@@ -162,7 +194,13 @@ const WebsiteBuilder: React.FC = () => {
         <HStack spacing={2} mb={4} wrap="wrap">
           <IconButton
             onClick={() =>
-              setSections([...sections, `Section ${sections.length + 1}`])
+              setSections([
+                ...sections,
+                {
+                  label: `Section ${sections.length + 1}`,
+                  page: `Page${sections.length + 1}`,
+                },
+              ])
             }
             icon={<FaPlus />}
             colorScheme="teal"
@@ -185,20 +223,25 @@ const WebsiteBuilder: React.FC = () => {
           />
         </HStack>
         <Box overflowY="auto" flex="1" overflowX="hidden">
-          {sections.map((section) => (
+          {sections.map((section: any) => (
             <Box
-              key={section}
+              key={section.page}
               w="full"
               p={3}
               borderRadius="md"
-              bg={currentSection === section ? "teal.500" : "gray.200"}
-              color={currentSection === section ? "white" : "black"}
+              bg={
+                currentSection.page === section?.page ? "teal.500" : "gray.200"
+              }
+              color={currentSection?.page === section?.page ? "white" : "black"}
               fontWeight="bold"
               cursor="pointer"
               mt={2}
               transition="background-color 0.2s, transform 0.2s"
               _hover={{
-                bg: currentSection !== section ? "gray.300" : "teal.600",
+                bg:
+                  currentSection.page !== section.page
+                    ? "gray.300"
+                    : "teal.600",
                 transform: "scale(1.02)",
               }}
               onClick={() => setCurrentSection(section)}
@@ -206,10 +249,13 @@ const WebsiteBuilder: React.FC = () => {
               tabIndex={0} // Allow keyboard navigation
               onKeyPress={(e) => handleKeyPress(section, e)} // Handle Enter key
             >
-              {section}
+              {section.label}
             </Box>
           ))}
         </Box>
+        <Box w="full">
+           <Button width="100%" onClick={saveWebTemplate}>Save Data</Button>
+          </Box>
       </VStack>
 
       {/* Editor and Preview Panel */}
@@ -225,7 +271,7 @@ const WebsiteBuilder: React.FC = () => {
           <TabPanels h={"88vh"} overflowY="auto" overflowX="hidden">
             {sections.map((section) => (
               <TabPanel key={section} m={-4}>
-                {currentSection === "MetaData" && (
+                {currentSection?.page === "metaData" && (
                   <MetadataSettingsForm
                     content={webContent.metaData}
                     setContent={(newContent: any) =>
@@ -233,7 +279,7 @@ const WebsiteBuilder: React.FC = () => {
                     }
                   />
                 )}
-                {currentSection === "About" && (
+                {currentSection?.page === "about" && (
                   <AboutSection
                     webColor={colorSetting}
                     isEditable={true}
@@ -243,7 +289,7 @@ const WebsiteBuilder: React.FC = () => {
                     }
                   />
                 )}
-                {currentSection === "Faq" && (
+                {currentSection?.page === "faq" && (
                   <FaqSection
                     content={webContent.faq}
                     webColor={colorSetting}
@@ -252,12 +298,18 @@ const WebsiteBuilder: React.FC = () => {
                     }}
                   />
                 )}
-                {currentSection === "Home" && (
-                  <HeroCarousal cards={webContent.hero} />
+                {currentSection?.page === "hero" && (
+                  <HeroCarousal content={webContent.hero} />
                 )}
-                {currentSection === "Principal" && <PrincipalSection webColor={colorSetting} content={webContent.principal} setContent={(newContent: any) => {
+                {currentSection?.page === "principal" && (
+                  <PrincipalSection
+                    webColor={colorSetting}
+                    content={webContent.principal}
+                    setContent={(newContent: any) => {
                       setWebContent({ ...webContent, principal: newContent });
-                    }}/>}
+                    }}
+                  />
+                )}
               </TabPanel>
             ))}
           </TabPanels>
@@ -294,6 +346,6 @@ const WebsiteBuilder: React.FC = () => {
       </Drawer>
     </HStack>
   );
-};
+});
 
 export default WebsiteBuilder;

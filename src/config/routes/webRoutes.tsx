@@ -6,6 +6,11 @@ const School = lazy(() => import("../../pages/main/School/School"));
 export const WebRoutes = [
   {
     element : <School />,
+    path: web.index,
+    publicRoutes:true
+  },
+  {
+    element : <School />,
     path: web.school,
     publicRoutes:true
   },

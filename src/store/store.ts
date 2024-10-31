@@ -23,6 +23,7 @@ import AttendencePunchStore from "./attendenceStore/attendencePunchStore";
 import Userstore from "./userStore/userStore";
 import BookLiberary from "./BookLiberary/bookLiberary";
 import OrderStore from "./orderStore/orderStore";
+import WebTemplateStore from "./webTemplateStore/webTemplateStore";
 
 configure({ enforceActions: "never" });
 
@@ -53,6 +54,8 @@ const store = {
   requestStore: new RequestStore(),
   AttendencePunch: new AttendencePunchStore(),
 
+  //
+  WebTemplateStore: new WebTemplateStore()
 };
 
 export default store;
