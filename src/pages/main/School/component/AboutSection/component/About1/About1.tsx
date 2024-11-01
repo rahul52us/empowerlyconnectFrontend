@@ -17,10 +17,13 @@ import {
     ModalFooter,
     Input,
     Textarea,
-    Grid,
-    GridItem,
     IconButton,
     useColorMode,
+    Tabs,
+    TabList,
+    Tab,
+    TabPanels,
+    TabPanel,
   } from "@chakra-ui/react";
   import { useState } from "react";
   import { DeleteIcon } from "@chakra-ui/icons";
@@ -156,124 +159,89 @@ import {
             </Box>
           </Flex>
 
-          <Modal isOpen={isOpen} onClose={onClose} size="2xl" isCentered>
-            <ModalOverlay />
-            <ModalContent borderRadius="lg">
-              <ModalHeader fontSize="lg" fontWeight="bold" color={textColor}>
-                Edit About Section
-              </ModalHeader>
-              <ModalCloseButton />
-              <ModalBody>
-                <VStack spacing={4}>
-                  <Input
-                    placeholder="Title"
-                    value={editContent.title}
-                    onChange={(e) =>
-                      setEditContent({ ...editContent, title: e.target.value })
-                    }
-                    borderColor="blue.300"
-                    _focus={{ borderColor: "blue.500" }}
-                  />
-                  <Input
-                    placeholder="Subtitle"
-                    value={editContent.subtitle}
-                    onChange={(e) =>
-                      setEditContent({ ...editContent, subtitle: e.target.value })
-                    }
-                    borderColor="blue.300"
-                    _focus={{ borderColor: "blue.500" }}
-                  />
-
-                  <Grid templateColumns="repeat(1, 1fr)" gap={4} width="100%">
-                    <GridItem>
-                      <Text fontWeight="bold">Description Points</Text>
-                    </GridItem>
-                    {editContent.description.map(
-                      (paragraph: any, index: number) => (
-                        <GridItem key={index}>
-                          <Flex>
-                            <Textarea
-                              placeholder={`Description ${index + 1}`}
-                              value={paragraph}
-                              onChange={(e) => {
-                                const newDescription = [
-                                  ...editContent.description,
-                                ];
-                                newDescription[index] = e.target.value;
-                                setEditContent({
-                                  ...editContent,
-                                  description: newDescription,
-                                });
-                              }}
-                              borderColor="blue.300"
-                              _focus={{ borderColor: "blue.500" }}
-                              mr={2}
-                            />
-                            <IconButton
-                              aria-label="Delete Description"
-                              icon={<DeleteIcon />}
-                              onClick={() => deleteDescription(index)}
-                              colorScheme="red"
-                              variant="outline"
-                              size="sm"
-                            />
-                          </Flex>
-                        </GridItem>
-                      )
-                    )}
-                  </Grid>
-
-                  <Button
-                    colorScheme="green"
-                    onClick={addDescription}
-                    width="full"
-                  >
-                    Add Description Point
-                  </Button>
-
-                  <Input
-                    placeholder="Image URL"
-                    value={editContent.imageUrl}
-                    onChange={(e) =>
-                      setEditContent({ ...editContent, imageUrl: e.target.value })
-                    }
-                    borderColor="blue.300"
-                    _focus={{ borderColor: "blue.500" }}
-                  />
-                </VStack>
-              </ModalBody>
-
-              <ModalFooter>
-                <Button
-                  color={
-                    colorMode === "light"
-                      ? webColor?.buttonTextColor?.light
-                      : webColor?.buttonTextColor?.dark
-                  }
-                  backgroundColor={
-                    colorMode === "light"
-                      ? webColor?.buttonColor?.light
-                      : webColor?.buttonColor?.dark
-                  }
-                  _hover={{
-                    backgroundColor:
-                      colorMode === "light"
-                        ? webColor?.buttonHoverColor?.light
-                        : webColor?.buttonHoverColor?.dark,
-
-                    color:
-                      colorMode === "light"
-                        ? webColor?.buttonTextHoverColor?.light
-                        : webColor?.buttonTextHoverColor?.dark,
-                  }}
-                  onClick={handleSave}
-                  width="full"
-                >
-                  Save Changes
-                </Button>
-              </ModalFooter>
-            </ModalContent>
-          </Modal>
+          <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} size="2xl" isCentered>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Edit About Section</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <Tabs variant="enclosed">
+                <TabList>
+                  <Tab>Title</Tab>
+                  <Tab>Subtitle</Tab>
+                  <Tab>Descriptions</Tab>
+                  <Tab>Image URL</Tab>
+                </TabList>
+                <TabPanels>
+                  <TabPanel>
+                    <Input
+                      placeholder="Title"
+                      value={editContent.title}
+                      onChange={(e) =>
+                        setEditContent({ ...editContent, title: e.target.value })
+                      }
+                    />
+                  </TabPanel>
+                  <TabPanel>
+                    <Input
+                      placeholder="Subtitle"
+                      value={editContent.subtitle}
+                      onChange={(e) =>
+                        setEditContent({ ...editContent, subtitle: e.target.value })
+                      }
+                    />
+                  </TabPanel>
+                  <TabPanel>
+                    <VStack spacing={3} width="100%">
+                      {editContent.description.map((paragraph: string, index: number) => (
+                        <Flex key={index} align="center" width="100%">
+                          <Textarea
+                            placeholder={`Description ${index + 1}`}
+                            value={paragraph}
+                            onChange={(e) => {
+                              const newDescription = [...editContent.description];
+                              newDescription[index] = e.target.value;
+                              setEditContent({
+                                ...editContent,
+                                description: newDescription,
+                              });
+                            }}
+                            width="90%"
+                          />
+                          <IconButton
+                            icon={<DeleteIcon />}
+                            onClick={() => deleteDescription(index)}
+                            colorScheme="red"
+                            ml={2}
+                            variant="ghost"
+                            aria-label="Delete Description"
+                          />
+                        </Flex>
+                      ))}
+                      <Button colorScheme="teal" onClick={addDescription} width="full">
+                        Add Description Point
+                      </Button>
+                    </VStack>
+                  </TabPanel>
+                  <TabPanel>
+                    <Input
+                      placeholder="Image URL"
+                      value={editContent.imageUrl}
+                      onChange={(e) =>
+                        setEditContent({ ...editContent, imageUrl: e.target.value })
+                      }
+                    />
+                  </TabPanel>
+                </TabPanels>
+              </Tabs>
+            </ModalBody>
+            <ModalFooter>
+              <Button colorScheme="blue" onClick={handleSave} width="full">
+                Save Changes
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
         </Container>
       </Box>
     );

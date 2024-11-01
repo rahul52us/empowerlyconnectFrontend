@@ -111,7 +111,7 @@ const Header = ({  scrollToSection, linksConfig = [], colors }: any) => {
             py={1}
             borderRadius="md"
             cursor="pointer"
-            display={linksConfig?.length > 4 ? undefined : "none"}
+            display={linksConfig?.length > 5 ? undefined : "none"}
           >
             More
           </MenuButton>

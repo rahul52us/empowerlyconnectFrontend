@@ -27,102 +27,146 @@ import MetadataSettingsForm from "./metaDataSettingsForm";
 import { observer } from "mobx-react-lite";
 import store from "../../../../store/store";
 import { getStatusType } from "../../../../config/constant/statusCode";
+import CurriculumSection from "../../../main/School/component/curriculumSection/CurriculumSection";
+import TestimonialsSection from "../../../main/School/component/TestimonialSection/TestimonialSection";
 
 const WebsiteBuilder = observer(() => {
-  const {WebTemplateStore : {createWebTemplate}, auth : {openNotification}} = store;
+  const {
+    WebTemplateStore: { createWebTemplate },
+    auth: { openNotification },
+  } = store;
 
   const [webContent, setWebContent] = useState({
     metaData: {
-      name: "Evergreen Academy",
-      title: "Welcome to Evergreen Academy",
-      description: "A place where students thrive through intellectual growth.",
-      keywords: "education, school, academy, learning",
-      author: "John Doe", // New field for Author
-      viewport: "width=device-width, initial-scale=1", // New field for Viewport
-      language: "en-US", // New field for Language
-      robots: "index, follow", // New field for Robots
-      themeColor: "#ffffff", // New field for Theme Color
-      ogTitle: "Evergreen Academy", // New field for Open Graph Title
-      ogDescription:
-        "A place where students thrive through intellectual growth.", // New field for Open Graph Description
-      ogImageUrl: "https://example.com/image.jpg", // New field for Open Graph Image URL
-      faviconUrl: "https://example.com/favicon.ico", // New field for Favicon URL
-      canonicalUrl: "https://example.com/page", // New field for Canonical URL
+      name: "Harmony Institute",
+      title: "Welcome to Harmony Institute",
+      description: "Cultivating Minds, Inspiring Futures.",
+      keywords: "education, harmony, learning, innovation",
+      author: "John Smith",
+      viewport: "width=device-width, initial-scale=1",
+      language: "en-US",
+      robots: "index, follow",
+      themeColor: "#006699",
+      ogTitle: "Harmony Institute",
+      ogDescription: "Cultivating Minds, Inspiring Futures.",
+      ogImageUrl: "https://example.com/harmony-institute.jpg",
+      faviconUrl: "https://example.com/favicon.ico",
+      canonicalUrl: "https://example.com/harmony-institute",
     },
 
     hero: [
       {
-        image:
-          "https://img.freepik.com/free-photo/analog-landscape-city-with-buildings_23-2149661462.jpg?t=st=1728569941~exp=1728573541~hmac=d115d8d250d4e7cfed4970be5f1c3045454426a7cf9b322876302e26ab49e14b&w=1060",
-        title: "Welcome to Our School",
-        text: "Your journey begins here.",
+        image: "https://img.freepik.com/free-photo/sunset-over-harmony-institute_23-2148822078.jpg?t=st=1728569941~exp=1728573541~hmac=a1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcde&w=1060",
+        title: "Explore Your Potential",
+        text: "Join us at Harmony Institute where your journey begins.",
       },
       {
-        image:
-          "https://img.freepik.com/free-photo/bustling-school-cafeteria-lunchtime_1268-30762.jpg?t=st=1728569297~exp=1728572897~hmac=90a4fe5fe6f2b6590ff3ec2f447f3e2cc82ee0b2672cf3695a3b9b593191b1af&w=1380",
-        title: "Welcome to Our School",
-        text: "Your journey begins here.",
+        image: "https://img.freepik.com/free-photo/students-participating-in-activities_23-2148822080.jpg?t=st=1728569941~exp=1728573541~hmac=a1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcde&w=1060",
+        title: "Innovative Learning Experiences",
+        text: "Discover a new way of learning with us.",
       },
       {
-        image:
-          "https://img.freepik.com/free-photo/students-learning-school-their-classroom_23-2149511018.jpg?t=st=1728569336~exp=1728572936~hmac=f87c39731de3399c571c6e11cfbc591cbde859d2378936e2080894365fa5f6d1&w=1060",
-        title: "Innovative Learning",
-        text: "Experience our cutting-edge programs.",
+        image: "https://img.freepik.com/free-photo/group-of-students-celebrating-graduation_23-2148822085.jpg?t=st=1728569941~exp=1728573541~hmac=a1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcde&w=1060",
+        title: "Together We Achieve More",
+        text: "At Harmony Institute, teamwork makes the dream work.",
       },
-      // Add more card objects as needed
     ],
+
     about: {
-      title: "About Our School",
-      subtitle: "Dedicated to Excellence in Education",
+      title: "About Harmony Institute",
+      subtitle: "Fostering Growth and Innovation",
       description: [
-        "Welcome to Evergreen Academy, a place where students from all backgrounds thrive through intellectual growth and personal development. Our diverse learning environment encourages curiosity, collaboration, and exploration.",
-        "Our faculty members, passionate and skilled, strive for excellence, fostering a spirit of innovation and curiosity in every student. They are dedicated to guiding each learner to realize their full potential.",
-        "Since 1995, Evergreen Academy has set the benchmark for educational excellence. We are proud of our alumni's significant contributions across various fields, and their impact is felt globally.",
-        "Looking toward the future, we continue to invest in top-tier resources, state-of-the-art facilities, and innovative learning methodologies. We are committed to preparing each student to meet the challenges of an evolving world with confidence and knowledge.",
+        "Harmony Institute is dedicated to delivering an outstanding educational experience that encourages students to thrive in all aspects of life.",
+        "Our approach emphasizes creativity, critical thinking, and collaboration, equipping students for future challenges.",
+        "Established in 2010, we prioritize innovative teaching methods and personalized learning to cater to individual student needs.",
+        "With modern facilities and a devoted faculty, we aim to empower every student to realize their full potential.",
       ],
-      imageUrl:
-        "https://img.freepik.com/free-photo/anime-school-building-illustration_23-2151150989.jpg",
+      imageUrl: "https://img.freepik.com/free-photo/harmony-institute-building_23-2148822090.jpg",
     },
+
     principal: {
-      name: "Dr. Jane Smith",
-      imageUrl:
-        "https://img.freepik.com/free-photo/experienced-businessman-standing-office-room-indian-content-office-employee-eyeglasses-smiling-posing-with-folded-hands-business-management-corporation-concept_74855-11681.jpg?t=st=1728491985~exp=1728495585~hmac=8fe791a61b6d34227a8bdcbd839d354c7246e23959e2c847ff9a0addd188e3a4&w=1060",
+      name: "Ms. Sarah Williams",
+      imageUrl: "https://img.freepik.com/free-photo/school-principal-waving_23-2148822095.jpg?t=st=1728569941~exp=1728573541~hmac=a1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcde&w=1060",
       title: "A Message From Our Principal",
-      subheading:
-        "Guiding the way to excellence with experience, passion, and a commitment to shaping the future.",
+      subheading: "Empowering Students Through Commitment and Vision",
       bio: [
-        "Dr. Jane Smith has been the principal of Evergreen Academy for over a decade. With her visionary leadership and commitment to educational excellence, she has transformed our school into one of the top-performing institutions in the region.",
-        "Dr. Smith holds a Ph.D. in Education from Harvard University and has over 25 years of experience in the field of education. Her innovative approaches to teaching and learning have inspired both students and faculty to achieve their highest potential.",
+        "Ms. Williams brings over a decade of experience in educational leadership, devoted to creating a nurturing and innovative learning environment at Harmony Institute.",
+        "Her goal is to provide a safe and stimulating atmosphere where every student can excel.",
       ],
     },
+
     faq: {
       title: "Frequently Asked Questions",
-      subtitle:
-        "Find answers to common questions about admissions, facilities, and programs.",
+      subtitle: "Find Answers to Common Inquiries",
       faqData: [
         {
           question: "How do I apply for admission?",
           answer: [
-            "Visit our online application portal and create an account.",
-            "Fill out the required personal and academic information.",
-            "Upload necessary documents such as transcripts and identification.",
-            "Submit your application before the deadline.",
-            "For details on the admission timeline and requirements, visit our admissions page.",
+            "Start by visiting our admissions section and fill out the online form.",
+            "Make sure to upload necessary documents such as transcripts and recommendations.",
+            "You will be invited for an interview with our admissions committee.",
+            "Expect to hear back regarding your application status within 10 business days.",
           ],
         },
         {
-          question: "What facilities does the school provide?",
+          question: "What clubs and organizations are available?",
           answer: [
-            "Modern classrooms with interactive technology for enhanced learning.",
-            "A library with a vast selection of books, periodicals, and digital resources.",
-            "State-of-the-art science labs for hands-on experiments.",
-            "Computer labs equipped with high-speed internet and educational software.",
-            "Sports facilities including a gymnasium and swimming pool.",
+            "Harmony Institute offers a wide range of clubs, including sports, arts, and leadership programs.",
+            "Students can engage in various activities such as environmental initiatives, coding clubs, and performing arts.",
+            "We regularly host events that allow students to demonstrate their skills and creativity.",
           ],
         },
       ],
     },
+
+    curriculum: {
+      title: "Our Curriculum",
+      description: "Our curriculum emphasizes a well-rounded education, balancing academic rigor with personal development.",
+      sections: [
+        {
+          title: "Preschool",
+          content: "Fun and interactive activities designed to develop early learning skills.",
+        },
+        {
+          title: "Primary School",
+          content: "A comprehensive curriculum that promotes inquiry, creativity, and critical thinking.",
+        },
+        {
+          title: "Secondary School",
+          content: "Challenging courses and electives that prepare students for higher education and careers.",
+        },
+      ],
+    },
+
+    testimonial: [
+      {
+        id: 1,
+        name: "Jessica Taylor",
+        testimonial: "Harmony Institute has greatly impacted my daughter's confidence and love for learning!",
+        imageUrl: "https://via.placeholder.com/100",
+      },
+      {
+        id: 2,
+        name: "Daniel Clark",
+        testimonial: "The supportive community at this school has made my transition into high school seamless.",
+        imageUrl: "https://via.placeholder.com/100",
+      },
+      {
+        id: 3,
+        name: "Ava Johnson",
+        testimonial: "I am grateful for the personalized attention and encouragement I received from my teachers.",
+        imageUrl: "https://via.placeholder.com/100",
+      },
+      {
+        id: 4,
+        name: "Lucas Martinez",
+        testimonial: "Harmony Institute has been a great place for my child to grow and explore their interests.",
+        imageUrl: "https://via.placeholder.com/100",
+      },
+    ],
   });
+
+
 
   const [colorSetting, setColorSetting] = useState({
     headingColor: { light: "#222222", dark: "#E2E8F0" },
@@ -139,11 +183,27 @@ const WebsiteBuilder = observer(() => {
 
   const { colorMode, toggleColorMode } = useColorMode();
   const [sections, setSections] = useState<any[]>([
-    { label: "MetaData", page: "metaData", key : "metaData1" },
-    { label: "Hero", page: "hero", key : "hero1" },
-    { label: "About", page: "about", key : "about1" },
-    { label: "Principal", page: "principal",key : "principal1" },
-    { label: "Faq", page: "faq", key : "faq1" },
+    { label: "MetaData", page: "metaData", key: "metaData1" },
+    { label: "Hero", page: "hero", key: "hero1", layouts: ["hero1", "hero2"] },
+    {
+      label: "About",
+      page: "about",
+      key: "about2",
+      layouts: ["about1", "about2"],
+    },
+    {
+      label: "Principal",
+      page: "principal",
+      key: "principal1",
+      layouts: ["principal1", "principal2"],
+    },
+    { label: "Faq", page: "faq", key: "faq1", layouts: ["faq1", "faq2"] },
+    {
+      label: "Curriculum",
+      page: "curriculum",
+      key: "curriculum1",
+      layouts: ["curriculum1", "curriculum2"],
+    },
   ]);
   const [currentSection, setCurrentSection] = useState<any>(sections[0]);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -155,24 +215,30 @@ const WebsiteBuilder = observer(() => {
   };
 
   const saveWebTemplate = () => {
-    createWebTemplate({sectionsLayout:sections, webInfo : webContent, webType : 'school', colorSetting : colorSetting})
-    .then((data) => {
-      openNotification({
-        title: "Successfully Created",
-        message: `${data.message}`,
-        type: "success",
-      });
+    createWebTemplate({
+      sectionsLayout: sections,
+      webInfo: webContent,
+      webType: "school",
+      colorSetting: colorSetting,
     })
-    .catch((err) => {
-      openNotification({
-        title: "Successfully Created",
-        message: err?.data?.message,
-        type: getStatusType(err.status),
-      });
-    })
-    .finally(() => {
-    })}
+      .then((data) => {
+        openNotification({
+          title: "Successfully Created",
+          message: `${data.message}`,
+          type: "success",
+        });
+      })
+      .catch((err) => {
+        openNotification({
+          title: "Successfully Created",
+          message: err?.data?.message,
+          type: getStatusType(err.status),
+        });
+      })
+      .finally(() => {});
+  };
 
+  console.log('the current selections are', currentSection)
 
   return (
     <HStack align="flex-start" p={1} spacing={2} h="87vh">
@@ -254,8 +320,10 @@ const WebsiteBuilder = observer(() => {
           ))}
         </Box>
         <Box w="full">
-           <Button width="100%" onClick={saveWebTemplate}>Save Data</Button>
-          </Box>
+          <Button width="100%" onClick={saveWebTemplate}>
+            Save Data
+          </Button>
+        </Box>
       </VStack>
 
       {/* Editor and Preview Panel */}
@@ -269,7 +337,8 @@ const WebsiteBuilder = observer(() => {
         {/* Editor Tabs */}
         <Tabs variant="soft-rounded" colorScheme="teal" w="full">
           <TabPanels h={"88vh"} overflowY="auto" overflowX="hidden">
-            {sections.map((section) => (
+            {sections.map((section) => {
+              return(
               <TabPanel key={section} m={-4}>
                 {currentSection?.page === "metaData" && (
                   <MetadataSettingsForm
@@ -279,8 +348,9 @@ const WebsiteBuilder = observer(() => {
                     }
                   />
                 )}
-                {currentSection?.page === "about" && (
+                {currentSection.page === "about" && (
                   <AboutSection
+                    selectedLayout={section}
                     webColor={colorSetting}
                     isEditable={true}
                     content={webContent.about}
@@ -303,6 +373,7 @@ const WebsiteBuilder = observer(() => {
                 )}
                 {currentSection?.page === "principal" && (
                   <PrincipalSection
+                    isEditable={true}
                     webColor={colorSetting}
                     content={webContent.principal}
                     setContent={(newContent: any) => {
@@ -310,8 +381,28 @@ const WebsiteBuilder = observer(() => {
                     }}
                   />
                 )}
+                {currentSection?.page === "curriculum" && (
+                  <CurriculumSection
+                    isEditable={true}
+                    webColor={colorSetting}
+                    content={webContent.curriculum}
+                    setContent={(newContent: any) => {
+                      setWebContent({ ...webContent, curriculum: newContent });
+                    }}
+                  />
+                )}
+                {currentSection?.page === "testimonial" && (
+                  <TestimonialsSection
+                    isEditable={true}
+                    webColor={colorSetting}
+                    content={webContent.curriculum}
+                    setContent={(newContent: any) => {
+                      setWebContent({ ...webContent, curriculum: newContent });
+                    }}
+                  />
+                )}
               </TabPanel>
-            ))}
+            )})}
           </TabPanels>
         </Tabs>
       </VStack>

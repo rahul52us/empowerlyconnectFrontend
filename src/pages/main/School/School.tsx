@@ -178,12 +178,20 @@ const School = observer(() => {
     }
   };
 
-  const activeSectionIds = sectionColorSettings.sectionLayout.map((section : any) => section.id);
+  const activeSectionIds = sectionColorSettings.sectionLayout.map(
+    (section: any) => section.id
+  );
 
-  return (fetchData.loading === false &&
-    Object.keys(fetchData.data || {}).length === 0) ? (
-    <Center mt={'25vh'}>
-    <Image src="/img/emptyData.jpg" alt="" w={350} h={350} borderRadius={50}/>
+  return fetchData.loading === false &&
+    Object.keys(fetchData.data || {}).length === 0 ? (
+    <Center mt={"25vh"}>
+      <Image
+        src="/img/emptyData.jpg"
+        alt=""
+        w={350}
+        h={350}
+        borderRadius={50}
+      />
     </Center>
   ) : fetchData.loading === false ? (
     <SectionColorContext.Provider value={sectionColorSettings}>
@@ -191,7 +199,7 @@ const School = observer(() => {
         <Box>
           <Navbar
             scrollToSection={scrollToSection}
-            linksConfig={activeSectionIds.map((item : any) => ({
+            linksConfig={activeSectionIds.map((item: any) => ({
               id: item,
               name: item.charAt(0).toUpperCase() + item.slice(1),
             }))}
@@ -207,23 +215,6 @@ const School = observer(() => {
                   webColor: sectionColorSettings.colors,
                   colors: sectionColorSettings.colors,
                 };
-
-                if (id === "curriculum") {
-                  sectionProps = {
-                    ...props,
-                    colors: {
-                      ...sectionColorSettings.colors,
-                      titleColor:
-                        sectionColorSettings.colors.curriculumTitleColor,
-                      sectionBgColor:
-                        sectionColorSettings.colors.curriculumSectionBgColor,
-                      borderColor:
-                        sectionColorSettings.colors.curriculumBorderColor,
-                      textColor:
-                        sectionColorSettings.colors.curriculumTextColor,
-                    },
-                  };
-                }
 
                 if (id === "statistics") {
                   sectionProps = {

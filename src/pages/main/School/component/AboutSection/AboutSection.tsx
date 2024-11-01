@@ -1,20 +1,37 @@
-import About1 from "./component/About1/About1";
+import { Suspense, lazy } from "react";
+
+const loadComponent = (key: string) => {
+
+  console.log('the key are', key)
+
+  switch (key) {
+    case "about1":
+      return lazy(() => import("./component/About1/About1"));
+    case "about2":
+      return lazy(() => import("./component/About2/About2"));
+    default:
+      return lazy(() => import("./component/About1/About1"));
+  }
+};
 
 const AboutSection = ({
   content,
   setContent,
   webColor,
+  selectedLayout,
   isEditable = false,
 }: any) => {
-
+  const Component = loadComponent(selectedLayout?.key);
 
   return (
-    <About1
-      content={content}
-      setContent={setContent}
-      webColor={webColor}
-      isEditable={isEditable}
-    />
+    <Suspense fallback={<div>Loading...</div>}>
+      <Component
+        content={content}
+        setContent={setContent}
+        webColor={webColor}
+        isEditable={isEditable}
+      />
+    </Suspense>
   );
 };
 
