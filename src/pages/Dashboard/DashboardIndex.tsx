@@ -13,7 +13,7 @@ import ManagerDashboard from "./mainDashboard/managerDashboard/ManagerDashboard"
 
 const DashboardIndex = observer(() => {
   const {
-    auth: { user , hasComponentAccess},
+    auth: { user, hasComponentAccess },
   } = store;
 
   const renderElements = (role: string) => {
@@ -36,7 +36,6 @@ const DashboardIndex = observer(() => {
           <PunchInComponent />
         </Flex>
       </Box>
-      {/* <NewDash /> */}
     </>
   );
 });

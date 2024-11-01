@@ -1,167 +1,206 @@
 import {
-    Box,
-    Container,
-    Heading,
-    Text,
-    Flex,
-    Image,
-    VStack,
-    useColorModeValue,
-    Button,
-    Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalHeader,
-    ModalBody,
-    ModalCloseButton,
-    ModalFooter,
-    Input,
-    Textarea,
-    IconButton,
-    useColorMode,
-    Tabs,
-    TabList,
-    Tab,
-    TabPanels,
-    TabPanel,
-  } from "@chakra-ui/react";
-  import { useState } from "react";
-  import { DeleteIcon } from "@chakra-ui/icons";
-  import { useSectionColorContext } from "../../../../School";
+  Box,
+  Container,
+  Heading,
+  Text,
+  Flex,
+  Image,
+  VStack,
+  useColorModeValue,
+  Button,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalCloseButton,
+  ModalFooter,
+  Input,
+  Textarea,
+  IconButton,
+  useColorMode,
+  Tabs,
+  TabList,
+  Tab,
+  TabPanels,
+  TabPanel,
+} from "@chakra-ui/react";
+import { useState } from "react";
+import { DeleteIcon } from "@chakra-ui/icons";
+import { useSectionColorContext } from "../../../../School";
+import { motion } from "framer-motion";
 
-  export default function About1({
-    content,
-    setContent,
-    webColor,
-    isEditable = false,
-  }: any) {
-    const { colorMode } = useColorMode();
-    const { colors } = useSectionColorContext() || { colors: webColor || {} };
-    const bg = useColorModeValue("gray.50", "gray.900");
-    const textColor = useColorModeValue("gray.700", "gray.300");
+// Motion components
+const MotionBox = motion(Box);
+const MotionText = motion(Text);
+const MotionImage = motion(Image);
 
-    const [isOpen, setIsOpen] = useState(false);
-    const onOpen = () => setIsOpen(true);
-    const onClose = () => setIsOpen(false);
+// Define types for props
+type ContentProps = {
+  title: string;
+  subtitle: string;
+  imageUrl: string;
+  description: string[];
+};
 
-    const [editContent, setEditContent] = useState({ ...content });
+type AboutProps = {
+  content: ContentProps;
+  setContent: (content: ContentProps) => void;
+  webColor: any;
+  isEditable?: boolean;
+};
 
-    const handleSave = () => {
-      setContent(editContent);
-      onClose();
-    };
+export default function About1({
+  content,
+  setContent,
+  webColor,
+  isEditable = false,
+}: AboutProps) {
+  const { colorMode } = useColorMode();
+  const { colors } = useSectionColorContext() || { colors: webColor || {} };
+  const bg = useColorModeValue("gray.50", "gray.900");
+  const textColor = useColorModeValue("gray.700", "gray.300");
 
-    const addDescription = () => {
-      setEditContent((prev: any) => ({
-        ...prev,
-        description: [...prev.description, ""],
-      }));
-    };
+  const [isOpen, setIsOpen] = useState(false);
+  const onOpen = () => setIsOpen(true);
+  const onClose = () => setIsOpen(false);
 
-    const deleteDescription = (index: number) => {
-      const newDescription = editContent.description.filter(
-        (_: any, idx: number) => idx !== index
-      );
-      setEditContent({ ...editContent, description: newDescription });
-    };
+  const [editContent, setEditContent] = useState({ ...content });
 
-    return (
-      <Box m={{ base: 2, md: 5 }} py={10} bg={bg} borderRadius="lg">
-        <Container maxW="container.xl">
-          <Flex justify="space-between" align="center" mb={8}>
-            <Box textAlign="center" flex="1">
-              <Heading
-                as="h2"
-                size="xl"
-                textAlign="center"
-                fontWeight="bold"
-                mb={3}
-                color={
+  const handleSave = () => {
+    setContent(editContent);
+    onClose();
+  };
+
+  const addDescription = () => {
+    setEditContent((prev) => ({
+      ...prev,
+      description: [...prev.description, ""],
+    }));
+  };
+
+  const deleteDescription = (index: number) => {
+    const newDescription = editContent.description.filter(
+      (_, idx) => idx !== index
+    );
+    setEditContent({ ...editContent, description: newDescription });
+  };
+
+  return (
+    <MotionBox
+      m={{ base: 2, md: 5 }}
+      py={10}
+      bg={bg}
+      borderRadius="lg"
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <Container maxW="container.xl">
+        <Flex justify="space-between" align="center" mb={8}>
+          <Box textAlign="center" flex="1">
+            <Heading
+              as="h2"
+              size="xl"
+              textAlign="center"
+              fontWeight="bold"
+              mb={3}
+              color={
+                colorMode === "light"
+                  ? colors?.headingColor?.light
+                  : colors?.headingColor?.dark
+              }
+            >
+              {content.title}
+            </Heading>
+            <MotionText
+              color={
+                colorMode === "light"
+                  ? colors?.subHeadingColor?.light
+                  : colors?.subHeadingColor?.dark
+              }
+              fontSize={{ base: "lg", md: "xl" }}
+              mb={12}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+            >
+              {content.subtitle}
+            </MotionText>
+          </Box>
+          {isEditable && (
+            <Button
+              color={
+                colorMode === "light"
+                  ? webColor.buttonTextColor?.light
+                  : webColor.buttonTextColor?.dark
+              }
+              backgroundColor={
+                colorMode === "light"
+                  ? webColor.buttonColor?.light
+                  : webColor.buttonColor?.dark
+              }
+              _hover={{
+                backgroundColor:
                   colorMode === "light"
-                    ? colors?.headingColor?.light
-                    : colors?.headingColor?.dark
-                }
-              >
-                {content.title}
-              </Heading>
-              <Text
-                color={
+                    ? webColor.buttonHoverColor?.light
+                    : webColor.buttonHoverColor?.dark,
+                color:
                   colorMode === "light"
-                    ? colors?.subHeadingColor?.light
-                    : colors?.subHeadingColor?.dark
-                }
-                fontSize={{ base: "lg", md: "xl" }}
-                mb={12}
-              >
-                {content.subtitle}
-              </Text>
-            </Box>
-            {isEditable && (
-              <Button
-                color={
-                  colorMode === "light"
-                    ? webColor.buttonTextColor?.light
-                    : webColor.buttonTextColor?.dark
-                }
-                backgroundColor={
-                  colorMode === "light"
-                    ? webColor.buttonColor?.light
-                    : webColor.buttonColor?.dark
-                }
-                _hover={{
-                  backgroundColor:
-                    colorMode === "light"
-                      ? webColor.buttonHoverColor?.light
-                      : webColor.buttonHoverColor?.dark,
+                    ? webColor.buttonTextHoverColor?.light
+                    : webColor.buttonTextHoverColor?.dark,
+              }}
+              onClick={onOpen}
+            >
+              Edit Content
+            </Button>
+          )}
+        </Flex>
 
-                  color:
-                    colorMode === "light"
-                      ? webColor.buttonTextHoverColor?.light
-                      : webColor.buttonTextHoverColor?.dark,
-                }}
-                onClick={onOpen}
-              >
-                Edit Content
-              </Button>
-            )}
-          </Flex>
-
-          <Flex
-            direction={{ base: "column", md: "row" }}
-            gap={10}
-            align="center"
-            justify="space-between"
+        <Flex
+          direction={{ base: "column", md: "row" }}
+          gap={10}
+          align="center"
+          justify="space-between"
+        >
+          <MotionBox
+            flex="1"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
           >
-            <Box flex="1">
-              <Image
-                src={content.imageUrl}
-                alt="School campus"
-                w="100%"
-                maxW={{ base: "100%", md: "520px" }}
-                rounded="xl"
-                h={{ base: "100%", md: "380px" }}
-                objectFit="cover"
-                boxShadow="lg"
-              />
-            </Box>
+            <MotionImage
+              src={content.imageUrl}
+              alt="School campus"
+              w="100%"
+              maxW={{ base: "100%", md: "520px" }}
+              rounded="xl"
+              h={{ base: "100%", md: "380px" }}
+              objectFit="cover"
+              boxShadow="lg"
+            />
+          </MotionBox>
 
-            <Box flex="1">
-              <VStack
-                color={textColor}
-                fontSize={{ base: "md", md: "lg" }}
-                spacing={6}
-                textAlign="left"
-              >
-                {content.description.map((paragraph: any, index: number) => (
-                  <Text key={index}>{paragraph}</Text>
-                ))}
-              </VStack>
-            </Box>
-          </Flex>
+          <MotionBox flex="1">
+            <VStack
+              color={textColor}
+              fontSize={{ base: "md", md: "lg" }}
+              spacing={6}
+              textAlign="left"
+            >
+              {content.description.map((paragraph, index) => (
+                <MotionText key={index} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 * index }}>
+                  {paragraph}
+                </MotionText>
+              ))}
+            </VStack>
+          </MotionBox>
+        </Flex>
 
-          <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} size="2xl" isCentered>
+        {/* Modal with animations */}
+        <Modal isOpen={isOpen} onClose={onClose} size="2xl" isCentered>
           <ModalOverlay />
-          <ModalContent>
+          <MotionBox as={ModalContent} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>
             <ModalHeader>Edit About Section</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
@@ -192,35 +231,29 @@ import {
                     />
                   </TabPanel>
                   <TabPanel>
-                    <VStack spacing={3} width="100%">
-                      {editContent.description.map((paragraph: string, index: number) => (
-                        <Flex key={index} align="center" width="100%">
+                    <VStack align="stretch" spacing={3}>
+                      {editContent.description.map((desc, index) => (
+                        <Flex key={index} align="center">
                           <Textarea
-                            placeholder={`Description ${index + 1}`}
-                            value={paragraph}
-                            onChange={(e) => {
-                              const newDescription = [...editContent.description];
-                              newDescription[index] = e.target.value;
-                              setEditContent({
-                                ...editContent,
-                                description: newDescription,
-                              });
-                            }}
-                            width="90%"
+                            placeholder="Description"
+                            value={desc}
+                            onChange={(e) =>
+                              setEditContent((prev) => {
+                                const updatedDescriptions = [...prev.description];
+                                updatedDescriptions[index] = e.target.value;
+                                return { ...prev, description: updatedDescriptions };
+                              })
+                            }
                           />
                           <IconButton
+                            aria-label="Delete description"
                             icon={<DeleteIcon />}
-                            onClick={() => deleteDescription(index)}
-                            colorScheme="red"
                             ml={2}
-                            variant="ghost"
-                            aria-label="Delete Description"
+                            onClick={() => deleteDescription(index)}
                           />
                         </Flex>
                       ))}
-                      <Button colorScheme="teal" onClick={addDescription} width="full">
-                        Add Description Point
-                      </Button>
+                      <Button onClick={addDescription}>Add Description</Button>
                     </VStack>
                   </TabPanel>
                   <TabPanel>
@@ -240,9 +273,9 @@ import {
                 Save Changes
               </Button>
             </ModalFooter>
-          </ModalContent>
+          </MotionBox>
         </Modal>
-        </Container>
-      </Box>
-    );
-  }
+      </Container>
+    </MotionBox>
+  );
+}

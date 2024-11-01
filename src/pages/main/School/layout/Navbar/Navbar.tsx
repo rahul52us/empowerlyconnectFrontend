@@ -17,27 +17,84 @@ import {
   DrawerCloseButton,
   DrawerBody,
   useColorMode,
-  useColorModeValue
+  useColorModeValue,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { FaBars, FaSun, FaMoon } from "react-icons/fa";
-import Logo from "./school_logo.png";
 import { largeHeaderHeight } from "../common/constant";
 
-const Header = ({  scrollToSection, linksConfig = [], colors }: any) => {
-  const [activeLink, setActiveLink] = useState("home");
+interface LinkConfig {
+  id: string;
+  name: string;
+  isButton?: boolean; // Optional property if some links can be buttons
+}
+
+interface HeaderProps {
+  scrollToSection: (linkId: string) => void; // Function to scroll to a section
+  linksConfig?: LinkConfig[]; // Array of link configuration
+  colors: any; // Assuming colors can be any object
+  metaData: any; // Assuming metaData can be any object
+}
+
+const Header: React.FC<HeaderProps> = ({
+  scrollToSection,
+  linksConfig = [],
+  colors,
+  metaData,
+}) => {
+  const [activeLink, setActiveLink] = useState<string>("home");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { colorMode, toggleColorMode } = useColorMode();
 
-  const handleLinkClick = (linkId: any) => {
+  const contactButtonColor = useColorModeValue(
+    colors?.buttonColor?.light,
+    colors?.buttonColor?.dark
+  );
+  const buttonTextColor = useColorModeValue(
+    colors?.buttonTextColor?.light,
+    colors?.buttonTextColor?.dark
+  );
+  const dropdownMenuColor = useColorModeValue("white", "gray.700");
+  const menuHoverColor = useColorModeValue("black", "white");
+
+  // Memoizing the link elements for performance
+  const linkElements = useMemo(() => {
+    return linksConfig.map((link) => (
+      <Link
+        key={link.id}
+        fontSize={{ base: "md", md: "lg" }}
+        position="relative"
+        color={
+          activeLink === link.id
+            ? colors?.headingColor?.light
+            : colorMode === "dark"
+            ? colors?.headingColor?.dark
+            : colors?.headingColor?.light
+        }
+        onClick={() => handleLinkClick(link.id)}
+        _hover={{ color: menuHoverColor, textDecoration: "underline" }}
+        _after={{
+          content: '""',
+          position: "absolute",
+          width: activeLink === link.id ? "100%" : "0",
+          height: "2px",
+          bottom: "-4px",
+          left: "0",
+          bg: colors?.headingColor?.dark,
+          transition: "width 0.3s ease",
+        }}
+        cursor="pointer"
+      >
+        {link.name.charAt(0).toUpperCase() + link.name.slice(1)}
+      </Link>
+    ));
+  }, [activeLink, colorMode, colors, linksConfig]);
+
+  const handleLinkClick = (linkId: string) => {
     setActiveLink(linkId);
     scrollToSection(linkId);
   };
 
-  const contactButtonColor = useColorModeValue(colors?.buttonColor?.light,colors?.buttonColor?.dark)
-  const buttonTextColor = useColorModeValue(colors?.buttonTextColor?.light,colors?.buttonTextColor?.dark)
-  const dropdownMenuColor = useColorModeValue("white", "gray.700")
-  const menuHoverColor = useColorModeValue("black",'white')
   return (
     <Flex
       as="nav"
@@ -54,7 +111,16 @@ const Header = ({  scrollToSection, linksConfig = [], colors }: any) => {
       height={largeHeaderHeight}
       transition="background-color 0.3s ease, box-shadow 0.3s ease"
     >
-      <Image src={Logo} alt="School logo" objectFit="contain" h="4rem" ml={4} />
+      <Flex align="center">
+        <Image
+          src={metaData?.faviconUrl}
+          alt={metaData?.name}
+          objectFit="contain"
+          h="4rem"
+          ml={4}
+          cursor="pointer"
+        />
+      </Flex>
 
       <Flex
         gap={8}
@@ -63,60 +129,30 @@ const Header = ({  scrollToSection, linksConfig = [], colors }: any) => {
         fontWeight={500}
         color={colorMode === "dark" ? "white" : "gray.700"}
       >
-        {linksConfig.slice(0, 5).map((link: any) => {
-          const linkConfig = linksConfig.find(
-            (item: any) => item.id === link.id
-          );
-          return (
-            <Link
-              key={link.id}
-              fontSize="lg"
-              position="relative"
-              color={
-                activeLink === link.id
-                  ? colors?.headingColor?.light
-                  : colorMode === "dark"
-                  ? colors?.headingColor?.dark
-                  : colors?.headingColor?.light
-              }
-              onClick={() => handleLinkClick(link.id)}
-              _hover={{ color: menuHoverColor}}
-              _after={{
-                content: '""',
-                position: "absolute",
-                width: activeLink === link.id ? "100%" : "0",
-                height: "2px",
-                bottom: "-4px",
-                left: "0",
-                bg: colors?.headingColor?.dark,
-                transition: "width 0.3s ease",
-              }}
-              cursor="pointer"
-            >
-              {linkConfig.name.charAt(0).toUpperCase() +
-                linkConfig.name.slice(1)}
-            </Link>
-          );
-        })}
+        {linkElements.slice(0, 5)}
 
         <Menu>
           <MenuButton
             as={Text}
-            fontSize="lg"
+            fontSize={{ base: "md", md: "lg" }}
             fontWeight={500}
             position="relative"
-            color={colorMode === "dark" ? colors?.buttonColor?.dark : colors?.buttonColor?.light}
+            color={
+              colorMode === "dark"
+                ? colors?.buttonColor?.dark
+                : colors?.buttonColor?.light
+            }
             _hover={{ color: menuHoverColor, borderRadius: "md" }}
             px={3}
             py={1}
             borderRadius="md"
             cursor="pointer"
-            display={linksConfig?.length > 5 ? undefined : "none"}
+            display={linksConfig.length > 5 ? undefined : "none"}
           >
             More
           </MenuButton>
           <MenuList
-            bg={useColorModeValue("white", "gray.700")}
+            bg={dropdownMenuColor}
             border="1px solid"
             borderColor={useColorModeValue("gray.200", "gray.600")}
             boxShadow="lg"
@@ -125,32 +161,24 @@ const Header = ({  scrollToSection, linksConfig = [], colors }: any) => {
             mt={2}
             p={1}
             overflow="hidden"
-            transformOrigin="top center"
-            transition="all 0.2s ease-in-out"
           >
-            {linksConfig.slice(5).map((link: any) => {
-              const linkConfig = linksConfig.find(
-                (item: any) => item.id === link.id
-              );
-              if (linkConfig) {
-                return (
-                  <MenuItem
-                    key={link.id}
-                    onClick={() => handleLinkClick(link.id)}
-                    bg={dropdownMenuColor}
-                    _hover={{ bg: colors?.buttonColor?.light, color: colors?.buttonTextColor?.dark }}
-                    px={4}
-                    py={2}
-                    borderRadius="md"
-                    fontWeight="500"
-                  >
-                    {linkConfig.name.charAt(0).toUpperCase() +
-                      linkConfig.name.slice(1)}
-                  </MenuItem>
-                );
-              }
-              return null;
-            })}
+            {linksConfig.slice(5).map((link) => (
+              <MenuItem
+                key={link.id}
+                onClick={() => handleLinkClick(link.id)}
+                bg={dropdownMenuColor}
+                _hover={{
+                  bg: colors?.buttonColor?.light,
+                  color: colors?.buttonTextColor?.dark,
+                }}
+                px={4}
+                py={2}
+                borderRadius="md"
+                fontWeight="500"
+              >
+                {link.name.charAt(0).toUpperCase() + link.name.slice(1)}
+              </MenuItem>
+            ))}
           </MenuList>
         </Menu>
       </Flex>
@@ -161,7 +189,11 @@ const Header = ({  scrollToSection, linksConfig = [], colors }: any) => {
           onClick={toggleColorMode}
           aria-label="Toggle color mode"
           variant="outline"
-          color={colorMode === "light" ? colors?.iconColor?.light : colors?.iconColor?.dark}
+          color={
+            colorMode === "light"
+              ? colors?.iconColor?.light
+              : colors?.iconColor?.dark
+          }
           mr={{ base: 2, md: 5 }}
         />
 
@@ -173,7 +205,8 @@ const Header = ({  scrollToSection, linksConfig = [], colors }: any) => {
           onClick={onOpen}
           display={{ md: "none" }}
         />
-        {linksConfig.find((link: any) => link.id === "contact") && (
+
+        {linksConfig.find((link) => link.id === "contact") && (
           <Button
             display={{ base: "none", md: "inline-flex" }}
             bgColor={contactButtonColor}
@@ -181,14 +214,19 @@ const Header = ({  scrollToSection, linksConfig = [], colors }: any) => {
             borderRadius="full"
             boxShadow="md"
             _hover={{
-              bg:contactButtonColor,
+              bg: contactButtonColor,
               transform: "scale(1.05)",
               transition: "transform 0.3s ease",
             }}
             px={6}
-            onClick={() => handleLinkClick("contact")}
           >
-            {linksConfig.find((link: any) => link.id === "contact").name}
+            {linksConfig &&
+              (() => {
+                const contactLink = linksConfig.find(
+                  (link: any) => link.id === "contact"
+                );
+                return contactLink ? contactLink.name : null;
+              })()}
           </Button>
         )}
       </Flex>
@@ -200,48 +238,41 @@ const Header = ({  scrollToSection, linksConfig = [], colors }: any) => {
           <DrawerCloseButton />
           <DrawerBody>
             <Stack spacing={4} mt={4}>
-              {linksConfig.map((link: any) => {
-                const linkConfig = linksConfig.find(
-                  (item: any) => item.id === link.id
-                );
-                if (linkConfig) {
-                  return (
-                    <Button
-                      key={link.id}
-                      w="full"
-                      onClick={() => {
-                        handleLinkClick(link.id);
-                        onClose();
-                      }}
-                    >
-                      {linkConfig.name}
-                    </Button>
-                  );
-                }
-                return null;
-              })}
-
+              {linksConfig.map((link) => (
+                <Button
+                  key={link.id}
+                  w="full"
+                  onClick={() => {
+                    handleLinkClick(link.id);
+                    onClose();
+                  }}
+                  variant="ghost"
+                  colorScheme="teal"
+                >
+                  {link.name}
+                </Button>
+              ))}
               <Menu>
-                <MenuButton as={Button} w="full">
+                <MenuButton
+                  as={Button}
+                  w="full"
+                  variant="ghost"
+                  colorScheme="teal"
+                >
                   Academics
                 </MenuButton>
                 <MenuList>
-                  {linksConfig.slice(5).map((link: any) => {
-                    const linkConfig = linksConfig.find(
-                      (item: any) => item.id === link.id
-                    );
-                    if (linkConfig && !linkConfig.isButton) {
-                      return (
+                  {linksConfig.slice(5).map(
+                    (link) =>
+                      !link.isButton && (
                         <MenuItem
                           key={link.id}
                           onClick={() => handleLinkClick(link.id)}
                         >
-                          {linkConfig.name}
+                          {link.name}
                         </MenuItem>
-                      );
-                    }
-                    return null;
-                  })}
+                      )
+                  )}
                 </MenuList>
               </Menu>
             </Stack>

@@ -2,8 +2,6 @@ import { Suspense, lazy } from "react";
 
 const loadComponent = (key: string) => {
 
-  console.log('the key are', key)
-
   switch (key) {
     case "about1":
       return lazy(() => import("./component/About1/About1"));

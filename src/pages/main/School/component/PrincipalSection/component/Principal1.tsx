@@ -25,7 +25,10 @@ import {
   Divider,
 } from "@chakra-ui/react";
 import { AddIcon, DeleteIcon } from "@chakra-ui/icons";
+import { motion } from "framer-motion"; // Import motion from framer-motion
 import { useSectionColorContext } from "../../../School";
+
+const MotionBox = motion(Box); // Create a motion-enabled Box
 
 export default function Principal1({ content, setContent, webColor }: any) {
   const { websiteMode } = useSectionColorContext() || {
@@ -70,33 +73,49 @@ export default function Principal1({ content, setContent, webColor }: any) {
   };
 
   return (
-    <Box py={10} bg={bg}>
-      <Container maxW="container.xl">
-        <Heading
-          as="h2"
-          size="xl"
-          textAlign="center"
-          mb={4}
-          color={useColorModeValue(
-            webColor?.headingColor?.light,
-            webColor?.headingColor?.dark
-          )}
-          fontWeight="bold"
-        >
-          {content.title}
-        </Heading>
+    <MotionBox
+      m={{ base: 2, md: 5 }}
+      py={10}
+      bg={bg}
+      borderRadius="lg"
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <Container
+        maxW="100%"
+        m={{ base: 2, md: 5 }}
+        py={6}
+        bg={bg}
+        p={{ base: 5, md: 10 }}
+      >
+        <Flex direction="column" align="center" justify="center" mb={8}>
+          <Heading
+            as="h2"
+            size="xl"
+            mb={4}
+            color={useColorModeValue(
+              webColor?.headingColor?.light,
+              webColor?.headingColor?.dark
+            )}
+            fontWeight="bold"
+            textAlign="center" // Ensure the text itself is centered
+          >
+            {content.title}
+          </Heading>
 
-        <Text
-          textAlign="center"
-          fontSize="lg"
-          mb={8}
-          color={useColorModeValue(
-            webColor?.subHeadingColor?.light,
-            webColor?.subHeadingColor?.dark
-          )}
-        >
-          {content.subheading}
-        </Text>
+          <Text
+            textAlign="center" // Centering the subtitle text
+            fontSize="lg"
+            mb={8}
+            color={useColorModeValue(
+              webColor?.subHeadingColor?.light,
+              webColor?.subHeadingColor?.dark
+            )}
+          >
+            {content.subheading}
+          </Text>
+        </Flex>
 
         <Flex
           direction={{ base: "column", md: "row" }}
@@ -105,10 +124,13 @@ export default function Principal1({ content, setContent, webColor }: any) {
           justify="center"
           wrap="wrap"
         >
-          <Box
+          <MotionBox
             flex="1"
             textAlign="center"
             data-aos="fade-up"
+            initial={{ scale: 0.8 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 0.3 }}
           >
             <Image
               src={content.imageUrl}
@@ -120,9 +142,15 @@ export default function Principal1({ content, setContent, webColor }: any) {
               transition="transform 0.3s"
               _hover={{ transform: "scale(1.05)" }}
             />
-          </Box>
+          </MotionBox>
 
-          <Box flex="2" data-aos="fade-left">
+          <MotionBox
+            flex="2"
+            data-aos="fade-left"
+            initial={{ x: -100 }}
+            animate={{ x: 0 }}
+            transition={{ duration: 0.5 }}
+          >
             <Heading
               as="h3"
               size="lg"
@@ -147,12 +175,14 @@ export default function Principal1({ content, setContent, webColor }: any) {
                 {paragraph}
               </Text>
             ))}
-          </Box>
+          </MotionBox>
         </Flex>
 
-        {websiteMode && <Button mt={8} onClick={onOpen} colorScheme="blue">
-          Edit Principal’s Message
-        </Button>}
+        {websiteMode && (
+          <Button mt={8} onClick={onOpen} colorScheme="blue">
+            Edit Principal’s Message
+          </Button>
+        )}
 
         <Modal isOpen={isOpen} onClose={onClose} size="2xl" isCentered>
           <ModalOverlay />
@@ -176,7 +206,9 @@ export default function Principal1({ content, setContent, webColor }: any) {
                   <FormLabel fontWeight="bold">Subheading</FormLabel>
                   <Textarea
                     value={editContent.subheading}
-                    onChange={(e) => handleInputChange("subheading", e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("subheading", e.target.value)
+                    }
                     placeholder="Enter subheading"
                   />
                 </FormControl>
@@ -194,7 +226,9 @@ export default function Principal1({ content, setContent, webColor }: any) {
                   <FormLabel fontWeight="bold">Image URL</FormLabel>
                   <Input
                     value={editContent.imageUrl}
-                    onChange={(e) => handleInputChange("imageUrl", e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("imageUrl", e.target.value)
+                    }
                     placeholder="Enter image URL"
                   />
                 </FormControl>
@@ -215,7 +249,9 @@ export default function Principal1({ content, setContent, webColor }: any) {
                       <HStack key={index} align="stretch">
                         <Textarea
                           value={paragraph}
-                          onChange={(e) => handleBioChange(index, e.target.value)}
+                          onChange={(e) =>
+                            handleBioChange(index, e.target.value)
+                          }
                           placeholder={`Paragraph ${index + 1}`}
                           resize="none"
                         />
@@ -248,6 +284,6 @@ export default function Principal1({ content, setContent, webColor }: any) {
           </ModalContent>
         </Modal>
       </Container>
-    </Box>
+    </MotionBox>
   );
 }

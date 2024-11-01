@@ -9,10 +9,5 @@ export const WebRoutes = [
     path: web.index,
     publicRoutes:true
   },
-  {
-    element : <School />,
-    path: web.school,
-    publicRoutes:true
-  },
   ...ecommerceRoutes
 ];

@@ -16,6 +16,7 @@ import WebLoader from "../../../config/component/Loader/WebLoader";
 import { observer } from "mobx-react-lite";
 import store from "../../../store/store";
 import { useParams } from "react-router-dom";
+import DashPageHeader from "../../../config/component/common/DashPageHeader/DashPageHeader";
 
 // Lazy-loaded components
 const Contact = React.lazy(() => import("./component/ContactUs/Contact"));
@@ -110,7 +111,7 @@ const School = observer(() => {
   } = store;
   const { getQueryParam } = useQueryParams();
 
-  const [sectionColorSettings, setSectionColorSettings] = useState<any>({
+  const [sectionSettings, setSectionSettings] = useState<any>({
     sectionLayout: [],
     sections: initialSectionsConfig,
     colors: {
@@ -148,8 +149,9 @@ const School = observer(() => {
             (section: any): section is SectionConfig => section !== undefined
           );
 
-        setSectionColorSettings((prev: any) => ({
+        setSectionSettings((prev: any) => ({
           ...prev,
+          webInfo: dt?.data?.webInfo?.sections?.metaData || {},
           sections: dt?.data?.webInfo?.sections,
           sectionLayout: orderedSections,
           colors: dt.data?.webInfo?.colorSetting,
@@ -178,7 +180,7 @@ const School = observer(() => {
     }
   };
 
-  const activeSectionIds = sectionColorSettings.sectionLayout.map(
+  const activeSectionIds = sectionSettings.sectionLayout.map(
     (section: any) => section.id
   );
 
@@ -194,35 +196,34 @@ const School = observer(() => {
       />
     </Center>
   ) : fetchData.loading === false ? (
-    <SectionColorContext.Provider value={sectionColorSettings}>
+    <SectionColorContext.Provider value={sectionSettings}>
+      <DashPageHeader
+        showMainTitle={false}
+        title={sectionSettings?.webInfo?.name}
+        metaData={sectionSettings?.webInfo}
+      />
       <Suspense fallback={<WebLoader />}>
         <Box>
           <Navbar
+            metaData={sectionSettings?.webInfo}
             scrollToSection={scrollToSection}
             linksConfig={activeSectionIds.map((item: any) => ({
               id: item,
               name: item.charAt(0).toUpperCase() + item.slice(1),
             }))}
-            colors={sectionColorSettings.colors}
+            colors={sectionSettings.colors}
           />
           <Box marginTop={largeHeaderHeight}>
-            {sectionColorSettings.sectionLayout
+            {sectionSettings.sectionLayout
               .filter(({ id }: any) => activeSectionIds.includes(id))
               .map(({ id, component: Component, props }: any) => {
                 let sectionProps = {
                   ...props,
                   content: props,
-                  webColor: sectionColorSettings.colors,
-                  colors: sectionColorSettings.colors,
+                  webColor: sectionSettings.colors,
+                  colors: sectionSettings.colors,
+                  backgroundImage :sectionSettings?.colors?.statisticsBackgroundImage
                 };
-
-                if (id === "statistics") {
-                  sectionProps = {
-                    ...props,
-                    backgroundImage:
-                      sectionColorSettings.colors.statisticsBackgroundImage,
-                  };
-                }
 
                 return (
                   <Box key={id} ref={sectionRefs.current[id]} my={7} id={id}>
