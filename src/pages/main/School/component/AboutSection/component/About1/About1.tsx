@@ -44,14 +44,14 @@ type ContentProps = {
 };
 
 type AboutProps = {
-  content: ContentProps;
+  content: any;
   setContent: (content: ContentProps) => void;
   webColor: any;
   isEditable?: boolean;
 };
 
 export default function About1({
-  content,
+  content = {},
   setContent,
   webColor,
   isEditable = false,
@@ -73,7 +73,7 @@ export default function About1({
   };
 
   const addDescription = () => {
-    setEditContent((prev) => ({
+    setEditContent((prev : any) => ({
       ...prev,
       description: [...prev.description, ""],
     }));
@@ -81,7 +81,7 @@ export default function About1({
 
   const deleteDescription = (index: number) => {
     const newDescription = editContent.description.filter(
-      (_, idx) => idx !== index
+      (_ : any, idx : any) => idx !== index
     );
     setEditContent({ ...editContent, description: newDescription });
   };
@@ -111,7 +111,7 @@ export default function About1({
                   : colors?.headingColor?.dark
               }
             >
-              {content.title}
+              {content?.title}
             </Heading>
             <MotionText
               color={
@@ -125,30 +125,30 @@ export default function About1({
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2, duration: 0.5 }}
             >
-              {content.subtitle}
+              {content?.subtitle}
             </MotionText>
           </Box>
           {isEditable && (
             <Button
               color={
                 colorMode === "light"
-                  ? webColor.buttonTextColor?.light
-                  : webColor.buttonTextColor?.dark
+                  ? webColor?.buttonTextColor?.light
+                  : webColor?.buttonTextColor?.dark
               }
               backgroundColor={
                 colorMode === "light"
-                  ? webColor.buttonColor?.light
-                  : webColor.buttonColor?.dark
+                  ? webColor?.buttonColor?.light
+                  : webColor?.buttonColor?.dark
               }
               _hover={{
                 backgroundColor:
                   colorMode === "light"
-                    ? webColor.buttonHoverColor?.light
-                    : webColor.buttonHoverColor?.dark,
+                    ? webColor?.buttonHoverColor?.light
+                    : webColor?.buttonHoverColor?.dark,
                 color:
                   colorMode === "light"
-                    ? webColor.buttonTextHoverColor?.light
-                    : webColor.buttonTextHoverColor?.dark,
+                    ? webColor?.buttonTextHoverColor?.light
+                    : webColor?.buttonTextHoverColor?.dark,
               }}
               onClick={onOpen}
             >
@@ -170,7 +170,7 @@ export default function About1({
             transition={{ delay: 0.3, duration: 0.5 }}
           >
             <MotionImage
-              src={content.imageUrl}
+              src={content?.imageUrl}
               alt="School campus"
               w="100%"
               maxW={{ base: "100%", md: "520px" }}
@@ -188,7 +188,7 @@ export default function About1({
               spacing={6}
               textAlign="left"
             >
-              {content.description.map((paragraph, index) => (
+              {content?.description?.map((paragraph : any, index : number) => (
                 <MotionText key={index} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 * index }}>
                   {paragraph}
                 </MotionText>
@@ -232,13 +232,13 @@ export default function About1({
                   </TabPanel>
                   <TabPanel>
                     <VStack align="stretch" spacing={3}>
-                      {editContent.description.map((desc, index) => (
+                      {editContent.description.map((desc : any, index : number) => (
                         <Flex key={index} align="center">
                           <Textarea
                             placeholder="Description"
                             value={desc}
                             onChange={(e) =>
-                              setEditContent((prev) => {
+                              setEditContent((prev : any) => {
                                 const updatedDescriptions = [...prev.description];
                                 updatedDescriptions[index] = e.target.value;
                                 return { ...prev, description: updatedDescriptions };

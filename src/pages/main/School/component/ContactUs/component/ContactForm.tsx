@@ -9,8 +9,8 @@ import CustomInput from "../../../../../../config/component/CustomInput/CustomIn
 import { ContactValidation } from "../utils/validation";
 import { useSectionColorContext } from "../../../School";
 
-const ContactForm = observer(() => {
-  const {colors} = useSectionColorContext()
+const ContactForm = observer(({webColor} : any) => {
+  const { colors } = useSectionColorContext() || { colors: webColor || {} };
 
   const {
     auth: { handleContactMail, openNotification },

@@ -1,7 +1,7 @@
 import Curriculum1 from "./component/Curriculum1";
 
 const CurriculumSection = ({
-  content,
+  content = {},
   setContent,
   webColor,
   isEditable,

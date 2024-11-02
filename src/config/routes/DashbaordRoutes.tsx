@@ -1,6 +1,6 @@
 import { lazy } from "react";
 import { dashboard } from "../constant/routes";
-import { schoolRoutes } from "./component/schoolRoute";
+import { WebsiteCustomisationRoutes } from "./component/schoolRoute";
 const VerifyInvitationPage = lazy(() => import("../component/common/VerifyInvitationPages/VerifyInvitationPage"))
 
 const PersonalDetails = lazy(
@@ -426,6 +426,6 @@ export const DashboardRoutes = [
     privateRoutes : true
   },
 
-  // School
-  ...schoolRoutes
+  // Website customisation
+  ...WebsiteCustomisationRoutes
 ];

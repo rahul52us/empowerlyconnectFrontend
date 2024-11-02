@@ -40,8 +40,6 @@ const Faq1 = ({ setContent, content, webColor }: any) => {
     websiteMode: true,
   };
 
-  console.log('the colors are', colors)
-
 
   const buttonHoverColor = useColorModeValue("teal.50", "teal.700");
   const buttonExpandedColor = useColorModeValue("teal.100", "teal.600");
@@ -161,7 +159,7 @@ const Faq1 = ({ setContent, content, webColor }: any) => {
               : colors?.headingColor?.dark
           }
         >
-          {faqSection.title}
+          {faqSection?.title}
         </Heading>
         <Text
           mt={4}
@@ -173,7 +171,7 @@ const Faq1 = ({ setContent, content, webColor }: any) => {
               : colors?.subHeadingColor?.dark
           }
         >
-          {faqSection.subtitle}
+          {faqSection?.subtitle}
         </Text>
       </Flex>
       {websiteMode && (
@@ -181,24 +179,24 @@ const Faq1 = ({ setContent, content, webColor }: any) => {
           <Button
             color={
               colorMode === "light"
-                ? webColor.buttonTextColor?.light
-                : webColor.buttonTextColor?.dark
+                ? colors?.buttonTextColor?.light
+                : colors?.buttonTextColor?.dark
             }
             backgroundColor={
               colorMode === "light"
-                ? webColor.buttonColor?.light
-                : webColor.buttonColor?.dark
+                ? colors?.buttonColor?.light
+                : colors?.buttonColor?.dark
             }
             _hover={{
               backgroundColor:
                 colorMode === "light"
-                  ? webColor.buttonHoverColor?.light
-                  : webColor.buttonHoverColor?.dark,
+                  ? colors?.buttonHoverColor?.light
+                  : colors?.buttonHoverColor?.dark,
 
               color:
                 colorMode === "light"
-                  ? webColor.buttonTextHoverColor?.light
-                  : webColor.buttonTextHoverColor?.dark,
+                  ? colors?.buttonTextHoverColor?.light
+                  : colors?.buttonTextHoverColor?.dark,
             }}
             onClick={handleAddFaq}
             leftIcon={<AddIcon />}
@@ -208,24 +206,24 @@ const Faq1 = ({ setContent, content, webColor }: any) => {
           <Button
             color={
               colorMode === "light"
-                ? webColor.buttonTextColor?.light
-                : webColor.buttonTextColor?.dark
+                ? colors.buttonTextColor?.light
+                : colors.buttonTextColor?.dark
             }
             backgroundColor={
               colorMode === "light"
-                ? webColor.buttonColor?.light
-                : webColor.buttonColor?.dark
+                ? colors.buttonColor?.light
+                : colors.buttonColor?.dark
             }
             _hover={{
               backgroundColor:
                 colorMode === "light"
-                  ? webColor.buttonHoverColor?.light
-                  : webColor.buttonHoverColor?.dark,
+                  ? colors.buttonHoverColor?.light
+                  : colors.buttonHoverColor?.dark,
 
               color:
                 colorMode === "light"
-                  ? webColor.buttonTextHoverColor?.light
-                  : webColor.buttonTextHoverColor?.dark,
+                  ? colors.buttonTextHoverColor?.light
+                  : colors.buttonTextHoverColor?.dark,
             }}
             onClick={handleSaveAllFaqs}
             ml={2}
@@ -235,7 +233,7 @@ const Faq1 = ({ setContent, content, webColor }: any) => {
         </Flex>
       )}
       <Accordion allowToggle>
-        {faqSection.faqData.map((faq: any, index: number) => (
+        {Array.isArray(faqSection.faqData) && faqSection.faqData.map((faq: any, index: number) => (
           <AccordionItem
             key={index}
             border="1px"
@@ -279,30 +277,30 @@ const Faq1 = ({ setContent, content, webColor }: any) => {
                   icon={<EditIcon
                     color={
                       colorMode === "light"
-                        ? webColor?.iconTextColor?.light
-                        : webColor?.iconTextColor?.dark
+                        ? colors?.iconTextColor?.light
+                        : colors?.iconTextColor?.dark
                     }
                     _hover={{
                         color:
                           colorMode === "light"
-                            ? webColor?.iconTextHoverColor?.light
-                            : webColor?.iconTextHoverColor?.dark,
+                            ? colors?.iconTextHoverColor?.light
+                            : colors?.iconTextHoverColor?.dark,
                       }}
                   />}
                   color={
                     colorMode === "light"
-                      ? webColor?.buttonTextHoverColor?.light
-                      : webColor?.buttonTextHoverColor?.dark
+                      ? colors?.buttonTextHoverColor?.light
+                      : colors?.buttonTextHoverColor?.dark
                   }                _hover={{
                       backgroundColor:
                         colorMode === "light"
-                          ? webColor?.buttonHoverColor?.light
-                          : webColor?.buttonHoverColor?.dark,
+                          ? colors?.buttonHoverColor?.light
+                          : colors?.buttonHoverColor?.dark,
                     }}
                     backgroundColor={
                       colorMode === "light"
-                        ? webColor?.buttonColor?.light
-                        : webColor?.buttonColor?.dark
+                        ? colors?.buttonColor?.light
+                        : colors?.buttonColor?.dark
                     }
                   aria-label="Edit FAQ"
                   onClick={() => handleEditFaq(index)}

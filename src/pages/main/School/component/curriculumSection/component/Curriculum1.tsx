@@ -46,8 +46,8 @@ const Curriculum1 = ({ content, setContent, webColor, isEditable, titleColor, bo
   });
 
   // Separate states for title and subtitle
-  const [editedTitle, setEditedTitle] = useState(content.title);
-  const [editedSubtitle, setEditedSubtitle] = useState(content.description);
+  const [editedTitle, setEditedTitle] = useState(content?.title);
+  const [editedSubtitle, setEditedSubtitle] = useState(content?.description);
 
   const openEditSectionModal = (sectionIndex : any = null) => {
     if (sectionIndex !== null) {
@@ -115,7 +115,7 @@ const Curriculum1 = ({ content, setContent, webColor, isEditable, titleColor, bo
         })}
         gap={6}
       >
-        {content.sections.map((section : any, index : number) => (
+        {Array.isArray(content.sections) ? content?.sections?.map((section : any, index : number) => (
           <GridItem key={index}>
             <AnimatedBox
               p={6}
@@ -144,7 +144,7 @@ const Curriculum1 = ({ content, setContent, webColor, isEditable, titleColor, bo
               </Text>
             </AnimatedBox>
           </GridItem>
-        ))}
+        )) : []}
       </Grid>
 
       {isEditable && (

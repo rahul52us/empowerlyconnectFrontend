@@ -1,12 +1,31 @@
 import { lazy } from "react";
-import {  web } from "../../constant/routes";
-const SchoolDashboard = lazy(() => import("../../../pages/Dashboard/SchoolDashboard/SchoolDashboard"))
+import { web } from "../../constant/routes";
+import WebsiteBuilder from "../../../pages/Dashboard/WebsiteCustomisation/component/WebsiteBuilder";
+const WebsiteCustomisationIndex = lazy(
+  () =>
+    import(
+      "../../../pages/Dashboard/WebsiteCustomisation/WebsiteCustomisationIndex"
+    )
+);
+const WebsiteBuildingIndex = lazy(
+  () =>
+    import("../../../pages/Dashboard/WebsiteCustomisation/WebsitebuildingIndex")
+);
 
-export const schoolRoutes  = [
+export const WebsiteCustomisationRoutes = [
   {
-    element : <SchoolDashboard />,
-    path: web.schoolDashboard.index,
-    publicRoutes:true
+    element: <WebsiteCustomisationIndex />,
+    path: web.websiteCustomisation.index,
+    publicRoutes: true,
+  },
+  {
+    element: <WebsiteBuildingIndex />,
+    path: web.websiteCustomisation.create,
+    publicRoutes: true,
+  },
+  {
+    element: <WebsiteBuilder />,
+    path: web.websiteCustomisation.edit,
+    publicRoutes: true,
   },
 ];
-

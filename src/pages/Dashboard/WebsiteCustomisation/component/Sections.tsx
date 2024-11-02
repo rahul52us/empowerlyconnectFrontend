@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite"
-import ColorSettingsForm from ".././component/ColorSettingsForm"
+import ColorSettingsForm from "./ColorSettingsForm"
 import AboutSection from "../../../main/School/component/AboutSection/AboutSection"
 import { useState } from "react"
 

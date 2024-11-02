@@ -139,11 +139,13 @@ export const privateMain = {
 export const web = {
   index : "/:title",
   school : '/school',
-  schoolDashboard : {
-    index : `${dashboardName}/school`
+  websiteCustomisation : {
+    index : `/${dashboardName}/domain`,
+    create : `/${dashboardName}/domain/create`,
+    edit : `/${dashboardName}/domain/:domainName`
   },
   ecommerce : {
-    index : `${ecommerce}`,
+    index : `/${ecommerce}`,
     products: `${ecommerce}/products`
   }
 }

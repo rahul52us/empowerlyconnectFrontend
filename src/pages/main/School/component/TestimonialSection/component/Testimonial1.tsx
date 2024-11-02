@@ -59,13 +59,13 @@ const Testimonial1 = ({ content, setContent, isEditable, webColor }: any) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentTestimonial, setCurrentTestimonial] = useState<any>(null);
   const [editedContent, setEditedContent] = useState({
-    title: content.title || "What Our Community Says",
-    subTitle: content.subTitle || "Hear from parents, students, and alumni about their experiences.",
-    testimonials: content.sections.map(({ name, testimonial, imageUrl }: any) => ({
+    title: content?.title || "What Our Community Says",
+    subTitle: content?.subTitle || "Hear from parents, students, and alumni about their experiences.",
+    testimonials: Array.isArray(content?.sections) ? content?.sections?.map(({ name, testimonial, imageUrl }: any) => ({
       name,
       testimonial,
       imageUrl,
-    })),
+    })) : [],
   });
 
   const openEditModal = (testimonialIndex: number | null) => {

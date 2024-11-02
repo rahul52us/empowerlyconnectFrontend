@@ -1,7 +1,7 @@
 import Testimonial1 from "./component/Testimonial1";
 
 const TestimonialSection = ({
-  content,
+  content = {},
   setContent,
   isEditable,
   webColor,

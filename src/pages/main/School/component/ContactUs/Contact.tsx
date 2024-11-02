@@ -29,8 +29,8 @@ const BoxStyleFirst = styled(Box)`
   }
 `;
 
-const Contact = observer(() => {
-  const {colors} = useSectionColorContext()
+const Contact = observer(({webColor} : any) => {
+  const { colors } = useSectionColorContext() || { colors: webColor || {} };
   const iconColor = useColorModeValue(colors?.iconColor?.light, colors?.iconColor?.dark);
 
   return (
@@ -74,7 +74,7 @@ const Contact = observer(() => {
       >
         {/* Contact Form */}
         <Box p={{ base: 2, md: 6 }} borderRadius="lg" boxShadow="lg">
-          <ContactForm />
+          <ContactForm webColor={webColor} />
         </Box>
 
         {/* Contact Information and Animation */}
