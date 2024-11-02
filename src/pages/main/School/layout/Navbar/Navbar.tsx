@@ -121,7 +121,6 @@ const Header: React.FC<HeaderProps> = ({
           cursor="pointer"
         />
       </Flex>
-
       <Flex
         gap={8}
         align="center"
@@ -130,7 +129,6 @@ const Header: React.FC<HeaderProps> = ({
         color={colorMode === "dark" ? "white" : "gray.700"}
       >
         {linkElements.slice(0, 5)}
-
         <Menu>
           <MenuButton
             as={Text}
@@ -217,6 +215,12 @@ const Header: React.FC<HeaderProps> = ({
               bg: contactButtonColor,
               transform: "scale(1.05)",
               transition: "transform 0.3s ease",
+            }}
+            onClick={() => {
+              const contactLink: any = linksConfig.find(
+                (link: any) => link.id === "contact"
+              );
+              handleLinkClick(contactLink?.id);
             }}
             px={6}
           >

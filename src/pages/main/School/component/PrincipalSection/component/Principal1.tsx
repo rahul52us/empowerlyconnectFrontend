@@ -83,11 +83,7 @@ export default function Principal1({ content, setContent, webColor }: any) {
       transition={{ duration: 0.5 }}
     >
       <Container
-        maxW="100%"
-        m={{ base: 2, md: 5 }}
-        py={6}
-        bg={bg}
-        p={{ base: 5, md: 10 }}
+        maxW={{base : '98%', md : "88%"}}
       >
         <Flex direction="column" align="center" justify="center" mb={8}>
           <Heading

@@ -119,7 +119,18 @@ const sectionOptions: any = {
       key: "principal1",
       layouts: ["principal1", "principal2"],
     },
-    { label: "Faq", page: "faq", key: "faq1", layouts: ["faq1", "faq2"] },
+    {
+      label: "Teachers",
+      page: "teachers",
+      key: "teachers",
+      layouts: ["teachers1", "teachers2"],
+    },
+    {
+      label: "Toppers",
+      page: "toppers",
+      key: "toppers",
+      layouts: ["toppers1", "toppers2"],
+    },
     {
       label: "Curriculum",
       page: "curriculum",
@@ -132,17 +143,24 @@ const sectionOptions: any = {
       key: "testimonial1",
       layouts: ["testimonial1", "testimonial2"],
     },
+    { label: "Faq", page: "faq", key: "faq1", layouts: ["faq1", "faq2"] },
     {
       label: "Contact",
       page: "contact",
       key: "contact1",
       layouts: ["contact1", "contact2"],
     },
+    {
+      label: "Map",
+      page: "map",
+      key: "map1",
+      layouts: ["map1", "map2"],
+    },
   ],
 };
 
 const WebsiteBuildingIndex = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [step, setStep] = useState<number>(1);
   const [selectedModel, setSelectedModel] = useState<string | null>(null);
   const [selectedSections, setSelectedSections] = useState<string[]>([]);
@@ -218,7 +236,7 @@ const WebsiteBuildingIndex = () => {
       setTimeout(() => {
         onClose();
         setIsSubmitted(false);
-        navigate(`${web.websiteCustomisation.index}/${domainName}`)
+        navigate(`${web.websiteCustomisation.index}/${domainName}`);
       }, 4000);
     } catch (err: any) {
       openNotification({

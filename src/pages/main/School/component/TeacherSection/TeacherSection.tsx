@@ -3,8 +3,8 @@ import TeacherCard from "./TeacherCard";
 import { teachersData } from "../../Constant/constants";
 import { useSectionColorContext } from "../../School";
 
-const TeacherSection = () => {
-  const {colors} = useSectionColorContext()
+const TeacherSection = ({webColor} : any) => {
+  const { colors } = useSectionColorContext() || { colors: webColor || {} };
 
   const bg = useColorModeValue("gray.50", "gray.900");
 
@@ -57,7 +57,7 @@ const TeacherSection = () => {
             bio={teacher.bio}
             index={index}
             totalItems={teachersData.length}
-            colors={colors}
+            webColor={colors}
           />
         ))}
       </Grid>

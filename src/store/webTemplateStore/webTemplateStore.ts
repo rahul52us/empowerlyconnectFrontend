@@ -9,7 +9,8 @@ class WebTemplateStore {
       web: observable,
       getWeb: action,
       createWebTemplate:action,
-      getWebTemplate:action
+      getWebTemplate:action,
+      updateWebTemplate:action
     });
   }
 
@@ -33,6 +34,15 @@ class WebTemplateStore {
   createWebTemplate = async (sendData : any) => {
     try {
       const { data } = await axios.post("/webTemplate/create", {...sendData,company : store.auth.getCurrentCompany()});
+      return data;
+    } catch (err: any) {
+      return Promise.reject(err?.response || err);
+    }
+  }
+
+  updateWebTemplate = async (sendData : any) => {
+    try {
+      const { data } = await axios.put("/webTemplate", {...sendData,company : store.auth.getCurrentCompany()});
       return data;
     } catch (err: any) {
       return Promise.reject(err?.response || err);

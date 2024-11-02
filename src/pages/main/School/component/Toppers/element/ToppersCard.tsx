@@ -20,7 +20,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { FaStar } from "react-icons/fa";
-import { useSectionColorContext } from "../../School";
+import { useSectionColorContext } from "../../../School";
 
 export default function ToppersCard({
   percentage,
@@ -28,9 +28,10 @@ export default function ToppersCard({
   img,
   year,
   classs,
-  bio
+  bio,
+  webColor
 }: any) {
-  const {colors} = useSectionColorContext()
+  const { colors } = useSectionColorContext() || { colors: webColor || {} };
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 

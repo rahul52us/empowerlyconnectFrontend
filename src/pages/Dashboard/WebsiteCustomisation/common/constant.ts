@@ -1,130 +1,132 @@
-export const schoolInitialValues = {
-    metaData: {
-      name: "Harmony Institute",
-      title: "Welcome to Harmony Institute",
-      description: "Cultivating Minds, Inspiring Futures.",
-      keywords: "education, harmony, learning, innovation",
-      author: "John Smith",
+export const initialValues = {
+  metaData: {
+      name: "Your Organization Name",
+      title: "Welcome to [Your Organization]",
+      description: "Empowering Individuals, Inspiring Growth.",
+      keywords: "education, empowerment, learning, innovation, community",
+      author: "Your Name",
       viewport: "width=device-width, initial-scale=1",
       language: "en-US",
       robots: "index, follow",
       themeColor: "#006699",
-      ogTitle: "Harmony Institute",
-      ogDescription: "Cultivating Minds, Inspiring Futures.",
-      ogImageUrl: "https://example.com/harmony-institute.jpg",
+      ogTitle: "[Your Organization]",
+      ogDescription: "Empowering Individuals, Inspiring Growth.",
+      ogImageUrl: "https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&q=80&w=1080",
       faviconUrl: "https://example.com/favicon.ico",
-      canonicalUrl: "https://example.com/harmony-institute",
-    },
+      canonicalUrl: "https://example.com/your-organization",
+  },
 
-    hero: [
+  hero: [
       {
-        image: "https://img.freepik.com/free-photo/sunset-over-harmony-institute_23-2148822078.jpg?t=st=1728569941~exp=1728573541~hmac=a1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcde&w=1060",
-        title: "Explore Your Potential",
-        text: "Join us at Harmony Institute where your journey begins.",
+          image: "https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&q=80&w=1080",
+          title: "Unlock Your True Potential",
+          text: "Join us in a transformative journey that fosters personal and academic growth.",
       },
       {
-        image: "https://img.freepik.com/free-photo/students-participating-in-activities_23-2148822080.jpg?t=st=1728569941~exp=1728573541~hmac=a1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcde&w=1060",
-        title: "Innovative Learning Experiences",
-        text: "Discover a new way of learning with us.",
+          image: "https://i0.wp.com/picjumbo.com/wp-content/uploads/amazing-stone-path-in-forest-free-image.jpg?w=600&quality=80",
+          title: "Innovative Learning Experiences Await",
+          text: "Explore new pathways of knowledge and creativity with our unique programs.",
       },
       {
-        image: "https://img.freepik.com/free-photo/group-of-students-celebrating-graduation_23-2148822085.jpg?t=st=1728569941~exp=1728573541~hmac=a1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcde&w=1060",
-        title: "Together We Achieve More",
-        text: "At Harmony Institute, teamwork makes the dream work.",
+          image: "https://st5.depositphotos.com/35914836/63482/i/450/depositphotos_634821438-stock-photo-beautiful-sunset-sea.jpg",
+          title: "Community and Collaboration at Its Best",
+          text: "Together, we cultivate an environment where everyone thrives through teamwork.",
       },
-    ],
+  ],
 
-    about: {
-      title: "About Harmony Institute",
+  about: {
+      title: "About Us",
       subtitle: "Fostering Growth and Innovation",
       description: [
-        "Harmony Institute is dedicated to delivering an outstanding educational experience that encourages students to thrive in all aspects of life.",
-        "Our approach emphasizes creativity, critical thinking, and collaboration, equipping students for future challenges.",
-        "Established in 2010, we prioritize innovative teaching methods and personalized learning to cater to individual student needs.",
-        "With modern facilities and a devoted faculty, we aim to empower every student to realize their full potential.",
+          "At [Your Organization], we are committed to providing an exceptional experience that empowers individuals to excel.",
+          "Our approach integrates creativity, critical thinking, and collaboration, equipping participants to navigate future challenges.",
+          "Founded in [Year], we prioritize innovative teaching methods and personalized learning that cater to diverse needs.",
+          "With state-of-the-art facilities and a passionate team, we strive to help every individual realize their full potential.",
       ],
-      imageUrl: "https://img.freepik.com/free-photo/harmony-institute-building_23-2148822090.jpg",
-    },
+      imageUrl: "https://media.istockphoto.com/id/1402604850/photo/the-word-about-us-on-wooden-cubes-business-communication-and-information.jpg?s=612x612&w=0&k=20&c=Oc2HZUPVJRXFsjTwKVgWY_ddWrKeQUG0KCyKUGef-ig=",
+  },
 
-    principal: {
-      name: "Ms. Sarah Williams",
-      imageUrl: "https://img.freepik.com/free-photo/school-principal-waving_23-2148822095.jpg?t=st=1728569941~exp=1728573541~hmac=a1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcde&w=1060",
-      title: "A Message From Our Principal",
-      subheading: "Empowering Students Through Commitment and Vision",
+  principal: {
+      name: "Your Leader's Name",
+      imageUrl: "https://images.unsplash.com/photo-1517841905240-472988babdf9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&q=80&w=1080",
+      title: "A Message From Our Leader",
+      subheading: "Guiding You Towards Success with Commitment and Vision",
       bio: [
-        "Ms. Williams brings over a decade of experience in educational leadership, devoted to creating a nurturing and innovative learning environment at Harmony Institute.",
-        "Her goal is to provide a safe and stimulating atmosphere where every student can excel.",
+          "[Your Leader's Name] brings extensive experience in educational leadership, dedicated to nurturing an environment of growth and innovation.",
+          "Their mission is to create a supportive atmosphere where every participant feels valued and inspired to achieve.",
       ],
-    },
+  },
 
-    faq: {
+  faq: {
       title: "Frequently Asked Questions",
-      subtitle: "Find Answers to Common Inquiries",
+      subtitle: "Your Questions Answered",
       faqData: [
-        {
-          question: "How do I apply for admission?",
-          answer: [
-            "Start by visiting our admissions section and fill out the online form.",
-            "Make sure to upload necessary documents such as transcripts and recommendations.",
-            "You will be invited for an interview with our admissions committee.",
-            "Expect to hear back regarding your application status within 10 business days.",
-          ],
-        },
-        {
-          question: "What clubs and organizations are available?",
-          answer: [
-            "Harmony Institute offers a wide range of clubs, including sports, arts, and leadership programs.",
-            "Students can engage in various activities such as environmental initiatives, coding clubs, and performing arts.",
-            "We regularly host events that allow students to demonstrate their skills and creativity.",
-          ],
-        },
+          {
+              question: "How do I get involved?",
+              answer: [
+                  "Visit our website to explore our programs and select the one that interests you.",
+                  "Complete the necessary application forms and submit any required documentation.",
+                  "You will receive a confirmation and further details about your involvement shortly.",
+              ],
+          },
+          {
+              question: "What opportunities are available?",
+              answer: [
+                  "We offer a diverse array of programs, including workshops, courses, and community initiatives.",
+                  "Participants can engage in activities tailored to their interests and goals.",
+                  "Stay updated with announcements about our upcoming offerings.",
+              ],
+          },
       ],
-    },
+  },
 
-    curriculum: {
+  curriculum: {
       title: "Our Curriculum",
-      description: "Our curriculum emphasizes a well-rounded education, balancing academic rigor with personal development.",
+      description: "We emphasize a holistic approach to education, balancing academic excellence with personal development.",
       sections: [
-        {
-          title: "Preschool",
-          content: "Fun and interactive activities designed to develop early learning skills.",
-        },
-        {
-          title: "Primary School",
-          content: "A comprehensive curriculum that promotes inquiry, creativity, and critical thinking.",
-        },
-        {
-          title: "Secondary School",
-          content: "Challenging courses and electives that prepare students for higher education and careers.",
-        },
+          {
+              title: "Early Learning",
+              content: "Engaging activities designed to build foundational skills and foster curiosity.",
+          },
+          {
+              title: "Core Programs",
+              content: "A comprehensive curriculum that encourages inquiry, creativity, and critical thinking.",
+          },
+          {
+              title: "Advanced Learning",
+              content: "Rigorous courses and electives that prepare individuals for higher education and professional careers.",
+          },
       ],
-    },
+  },
 
-    testimonial: {
-      title : "What our Community Says",
-      subTitle : "this is subtitle for the users and it is working fine",
-      sections : [{
-        id: 1,
-        name: "Jessica Taylor",
-        testimonial: "Harmony Institute has greatly impacted my daughter's confidence and love for learning!",
-        imageUrl: "https://via.placeholder.com/100",
-      },
-      {
-        id: 2,
-        name: "Daniel Clark",
-        testimonial: "The supportive community at this school has made my transition into high school seamless.",
-        imageUrl: "https://via.placeholder.com/100",
-      },
-      {
-        id: 3,
-        name: "Ava Johnson",
-        testimonial: "I am grateful for the personalized attention and encouragement I received from my teachers.",
-        imageUrl: "https://via.placeholder.com/100",
-      },
-      {
-        id: 4,
-        name: "Lucas Martinez",
-        testimonial: "Harmony Institute has been a great place for my child to grow and explore their interests.",
-        imageUrl: "https://via.placeholder.com/100",
-      }]
-  }}
+  testimonial: {
+      title: "What Our Community Says",
+      subTitle: "Voices from Our Participants",
+      sections: [
+          {
+              id: 1,
+              name: "Jessica Taylor",
+              testimonial: "This organization has profoundly impacted my daughter's confidence and love for learning!",
+              imageUrl: "https://static.vecteezy.com/system/resources/thumbnails/026/497/734/small_2x/businessman-on-isolated-png.png",
+          },
+          {
+              id: 2,
+              name: "Daniel Clark",
+              testimonial: "The supportive community here has made my transition into high school seamless and enjoyable.",
+              imageUrl: "https://thumbs.dreamstime.com/b/business-person-gesturing-white-background-19126378.jpg",
+          },
+          {
+              id: 3,
+              name: "Ava Johnson",
+              testimonial: "I am incredibly grateful for the personalized attention and encouragement I received from my teachers.",
+              imageUrl: "https://static.vecteezy.com/system/resources/previews/009/887/693/non_2x/male-man-african-american-black-diversity-person-afro-hair-ethnic-happy-smile-model-close-up-face-enjoyment-hashion-lifestyle-professional-human-father-boy-business-education-young-adult-teenage-photo.jpg",
+          },
+          {
+              id: 4,
+              name: "Lucas Martinez",
+              testimonial: "This organization has been a wonderful place for my child to grow and explore their interests.",
+              imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQBFy0j_72yEKBKNRbPbCzxfNxq1H9Y57ygg&s",
+          },
+      ],
+  },
+};

@@ -21,16 +21,16 @@ interface MetadataSettingsFormProps {
     title: string;
     description: string;
     keywords: string;
-    author?: string;                  // New field
-    viewport?: string;                // New field
-    language?: string;                // New field
-    robots?: string;                  // New field
-    themeColor?: string;              // New field
-    ogTitle?: string;                 // New field
-    ogDescription?: string;           // New field
-    ogImageUrl?: string;              // New field
-    faviconUrl?: string;              // New field
-    canonicalUrl?: string;            // New field
+    author?: string;
+    viewport?: string;
+    language?: string;
+    robots?: string;
+    themeColor?: string;
+    ogTitle?: string;
+    ogDescription?: string;
+    ogImageUrl?: string;
+    faviconUrl?: string;
+    canonicalUrl?: string;
   };
   setContent: (newMetadata: any) => void;
 }

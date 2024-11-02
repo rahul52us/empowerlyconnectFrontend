@@ -14,12 +14,12 @@ import { useRef } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
-import ToppersCard from "./ToppersCard";
-import { toppersData } from "../../Constant/constants";
-import { useSectionColorContext } from "../../School";
+import { useSectionColorContext } from "../../../School";
+import { toppersData } from "../../../Constant/constants";
+import ToppersCard from "../element/ToppersCard";
 
-export default function TopperSlider() {
-  const {colors} = useSectionColorContext()
+export default function Topper1({ webColor } : any) {
+  const { colors } = useSectionColorContext() || { colors: webColor || {} };
   const sliderRef: any = useRef(null);
   const { colorMode } = useColorMode();
 
@@ -90,6 +90,7 @@ export default function TopperSlider() {
                 classs={item.className}
                 year={item.year}
                 percentage={item.percentage}
+                webColor={colors}
               />
             </Box>
           ))}

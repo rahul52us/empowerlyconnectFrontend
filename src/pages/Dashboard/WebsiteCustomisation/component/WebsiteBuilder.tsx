@@ -16,7 +16,7 @@ import {
   DrawerContent,
   Button,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaPlus, FaMoon, FaSun } from "react-icons/fa";
 import FaqSection from "../../../main/School/component/FaqSection/FaqSection";
 import AboutSection from "../../../main/School/component/AboutSection/AboutSection";
@@ -29,16 +29,24 @@ import store from "../../../../store/store";
 import { getStatusType } from "../../../../config/constant/statusCode";
 import CurriculumSection from "../../../main/School/component/curriculumSection/CurriculumSection";
 import TestimonialsSection from "../../../main/School/component/TestimonialSection/TestimonialSection";
-import { schoolInitialValues } from "../common/constant";
+import { initialValues } from "../common/constant";
 import Contact from "../../../main/School/component/ContactUs/Contact";
+import { useParams } from "react-router-dom";
+import WebTempSidebar from "./WebTempSidebar";
+import MapSection from "../../../main/School/component/MapSection/MapSection";
+import TeacherSection from "../../../main/School/component/TeacherSection/TeacherSection";
+import TopperSection from "../../../main/School/component/Toppers/TopperSection";
 
 const WebsiteBuilder = observer(() => {
+  const { domainName } = useParams();
+  const [webTempId, setWebTempId] = useState<any>(null);
+  const [webType, setWebType] = useState("school");
   const {
-    WebTemplateStore: { createWebTemplate },
+    WebTemplateStore: { updateWebTemplate, getWebTemplate },
     auth: { openNotification },
   } = store;
 
-  const [webContent, setWebContent] = useState(schoolInitialValues);
+  const [webContent, setWebContent] = useState<any>(initialValues);
   const [colorSetting, setColorSetting] = useState(initialColorSettings());
   const { colorMode, toggleColorMode } = useColorMode();
   const [sections, setSections] = useState<any>(getInitialSections());
@@ -63,15 +71,106 @@ const WebsiteBuilder = observer(() => {
   function getInitialSections() {
     return [
       { label: "MetaData", page: "metaData", key: "metaData1" },
-      { label: "Hero", page: "hero", key: "hero1", layouts: ["hero1", "hero2"] },
-      { label: "About", page: "about", key: "about1", layouts: ["about1", "about2"] },
-      { label: "Principal", page: "principal", key: "principal1", layouts: ["principal1", "principal2"] },
+      {
+        label: "Hero",
+        page: "hero",
+        key: "hero1",
+        layouts: ["hero1", "hero2"],
+      },
+      {
+        label: "About",
+        page: "about",
+        key: "about1",
+        layouts: ["about1", "about2"],
+      },
+      {
+        label: "Principal",
+        page: "principal",
+        key: "principal1",
+        layouts: ["principal1", "principal2"],
+      },
+      {
+        label: "Teachers",
+        page: "teachers",
+        key: "teachers",
+        layouts: ["teachers1", "teachers2"],
+      },
+      {
+        label: "Toppers",
+        page: "toppers",
+        key: "toppers",
+        layouts: ["toppers1", "toppers2"],
+      },
+      {
+        label: "Curriculum",
+        page: "curriculum",
+        key: "curriculum1",
+        layouts: ["curriculum1", "curriculum2"],
+      },
+      {
+        label: "Testimonial",
+        page: "testimonial",
+        key: "testimonial1",
+        layouts: ["testimonial1", "testimonial2"],
+      },
       { label: "Faq", page: "faq", key: "faq1", layouts: ["faq1", "faq2"] },
-      { label: "Curriculum", page: "curriculum", key: "curriculum1", layouts: ["curriculum1", "curriculum2"] },
-      { label: "Testimonial", page: "testimonial", key: "testimonial1", layouts: ["testimonial1", "testimonial2"] },
-      { label: "Contact", page: "contact", key: "contact1", layouts: ["contact1", "contact2"] },
+      {
+        label: "Contact",
+        page: "contact",
+        key: "contact1",
+        layouts: ["contact1", "contact2"],
+      },
+      {
+        label: "Map",
+        page: "map",
+        key: "map1",
+        layouts: ["map1", "map1"],
+      },
     ];
   }
+  useEffect(() => {
+    getWebTemplate(domainName)
+      .then((dt: any) => {
+        const orderedSections = dt.data?.sectionsLayout
+          .map((preferenceId: any) => {
+            const section: any = getInitialSections().find(
+              (section: any) => section.page === preferenceId.page
+            );
+            if (section) {
+              return {
+                ...section,
+                props: dt?.data?.webInfo?.sections[section.id],
+              };
+            }
+            return undefined;
+          })
+          .filter((section: any) => section !== undefined);
+        setColorSetting({
+          ...initialColorSettings(),
+          ...dt?.data?.webInfo?.colorSetting,
+        });
+        setWebTempId(dt?.data?._id);
+        setWebType(dt.data?.webType);
+        setSections(orderedSections);
+        const mergedContent = {
+          ...initialValues,
+          ...dt.data?.webInfo?.sections,
+          metaData: {
+            ...initialValues?.metaData,
+            ...dt.data?.webInfo?.sections?.metaData,
+          },
+        };
+        setWebContent(mergedContent);
+      })
+      .catch(() => {
+        // openNotification({
+        //   title: "GET TEMPLATE SUCCESSFULLY",
+        //   message: err.message,
+        //   type: "error",
+        // });
+      })
+      .finally(() => {});
+  }, [openNotification]);
 
   const handleKeyPress = (section: string, e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
@@ -81,18 +180,20 @@ const WebsiteBuilder = observer(() => {
 
   const saveWebTemplate = async () => {
     try {
-      const data = await createWebTemplate({
+      const data = await updateWebTemplate({
         sectionsLayout: sections,
         webInfo: webContent,
-        webType: "school",
-        colorSetting
+        webType: webType,
+        colorSetting,
+        id: webTempId,
+        status: "isApproved",
       });
       openNotification({
         title: "Successfully Created",
         message: `${data.message}`,
         type: "success",
       });
-    } catch (err : any) {
+    } catch (err: any) {
       openNotification({
         title: "Error",
         message: err?.data?.message || "An error occurred",
@@ -106,22 +207,26 @@ const WebsiteBuilder = observer(() => {
       case "metaData":
         return (
           <Box>
-          <MetadataSettingsForm
-            content={webContent.metaData}
-            setContent={(newContent: any) => setWebContent({ ...webContent, metaData: newContent })}
-          />
+            <MetadataSettingsForm
+              content={webContent.metaData}
+              setContent={(newContent: any) =>
+                setWebContent({ ...webContent, metaData: newContent })
+              }
+            />
           </Box>
         );
       case "about":
         return (
           <Box m={-6} mt={-8} overflow="hidden">
-          <AboutSection
-            selectedLayout={currentSection}
-            webColor={colorSetting}
-            isEditable={true}
-            content={webContent.about}
-            setContent={(newContent: any) => setWebContent({ ...webContent, about: newContent })}
-          />
+            <AboutSection
+              selectedLayout={currentSection}
+              webColor={colorSetting}
+              isEditable={true}
+              content={webContent.about}
+              setContent={(newContent: any) =>
+                setWebContent({ ...webContent, about: newContent })
+              }
+            />
           </Box>
         );
       case "faq":
@@ -129,29 +234,66 @@ const WebsiteBuilder = observer(() => {
           <FaqSection
             content={webContent.faq}
             webColor={colorSetting}
-            setContent={(newContent: any) => setWebContent({ ...webContent, faq: newContent })}
+            setContent={(newContent: any) =>
+              setWebContent({ ...webContent, faq: newContent })
+            }
           />
         );
       case "hero":
-        return <Box overflowY="auto"> <HeroCarousal content={webContent.hero} /></Box>
+        return (
+          <Box overflowY="auto">
+            {" "}
+            <HeroCarousal content={webContent.hero} />
+          </Box>
+        );
       case "principal":
         return (
           <Box m={-6} mt={-8} overflow="hidden">
-          <PrincipalSection
-            isEditable={true}
-            webColor={colorSetting}
-            content={webContent.principal}
-            setContent={(newContent: any) => setWebContent({ ...webContent, principal: newContent })}
-          />
+            <PrincipalSection
+              isEditable={true}
+              webColor={colorSetting}
+              content={webContent.principal}
+              setContent={(newContent: any) =>
+                setWebContent({ ...webContent, principal: newContent })
+              }
+            />
           </Box>
         );
+      case "teachers":
+          return (
+            <Box m={-6} mt={-8} overflow="hidden">
+              <TeacherSection
+                isEditable={true}
+                webColor={colorSetting}
+                content={webContent.teacher}
+                setContent={(newContent: any) =>
+                  setWebContent({ ...webContent, teacher : newContent })
+                }
+              />
+            </Box>
+          );
+        case "toppers":
+            return (
+              <Box m={-6} mt={-8} overflow="hidden">
+                <TopperSection
+                  isEditable={true}
+                  webColor={colorSetting}
+                  content={webContent.teacher}
+                  setContent={(newContent: any) =>
+                    setWebContent({ ...webContent, teacher : newContent })
+                  }
+                />
+              </Box>
+            );
       case "curriculum":
         return (
           <CurriculumSection
             isEditable={true}
             webColor={colorSetting}
             content={webContent.curriculum}
-            setContent={(newContent: any) => setWebContent({ ...webContent, curriculum: newContent })}
+            setContent={(newContent: any) =>
+              setWebContent({ ...webContent, curriculum: newContent })
+            }
           />
         );
       case "testimonial":
@@ -160,30 +302,53 @@ const WebsiteBuilder = observer(() => {
             isEditable={true}
             webColor={colorSetting}
             content={webContent.testimonial}
-            setContent={(newContent: any) => setWebContent({ ...webContent, testimonial: newContent })}
+            setContent={(newContent: any) =>
+              setWebContent({ ...webContent, testimonial: newContent })
+            }
           />
         );
       case "contact":
-          return (
-            <Box m={-8} mt={-10}>
+        return (
+          <Box m={-8} mt={-10}>
             <Contact
               isEditable={true}
               webColor={colorSetting}
               content={webContent.testimonial}
-              setContent={(newContent: any) => setWebContent({ ...webContent, testimonial: newContent })}
+              setContent={(newContent: any) =>
+                setWebContent({ ...webContent, testimonial: newContent })
+              }
             />
-            </Box>
-          );
+          </Box>
+        );
+      case "map":
+        return (
+          <Box m={-8} mt={-10}>
+            <MapSection
+              isEditable={true}
+              webColor={colorSetting}
+              content={webContent.testimonial}
+              setContent={(newContent: any) =>
+                setWebContent({ ...webContent, map: newContent })
+              }
+            />
+          </Box>
+        );
       default:
         return null;
     }
   };
 
   return (
-    <HStack align="flex-start" flexDirection={{base : "column", md : 'row'}} p={1} spacing={0} h={{base : "100%", md : '87vh'}}>
+    <HStack
+      align="flex-start"
+      flexDirection={{ base: "column", md: "row" }}
+      p={1}
+      spacing={0}
+      h={{ base: "100%", md: "87vh" }}
+    >
       {/* Sidebar */}
       <VStack
-        minW={{base : '100%', md : '280px'}}
+        minW={{ base: "100%", md: "280px" }}
         h="full"
         p={4}
         bg={colorMode === "light" ? "gray.50" : "gray.800"}
@@ -197,7 +362,15 @@ const WebsiteBuilder = observer(() => {
         </Heading>
         <HStack spacing={2} mb={4} wrap="wrap">
           <IconButton
-            onClick={() => setSections([...sections, { label: `Section ${sections.length + 1}`, page: `Page${sections.length + 1}` }])}
+            onClick={() =>
+              setSections([
+                ...sections,
+                {
+                  label: `Section ${sections.length + 1}`,
+                  page: `Page${sections.length + 1}`,
+                },
+              ])
+            }
             icon={<FaPlus />}
             colorScheme="teal"
             aria-label="Add Section"
@@ -218,50 +391,50 @@ const WebsiteBuilder = observer(() => {
             variant="solid"
           />
         </HStack>
-        <Box overflowY="auto" flex="1" overflowX="hidden">
-          {sections.map((section : any) => (
-            <Box
-              key={section.page}
-              w="full"
-              p={3}
-              borderRadius="md"
-              bg={currentSection.page === section.page ? "teal.500" : "gray.200"}
-              color={currentSection.page === section.page ? "white" : "black"}
-              fontWeight="bold"
-              cursor="pointer"
-              mt={2}
-              transition="background-color 0.2s, color 0.2s"
-              onClick={() => setCurrentSection(section)}
-              onKeyPress={(e) => handleKeyPress(section.page, e)}
-              tabIndex={0}
-            >
-              {section.label}
-            </Box>
-          ))}
-        </Box>
+        <WebTempSidebar
+          currentSection={currentSection}
+          sections={sections}
+          setSections={setSections}
+          setCurrentSection={setCurrentSection}
+          handleKeyPress={handleKeyPress}
+        />
         <Button mt={4} onClick={saveWebTemplate}>
           Save Template
         </Button>
       </VStack>
 
       {/* Content Section */}
-      <Box flex={1} p={0} overflowY={["hero","testimonial"].includes(currentSection.page) ? "auto" : undefined}>
+      <Box
+        flex={1}
+        p={0}
+        overflowY={
+          ["hero", "testimonial"].includes(currentSection.page)
+            ? "auto"
+            : undefined
+        }
+      >
         <Tabs>
           <TabPanels>
-            <TabPanel>
-              {renderCurrentSection()}
-            </TabPanel>
+            <TabPanel>{renderCurrentSection()}</TabPanel>
           </TabPanels>
         </Tabs>
       </Box>
 
       {/* Drawer for Color Settings */}
-      <Drawer isOpen={isDrawerOpen} placement="right" onClose={() => setIsDrawerOpen(false)}>
+      <Drawer
+        size="xl"
+        isOpen={isDrawerOpen}
+        placement="right"
+        onClose={() => setIsDrawerOpen(false)}
+      >
         <DrawerOverlay />
         <DrawerContent>
           <DrawerHeader>Color Settings</DrawerHeader>
           <DrawerBody>
-            <ColorSettingsForm colorSetting={colorSetting} setColorSetting={setColorSetting} />
+            <ColorSettingsForm
+              colorSetting={colorSetting}
+              setColorSetting={setColorSetting}
+            />
           </DrawerBody>
           <DrawerFooter>
             <Button colorScheme="blue" onClick={() => setIsDrawerOpen(false)}>

@@ -89,7 +89,7 @@ export default function About1({
   return (
     <MotionBox
       m={{ base: 2, md: 5 }}
-      py={10}
+      py={8}
       bg={bg}
       borderRadius="lg"
       initial={{ opacity: 0, y: 50 }}

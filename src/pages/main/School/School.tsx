@@ -17,6 +17,7 @@ import { observer } from "mobx-react-lite";
 import store from "../../../store/store";
 import { useParams } from "react-router-dom";
 import DashPageHeader from "../../../config/component/common/DashPageHeader/DashPageHeader";
+import Header2 from "./layout/Navbar/component/Header2";
 
 // Lazy-loaded components
 const Contact = React.lazy(() => import("./component/ContactUs/Contact"));
@@ -32,12 +33,12 @@ const HeroCarousal = React.lazy(
 const MapSection = React.lazy(
   () => import("./component/MapSection/MapSection")
 );
-const Navbar = React.lazy(() => import("./layout/Navbar/Navbar"));
+// const Navbar = React.lazy(() => import("./layout/Navbar/Navbar"));
 const PrincipalSection = React.lazy(
   () => import("./component/PrincipalSection/PrincipalSection")
 );
-const TopperSlider = React.lazy(
-  () => import("./component/ToppersCard/TopperSlider")
+const TopperSection = React.lazy(
+  () => import("./component/Toppers/TopperSection")
 );
 const StatisticsCounter = React.lazy(
   () => import("./component/StatisticsCounter/StatisticsCounter")
@@ -88,7 +89,7 @@ const initialSectionsConfig: SectionConfig[] = [
   { id: "principal", component: PrincipalSection, props: {} },
   { id: "curriculum", component: CurriculumSection, props: {} },
   { id: "statistics", component: StatisticsCounter, props: { metrics } },
-  { id: "topper", component: TopperSlider, props: {} },
+  { id: "toppers", component: TopperSection, props: {} },
   { id: "teachers", component: TeacherSection, props: {} },
   { id: "features", component: SchoolFeatureSection, props: {} },
   { id: "gallery", component: GallerySection, props: { images: imageUrls } },
@@ -204,7 +205,7 @@ const School = observer(() => {
       />
       <Suspense fallback={<WebLoader />}>
         <Box>
-          <Navbar
+          <Header2
             metaData={sectionSettings?.webInfo}
             scrollToSection={scrollToSection}
             linksConfig={activeSectionIds.map((item: any) => ({
