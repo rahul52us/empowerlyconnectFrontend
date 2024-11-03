@@ -392,7 +392,6 @@ const WebsiteBuildingIndex = () => {
             </Box>
           ))}
         </SimpleGrid>
-
         <Input
           placeholder="Enter your domain name"
           value={domainName}

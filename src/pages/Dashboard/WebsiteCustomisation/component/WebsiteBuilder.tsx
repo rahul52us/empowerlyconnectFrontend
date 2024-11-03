@@ -1,13 +1,10 @@
 import {
   Box,
-  VStack,
   HStack,
   Tabs,
   TabPanels,
   TabPanel,
   useColorMode,
-  Heading,
-  IconButton,
   Drawer,
   DrawerBody,
   DrawerFooter,
@@ -17,7 +14,6 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { FaPlus, FaMoon, FaSun } from "react-icons/fa";
 import FaqSection from "../../../main/School/component/FaqSection/FaqSection";
 import AboutSection from "../../../main/School/component/AboutSection/AboutSection";
 import PrincipalSection from "../../../main/School/component/PrincipalSection/PrincipalSection";
@@ -260,31 +256,31 @@ const WebsiteBuilder = observer(() => {
           </Box>
         );
       case "teachers":
-          return (
-            <Box m={-6} mt={-8} overflow="hidden">
-              <TeacherSection
-                isEditable={true}
-                webColor={colorSetting}
-                content={webContent.teacher}
-                setContent={(newContent: any) =>
-                  setWebContent({ ...webContent, teacher : newContent })
-                }
-              />
-            </Box>
-          );
-        case "toppers":
-            return (
-              <Box m={-6} mt={-8} overflow="hidden">
-                <TopperSection
-                  isEditable={true}
-                  webColor={colorSetting}
-                  content={webContent.teacher}
-                  setContent={(newContent: any) =>
-                    setWebContent({ ...webContent, teacher : newContent })
-                  }
-                />
-              </Box>
-            );
+        return (
+          <Box m={-6} mt={-8} overflow="hidden">
+            <TeacherSection
+              isEditable={true}
+              webColor={colorSetting}
+              content={webContent.teacher}
+              setContent={(newContent: any) =>
+                setWebContent({ ...webContent, teacher: newContent })
+              }
+            />
+          </Box>
+        );
+      case "toppers":
+        return (
+          <Box m={-6} mt={-8} overflow="hidden">
+            <TopperSection
+              isEditable={true}
+              webColor={colorSetting}
+              content={webContent.teacher}
+              setContent={(newContent: any) =>
+                setWebContent({ ...webContent, teacher: newContent })
+              }
+            />
+          </Box>
+        );
       case "curriculum":
         return (
           <CurriculumSection
@@ -347,61 +343,18 @@ const WebsiteBuilder = observer(() => {
       h={{ base: "100%", md: "87vh" }}
     >
       {/* Sidebar */}
-      <VStack
-        minW={{ base: "100%", md: "280px" }}
-        h="full"
-        p={4}
-        bg={colorMode === "light" ? "gray.50" : "gray.800"}
-        borderRadius="md"
-        boxShadow="md"
-        spacing={4}
-        align="stretch"
-      >
-        <Heading size="lg" mb={4}>
-          Sections
-        </Heading>
-        <HStack spacing={2} mb={4} wrap="wrap">
-          <IconButton
-            onClick={() =>
-              setSections([
-                ...sections,
-                {
-                  label: `Section ${sections.length + 1}`,
-                  page: `Page${sections.length + 1}`,
-                },
-              ])
-            }
-            icon={<FaPlus />}
-            colorScheme="teal"
-            aria-label="Add Section"
-            variant="solid"
-          />
-          <IconButton
-            onClick={toggleColorMode}
-            icon={colorMode === "light" ? <FaMoon /> : <FaSun />}
-            colorScheme="blue"
-            aria-label="Toggle Theme"
-            variant="solid"
-          />
-          <IconButton
-            onClick={() => setIsDrawerOpen(true)}
-            icon={<FaPlus />}
-            colorScheme="purple"
-            aria-label="Color Settings"
-            variant="solid"
-          />
-        </HStack>
-        <WebTempSidebar
-          currentSection={currentSection}
-          sections={sections}
-          setSections={setSections}
-          setCurrentSection={setCurrentSection}
-          handleKeyPress={handleKeyPress}
-        />
-        <Button mt={4} onClick={saveWebTemplate}>
-          Save Template
-        </Button>
-      </VStack>
+      <WebTempSidebar
+        colorMode={colorMode}
+        setIsDrawerOpen={() => setIsDrawerOpen(true)}
+        toggleColorMode={toggleColorMode}
+        currentSection={currentSection}
+        sections={sections}
+        setSections={setSections}
+        setCurrentSection={setCurrentSection}
+        handleKeyPress={handleKeyPress}
+        initialSections={getInitialSections()}
+        saveWebTemplate={saveWebTemplate}
+      />
 
       {/* Content Section */}
       <Box
