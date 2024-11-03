@@ -1,7 +1,6 @@
 import { Suspense, lazy } from "react";
 
 const loadComponent = (key: string) => {
-
   switch (key) {
     case "about1":
       return lazy(() => import("./component/About1/About1"));

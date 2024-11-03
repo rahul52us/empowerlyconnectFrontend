@@ -140,7 +140,7 @@ const School = observer(() => {
             );
             if (section) {
               return {
-                ...section,
+                ...section,...preferenceId,
                 props: dt?.data?.webInfo?.sections[section.id],
               };
             }
@@ -150,6 +150,7 @@ const School = observer(() => {
             (section: any): section is SectionConfig => section !== undefined
           );
 
+          console.log(orderedSections)
         setSectionSettings((prev: any) => ({
           ...prev,
           webInfo: dt?.data?.webInfo?.sections?.metaData || {},
@@ -216,10 +217,11 @@ const School = observer(() => {
           />
           <Box marginTop={largeHeaderHeight}>
             {sectionSettings.sectionLayout
-              .filter(({ id }: any) => activeSectionIds.includes(id))
-              .map(({ id, component: Component, props }: any) => {
+              .filter((item : any) => activeSectionIds.includes(item.id))
+              .map(({ id, component: Component, props, ...rest }: any) => {
                 let sectionProps = {
                   ...props,
+                  selectedLayout:rest,
                   content: props,
                   webColor: sectionSettings.colors,
                   colors: sectionSettings.colors,

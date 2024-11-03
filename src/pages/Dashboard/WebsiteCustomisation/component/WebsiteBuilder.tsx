@@ -135,7 +135,7 @@ const WebsiteBuilder = observer(() => {
             );
             if (section) {
               return {
-                ...section,
+                ...preferenceId,
                 props: dt?.data?.webInfo?.sections[section.id],
               };
             }
@@ -148,6 +148,9 @@ const WebsiteBuilder = observer(() => {
         });
         setWebTempId(dt?.data?._id);
         setWebType(dt.data?.webType);
+
+        console.log('the order sections are', orderedSections)
+
         setSections(orderedSections);
         const mergedContent = {
           ...initialValues,
