@@ -35,6 +35,7 @@ import TopperSection from "../../../main/School/component/Toppers/TopperSection"
 
 const WebsiteBuilder = observer(() => {
   const { domainName } = useParams();
+  const [submitLoading,setSubmitLoading] = useState(false)
   const [webTempId, setWebTempId] = useState<any>(null);
   const [webType, setWebType] = useState("school");
   const {
@@ -88,13 +89,13 @@ const WebsiteBuilder = observer(() => {
       {
         label: "Teachers",
         page: "teachers",
-        key: "teachers",
+        key: "teachers1",
         layouts: ["teachers1", "teachers2"],
       },
       {
         label: "Toppers",
         page: "toppers",
-        key: "toppers",
+        key: "toppers1",
         layouts: ["toppers1", "toppers2"],
       },
       {
@@ -120,7 +121,7 @@ const WebsiteBuilder = observer(() => {
         label: "Map",
         page: "map",
         key: "map1",
-        layouts: ["map1", "map1"],
+        layouts: ["map1", "map2"],
       },
     ];
   }
@@ -176,6 +177,7 @@ const WebsiteBuilder = observer(() => {
 
   const saveWebTemplate = async () => {
     try {
+      setSubmitLoading(true)
       const data = await updateWebTemplate({
         sectionsLayout: sections,
         webInfo: webContent,
@@ -196,13 +198,16 @@ const WebsiteBuilder = observer(() => {
         type: getStatusType(err.status),
       });
     }
+    finally {
+      setSubmitLoading(false)
+    }
   };
 
   const renderCurrentSection = () => {
     switch (currentSection.page) {
       case "metaData":
         return (
-          <Box>
+          <Box m={-6} mt={-6}>
             <MetadataSettingsForm
               content={webContent.metaData}
               setContent={(newContent: any) =>
@@ -270,7 +275,7 @@ const WebsiteBuilder = observer(() => {
         );
       case "toppers":
         return (
-          <Box m={-6} mt={-8} overflow="hidden">
+          <Box m={-6} mt={-2} overflow="hidden">
             <TopperSection
               isEditable={true}
               webColor={colorSetting}
@@ -294,6 +299,7 @@ const WebsiteBuilder = observer(() => {
         );
       case "testimonial":
         return (
+          <Box m={-3} mt={-8}>
           <TestimonialsSection
             isEditable={true}
             webColor={colorSetting}
@@ -302,6 +308,7 @@ const WebsiteBuilder = observer(() => {
               setWebContent({ ...webContent, testimonial: newContent })
             }
           />
+          </Box>
         );
       case "contact":
         return (
@@ -354,6 +361,7 @@ const WebsiteBuilder = observer(() => {
         handleKeyPress={handleKeyPress}
         initialSections={getInitialSections()}
         saveWebTemplate={saveWebTemplate}
+        submitLoading={submitLoading}
       />
 
       {/* Content Section */}

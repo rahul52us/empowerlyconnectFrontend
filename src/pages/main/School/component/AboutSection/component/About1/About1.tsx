@@ -121,6 +121,7 @@ export default function About1({
               }
               fontSize={{ base: "lg", md: "xl" }}
               mb={12}
+              maxW={{ base: "100%", md: "600px" }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2, duration: 0.5 }}

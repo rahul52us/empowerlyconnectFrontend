@@ -104,6 +104,7 @@ export default function Principal1({ content, setContent, webColor }: any) {
             textAlign="center" // Centering the subtitle text
             fontSize="lg"
             mb={8}
+            maxW={{ base: "100%", md: "600px" }}
             color={useColorModeValue(
               webColor?.subHeadingColor?.light,
               webColor?.subHeadingColor?.dark

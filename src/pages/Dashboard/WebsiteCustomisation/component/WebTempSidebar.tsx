@@ -16,15 +16,20 @@ import {
   Flex,
   HStack,
   IconButton,
+  RadioGroup,
+  Radio,
+  Stack,
 } from "@chakra-ui/react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { FiSettings, FiLayers, FiChevronRight } from "react-icons/fi";
 import { FaMoon, FaPlus, FaSun } from "react-icons/fa";
 
 interface Section {
   label: string;
   page: string;
+  key: string;
+  layouts?: string[];
 }
 
 interface WebTempSidebarProps {
@@ -38,6 +43,7 @@ interface WebTempSidebarProps {
   handleKeyPress: (page: string, e: React.KeyboardEvent) => void;
   initialSections: Section[];
   saveWebTemplate: any;
+  submitLoading:boolean
 }
 
 const WebTempSidebar: React.FC<WebTempSidebarProps> = ({
@@ -51,9 +57,10 @@ const WebTempSidebar: React.FC<WebTempSidebarProps> = ({
   handleKeyPress,
   initialSections,
   saveWebTemplate,
+  submitLoading
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [selectedSections, setSelectedSections] = useState<Section[]>(sections);
+  const [selectedSections, setSelectedSections] = useState<Section[]>([]);
 
   useEffect(() => {
     setSelectedSections(sections);
@@ -69,16 +76,26 @@ const WebTempSidebar: React.FC<WebTempSidebarProps> = ({
     setSections(reorderedSections);
   };
 
-  const handleCheckboxChange = useCallback((section: Section) => {
+  const handleCheckboxChange = (section: Section) => {
     setSelectedSections((prevSelectedSections) => {
-      const isSelected = prevSelectedSections.some(s => s.page === section.page);
+      const isSelected = prevSelectedSections.some(
+        (s) => s.page === section.page
+      );
       if (isSelected) {
-        return prevSelectedSections.filter(s => s.page !== section.page);
+        return prevSelectedSections.filter((s) => s.page !== section.page);
       } else {
         return [...prevSelectedSections, section];
       }
     });
-  }, []);
+  };
+
+  const handleLayoutChange = (page: string, newLayout: string) => {
+    setSelectedSections((prevSections) =>
+      prevSections.map((section) =>
+        section.page === page ? { ...section, key: newLayout } : section
+      )
+    );
+  };
 
   const handleSaveSections = () => {
     setSections(selectedSections);
@@ -89,10 +106,8 @@ const WebTempSidebar: React.FC<WebTempSidebarProps> = ({
     <>
       <Box
         minW={{ base: "100%", md: "280px" }}
-        p={1}
         w={{ base: "100%", md: "280px" }}
         color="gray.800"
-        borderRight={{ base: "none", md: "1px solid" }}
         borderColor="gray.300"
         height={{ base: "100%", md: "82vh" }}
         display="flex"
@@ -111,13 +126,13 @@ const WebTempSidebar: React.FC<WebTempSidebarProps> = ({
           color="white"
           borderTopRadius="md"
           mb={2}
-          textAlign="center"
+          justifyContent="center"
         >
-          <Text fontSize="lg" fontWeight="bold" textAlign="center">
+          <Text fontSize="lg" fontWeight="bold" cursor="pointer">
             Manage Sections
           </Text>
         </Flex>
-        <HStack spacing={2} mb={4} wrap="wrap" justifyContent="end">
+        <HStack spacing={3} mb={2} wrap="wrap" justifyContent="end" mr={2}>
           <IconButton
             onClick={onOpen}
             icon={<FiSettings />}
@@ -223,6 +238,7 @@ const WebTempSidebar: React.FC<WebTempSidebarProps> = ({
           colorScheme="teal"
           w="full"
           borderRadius="md"
+          isLoading={submitLoading}
         >
           Save Template
         </Button>
@@ -234,14 +250,22 @@ const WebTempSidebar: React.FC<WebTempSidebarProps> = ({
         onClose={onClose}
         size={{ base: "full", md: "lg" }}
         closeOnOverlayClick={true}
+        isCentered
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Manage Sections</ModalHeader>
+          <ModalHeader
+            bg="teal.500"
+            color="white"
+            borderTopRadius="md"
+            fontSize="xl"
+          >
+            Manage Sections
+          </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Grid templateColumns="repeat(2, 1fr)" gap={4}>
-              {sections.map((section) => (
+              {initialSections.map((section) => (
                 <Box
                   key={section.page}
                   p={3}
@@ -254,7 +278,9 @@ const WebTempSidebar: React.FC<WebTempSidebarProps> = ({
                   border="1px solid"
                   borderColor="gray.200"
                   transition="background-color 0.2s ease"
-                  onClick={() => handleCheckboxChange(section)}
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevent accidental toggling
+                  }}
                   cursor="pointer"
                   _hover={{ bg: "teal.50", transform: "scale(1.02)" }}
                 >
@@ -262,27 +288,51 @@ const WebTempSidebar: React.FC<WebTempSidebarProps> = ({
                     isChecked={selectedSections.some(
                       (s) => s.page === section.page
                     )}
+                    onChange={(e) => {
+                      e.stopPropagation();
+                      handleCheckboxChange(section);
+                    }}
                   >
                     {section.label}
                   </Checkbox>
+                  {section.layouts && (
+                    <RadioGroup
+                      value={
+                        selectedSections.find((s) => s.page === section.page)
+                          ?.key || section.key
+                      }
+                      onChange={(newLayout) =>
+                        handleLayoutChange(section.page, newLayout)
+                      }
+                    >
+                      <Stack spacing={1} mt={2}>
+                        {section.layouts.map((layout) => (
+                          <Radio
+                            key={layout}
+                            value={layout}
+                            size="sm"
+                            colorScheme="teal"
+                          >
+                            {layout}
+                          </Radio>
+                        ))}
+                      </Stack>
+                    </RadioGroup>
+                  )}
                 </Box>
               ))}
             </Grid>
           </ModalBody>
-          <ModalFooter justifyContent="space-between">
-            <Button onClick={onClose} colorScheme="gray" variant="outline">
-              Cancel
-            </Button>
+          <ModalFooter>
             <Button
               colorScheme="teal"
+              mr={3}
               onClick={handleSaveSections}
-              isDisabled={
-                selectedSections.length === 0 ||
-                (selectedSections.length === sections.length &&
-                  selectedSections.length === initialSections.length)
-              }
             >
-              Save
+              Save Changes
+            </Button>
+            <Button variant="outline" onClick={onClose}>
+              Cancel
             </Button>
           </ModalFooter>
         </ModalContent>
