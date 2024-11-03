@@ -183,8 +183,10 @@ const School = observer(() => {
   };
 
   const activeSectionIds = sectionSettings.sectionLayout.map(
-    (section: any) => section.id
+    (section: any) => section
   );
+
+  console.log(activeSectionIds)
 
   return fetchData.loading === false &&
     Object.keys(fetchData.data || {}).length === 0 ? (
@@ -210,14 +212,15 @@ const School = observer(() => {
             metaData={sectionSettings?.webInfo}
             scrollToSection={scrollToSection}
             linksConfig={activeSectionIds.map((item: any) => ({
-              id: item,
-              name: item.charAt(0).toUpperCase() + item.slice(1),
+              id: item?.id,
+              name: item?.id?.charAt(0).toUpperCase() + item?.id?.slice(1),
+              label: item?.label
             }))}
             colors={sectionSettings.colors}
           />
           <Box marginTop={largeHeaderHeight}>
             {sectionSettings.sectionLayout
-              .filter((item : any) => activeSectionIds.includes(item.id))
+              .filter((item : any) => activeSectionIds.some((activeSection: any) => activeSection.id === item.id))
               .map(({ id, component: Component, props, ...rest }: any) => {
                 let sectionProps = {
                   ...props,

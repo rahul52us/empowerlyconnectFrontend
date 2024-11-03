@@ -19,7 +19,7 @@ import {
     useColorMode,
     useColorModeValue,
   } from "@chakra-ui/react";
-  import { useState, useMemo } from "react";
+  import { useState, useMemo, useCallback } from "react";
   import { FaBars, FaSun, FaMoon } from "react-icons/fa";
 import { largeHeaderHeight } from "../../common/constant";
 
@@ -57,13 +57,13 @@ import { largeHeaderHeight } from "../../common/constant";
     const dropdownMenuColor = useColorModeValue("white", "gray.700");
     const menuHoverColor = useColorModeValue("black", "white");
 
-    const handleLinkClick = (linkId: string) => {
+    const handleLinkClick = useCallback((linkId: string) => {
       setActiveLink(linkId);
       scrollToSection(linkId);
-    };
+    },[setActiveLink,scrollToSection]);
 
     const linkElements = useMemo(() => (
-      linksConfig.map((link) => (
+      linksConfig.map((link : any) => (
         <Link
           key={link.id}
           fontSize={{ base: "md", md: "lg" }}
@@ -71,10 +71,10 @@ import { largeHeaderHeight } from "../../common/constant";
           onClick={() => handleLinkClick(link.id)}
           _hover={{ color: menuHoverColor, textDecoration: "underline" }}
         >
-          {link.name.charAt(0).toUpperCase() + link.name.slice(1)}
+          {link.label?.charAt(0).toUpperCase() + link?.label?.slice(1)}
         </Link>
       ))
-    ), [activeLink, colorMode, colors, linksConfig]);
+    ), [activeLink, colorMode, colors, linksConfig, handleLinkClick, menuHoverColor]);
 
     return (
       <Flex
