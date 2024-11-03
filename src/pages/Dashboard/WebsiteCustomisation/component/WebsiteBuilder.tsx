@@ -167,7 +167,7 @@ const WebsiteBuilder = observer(() => {
         // });
       })
       .finally(() => {});
-  }, [openNotification]);
+  }, [openNotification,domainName, getWebTemplate]);
 
   const handleKeyPress = (section: string, e: React.KeyboardEvent) => {
     if (e.key === "Enter") {

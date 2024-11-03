@@ -29,7 +29,15 @@ import { motion } from "framer-motion";
 
 const AnimatedBox = motion(Box);
 
-const Curriculum1 = ({ content, setContent, webColor, isEditable, titleColor, borderColor, textColor } : any) => {
+const Curriculum1 = ({
+  content,
+  setContent,
+  webColor,
+  isEditable,
+  titleColor,
+  borderColor,
+  textColor,
+}: any) => {
   const { colorMode } = useColorMode();
   const { colors } = useSectionColorContext() || { colors: webColor || {} };
 
@@ -37,7 +45,8 @@ const Curriculum1 = ({ content, setContent, webColor, isEditable, titleColor, bo
   const sectionBgColor = useColorModeValue("white", "gray.800");
 
   const [isSectionModalOpen, setIsSectionModalOpen] = useState(false);
-  const [isTitleSubtitleModalOpen, setIsTitleSubtitleModalOpen] = useState(false);
+  const [isTitleSubtitleModalOpen, setIsTitleSubtitleModalOpen] =
+    useState(false);
   const [currentSection, setCurrentSection] = useState<any>(null);
   const [isNewSection, setIsNewSection] = useState(false);
   const [editedContent, setEditedContent] = useState({
@@ -49,7 +58,7 @@ const Curriculum1 = ({ content, setContent, webColor, isEditable, titleColor, bo
   const [editedTitle, setEditedTitle] = useState(content?.title);
   const [editedSubtitle, setEditedSubtitle] = useState(content?.description);
 
-  const openEditSectionModal = (sectionIndex : any = null) => {
+  const openEditSectionModal = (sectionIndex: any = null) => {
     if (sectionIndex !== null) {
       const section = content.sections[sectionIndex];
       setEditedContent({ title: section.title, content: section.content });
@@ -64,7 +73,7 @@ const Curriculum1 = ({ content, setContent, webColor, isEditable, titleColor, bo
   };
 
   const saveSectionChanges = () => {
-    const updatedSections : any = [...content.sections];
+    const updatedSections: any = [...content.sections];
     if (isNewSection) {
       updatedSections.push(editedContent);
     } else {
@@ -72,7 +81,7 @@ const Curriculum1 = ({ content, setContent, webColor, isEditable, titleColor, bo
     }
 
     // Save only section changes
-    setContent((prevContent : any) => ({
+    setContent((prevContent: any) => ({
       ...prevContent,
       sections: updatedSections,
     }));
@@ -85,7 +94,13 @@ const Curriculum1 = ({ content, setContent, webColor, isEditable, titleColor, bo
   };
 
   return (
-    <Box m={{ base: 2, md: 5 }} py={6} bg={bg} maxW={{ base: "98%", md: "100%" }} p={{ base: 5, md: 10 }}>
+    <Box
+      m={{ base: 2, md: 5 }}
+      py={6}
+      bg={bg}
+      maxW={{ base: "98%", md: "100%" }}
+      p={{ base: 5, md: 10 }}
+    >
       <Center>
         <Heading
           as="h2"
@@ -93,7 +108,11 @@ const Curriculum1 = ({ content, setContent, webColor, isEditable, titleColor, bo
           textAlign="center"
           mb={3}
           fontWeight="bold"
-          color={colorMode === "light" ? colors?.headingColor?.light : colors?.headingColor?.dark}
+          color={
+            colorMode === "light"
+              ? colors?.headingColor?.light
+              : colors?.headingColor?.dark
+          }
         >
           {editedTitle}
         </Heading>
@@ -103,8 +122,13 @@ const Curriculum1 = ({ content, setContent, webColor, isEditable, titleColor, bo
         mb={10}
         maxW={{ base: "100%", md: "600px" }}
         mx="auto"
-        fontSize={{ base: "md", md: "lg" }}
-        color={colorMode === "light" ? colors?.subHeadingColor?.light : colors?.subHeadingColor?.dark}
+        fontWeight="semibold"
+        fontSize={{ base: "md", md: "xl" }}
+        color={
+          colorMode === "light"
+            ? colors?.subHeadingColor?.light
+            : colors?.subHeadingColor?.dark
+        }
       >
         {editedSubtitle}
       </Text>
@@ -115,36 +139,52 @@ const Curriculum1 = ({ content, setContent, webColor, isEditable, titleColor, bo
         })}
         gap={6}
       >
-        {Array.isArray(content.sections) ? content?.sections?.map((section : any, index : number) => (
-          <GridItem key={index}>
-            <AnimatedBox
-              p={6}
-              borderWidth={1}
-              borderColor={borderColor}
-              borderRadius="lg"
-              bg={sectionBgColor}
-              boxShadow="lg"
-              transition="all 0.3s"
-              _hover={{ transform: "scale(1.05)" }}
-              cursor={isEditable ? "pointer" : "default"}
-              onClick={() => isEditable && openEditSectionModal(index)}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-            >
-              <Flex alignItems="center" mb={4}>
-                <Icon as={FaBookOpen} boxSize={7} color={titleColor} mr={3} />
-                <Heading as="h3" size="md" color={titleColor} fontWeight="semibold">
-                  {section.title}
-                </Heading>
-              </Flex>
-              <Divider orientation="horizontal" borderColor="gray.300" my={3} />
-              <Text color={textColor} fontSize="sm">
-                {section.content}
-              </Text>
-            </AnimatedBox>
-          </GridItem>
-        )) : []}
+        {Array.isArray(content.sections)
+          ? content?.sections?.map((section: any, index: number) => (
+              <GridItem key={index}>
+                <AnimatedBox
+                  p={6}
+                  borderWidth={1}
+                  borderColor={borderColor}
+                  borderRadius="lg"
+                  bg={sectionBgColor}
+                  boxShadow="lg"
+                  transition="all 0.3s"
+                  _hover={{ transform: "scale(1.05)" }}
+                  cursor={isEditable ? "pointer" : "default"}
+                  onClick={() => isEditable && openEditSectionModal(index)}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 20 }}
+                >
+                  <Flex alignItems="center" mb={4}>
+                    <Icon
+                      as={FaBookOpen}
+                      boxSize={7}
+                      color={titleColor}
+                      mr={3}
+                    />
+                    <Heading
+                      as="h3"
+                      size="md"
+                      color={titleColor}
+                      fontWeight="semibold"
+                    >
+                      {section.title}
+                    </Heading>
+                  </Flex>
+                  <Divider
+                    orientation="horizontal"
+                    borderColor="gray.300"
+                    my={3}
+                  />
+                  <Text color={textColor} fontSize="sm">
+                    {section.content}
+                  </Text>
+                </AnimatedBox>
+              </GridItem>
+            ))
+          : []}
       </Grid>
 
       {isEditable && (
@@ -169,7 +209,11 @@ const Curriculum1 = ({ content, setContent, webColor, isEditable, titleColor, bo
       )}
 
       {/* Edit/Add Section Modal */}
-      <Modal isOpen={isSectionModalOpen} onClose={() => setIsSectionModalOpen(false)} size="lg">
+      <Modal
+        isOpen={isSectionModalOpen}
+        onClose={() => setIsSectionModalOpen(false)}
+        size="lg"
+      >
         <ModalOverlay />
         <ModalContent bg={sectionBgColor} borderRadius="md" boxShadow="lg">
           <ModalHeader textAlign="center" fontSize="2xl" fontWeight="bold">
@@ -181,7 +225,9 @@ const Curriculum1 = ({ content, setContent, webColor, isEditable, titleColor, bo
               mb={4}
               placeholder="Section Title"
               value={editedContent.title}
-              onChange={(e) => setEditedContent({ ...editedContent, title: e.target.value })}
+              onChange={(e) =>
+                setEditedContent({ ...editedContent, title: e.target.value })
+              }
               bg={useColorModeValue("gray.100", "gray.700")}
               borderRadius="md"
               _focus={{ borderColor: "blue.400" }}
@@ -190,7 +236,9 @@ const Curriculum1 = ({ content, setContent, webColor, isEditable, titleColor, bo
             <Textarea
               placeholder="Section Content"
               value={editedContent.content}
-              onChange={(e) => setEditedContent({ ...editedContent, content: e.target.value })}
+              onChange={(e) =>
+                setEditedContent({ ...editedContent, content: e.target.value })
+              }
               bg={useColorModeValue("gray.100", "gray.700")}
               borderRadius="md"
               _focus={{ borderColor: "blue.400" }}
@@ -199,10 +247,21 @@ const Curriculum1 = ({ content, setContent, webColor, isEditable, titleColor, bo
             />
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="blue" onClick={saveSectionChanges} mr={3} size="lg" px={6}>
+            <Button
+              colorScheme="blue"
+              onClick={saveSectionChanges}
+              mr={3}
+              size="lg"
+              px={6}
+            >
               Save Section
             </Button>
-            <Button variant="outline" onClick={() => setIsSectionModalOpen(false)} size="lg" px={6}>
+            <Button
+              variant="outline"
+              onClick={() => setIsSectionModalOpen(false)}
+              size="lg"
+              px={6}
+            >
               Cancel
             </Button>
           </ModalFooter>
@@ -210,7 +269,11 @@ const Curriculum1 = ({ content, setContent, webColor, isEditable, titleColor, bo
       </Modal>
 
       {/* Separate Modal for Title and Subtitle Editing */}
-      <Modal isOpen={isTitleSubtitleModalOpen} onClose={() => setIsTitleSubtitleModalOpen(false)} size="lg">
+      <Modal
+        isOpen={isTitleSubtitleModalOpen}
+        onClose={() => setIsTitleSubtitleModalOpen(false)}
+        size="lg"
+      >
         <ModalOverlay />
         <ModalContent bg={sectionBgColor} borderRadius="md" boxShadow="lg">
           <ModalHeader textAlign="center" fontSize="2xl" fontWeight="bold">
@@ -240,10 +303,21 @@ const Curriculum1 = ({ content, setContent, webColor, isEditable, titleColor, bo
             />
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="blue" onClick={saveTitleAndSubtitle} mr={3} size="lg" px={6}>
+            <Button
+              colorScheme="blue"
+              onClick={saveTitleAndSubtitle}
+              mr={3}
+              size="lg"
+              px={6}
+            >
               Save Title & Subtitle
             </Button>
-            <Button variant="outline" onClick={() => setIsTitleSubtitleModalOpen(false)} size="lg" px={6}>
+            <Button
+              variant="outline"
+              onClick={() => setIsTitleSubtitleModalOpen(false)}
+              size="lg"
+              px={6}
+            >
               Cancel
             </Button>
           </ModalFooter>

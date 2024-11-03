@@ -102,13 +102,14 @@ export default function Principal1({ content, setContent, webColor }: any) {
 
           <Text
             textAlign="center" // Centering the subtitle text
-            fontSize="lg"
+            fontSize={{ base: "md", md: "xl" }}
             mb={8}
             maxW={{ base: "100%", md: "600px" }}
             color={useColorModeValue(
               webColor?.subHeadingColor?.light,
               webColor?.subHeadingColor?.dark
             )}
+            fontWeight="semibold"
           >
             {content.subheading}
           </Text>

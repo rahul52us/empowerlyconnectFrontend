@@ -164,12 +164,13 @@ const Faq1 = ({ setContent, content, webColor }: any) => {
         <Text
           mt={4}
           textAlign="center"
-          fontSize="lg"
+          fontSize="xl"
           color={
             colorMode === "light"
               ? colors?.subHeadingColor?.light
               : colors?.subHeadingColor?.dark
           }
+              fontWeight="semibold"
         >
           {faqSection?.subtitle}
         </Text>

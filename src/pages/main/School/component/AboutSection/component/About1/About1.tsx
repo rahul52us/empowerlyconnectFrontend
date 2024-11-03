@@ -114,6 +114,7 @@ export default function About1({
               {content?.title}
             </Heading>
             <MotionText
+              fontWeight="semibold"
               color={
                 colorMode === "light"
                   ? colors?.subHeadingColor?.light
@@ -121,7 +122,7 @@ export default function About1({
               }
               fontSize={{ base: "lg", md: "xl" }}
               mb={12}
-              maxW={{ base: "100%", md: "600px" }}
+              maxW={{ base: "100%", md: "100%" }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2, duration: 0.5 }}
@@ -157,7 +158,6 @@ export default function About1({
             </Button>
           )}
         </Flex>
-
         <Flex
           direction={{ base: "column", md: "row" }}
           gap={10}

@@ -23,13 +23,14 @@ const TeacherSection = ({webColor} : any) => {
           Meet Our Dedicated Teachers
         </Heading>
         <Text
-          fontSize={{ base: "md", md: "lg" }}
+          fontSize={{ base: "md", md: "xl" }}
           color={useColorModeValue(
             colors?.subHeadingColor?.light,
             colors?.subHeadingColor?.dark
           )}
           maxW={{ base: "100%", md: "600px" }}
           mx="auto"
+          fontWeight="semibold"
         >
           Our passionate and experienced team of educators is here to guide you
           on your learning journey. With expertise across a wide range of

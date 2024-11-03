@@ -18,6 +18,7 @@ import {
   ModalFooter,
   Input,
   Textarea,
+  Center,
 } from "@chakra-ui/react";
 import { FaEdit } from "react-icons/fa";
 import { useSectionColorContext } from "../../../School";
@@ -60,12 +61,16 @@ const Testimonial1 = ({ content, setContent, isEditable, webColor }: any) => {
   const [currentTestimonial, setCurrentTestimonial] = useState<any>(null);
   const [editedContent, setEditedContent] = useState({
     title: content?.title || "What Our Community Says",
-    subTitle: content?.subTitle || "Hear from parents, students, and alumni about their experiences.",
-    testimonials: Array.isArray(content?.sections) ? content?.sections?.map(({ name, testimonial, imageUrl }: any) => ({
-      name,
-      testimonial,
-      imageUrl,
-    })) : [],
+    subTitle:
+      content?.subTitle ||
+      "Hear from parents, students, and alumni about their experiences.",
+    testimonials: Array.isArray(content?.sections)
+      ? content?.sections?.map(({ name, testimonial, imageUrl }: any) => ({
+          name,
+          testimonial,
+          imageUrl,
+        }))
+      : [],
   });
 
   const openEditModal = (testimonialIndex: number | null) => {
@@ -92,7 +97,11 @@ const Testimonial1 = ({ content, setContent, isEditable, webColor }: any) => {
     setIsModalOpen(false);
   };
 
-  const handleTestimonialChange = (index: number, field: string, value: string) => {
+  const handleTestimonialChange = (
+    index: number,
+    field: string,
+    value: string
+  ) => {
     const updatedTestimonials = [...editedContent.testimonials];
     updatedTestimonials[index] = {
       ...updatedTestimonials[index],
@@ -111,90 +120,117 @@ const Testimonial1 = ({ content, setContent, isEditable, webColor }: any) => {
       borderRadius="lg"
       boxShadow="md"
     >
-      <Heading
-        as="h2"
-        size="xl"
-        textAlign="center"
-        mb={4}
-        color={colorMode === "light" ? colors?.headingColor?.light : colors?.headingColor?.dark}
-      >
-        {editedContent.title}
-        {isEditable && (
-          <Button
-            size="xs"
-            ml={2}
-            onClick={() => openEditModal(null)}
-            variant="outline"
-            colorScheme="teal"
-            leftIcon={<FaEdit />}
-          >
-            Edit
-          </Button>
-        )}
-      </Heading>
-      <Text
-        textAlign="center"
-        fontSize="lg"
-        color={colorMode === "light" ? colors?.subHeadingColor?.light : colors?.subHeadingColor?.dark}
-        mb={6}
-      >
-        {editedContent.subTitle}
-      </Text>
-      <Slider {...settings}>
-        {editedContent.testimonials.map(({ name, testimonial, imageUrl } : any , index : number) => (
-          <Box key={index} mx={2} my={3}>
-            <VStack
-              spacing={4}
-              align="center"
-              p={5}
-              borderWidth={1}
-              borderColor={borderColor}
-              borderRadius="lg"
-              boxShadow="md"
-              bg={cardBg}
-              transition="0.3s"
-              mr={4}
-              _hover={{ boxShadow: "xl", transform: "scale(1.03)" }}
-              position="relative"
+      <Center>
+        <Box>
+        <Heading
+          as="h2"
+          size="xl"
+          textAlign="center"
+
+          mb={4}
+          color={
+            colorMode === "light"
+              ? colors?.headingColor?.light
+              : colors?.headingColor?.dark
+          }
+        >
+          {editedContent.title}
+          {isEditable && (
+            <Button
+              size="xs"
+              ml={2}
+              onClick={() => openEditModal(null)}
+              variant="outline"
+              colorScheme="teal"
+              leftIcon={<FaEdit />}
             >
-              {isEditable && (
-                <Button
-                  size="xs"
-                  position="absolute"
-                  top={2}
-                  right={2}
-                  onClick={() => openEditModal(index)}
-                  variant="outline"
-                  colorScheme="teal"
-                  leftIcon={<FaEdit />}
-                >
-                  Edit
-                </Button>
-              )}
-              <Image
-                borderRadius="full"
-                boxSize="100px"
-                src={imageUrl}
-                alt={name}
+              Edit
+            </Button>
+          )}
+        </Heading>
+        <Text
+          textAlign="center"
+          color={
+            colorMode === "light"
+              ? colors?.subHeadingColor?.light
+              : colors?.subHeadingColor?.dark
+          }
+          mb={6}
+          maxW={{ base: "100%", md: "600px" }}
+          fontWeight="semibold"
+          fontSize={{ base: "md", md: "xl" }}
+        >
+          {editedContent.subTitle}
+        </Text>
+        </Box>
+      </Center>
+      <Slider {...settings}>
+        {editedContent.testimonials.map(
+          ({ name, testimonial, imageUrl }: any, index: number) => (
+            <Box key={index} mx={2} my={3}>
+              <VStack
+                spacing={4}
+                align="center"
+                p={5}
+                borderWidth={1}
+                borderColor={borderColor}
+                borderRadius="lg"
                 boxShadow="md"
-              />
-              <Text fontWeight="bold" fontSize="lg" color={textColor}>
-                {name}
-              </Text>
-              <Text fontStyle="italic" color={testimonialColor} textAlign="center">
-                "{testimonial}"
-              </Text>
-            </VStack>
-          </Box>
-        ))}
+                bg={cardBg}
+                transition="0.3s"
+                mr={4}
+                _hover={{ boxShadow: "xl", transform: "scale(1.03)" }}
+                position="relative"
+              >
+                {isEditable && (
+                  <Button
+                    size="xs"
+                    position="absolute"
+                    top={2}
+                    right={2}
+                    onClick={() => openEditModal(index)}
+                    variant="outline"
+                    colorScheme="teal"
+                    leftIcon={<FaEdit />}
+                  >
+                    Edit
+                  </Button>
+                )}
+                <Image
+                  borderRadius="full"
+                  boxSize="100px"
+                  src={imageUrl}
+                  alt={name}
+                  boxShadow="md"
+                />
+                <Text fontWeight="bold" fontSize="lg" color={textColor}>
+                  {name}
+                </Text>
+                <Text
+                  fontStyle="italic"
+                  color={testimonialColor}
+                  textAlign="center"
+                >
+                  "{testimonial}"
+                </Text>
+              </VStack>
+            </Box>
+          )
+        )}
       </Slider>
 
       {/* Edit Modal */}
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} size="lg">
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        size="lg"
+      >
         <ModalOverlay />
         <ModalContent bg={cardBg} borderRadius="md" boxShadow="lg">
           <ModalHeader textAlign="center" fontSize="2xl" fontWeight="bold">
-            {currentTestimonial === null ? "Edit Title and Subtitle" : "Edit Testimonial"}
+            {currentTestimonial === null
+              ? "Edit Title and Subtitle"
+              : "Edit Testimonial"}
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
@@ -204,7 +240,12 @@ const Testimonial1 = ({ content, setContent, isEditable, webColor }: any) => {
                   mb={4}
                   placeholder="Title"
                   value={editedContent.title}
-                  onChange={(e) => setEditedContent({ ...editedContent, title: e.target.value })}
+                  onChange={(e) =>
+                    setEditedContent({
+                      ...editedContent,
+                      title: e.target.value,
+                    })
+                  }
                   borderRadius="md"
                   _focus={{ borderColor: "teal.400" }}
                   size="lg"
@@ -212,7 +253,12 @@ const Testimonial1 = ({ content, setContent, isEditable, webColor }: any) => {
                 <Textarea
                   placeholder="Subtitle"
                   value={editedContent.subTitle}
-                  onChange={(e) => setEditedContent({ ...editedContent, subTitle: e.target.value })}
+                  onChange={(e) =>
+                    setEditedContent({
+                      ...editedContent,
+                      subTitle: e.target.value,
+                    })
+                  }
                   borderRadius="md"
                   _focus={{ borderColor: "teal.400" }}
                   size="lg"
@@ -225,16 +271,28 @@ const Testimonial1 = ({ content, setContent, isEditable, webColor }: any) => {
                   mb={4}
                   placeholder="Name"
                   value={editedContent.testimonials[currentTestimonial].name}
-                  onChange={(e) => handleTestimonialChange(currentTestimonial, 'name', e.target.value)}
+                  onChange={(e) =>
+                    handleTestimonialChange(
+                      currentTestimonial,
+                      "name",
+                      e.target.value
+                    )
+                  }
                   borderRadius="md"
                   _focus={{ borderColor: "teal.400" }}
                   size="lg"
                 />
                 <Textarea
                   placeholder="Testimonial"
-                  value={editedContent.testimonials[currentTestimonial].testimonial}
+                  value={
+                    editedContent.testimonials[currentTestimonial].testimonial
+                  }
                   onChange={(e) =>
-                    handleTestimonialChange(currentTestimonial, 'testimonial', e.target.value)
+                    handleTestimonialChange(
+                      currentTestimonial,
+                      "testimonial",
+                      e.target.value
+                    )
                   }
                   borderRadius="md"
                   _focus={{ borderColor: "teal.400" }}
@@ -244,9 +302,15 @@ const Testimonial1 = ({ content, setContent, isEditable, webColor }: any) => {
                 />
                 <Input
                   placeholder="Image URL"
-                  value={editedContent.testimonials[currentTestimonial].imageUrl}
+                  value={
+                    editedContent.testimonials[currentTestimonial].imageUrl
+                  }
                   onChange={(e) =>
-                    handleTestimonialChange(currentTestimonial, 'imageUrl', e.target.value)
+                    handleTestimonialChange(
+                      currentTestimonial,
+                      "imageUrl",
+                      e.target.value
+                    )
                   }
                   borderRadius="md"
                   _focus={{ borderColor: "teal.400" }}

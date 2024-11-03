@@ -29,9 +29,12 @@ const BoxStyleFirst = styled(Box)`
   }
 `;
 
-const Contact = observer(({webColor} : any) => {
+const Contact = observer(({ webColor }: any) => {
   const { colors } = useSectionColorContext() || { colors: webColor || {} };
-  const iconColor = useColorModeValue(colors?.iconColor?.light, colors?.iconColor?.dark);
+  const iconColor = useColorModeValue(
+    colors?.iconColor?.light,
+    colors?.iconColor?.dark
+  );
 
   return (
     <Container
@@ -55,12 +58,13 @@ const Contact = observer(({webColor} : any) => {
           Get in Touch with Us
         </Heading>
         <Text
-          fontSize={{ base: "md", md: "lg" }}
+          fontSize={{ base: "md", md: "xl" }}
           color={useColorModeValue(
             colors?.subHeadingColor?.light,
             colors?.subHeadingColor?.dark
           )}
           maxW="lg"
+          fontWeight="semibold"
         >
           We’re here to help you with all your questions. Reach out, and let’s
           make a connection!
@@ -131,7 +135,7 @@ const Contact = observer(({webColor} : any) => {
 
             {/* Social Media */}
             <Box pt={4}>
-              <SocialMediaLink iconColor={iconColor}/>
+              <SocialMediaLink iconColor={iconColor} />
             </Box>
           </VStack>
         </VStack>
