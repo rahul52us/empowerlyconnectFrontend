@@ -141,7 +141,6 @@ export default function Principal1({ content, setContent, webColor }: any) {
               _hover={{ transform: "scale(1.05)" }}
             />
           </MotionBox>
-
           <MotionBox
             flex="2"
             data-aos="fade-left"

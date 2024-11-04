@@ -148,9 +148,6 @@ const WebsiteBuilder = observer(() => {
         });
         setWebTempId(dt?.data?._id);
         setWebType(dt.data?.webType);
-
-        console.log('the order sections are', orderedSections)
-
         setSections(orderedSections);
         const mergedContent = {
           ...initialValues,

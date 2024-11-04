@@ -2,12 +2,6 @@ import {
   Box,
   Button,
   Checkbox,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
   ModalFooter,
   useDisclosure,
   Icon,
@@ -18,12 +12,14 @@ import {
   IconButton,
   RadioGroup,
   Radio,
-  Stack,
+  Input,
+  VStack,
 } from "@chakra-ui/react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { useState, useEffect } from "react";
 import { FiSettings, FiLayers, FiChevronRight } from "react-icons/fi";
 import { FaMoon, FaPlus, FaSun } from "react-icons/fa";
+import FormModel from "../../../../config/component/common/FormModel/FormModel";
 
 interface Section {
   label: string;
@@ -43,7 +39,7 @@ interface WebTempSidebarProps {
   handleKeyPress: (page: string, e: React.KeyboardEvent) => void;
   initialSections: Section[];
   saveWebTemplate: any;
-  submitLoading:boolean
+  submitLoading: boolean;
 }
 
 const WebTempSidebar: React.FC<WebTempSidebarProps> = ({
@@ -57,7 +53,7 @@ const WebTempSidebar: React.FC<WebTempSidebarProps> = ({
   handleKeyPress,
   initialSections,
   saveWebTemplate,
-  submitLoading
+  submitLoading,
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedSections, setSelectedSections] = useState<Section[]>([]);
@@ -93,6 +89,14 @@ const WebTempSidebar: React.FC<WebTempSidebarProps> = ({
     setSelectedSections((prevSections) =>
       prevSections.map((section) =>
         section.page === page ? { ...section, key: newLayout } : section
+      )
+    );
+  };
+
+  const handleLabelChange = (page: string, newLabel: string) => {
+    setSelectedSections((prevSections) =>
+      prevSections.map((section) =>
+        section.page === page ? { ...section, label: newLabel } : section
       )
     );
   };
@@ -245,45 +249,35 @@ const WebTempSidebar: React.FC<WebTempSidebarProps> = ({
       </Box>
 
       {/* Modal for managing sections */}
-      <Modal
+      <FormModel
+        title="Manage Sections"
         isOpen={isOpen}
         onClose={onClose}
-        size={{ base: "full", md: "lg" }}
-        closeOnOverlayClick={true}
-        isCentered
+        size="2xl"
       >
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader
-            bg="teal.500"
-            color="white"
-            borderTopRadius="md"
-            fontSize="xl"
-          >
-            Manage Sections
-          </ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Grid templateColumns="repeat(2, 1fr)" gap={4}>
-              {initialSections.map((section) => (
-                <Box
-                  key={section.page}
-                  p={3}
-                  borderRadius="md"
-                  bg={
-                    selectedSections.some((s) => s.page === section.page)
-                      ? "teal.100"
-                      : "white"
-                  }
-                  border="1px solid"
-                  borderColor="gray.200"
-                  transition="background-color 0.2s ease"
-                  onClick={(e) => {
-                    e.stopPropagation(); // Prevent accidental toggling
-                  }}
-                  cursor="pointer"
-                  _hover={{ bg: "teal.50", transform: "scale(1.02)" }}
-                >
+        <Grid
+          templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }}
+          gap={6}
+          m={2}
+        >
+          {initialSections.map((section) => (
+            <Box
+              key={section.page}
+              p={5} // Increased padding for better spacing
+              borderRadius="md" // Medium rounded corners
+              bg={
+                selectedSections.some((s) => s.page === section.page)
+                  ? "teal.50"
+                  : "white"
+              }
+              border="1px solid"
+              borderColor="gray.300"
+              boxShadow="lg" // Subtle shadow for depth
+              transition="transform 0.2s ease, box-shadow 0.2s ease"
+              _hover={{ boxShadow: "2xl", transform: "translateY(-2px)" }} // Slight hover effect
+            >
+              <VStack align="stretch" spacing={4}>
+                <HStack justify="space-between" align="center">
                   <Checkbox
                     isChecked={selectedSections.some(
                       (s) => s.page === section.page
@@ -292,51 +286,80 @@ const WebTempSidebar: React.FC<WebTempSidebarProps> = ({
                       e.stopPropagation();
                       handleCheckboxChange(section);
                     }}
+                    colorScheme="teal"
+                    size="lg"
+                    fontWeight="medium" // Medium font weight for better visibility
                   >
                     {section.label}
                   </Checkbox>
-                  {section.layouts && (
-                    <RadioGroup
-                      value={
-                        selectedSections.find((s) => s.page === section.page)
-                          ?.key || section.key
-                      }
-                      onChange={(newLayout) =>
-                        handleLayoutChange(section.page, newLayout)
-                      }
-                    >
-                      <Stack spacing={1} mt={2}>
-                        {section.layouts.map((layout) => (
-                          <Radio
-                            key={layout}
-                            value={layout}
-                            size="sm"
-                            colorScheme="teal"
-                          >
-                            {layout}
-                          </Radio>
-                        ))}
-                      </Stack>
-                    </RadioGroup>
-                  )}
-                </Box>
-              ))}
-            </Grid>
-          </ModalBody>
-          <ModalFooter>
-            <Button
-              colorScheme="teal"
-              mr={3}
-              onClick={handleSaveSections}
-            >
-              Save Changes
-            </Button>
-            <Button variant="outline" onClick={onClose}>
-              Cancel
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+                </HStack>
+                <Input
+                  size="md" // Increased size for better touch targets
+                  value={
+                    selectedSections.find((s) => s.page === section.page)
+                      ?.label || section.label
+                  }
+                  onChange={(e) =>
+                    handleLabelChange(section.page, e.target.value)
+                  }
+                  variant="outline" // Clear outline variant for visibility
+                  placeholder="Enter label"
+                  borderColor="gray.300"
+                  _focus={{
+                    borderColor: "teal.500",
+                    boxShadow: "0 0 0 1px teal",
+                  }}
+                  _placeholder={{ color: "gray.500" }}
+                  borderRadius="md" // Rounded corners
+                  mt={1} // Margin top for spacing
+                />
+                <RadioGroup
+                  defaultValue={
+                    selectedSections.find((s) => s.page === section.page)
+                      ?.key || section.key
+                  }
+                  onChange={(newLayout) =>
+                    handleLayoutChange(section.page, newLayout)
+                  }
+                >
+                  <HStack spacing={4}>
+                    {section.layouts?.map((layout) => (
+                      <Radio
+                        key={layout}
+                        value={layout}
+                        size="lg"
+                        colorScheme="teal"
+                      >
+                        {layout}
+                      </Radio>
+                    ))}
+                  </HStack>
+                </RadioGroup>
+              </VStack>
+            </Box>
+          ))}
+        </Grid>
+
+        <ModalFooter justifyContent="flex-end" mt={6}>
+          <Button
+            colorScheme="teal"
+            onClick={handleSaveSections}
+            size="lg"
+            fontWeight="bold"
+          >
+            Save
+          </Button>
+          <Button
+            colorScheme="gray"
+            onClick={onClose}
+            size="lg"
+            fontWeight="bold"
+            ml={4}
+          >
+            Cancel
+          </Button>
+        </ModalFooter>
+      </FormModel>
     </>
   );
 };

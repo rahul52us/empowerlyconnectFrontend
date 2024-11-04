@@ -18,7 +18,7 @@ import { useSectionColorContext } from "../../../../School";
 
 const MotionBox = motion(Box);
 
-const About2 = ({ content, webColor }: any) => {
+const About2 = ({ content, webColor, isEditable, onOpen }: any) => {
   const { colorMode } = useColorMode();
   const { colors } = useSectionColorContext() || { colors: webColor || {} };
   const bg = useColorModeValue("gray.50", "gray.900");
@@ -122,6 +122,7 @@ const About2 = ({ content, webColor }: any) => {
                   </motion.div>
                 ))}
             </VStack>
+
             {content?.description?.length > 4 && (
               <Flex justifyContent="end" w="100%">
                 <Button
@@ -135,6 +136,33 @@ const About2 = ({ content, webColor }: any) => {
             )}
           </VStack>
         </Stack>
+        {isEditable && (
+          <Button
+            color={
+              colorMode === "light"
+                ? webColor?.buttonTextColor?.light
+                : webColor?.buttonTextColor?.dark
+            }
+            backgroundColor={
+              colorMode === "light"
+                ? webColor?.buttonColor?.light
+                : webColor?.buttonColor?.dark
+            }
+            _hover={{
+              backgroundColor:
+                colorMode === "light"
+                  ? webColor?.buttonHoverColor?.light
+                  : webColor?.buttonHoverColor?.dark,
+              color:
+                colorMode === "light"
+                  ? webColor?.buttonTextHoverColor?.light
+                  : webColor?.buttonTextHoverColor?.dark,
+            }}
+            onClick={onOpen}
+          >
+            Edit Content
+          </Button>
+        )}
       </Container>
     </MotionBox>
   );

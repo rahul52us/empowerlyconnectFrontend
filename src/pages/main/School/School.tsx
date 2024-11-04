@@ -150,7 +150,6 @@ const School = observer(() => {
             (section: any): section is SectionConfig => section !== undefined
           );
 
-          console.log(orderedSections)
         setSectionSettings((prev: any) => ({
           ...prev,
           webInfo: dt?.data?.webInfo?.sections?.metaData || {},
