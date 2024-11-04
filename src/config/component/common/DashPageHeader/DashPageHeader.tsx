@@ -1,3 +1,5 @@
+import { observer } from "mobx-react-lite";
+import { useEffect, useState } from "react";
 import {
   Box,
   Flex,
@@ -15,12 +17,10 @@ import {
   PopoverBody,
   Divider,
 } from "@chakra-ui/react";
-import { observer } from "mobx-react-lite";
 import CustomBreadcrumb from "../../CustomBreadcrumb/CustomBreadcrumb";
 import { Helmet } from "react-helmet";
 import { RiMenuLine } from "react-icons/ri";
 import { AiOutlineTable, AiOutlineAppstore } from "react-icons/ai";
-import { useEffect, useState } from "react";
 
 interface BreadcrumbItem {
   label: string;
@@ -34,7 +34,7 @@ interface PageHeaderProps {
   btnAction?: any;
   selectedMode?: string;
   showMainTitle?: boolean;
-  metaData?:any
+  metaData?: any;
 }
 
 const DashPageHeader = observer(
@@ -45,7 +45,7 @@ const DashPageHeader = observer(
     btnAction,
     selectedMode = "",
     showMainTitle = true,
-    metaData = {}
+    metaData = {},
   }: PageHeaderProps) => {
     const theme = useTheme();
     const headingColor = useColorModeValue(
@@ -57,29 +57,29 @@ const DashPageHeader = observer(
       theme.colors.gray[400]
     );
 
-    const [favicon, setFavicon] = useState(metaData.faviconUrl); // Default favicon
+    const defaultFavicon = metaData.faviconUrl;
+    const [favicon, setFavicon] = useState(defaultFavicon);
 
     useEffect(() => {
-      // Update favicon dynamically based on selected mode
+      let newFavicon = defaultFavicon;
+
       if (selectedMode === "table") {
-        setFavicon("https://example.com/favicon-table.png");
+        newFavicon = "https://example.com/favicon-table.png";
       } else if (selectedMode === "grid") {
-        setFavicon("https://example.com/favicon-grid.png");
-      } else {
-        setFavicon(metaData.faviconUrl);
+        newFavicon = "https://example.com/favicon-grid.png";
       }
 
-      // Set the favicon in the document head
       const link = document.querySelector("link[rel*='icon']") as HTMLLinkElement;
       if (link) {
-        link.href = favicon;
+        link.href = newFavicon;
       } else {
         const newLink = document.createElement("link");
         newLink.rel = "icon";
-        newLink.href = favicon;
+        newLink.href = newFavicon;
         document.head.appendChild(newLink);
       }
-    }, [favicon, selectedMode]); // Effect depends on `favicon` and `selectedMode`
+      setFavicon(newFavicon);
+    }, [selectedMode, defaultFavicon]);
 
     const isSelected = (mode: string) => mode === selectedMode;
 
@@ -151,10 +151,7 @@ const DashPageHeader = observer(
                     <Flex
                       alignItems="center"
                       cursor="pointer"
-                      onClick={() => {
-                        btnAction("table");
-                        setFavicon("https://example.com/favicon-table.png");
-                      }}
+                      onClick={() => btnAction("table")}
                       p={3}
                       borderRadius="md"
                       bg={isSelected("table") ? "blue.100" : "transparent"}
@@ -167,10 +164,7 @@ const DashPageHeader = observer(
                     <Flex
                       alignItems="center"
                       cursor="pointer"
-                      onClick={() => {
-                        btnAction("grid");
-                        setFavicon("https://example.com/favicon-grid.png");
-                      }}
+                      onClick={() => btnAction("grid")}
                       p={3}
                       borderRadius="md"
                       bg={isSelected("grid") ? "blue.100" : "transparent"}
