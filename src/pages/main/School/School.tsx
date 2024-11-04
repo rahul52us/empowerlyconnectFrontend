@@ -6,6 +6,7 @@ import React, {
   Suspense,
   createContext,
   useContext,
+  useMemo,
 } from "react";
 import { FaChalkboardTeacher, FaUserGraduate } from "react-icons/fa";
 import { GiLaurelsTrophy } from "react-icons/gi";
@@ -15,7 +16,6 @@ import { useQueryParams } from "../../../config/component/customHooks/useQuery";
 import WebLoader from "../../../config/component/Loader/WebLoader";
 import { observer } from "mobx-react-lite";
 import store from "../../../store/store";
-import { useParams } from "react-router-dom";
 import DashPageHeader from "../../../config/component/common/DashPageHeader/DashPageHeader";
 import Header2 from "./layout/Navbar/component/Header2";
 
@@ -99,15 +99,8 @@ const initialSectionsConfig: SectionConfig[] = [
   { id: "map", component: MapSection, props: {} },
 ];
 
-const School = observer(() => {
-  const [fetchData, setFetchData] = useState({
-    loading: true,
-    data: {},
-  });
-
-  const { title } = useParams();
+const School = observer(({ dt }: any) => {
   const {
-    WebTemplateStore: { getWebTemplate },
     auth: { openNotification },
   } = store;
   const { getQueryParam } = useQueryParams();
@@ -129,47 +122,42 @@ const School = observer(() => {
     }, {} as Record<string, React.RefObject<HTMLDivElement>>)
   );
 
-  useEffect(() => {
-    setFetchData({ loading: true, data: {} });
-    getWebTemplate(title)
-      .then((dt: any) => {
-        const orderedSections = dt.data?.sectionsLayout
-          .map((preferenceId: any) => {
-            const section = initialSectionsConfig.find(
-              (section) => section.id === preferenceId.page
-            );
-            if (section) {
-              return {
-                ...section,...preferenceId,
-                props: dt?.data?.webInfo?.sections[section.id],
-              };
-            }
-            return undefined;
-          })
-          .filter(
-            (section: any): section is SectionConfig => section !== undefined
-          );
+  const modeValue = useMemo(() => getQueryParam("mode") ? true : false, [getQueryParam]);
 
-        setSectionSettings((prev: any) => ({
-          ...prev,
-          webInfo: dt?.data?.webInfo?.sections?.metaData || {},
-          sections: dt?.data?.webInfo?.sections,
-          sectionLayout: orderedSections,
-          colors: dt.data?.webInfo?.colorSetting,
-          websiteMode: getQueryParam("mode") ? true : false,
-        }));
-        setFetchData({ loading: false, data: dt?.data });
+  const dtSectionsLayout = useMemo(
+    () => dt.data?.sectionsLayout,
+    [dt.data?.sectionsLayout]
+  );
+  const dtWebInfo = useMemo(() => dt.data?.webInfo, [dt.data?.webInfo]);
+
+  useEffect(() => {
+    const orderedSections = dtSectionsLayout
+      ?.map((preferenceId: any) => {
+        const section = initialSectionsConfig.find(
+          (section) => section.id === preferenceId.page
+        );
+        if (section) {
+          return {
+            ...section,
+            ...preferenceId,
+            props: dtWebInfo?.sections[section.id],
+          };
+        }
+        return undefined;
       })
-      .catch(() => {
-        setFetchData({ loading: false, data: {} });
-        // openNotification({
-        //   title: "GET TEMPLATE SUCCESSFULLY",
-        //   message: err.message,
-        //   type: "error",
-        // });
-      })
-      .finally(() => {});
-  }, [openNotification]);
+      .filter(
+        (section: any): section is SectionConfig => section !== undefined
+      );
+
+    setSectionSettings((prev: any) => ({
+      ...prev,
+      webInfo: dtWebInfo?.sections?.metaData || {},
+      sections: dtWebInfo?.sections,
+      sectionLayout: orderedSections,
+      colors: dtWebInfo?.colorSetting,
+      websiteMode: modeValue,
+    }));
+  }, [dtSectionsLayout, dtWebInfo, openNotification, modeValue]);
 
   const scrollToSection = (sectionId: string) => {
     const ref = sectionRefs.current[sectionId];
@@ -185,10 +173,7 @@ const School = observer(() => {
     (section: any) => section
   );
 
-  console.log(activeSectionIds)
-
-  return fetchData.loading === false &&
-    Object.keys(fetchData.data || {}).length === 0 ? (
+  return dt.loading === false && Object.keys(dt.data || {}).length === 0 ? (
     <Center mt={"25vh"}>
       <Image
         src="/img/emptyData.jpg"
@@ -198,7 +183,7 @@ const School = observer(() => {
         borderRadius={50}
       />
     </Center>
-  ) : fetchData.loading === false ? (
+  ) : dt.loading === false ? (
     <SectionColorContext.Provider value={sectionSettings}>
       <DashPageHeader
         showMainTitle={false}
@@ -213,21 +198,26 @@ const School = observer(() => {
             linksConfig={activeSectionIds.map((item: any) => ({
               id: item?.id,
               name: item?.id?.charAt(0).toUpperCase() + item?.id?.slice(1),
-              label: item?.label
+              label: item?.label,
             }))}
             colors={sectionSettings.colors}
           />
           <Box marginTop={largeHeaderHeight}>
             {sectionSettings.sectionLayout
-              .filter((item : any) => activeSectionIds.some((activeSection: any) => activeSection.id === item.id))
+              .filter((item: any) =>
+                activeSectionIds.some(
+                  (activeSection: any) => activeSection.id === item.id
+                )
+              )
               .map(({ id, component: Component, props, ...rest }: any) => {
                 let sectionProps = {
                   ...props,
-                  selectedLayout:rest,
+                  selectedLayout: rest,
                   content: props,
                   webColor: sectionSettings.colors,
                   colors: sectionSettings.colors,
-                  backgroundImage :sectionSettings?.colors?.statisticsBackgroundImage
+                  backgroundImage:
+                    sectionSettings?.colors?.statisticsBackgroundImage,
                 };
 
                 return (

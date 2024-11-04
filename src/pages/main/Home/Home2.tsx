@@ -16,6 +16,7 @@ import { main } from "../../../config/constant/routes";
 import CourseForm from "../courses/CourseForm/CourseForm";
 import { useState } from "react";
 import PaymentPage from "../../../config/component/PaymentGateway/PaymentPage";
+import PageBuilder from "../../../config/component/LiberaryComponent/PageBuilder";
 // import ProfileCard from "./component/ProfileCard/ProfileCard";
 
 // const cardData = [
@@ -362,6 +363,7 @@ const Home2 = () => {
 
         {/* <ProfileCard /> */}
       </Box>
+      <PageBuilder />
       <Box>
         <Text mt={"4rem"} textAlign={"center"} color={"gray"}>
           POPULAR COURSES

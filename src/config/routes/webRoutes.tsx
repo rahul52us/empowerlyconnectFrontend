@@ -1,13 +1,15 @@
 import { lazy } from "react";
-import {  web } from "../constant/routes";
+import { web } from "../constant/routes";
 import { ecommerceRoutes } from "./component/ecommerceRoute";
-const School = lazy(() => import("../../pages/main/School/School"));
+const IndividualWebsite = lazy(
+  () => import("../../pages/main/individualWebsite/IndividualWebsite")
+);
 
 export const WebRoutes = [
   {
-    element : <School />,
+    element: <IndividualWebsite />,
     path: web.index,
-    publicRoutes:true
+    publicRoutes: true,
   },
-  ...ecommerceRoutes
+  ...ecommerceRoutes,
 ];
