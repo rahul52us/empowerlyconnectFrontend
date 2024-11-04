@@ -329,7 +329,7 @@ const WebsiteBuilder = observer(() => {
             <MapSection
               isEditable={true}
               webColor={colorSetting}
-              content={webContent.testimonial}
+              content={webContent.map}
               setContent={(newContent: any) =>
                 setWebContent({ ...webContent, map: newContent })
               }

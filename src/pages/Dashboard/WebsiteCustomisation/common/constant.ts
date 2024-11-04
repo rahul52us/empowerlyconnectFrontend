@@ -129,4 +129,12 @@ export const initialValues = {
           },
       ],
   },
+  map : {
+    name: "Aarya Kid's Garden School",
+    address: "Plot No. 123, ABC Street, XYZ Nagar, New Delhi, 110001",
+    phone: "+91 12345 67890",
+    email: "info@aaryakids.com",
+    website: "https://www.aaryakids.com",
+    mapUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1308.3472934977735!2d77.14517463054085!3d28.495267891737505!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d1ef6a6ac4793%3A0x323e6e261abec9af!2sAarya%20Kid's%20Garden%20School!5e0!3m2!1sen!2sin!4v1728752051958!5m2!1sen!2sin",
+  }
 };
