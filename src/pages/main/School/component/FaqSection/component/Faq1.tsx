@@ -40,9 +40,10 @@ const Faq1 = ({ setContent, content, webColor }: any) => {
     websiteMode: true,
   };
 
-
-  const buttonHoverColor = useColorModeValue("teal.50", "teal.700");
-  const buttonExpandedColor = useColorModeValue("teal.100", "teal.600");
+  const buttonHoverColor = useColorModeValue(
+    colors?.buttonHoverColor?.light,
+    colors?.buttonHoverColor?.dark
+  );
   const textColor = useColorModeValue("gray.800", "gray.200");
   const panelBgColor = useColorModeValue("gray.50", "gray.700");
   const borderColor = useColorModeValue("gray.200", "gray.600");
@@ -129,7 +130,7 @@ const Faq1 = ({ setContent, content, webColor }: any) => {
   const handleDeleteFaq = (index: number) => {
     setFaqSection((prev: any) => ({
       ...prev,
-      faqData: prev.faqData.filter((_ : any, idx : number) => idx !== index),
+      faqData: prev.faqData.filter((_: any, idx: number) => idx !== index),
     }));
   };
 
@@ -170,7 +171,7 @@ const Faq1 = ({ setContent, content, webColor }: any) => {
               ? colors?.subHeadingColor?.light
               : colors?.subHeadingColor?.dark
           }
-              fontWeight="semibold"
+          fontWeight="semibold"
         >
           {faqSection?.subtitle}
         </Text>
@@ -234,90 +235,123 @@ const Faq1 = ({ setContent, content, webColor }: any) => {
         </Flex>
       )}
       <Accordion allowToggle>
-        {Array.isArray(faqSection.faqData) && faqSection.faqData.map((faq: any, index: number) => (
-          <AccordionItem
-            key={index}
-            border="1px"
-            borderColor={borderColor}
-            borderRadius="md"
-            mb={3}
-          >
-            <AccordionButton
-              _hover={{ bg: buttonHoverColor, boxShadow: "md" }}
-              p={6}
-              _expanded={{ bg: buttonExpandedColor }}
-              transition="background-color 0.2s, box-shadow 0.2s"
-            >
-              <Flex alignItems="center" flex="1" textAlign="left">
-                <InfoIcon boxSize={5} color={textColor} mr={2} />
-                <Text
-                  fontWeight="bold"
-                  fontSize={{ base: "sm", md: "lg" }}
-                  color={textColor}
-                >
-                  {faq.question}
-                </Text>
-              </Flex>
-              <AccordionIcon color={textColor} />
-            </AccordionButton>
-            <AccordionPanel
-              fontSize="md"
-              pb={4}
-              p={4}
-              bg={panelBgColor}
+        {Array.isArray(faqSection.faqData) &&
+          faqSection.faqData.map((faq: any, index: number) => (
+            <AccordionItem
+              key={index}
+              border="1px"
+              borderColor={borderColor}
               borderRadius="md"
-              boxShadow="sm"
+              mb={3}
             >
-              <UnorderedList spacing={2} color={textColor}>
-                {faq.answer.map((point: any, idx: number) => (
-                  <ListItem key={idx}>{point}</ListItem>
-                ))}
-              </UnorderedList>
-              <Flex mt={3} justifyContent="flex-end">
-                <IconButton
-                  icon={<EditIcon
+              <AccordionButton
+                bgColor={
+                  colorMode === "light"
+                    ? colors?.buttonColor?.light
+                    : colors?.buttonColor?.dark
+                }
+                _hover={{ bg: buttonHoverColor, boxShadow: "md" }}
+                p={6}
+                _expanded={{
+                  bg:
+                    colorMode === "light"
+                      ? colors?.buttonColor?.light
+                      : colors?.buttonColor?.dark,
+                }}
+                transition="background-color 0.2s, box-shadow 0.2s"
+              >
+                <Flex alignItems="center" flex="1" textAlign="left">
+                  <InfoIcon
+                    boxSize={5}
                     color={
                       colorMode === "light"
-                        ? colors?.iconTextColor?.light
-                        : colors?.iconTextColor?.dark
+                        ? colors?.iconColor?.dark
+                        : colors?.iconColor?.dark
                     }
-                    _hover={{
-                        color:
-                          colorMode === "light"
-                            ? colors?.iconTextHoverColor?.light
-                            : colors?.iconTextHoverColor?.dark,
-                      }}
-                  />}
-                  color={
-                    colorMode === "light"
-                      ? colors?.buttonTextHoverColor?.light
-                      : colors?.buttonTextHoverColor?.dark
-                  }                _hover={{
-                      backgroundColor:
-                        colorMode === "light"
-                          ? colors?.buttonHoverColor?.light
-                          : colors?.buttonHoverColor?.dark,
-                    }}
-                    backgroundColor={
+                    mr={2}
+                  />
+                  <Text
+                    fontWeight="bold"
+                    fontSize={{ base: "sm", md: "lg" }}
+                    color={
                       colorMode === "light"
-                        ? colors?.buttonColor?.light
-                        : colors?.buttonColor?.dark
+                        ? colors?.buttonTextColor?.light
+                        : colors?.buttonTextColor?.dark
                     }
-                  aria-label="Edit FAQ"
-                  onClick={() => handleEditFaq(index)}
-                  colorScheme="teal"
-                />
-                <IconButton
-                  icon={<DeleteIcon />}
-                  aria-label="Delete FAQ"
-                  onClick={() => handleDeleteFaq(index)}
-                  colorScheme="red"
-                  ml={2}
-                />
-              </Flex>
-            </AccordionPanel>
-          </AccordionItem>
-        ))}
+                    _hover={
+                      colorMode === "light"
+                        ? colors?.buttonTextHoverColor?.light
+                        : colors?.buttonTextHoverColor?.dark
+                    }
+                  >
+                    {faq.question}
+                  </Text>
+                </Flex>
+                <AccordionIcon color={textColor} />
+              </AccordionButton>
+              <AccordionPanel
+                fontSize="md"
+                pb={4}
+                p={4}
+                bg={panelBgColor}
+                borderRadius="md"
+                boxShadow="sm"
+              >
+                <UnorderedList spacing={2} color={textColor}>
+                  {faq.answer.map((point: any, idx: number) => (
+                    <ListItem key={idx}>{point}</ListItem>
+                  ))}
+                </UnorderedList>
+                {websiteMode && (
+                  <Flex mt={3} justifyContent="flex-end">
+                    <IconButton
+                      icon={
+                        <EditIcon
+                          color={
+                            colorMode === "light"
+                              ? colors?.iconTextColor?.light
+                              : colors?.iconTextColor?.dark
+                          }
+                          _hover={{
+                            color:
+                              colorMode === "light"
+                                ? colors?.iconTextHoverColor?.light
+                                : colors?.iconTextHoverColor?.dark,
+                          }}
+                        />
+                      }
+                      color={
+                        colorMode === "light"
+                          ? colors?.buttonTextHoverColor?.light
+                          : colors?.buttonTextHoverColor?.dark
+                      }
+                      _hover={{
+                        backgroundColor:
+                          colorMode === "light"
+                            ? colors?.buttonHoverColor?.light
+                            : colors?.buttonHoverColor?.dark,
+                      }}
+                      backgroundColor={
+                        colorMode === "light"
+                          ? colors?.buttonColor?.light
+                          : colors?.buttonColor?.dark
+                      }
+                      aria-label="Edit FAQ"
+                      onClick={() => handleEditFaq(index)}
+                      colorScheme="teal"
+                    />
+                    <IconButton
+                      icon={<DeleteIcon />}
+                      aria-label="Delete FAQ"
+                      onClick={() => handleDeleteFaq(index)}
+                      colorScheme="red"
+                      ml={2}
+                    />
+                  </Flex>
+                )}
+              </AccordionPanel>
+            </AccordionItem>
+          ))}
       </Accordion>
 
       <Modal isOpen={isFaqEditing} onClose={handleCancelFaq} size="md">

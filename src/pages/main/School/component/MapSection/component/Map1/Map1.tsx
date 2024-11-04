@@ -1,106 +1,125 @@
 import {
-  Box,
-  Grid,
-  Text,
-  VStack,
-  HStack,
-  Icon,
-  Divider,
-  Button,
-  useColorMode,
+    Box,
+    Grid,
+    Text,
+    VStack,
+    HStack,
+    Icon,
+    Button,
+    useColorMode,
+    Collapse,
+    Stack,
+    Flex,
 } from "@chakra-ui/react";
-import { MdLocationOn, MdPhone, MdEmail } from "react-icons/md";
+import { MdLocationOn, MdPhone, MdEmail, MdEdit } from "react-icons/md";
 import { useSectionColorContext } from "../../../../School";
+import { useState } from "react";
 
-const Map1 = ({ webColor, content , isEditable, onOpen }: any) => {
-  const { colors } = useSectionColorContext() || { colors: webColor || {} };
-  const { colorMode } = useColorMode();
+const Map2 = ({ webColor, content, isEditable, onOpen }: any) => {
+    const { colors } = useSectionColorContext() || { colors: webColor || {} };
+    const [showDetails, setShowDetails] = useState(true);
 
-  return (
-    <Box my={10} width="100%" p={5}>
-      <Grid templateColumns={{ base: "1fr", md: "2fr 1fr" }} gap={6}>
-        <Box>
-          <Box
-            borderRadius="lg"
-            overflow="hidden"
-            boxShadow="lg"
-            bg="gray.100"
-          >
-            <iframe
-              src={content.mapUrl} // Use the mapUrl from state
-              width="100%"
-              height="400"
-              style={{ border: 0 }}
-              allowFullScreen
-              loading="lazy"
-              title="map-section"
-              referrerPolicy="no-referrer-when-downgrade"
-            ></iframe>
-          </Box>
-        </Box>
-
-        <VStack
-          align="start"
-          spacing={6}
-          p={8}
-          borderWidth={1}
-          borderColor="teal.300"
-          borderRadius="lg"
-          boxShadow="lg"
-          bg="white"
-          transition="box-shadow 0.3s"
-          _hover={{ boxShadow: "2xl" }}
-          _dark={{ bg: "gray.800", borderColor: "teal.600" }}
-        >
-          <Text fontWeight="bold" fontSize="3xl" color={colorMode === "dark" ? colors?.headingColor?.dark : colors?.headingColor?.light}>
-            {content.name}
-          </Text>
-
-          <Divider orientation="horizontal" borderColor="gray.200" />
-
-          <HStack spacing={3}>
-            <Icon as={MdLocationOn} boxSize={8} color={colorMode === "dark" ? colors?.iconColor?.dark : colors?.iconColor?.light} aria-label="Location" />
-            <Text fontSize="md" color={colorMode === "dark" ? colors?.headingColor?.dark : colors?.headingColor?.light} _dark={{ color: "gray.300" }}>
-              {content.address}
-            </Text>
-          </HStack>
-
-          <HStack spacing={3}>
-            <Icon as={MdPhone} boxSize={8} color={colorMode === "dark" ? colors?.iconColor?.dark : colors?.iconColor?.light} aria-label="Phone" />
-            <Text fontSize="md" color={colorMode === "dark" ? colors?.headingColor?.dark : colors?.headingColor?.light} _dark={{ color: "gray.300" }}>
-              {content.phone}
-            </Text>
-          </HStack>
-
-          <HStack spacing={3}>
-            <Icon as={MdEmail} boxSize={8} color={colorMode === "dark" ? colors?.iconColor?.dark : colors?.iconColor?.light} aria-label="Email" />
-            <Text fontSize="md" color={colorMode === "dark" ? colors?.headingColor?.dark : colors?.headingColor?.light} _dark={{ color: "gray.300" }}>
-              {content.email}
-            </Text>
-          </HStack>
-
-          <Text fontSize="md" color={colorMode === "dark" ? colors?.headingColor?.dark : colors?.headingColor?.light} _dark={{ color: "gray.300" }}>
-            Website:{" "}
-            <a
-              href={content.website}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ color: colorMode === "dark" ? colors?.headingColor?.dark : colors?.headingColor?.light, textDecoration: "underline" }}
+    return (
+        <Box my={10} width="100%" p={5}>
+            <Grid
+                templateColumns={{ base: "1fr", md: "2fr 1fr" }}
+                gap={6}
+                alignItems="start"
             >
-              {content.website}
-            </a>
-          </Text>
+                {/* Map Section */}
+                <Box borderRadius="lg" overflow="hidden" boxShadow="lg">
+                    <iframe
+                        src={content.mapUrl}
+                        width="100%"
+                        height="400"
+                        style={{ border: 0 }}
+                        allowFullScreen
+                        loading="lazy"
+                        title="map-section"
+                        referrerPolicy="no-referrer-when-downgrade"
+                    ></iframe>
+                </Box>
 
-          {isEditable && <Button colorScheme="teal" onClick={onOpen}>
-            Edit
-          </Button>}
-        </VStack>
-      </Grid>
+                {/* Info Section */}
+                <VStack
+                    align="start"
+                    spacing={4}
+                    borderWidth={1}
+                    borderColor="teal.300"
+                    borderRadius="lg"
+                    boxShadow="lg"
+                    bg="white"
+                    transition="box-shadow 0.3s"
+                    _hover={{ boxShadow: "2xl" }}
+                    _dark={{ bg: "gray.800", borderColor: "teal.600" }}
+                    p={6}
+                >
+                    <Flex width={"100%"} justifyContent="center">
+                        <Box width={{base : "100%", md : "60%"}} textAlign="center"> {/* Box with 80% width and center alignment */}
+                            <Text
+                                fontWeight="bold"
+                                fontSize="2xl"
+                                color={colors?.headingColor?.light}
+                            >
+                                {content.name}
+                            </Text>
+                        </Box>
+                    </Flex>
+                    <Button
+                        variant="link"
+                        onClick={() => setShowDetails(!showDetails)}
+                        colorScheme="teal"
+                        rightIcon={showDetails ? <MdEdit /> : <MdEdit />}
+                    >
+                        {showDetails ? "Hide Details" : "Show Details"}
+                    </Button>
 
-      {/* Modal for Editing */}
-
-    </Box>
-  );
+                    <Collapse in={showDetails}>
+                        <Stack spacing={4} width="100%">
+                            <ContactCard icon={MdLocationOn} info={content.address} />
+                            <ContactCard icon={MdPhone} info={content.phone} />
+                            <ContactCard icon={MdEmail} info={content.email} />
+                            <Text>
+                                Website:{" "}
+                                <a
+                                    href={content.website}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    style={{ color: colors?.headingColor?.light, textDecoration: "underline" }}
+                                >
+                                    {content.website}
+                                </a>
+                            </Text>
+                            {isEditable && (
+                                <Button colorScheme="teal" onClick={onOpen} size="sm">
+                                    Edit
+                                </Button>
+                            )}
+                        </Stack>
+                    </Collapse>
+                </VStack>
+            </Grid>
+        </Box>
+    );
 };
 
-export default Map1;
+// ContactCard component for better code organization
+const ContactCard = ({ icon, info }: { icon: any; info: string }) => {
+    const { colorMode } = useColorMode();
+    const { colors } = useSectionColorContext() || {};
+    return (
+        <HStack spacing={3} p={4} borderWidth={1} borderRadius="md" borderColor="teal.300">
+            <Icon
+                as={icon}
+                boxSize={6}
+                color={colorMode === "dark" ? colors?.iconColor?.dark : colors?.iconColor?.light}
+                aria-label="Info"
+            />
+            <Text fontSize="sm" color={colorMode === "dark" ? colors?.headingColor?.dark : colors?.headingColor?.light}>
+                {info}
+            </Text>
+        </HStack>
+    );
+};
+
+export default Map2;
