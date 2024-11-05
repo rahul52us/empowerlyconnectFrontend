@@ -18,6 +18,7 @@ import { observer } from "mobx-react-lite";
 import store from "../../../store/store";
 import DashPageHeader from "../../../config/component/common/DashPageHeader/DashPageHeader";
 import Header2 from "./layout/Navbar/component/Header2";
+import Skills from "./component/Skills/Skills";
 
 // Lazy-loaded components
 const Contact = React.lazy(() => import("./component/ContactUs/Contact"));
@@ -228,6 +229,8 @@ const School = observer(({ dt }: any) => {
               })}
           </Box>
         </Box>
+
+        <Skills/>
       </Suspense>
     </SectionColorContext.Provider>
   ) : (
