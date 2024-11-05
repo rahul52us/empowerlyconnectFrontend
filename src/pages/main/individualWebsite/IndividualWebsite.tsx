@@ -39,26 +39,24 @@ const IndividualWebsite = observer(() => {
   }, [openNotification, getWebTemplate, title]);
 
   const renderContent = () => {
-    switch (fetchData.webType) {
-      case "portfolio":
-        return <School dt={fetchData} />;
-      case "business":
-        return <div>Business Component Placeholder</div>;
-      case "portfolios":
-        return <div>Portfolio Component Placeholder</div>;
-      case "notFound":
-      default:
-        return (
-          <Center mt={"25vh"}>
-            <Image
-              src="/img/emptyData.jpg"
-              alt=""
-              w={350}
-              h={350}
-              borderRadius={50}
-            />
-          </Center>
-        );
+    if (fetchData.webType === "school" && Object.keys(fetchData.data || {}).length > 0) {
+      return <School dt={fetchData} />;
+    } else if (fetchData.webType === "business" && Object.keys(fetchData.data || {}).length > 0) {
+      return <div>Business Component Placeholder</div>;
+    } else if (fetchData.webType === "portfolios" && Object.keys(fetchData.data || {}).length > 0) {
+      return <div>Portfolio Component Placeholder</div>;
+    } else {
+      return (
+        <Center mt={"25vh"}>
+          <Image
+            src="/img/emptyData.jpg"
+            alt=""
+            w={350}
+            h={350}
+            borderRadius={50}
+          />
+        </Center>
+      );
     }
   };
 
