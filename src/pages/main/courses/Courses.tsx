@@ -52,7 +52,7 @@ const Courses = observer(() => {
       <Box m={5}>
         {activePage === 1 && (
           <>
-            <Box  display="none">
+            <Box display="none">
               <Image
                 src={BgImg}
                 h={"25rem"}

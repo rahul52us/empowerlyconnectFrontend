@@ -4,13 +4,20 @@ import store from '../store';
 
 class WebTemplateStore {
   web = null;
+  webTemplates = {
+    data : [],
+    loading : false,
+    totalPages : 0
+  }
   constructor() {
     makeObservable(this, {
       web: observable,
+      webTemplates:observable,
       getWeb: action,
       createWebTemplate:action,
       getWebTemplate:action,
-      updateWebTemplate:action
+      updateWebTemplate:action,
+      getAllWebTemplate:action
     });
   }
 
@@ -40,6 +47,20 @@ class WebTemplateStore {
     }
   }
 
+  getAllWebTemplate = async (sendData : any) => {
+    try {
+      this.webTemplates.loading = true
+      const { data } = await axios.post("/webTemplate", {...sendData,company : store.auth.getCurrentCompany()});
+      this.webTemplates.data = data?.data?.data || []
+      this.webTemplates.totalPages = data?.data?.totalPages
+      this.webTemplates.loading = false
+      return data;
+    } catch (err: any) {
+      this.webTemplates.loading = false
+      return Promise.reject(err?.response || err);
+    }
+  }
+
   updateWebTemplate = async (sendData : any) => {
     try {
       const { data } = await axios.put("/webTemplate", {...sendData,company : store.auth.getCurrentCompany()});
@@ -58,7 +79,6 @@ class WebTemplateStore {
     } finally {
     }
   }
-
 }
 
 export default WebTemplateStore;

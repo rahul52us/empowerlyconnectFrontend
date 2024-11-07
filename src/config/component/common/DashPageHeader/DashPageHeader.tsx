@@ -69,7 +69,9 @@ const DashPageHeader = observer(
         newFavicon = "https://example.com/favicon-grid.png";
       }
 
-      const link = document.querySelector("link[rel*='icon']") as HTMLLinkElement;
+      const link = document.querySelector(
+        "link[rel*='icon']"
+      ) as HTMLLinkElement;
       if (link) {
         link.href = newFavicon;
       } else {
@@ -88,7 +90,7 @@ const DashPageHeader = observer(
         <Helmet>
           <title>
             {title
-              ? `${showMainTitle ? `${metaData.name} | ` : ""}${title}`
+              ? `${showMainTitle ? `Edukatues | ` : ""}${title}`
               : metaData.name}
           </title>
           <meta name="description" content={metaData.description} />

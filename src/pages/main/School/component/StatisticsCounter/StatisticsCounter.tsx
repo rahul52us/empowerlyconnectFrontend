@@ -43,7 +43,7 @@ const StatisticsCounter = ({
         observer.unobserve(currentRef); // Use the stored variable in cleanup
       }
     };
-  }, [ref.current]); // No changes required here
+  }, []); // No changes required here
 
   useEffect(() => {
     if (isVisible) {

@@ -1,44 +1,62 @@
 import React, { useState } from "react";
-import { DragDropContext, Droppable, Draggable as DndDraggable, DropResult } from "react-beautiful-dnd";
-import Draggable from "react-draggable";
-import { Box, Button, VStack, Heading, Text, Flex, Image } from "@chakra-ui/react";
+import GridLayout from "react-grid-layout";
+import {
+  Box,
+  Button,
+  Textarea,
+  VStack,
+  Heading,
+  Text,
+  Image,
+  Input,
+  useBreakpointValue,
+} from "@chakra-ui/react";
+import "react-grid-layout/css/styles.css";
+import "react-resizable/css/styles.css";
+import JSON5 from "json5";
 
-// Types for components in the builder
+// Component Library
+const ComponentLibrary = {
+  text: ({ content, styles }: any) => <Text {...styles}>{content}</Text>,
+  heading: ({ content, styles }: any) => <Heading {...styles}>{content}</Heading>,
+  button: ({ content, styles }: any) => <Button {...styles}>{content}</Button>,
+  image: ({ content, styles }: any) => (
+    <Image
+      src={content}
+      {...styles}
+      objectFit="cover"
+      borderRadius="md"
+      maxWidth={{ base: "100%", md: "80%" }}
+      maxHeight={{ base: "200px", md: "400px" }}
+      mx="auto"
+    />
+  ),
+};
+
+// Component Config Type
 interface ComponentConfig {
   id: string;
   type: "text" | "heading" | "button" | "image";
   content: string;
   styles: any;
-  position: { x: number; y: number };
+  x: number;
+  y: number;
+  w: number;
+  h: number;
 }
 
-// Component Library for the page builder
-const ComponentLibrary: Record<string, React.FC<{ content: string; styles?: any }>> = {
-  text: ({ content, styles }) => <Text {...styles}>{content}</Text>,
-  heading: ({ content, styles }) => <Heading {...styles}>{content}</Heading>,
-  button: ({ content, styles }) => <Button {...styles}>{content}</Button>,
-  image: ({ content, styles }) => <Image src={content} {...styles} />,
-};
-
-// Function to reorder items in a list
-const reorder = (list: ComponentConfig[], startIndex: number, endIndex: number): ComponentConfig[] => {
-  const result = Array.from(list);
-  const [removed] = result.splice(startIndex, 1);
-  result.splice(endIndex, 0, removed);
-  return result;
-};
-
-const PageBuilder: React.FC = () => {
+// Main PageBuilder Component
+const PageBuilderWithGridAndJsonEditor: React.FC = () => {
   const [components, setComponents] = useState<ComponentConfig[]>([
-    { id: "1", type: "text", content: "Hello World!", styles: { fontSize: "md" }, position: { x: 50, y: 50 } },
-    { id: "2", type: "heading", content: "My Heading", styles: { fontSize: "lg" }, position: { x: 100, y: 100 } },
+    { id: "1", type: "text", content: "Hello World!", styles: { fontSize: "md" }, x: 0, y: 0, w: 2, h: 2 },
+    { id: "2", type: "heading", content: "My Heading", styles: { fontSize: "lg" }, x: 2, y: 0, w: 2, h: 2 },
   ]);
+  const [jsonInput, setJsonInput] = useState("");
+  const [selectedComponent, setSelectedComponent] = useState<ComponentConfig | null>(null);
 
-  const onDragEnd = (result: DropResult) => {
-    if (!result.destination) return;
-    const reorderedComponents = reorder(components, result.source.index, result.destination.index);
-    setComponents(reorderedComponents);
-  };
+  const cols = useBreakpointValue({ base: 1, md: 12 });
+  const rowHeight = useBreakpointValue({ base: 150, md: 30 });
+  const gridWidth = useBreakpointValue({ base: 300, md: 1200 });
 
   const addComponent = (type: "text" | "heading" | "button" | "image") => {
     const newComponent: ComponentConfig = {
@@ -46,88 +64,148 @@ const PageBuilder: React.FC = () => {
       type,
       content: type === "button" ? "Click Me" : type === "heading" ? "New Heading" : type === "image" ? "https://via.placeholder.com/150" : "Sample Text",
       styles: { fontSize: "md" },
-      position: { x: 0, y: 0 },
+      x: 0,
+      y: Infinity,
+      w: 2,
+      h: 2,
     };
-    setComponents((prev) => [...prev, newComponent]);
+    setComponents([...components, newComponent]);
   };
 
-  const handlePositionChange = (id: string, newPosition: { x: number; y: number }) => {
+  const onLayoutChange = (layout: any) => {
     setComponents((prev) =>
-      prev.map((comp) => (comp.id === id ? { ...comp, position: newPosition } : comp))
+      prev.map((comp, idx) => ({
+        ...comp,
+        x: layout[idx].x,
+        y: layout[idx].y,
+        w: layout[idx].w,
+        h: layout[idx].h,
+      }))
     );
   };
 
+  const handleJsonSubmit = () => {
+    try {
+      const newComponents = JSON5.parse(jsonInput);
+      setComponents(
+        newComponents.map((comp: any, index: number) => ({
+          ...comp,
+          id: `${Date.now() + index}`,
+          x: index % 2,
+          y: Math.floor(index / 2) * 2,
+          w: comp.w || 2,
+          h: comp.h || 2,
+        }))
+      );
+    } catch (error) {
+      console.error("Invalid JSON input", error);
+    }
+  };
+
+  const handleComponentClick = (comp: ComponentConfig) => {
+    setSelectedComponent(comp);
+  };
+
+  const updateComponent = (id: string, newContent: string, newStyles: any) => {
+    setComponents((prev) =>
+      prev.map((comp) =>
+        comp.id === id ? { ...comp, content: newContent, styles: { ...comp.styles, ...newStyles } } : comp
+      )
+    );
+  };
+
+  const togglePreview = () => setIsPreview(!isPreview);
+
+  const [isPreview, setIsPreview] = useState(false);
+
   return (
-    <Flex>
+    <Box>
       <ComponentLibraryPanel onAddComponent={addComponent} />
-      <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="canvas" direction="vertical">
-          {(provided) => (
+      <VStack spacing={4} p={4} bg="gray.100" borderRadius="md" mb={4}>
+        <Textarea
+          placeholder="Enter JSON configuration for components"
+          value={jsonInput}
+          onChange={(e) => setJsonInput(e.target.value)}
+        />
+        <Button onClick={handleJsonSubmit}>Load Components from JSON</Button>
+      </VStack>
+      <Button onClick={togglePreview} mb={4}>
+        {isPreview ? "Exit Preview Mode" : "Preview"}
+      </Button>
+      <GridLayout
+        className="layout"
+        layout={components.map(({ id, x, y, w, h }) => ({ i: id, x, y, w, h }))}
+        cols={cols || 12}
+        rowHeight={rowHeight || 30}
+        width={gridWidth || 1200}
+        onLayoutChange={onLayoutChange}
+      >
+        {components.map((comp) => {
+          const Component = ComponentLibrary[comp.type];
+          return (
             <Box
-              ref={provided.innerRef}
-              {...provided.droppableProps}
-              position="relative"
-              p={4}
-              minHeight="500px"
-              border="2px dashed"
-              borderColor="gray.300"
-              flex="1"
+              key={comp.id}
+              data-grid={{ i: comp.id, x: comp.x, y: comp.y, w: comp.w, h: comp.h }}
+              p={2}
+              borderWidth="1px"
+              borderRadius="lg"
+              onClick={() => handleComponentClick(comp)}
             >
-              {components.map((comp, index) => {
-                const Component = ComponentLibrary[comp.type];
-                return (
-                  <DndDraggable key={comp.id} draggableId={comp.id} index={index}>
-                    {(provided) => (
-                      <Box
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        position="absolute"
-                        top={comp.position.y}
-                        left={comp.position.x}
-                      >
-                        <Draggable
-                          bounds="parent"
-                          position={{ x: comp.position.x, y: comp.position.y }}
-                          onStop={(_, data) => handlePositionChange(comp.id, { x: data.x, y: data.y })}
-                        >
-                          <Box
-                            p={4}
-                            bg="white"
-                            borderRadius="md"
-                            boxShadow="md"
-                          >
-                            <Component content={comp.content} styles={comp.styles} />
-                          </Box>
-                        </Draggable>
-                      </Box>
-                    )}
-                  </DndDraggable>
-                );
-              })}
-              {provided.placeholder}
+              <Component content={comp.content} styles={comp.styles} />
             </Box>
-          )}
-        </Droppable>
-      </DragDropContext>
-    </Flex>
+          );
+        })}
+      </GridLayout>
+
+      {selectedComponent && (
+        <ComponentEditor
+          component={selectedComponent}
+          onUpdate={updateComponent}
+          onClose={() => setSelectedComponent(null)}
+        />
+      )}
+    </Box>
   );
 };
 
-// Panel to Add Components
-interface ComponentLibraryPanelProps {
-  onAddComponent: (type: "text" | "heading" | "button" | "image") => void;
-}
+// Component Library Panel
+const ComponentLibraryPanel: React.FC<{ onAddComponent: (type: "text" | "heading" | "button" | "image") => void }> = ({ onAddComponent }) => (
+  <VStack spacing={4} p={4} bg="gray.100" borderRadius="md" mb={4}>
+    <Button onClick={() => onAddComponent("text")}>Add Text</Button>
+    <Button onClick={() => onAddComponent("heading")}>Add Heading</Button>
+    <Button onClick={() => onAddComponent("button")}>Add Button</Button>
+    <Button onClick={() => onAddComponent("image")}>Add Image</Button>
+  </VStack>
+);
 
-const ComponentLibraryPanel: React.FC<ComponentLibraryPanelProps> = ({ onAddComponent }) => {
+// Component Editor Panel
+const ComponentEditor: React.FC<{ component: ComponentConfig, onUpdate: (id: string, newContent: string, newStyles: any) => void, onClose: () => void }> = ({ component, onUpdate, onClose }) => {
+  const [newContent, setNewContent] = useState(component.content);
+  const [newFontSize, setNewFontSize] = useState(component.styles.fontSize || "md");
+
+  const handleSave = () => {
+    onUpdate(component.id, newContent, { fontSize: newFontSize });
+    onClose();
+  };
+
   return (
-    <VStack spacing={4} p={4} bg="gray.100" borderRadius="md" mr={4} minWidth="200px">
-      <Button onClick={() => onAddComponent("text")}>Add Text</Button>
-      <Button onClick={() => onAddComponent("heading")}>Add Heading</Button>
-      <Button onClick={() => onAddComponent("button")}>Add Button</Button>
-      <Button onClick={() => onAddComponent("image")}>Add Image</Button>
-    </VStack>
+    <Box p={4} bg="white" borderRadius="md" borderWidth="1px" mb={4}>
+      <VStack spacing={4}>
+        <Input
+          placeholder="Edit Content"
+          value={newContent}
+          onChange={(e) => setNewContent(e.target.value)}
+        />
+        <Input
+          placeholder="Edit Font Size"
+          value={newFontSize}
+          onChange={(e) => setNewFontSize(e.target.value)}
+        />
+        <Button onClick={handleSave}>Save</Button>
+        <Button onClick={onClose}>Close</Button>
+      </VStack>
+    </Box>
   );
 };
 
-export default PageBuilder;
+export default PageBuilderWithGridAndJsonEditor;
