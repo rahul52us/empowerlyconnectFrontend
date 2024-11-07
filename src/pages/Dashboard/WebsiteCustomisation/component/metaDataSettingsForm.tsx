@@ -44,7 +44,7 @@ const MetadataSettingsForm: React.FC<MetadataSettingsFormProps> = ({
       <Box
         boxShadow="lg"
         rounded="lg"
-        w={{ base: "95%", md: "95%", lg: "95%" }}
+        w={{ base: "98vw", md: "95%", lg: "95%" }}
         p={6}
         borderWidth={1}
         borderColor="gray.200"
