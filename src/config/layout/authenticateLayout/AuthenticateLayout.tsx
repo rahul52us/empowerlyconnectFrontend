@@ -85,7 +85,6 @@ const AuthenticateLayout = observer(() => {
                 opacity={0.9}
               />
             </Box>
-
             <Center height="100%" mt={{base : "60px", md : 0}}>
               <Box width="100%" maxWidth="300px">
                 <Slider {...settings}>
