@@ -6,6 +6,7 @@ import {
   Flex,
   Heading,
   Text,
+  Box,
 } from "@chakra-ui/react";
 import CustomInput from "../../../config/component/CustomInput/CustomInput";
 import { Form, Formik } from "formik";
@@ -24,22 +25,31 @@ const ForgotPassword = observer(() => {
   const navigate = useNavigate();
 
   return (
-    <Flex flexDir="column" justifyContent={"center"}>
-      {/* Left Section with Image (Optional) */}
-      {/* Right Section with Form */}
-      <Flex
-        rounded={"lg"}
-        flexDir={"column"}
-        justifyContent={"center"}
+    <Flex
+      flexDir="column"
+      justifyContent="center"
+      alignItems="center"
+      minH="70vh"
+      bg={useColorModeValue("gray.50", "gray.800")}
+      px={4}
+    >
+      <Box
+        rounded="lg"
+        flexDir="column"
+        justifyContent="center"
         bg={useColorModeValue("white", "gray.700")}
-        boxShadow={"lg"}
+        boxShadow="xl"
         p={8}
-        maxW={'xl'}
+        maxW="md"
+        w="full"
       >
-        <Stack align={"center"} mb={10}>
-          <Heading fontSize={"4xl"} mb={2}>Forgot Your Password</Heading>
-          <Text fontSize={"md"}>
-          No worries! Just enter your email address below, and we'll send you instructions to reset your password.          </Text>
+        <Stack align="center" mb={8}>
+          <Heading textAlign="center" fontSize="2xl" fontWeight="bold" color={useColorModeValue("blue.600", "blue.300")} mb={2}>
+            Forgot Your Password?
+          </Heading>
+          <Text fontSize="md" textAlign="center" color={useColorModeValue("gray.500", "gray.400")}>
+            No worries! Enter your email below, and we'll send you instructions to reset your password.
+          </Text>
         </Stack>
         <Formik
           initialValues={{ username: "" }}
@@ -48,13 +58,13 @@ const ForgotPassword = observer(() => {
             forgotPasswordStore(values)
               .then((data) => {
                 openNotification({
-                  title: "Mail has been sent Successfully",
+                  title: "Mail Sent Successfully",
                   message: data,
                   type: "success",
                 });
                 navigate("/");
               })
-              .catch((err: any) => {
+              .catch((err) => {
                 openNotification({
                   title: "Request Failed",
                   message: err.message,
@@ -72,7 +82,7 @@ const ForgotPassword = observer(() => {
                 <CustomInput
                   type="text"
                   name="username"
-                  label="Email"
+                  label="Email Address"
                   placeholder="Enter your email address"
                   required={true}
                   value={values.username}
@@ -80,37 +90,35 @@ const ForgotPassword = observer(() => {
                   error={errors.username}
                   showError={showError}
                 />
-                <Stack spacing={10}>
-                  <Stack
-                    direction={{ base: "column", sm: "row" }}
-                    align={"start"}
-                    justify={"end"}
+                <Stack spacing={6} align="center">
+                  <Link
+                    color="blue.400"
+                    fontSize="sm"
+                    onClick={() => navigate(authentication.login)}
                   >
-                    <Link
-                      color={"blue.400"}
-                      onClick={() => navigate(authentication.login)}
-                    >
-                      Sign in?
-                    </Link>
-                  </Stack>
+                    Remembered your password? Sign in
+                  </Link>
                   <Button
                     type="submit"
-                    bg={"blue.400"}
-                    color={"white"}
+                    bg="blue.500"
+                    color="white"
                     _hover={{
-                      bg: "blue.500",
+                      bg: "blue.600",
                     }}
                     isLoading={isSubmitting}
                     onClick={() => setShowError(true)}
+                    w="full"
+                    py={6}
+                    fontSize="lg"
                   >
-                    Submit
+                    Send Reset Link
                   </Button>
                 </Stack>
               </Stack>
             </Form>
           )}
         </Formik>
-      </Flex>
+      </Box>
     </Flex>
   );
 });

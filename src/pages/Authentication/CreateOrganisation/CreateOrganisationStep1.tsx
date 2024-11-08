@@ -1,116 +1,134 @@
 import {
-Box,
-Checkbox,
-Stack,
-Link,
-Button,
-Heading,
-Text,
-useColorModeValue,
+  Checkbox,
+  Stack,
+  Link,
+  Button,
+  Heading,
+  Text,
+  useColorModeValue,
+  Flex,
+  Box,
 } from "@chakra-ui/react";
-import CustomInput from "../../../config/component/CustomInput/CustomInput";
-import { Form, Formik } from "formik";
-import { ForgotEmailValidation } from "../utils/validation";
-import { authentication } from "../../../config/constant/routes";
 import { useNavigate } from "react-router-dom";
-import store from "../../../store/store";
 import { observer } from "mobx-react-lite";
+import { Formik, Form } from "formik";
+import CustomInput from "../../../config/component/CustomInput/CustomInput";
+import { ForgotEmailValidation } from "../utils/validation";
+import store from "../../../store/store";
+import { authentication } from "../../../config/constant/routes";
 
 const CreateOrganisationStep1 = observer(() => {
-const {
-  auth: { openNotification },
-  Organisation : {createOrganisationUser}
-} = store;
-const navigate = useNavigate();
+  const {
+    auth: { openNotification },
+    Organisation: { createOrganisationUser },
+  } = store;
+  const navigate = useNavigate();
 
-return (
-  <Box
-    bg={useColorModeValue("", "gray.800")}
-  >
-      <Stack align={"center"} mb={10}>
-        <Heading fontSize={"4xl"}>Create Organisation</Heading>
-        <Text fontSize={"lg"} color={"gray.600"}>
-          to enjoy all of our cool <Link color={"blue.400"}>features</Link> ✌️
-        </Text>
-      </Stack>
+  return (
+    <Flex
+      flexDir="column"
+      justifyContent="center"
+      alignItems="center"
+      bg={useColorModeValue("gray.50", "gray.800")}
+      minH="70vh"
+      px={4}
+    >
       <Box
-        rounded={"lg"}
+        rounded="lg"
+        flexDir="column"
+        justifyContent="center"
         bg={useColorModeValue("white", "gray.700")}
-        boxShadow={"lg"}
-        p={8}
+        boxShadow="lg"
+        p={6}
+        maxW="md"
+        w="full"
       >
+        <Stack align="center" mb={8}>
+          <Heading
+            fontSize="2xl"
+            textAlign="center"
+            fontWeight="bold"
+            color={useColorModeValue("blue.600", "blue.300")}
+            mb={1}
+          >
+            Create Your Organisation
+          </Heading>
+          <Text
+            fontSize="md"
+            textAlign="center"
+            color={useColorModeValue("gray.500", "gray.400")}
+          >
+            Access all our features by creating an organization here ✌️
+          </Text>
+        </Stack>
         <Formik
-          initialValues={{ username: "",role:"superadmin" }}
+          initialValues={{ username: "", role: "superadmin" }}
           validationSchema={ForgotEmailValidation}
           onSubmit={(values, { setSubmitting }) => {
-            values['role'] = "superadmin"
+            values["role"] = "superadmin";
             createOrganisationUser(values)
               .then((data) => {
                 openNotification({
-                  title: "Mail sent successfully",
+                  title: "Mail Sent Successfully",
                   message: data.message,
                   type: "success",
                 });
                 navigate("/");
               })
-              .catch((err: any) => {
+              .catch((err) => {
                 openNotification({
-                  title: "CREATE FAILED",
+                  title: "Creation Failed",
                   message: err.message,
                   type: "error",
                 });
               })
-              .finally(() => {
-                setSubmitting(false);
-              });
+              .finally(() => setSubmitting(false));
           }}
         >
-          {({ values, handleSubmit, handleChange, isSubmitting, errors }) => (
+          {({ handleSubmit, handleChange, values, isSubmitting, errors }) => (
             <Form onSubmit={handleSubmit}>
               <Stack spacing={4}>
                 <CustomInput
                   type="text"
                   name="username"
                   label="Email"
-                  placeholder="Enter the email"
-                  required={true}
+                  placeholder="Enter your email"
+                  required
                   value={values.username}
                   onChange={handleChange}
                   error={errors.username}
                 />
-                <Stack spacing={10}>
-                  <Stack
-                    direction={{ base: "column", sm: "row" }}
-                    align={"start"}
-                    justify={"space-between"}
-                  >
-                    <Checkbox>Remember me</Checkbox>
-                    <Link
-                      color={"blue.400"}
-                      onClick={() => navigate(authentication.login)}
-                    >
-                      Sign in?
-                    </Link>
+
+                <Stack spacing={6} align="stretch">
+                  <Stack direction="row" justify="space-between" align="center">
+                    <Checkbox colorScheme="blue">Remember me</Checkbox>
                   </Stack>
                   <Button
                     type="submit"
-                    bg={"blue.400"}
-                    color={"white"}
-                    _hover={{
-                      bg: "blue.500",
-                    }}
+                    bg="blue.400"
+                    color="white"
+                    _hover={{ bg: "blue.500" }}
                     isLoading={isSubmitting}
                   >
-                    Submit
+                    Create Organisation
                   </Button>
                 </Stack>
               </Stack>
             </Form>
           )}
         </Formik>
+        <Stack pt={6} align="center">
+          <Link
+            fontSize="sm"
+            color="blue.400"
+            onClick={() => navigate(authentication.login)}
+          >
+            Already have an account? Sign in
+          </Link>
+        </Stack>
       </Box>
-  </Box>
-);
+    </Flex>
+  );
 });
 
 export default CreateOrganisationStep1;

@@ -7,6 +7,7 @@ import {
   Text,
   useColorModeValue,
   Flex,
+  Box,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { observer } from "mobx-react-lite";
@@ -25,22 +26,31 @@ const Login = observer(() => {
   const navigate = useNavigate();
 
   return (
-    <Flex flexDir="column" justifyContent={"center"}>
-      <Flex
-        rounded={"lg"}
-        flexDir={"column"}
-        justifyContent={"center"}
+    <Flex
+      flexDir="column"
+      justifyContent="center"
+      alignItems="center"
+      bg={useColorModeValue("gray.50", "gray.800")}
+      minH="70vh"
+      px={4}
+    >
+      <Box
+        rounded="lg"
+        flexDir="column"
+        justifyContent="center"
         bg={useColorModeValue("white", "gray.700")}
-        boxShadow={"lg"}
-        p={8}
-        maxW={'xl'}
+        boxShadow="lg"
+        p={6}
+        maxW="md"
+        w="full"
       >
-        <Stack align={"center"} mb={10}>
-          <Heading fontSize={"4xl"} mb={2}>
-            Sign In
+        <Stack align="center" mb={8}>
+          <Heading fontSize="3xl" fontWeight="bold" color={useColorModeValue("blue.600", "blue.300")} mb={1}>
+            Welcome Back
           </Heading>
-          <Text fontSize={"lg"} >
-              Sign in to access all your personalized features and continue where you left off ✌️.
+          <Text fontSize="md" textAlign="center" color={useColorModeValue("gray.500", "gray.400")}>
+            Sign in to access all your personalized features and continue where
+            you left off ✌️
           </Text>
         </Stack>
         <Formik
@@ -51,8 +61,8 @@ const Login = observer(() => {
           }}
           validationSchema={LoginValidation}
           onSubmit={(values, { setSubmitting }) => {
-            login({...values,loginType : 'username'})
-              .then((data: any) => {
+            login({ ...values, loginType: "username" })
+              .then((data : any) => {
                 openNotification({
                   title: "Login Success",
                   message: data.message,
@@ -60,7 +70,7 @@ const Login = observer(() => {
                 });
                 navigate(main.home);
               })
-              .catch((error: Error) => {
+              .catch((error) => {
                 openNotification({
                   title: "Login Failed",
                   message: error.message,
@@ -79,8 +89,8 @@ const Login = observer(() => {
                   type="text"
                   name="username"
                   label="Email"
-                  placeholder="Enter the email"
-                  required={true}
+                  placeholder="Enter your email"
+                  required
                   error={errors.username}
                   onChange={handleChange}
                   value={values.username}
@@ -90,24 +100,24 @@ const Login = observer(() => {
                   type="password"
                   name="password"
                   label="Password"
-                  placeholder="Enter the password"
+                  placeholder="Enter your password"
+                  required
                   error={errors.password}
                   onChange={handleChange}
                   value={values.password}
-                  required={true}
                   showError={showError}
                 />
-                <Stack spacing={10}>
+                <Stack spacing={6} align="stretch">
                   <Stack
-                    direction={{ base: "column", sm: "row" }}
-                    align={"start"}
-                    justify={"space-between"}
+                    direction="row"
+                    justify="space-between"
+                    align="center"
                   >
-                    <Field as={Checkbox} name="remember_me">
+                    <Field as={Checkbox} name="remember_me" colorScheme="blue">
                       Remember me
                     </Field>
                     <Link
-                      color={"blue.400"}
+                      color="blue.400"
                       onClick={() => navigate(authentication.forgotPassword)}
                     >
                       Forgot password?
@@ -115,24 +125,28 @@ const Login = observer(() => {
                   </Stack>
                   <Button
                     type="submit"
-                    bg={"blue.400"}
-                    color={"white"}
-                    _hover={{
-                      bg: "blue.500",
-                    }}
+                    bg="blue.400"
+                    color="white"
+                    _hover={{ bg: "blue.500" }}
                     isLoading={isSubmitting}
-                    onClick={() => {
-                      setShowError(true);
-                    }}
+                    onClick={() => setShowError(true)}
                   >
-                    Sign in
+                    Sign In
                   </Button>
                 </Stack>
               </Stack>
             </Form>
           )}
         </Formik>
-      </Flex>
+        <Stack pt={6} align="center">
+          <Text fontSize="sm" color={useColorModeValue("gray.600", "gray.300")}>
+            Don’t have an account?{" "}
+            <Link color="blue.400" onClick={() => navigate(authentication.createOrganisationStep1)}>
+              Register here
+            </Link>
+          </Text>
+        </Stack>
+      </Box>
     </Flex>
   );
 });
