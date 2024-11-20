@@ -18,9 +18,6 @@ const DisplayComment = ({ comment }: any) => {
         <Box>
         <Box display="flex" fontSize="sm" gap={1}>
           <Text fontWeight={700}>{comment?.user?.name}</Text>
-          <Text color="gray.600" fontWeight={600} fontSize="small">
-            (Student)
-          </Text>
         </Box>
         <Text fontSize="xs" color="gray.600" fontWeight={600}>
           {getCustomTextDate('Commented on',new Date())}

@@ -37,7 +37,7 @@ const CreateComment = ({ editorHtml, setEditorHtml, blogItem }: any) => {
   return (
     <Box mt={5}>
       <Flex alignItems="center">
-        <Avatar src={user?.src} aria-label="" name={user?.name} size="sm" />
+        <Avatar src={user?.pic?.url} aria-label="" name={user?.name} size="sm" />
         <Box display="flex" fontSize="sm" gap={1} ml={2}>
           <Text fontWeight={700}>Comment as</Text>
           <Text color="gray.600" fontWeight={600}>
