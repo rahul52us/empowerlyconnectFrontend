@@ -1,6 +1,8 @@
 import { lazy } from "react";
 import { dashboard } from "../constant/routes";
 import { WebsiteCustomisationRoutes } from "./component/schoolRoute";
+import AddBlogForm from "../../pages/Dashboard/Blog/component/forms/AddBlogForm";
+import EditBlogForm from "../../pages/Dashboard/Blog/component/forms/EditBlogForm";
 const VerifyInvitationPage = lazy(() => import("../component/common/VerifyInvitationPages/VerifyInvitationPage"))
 
 const PersonalDetails = lazy(
@@ -95,6 +97,7 @@ const UserDetails = lazy(
     )
 );
 
+
 const UserCreate = lazy(
   () =>
     import(
@@ -157,6 +160,9 @@ const LiberaryRoomUserDetails =lazy(() => import("../../pages/Dashboard/Liberary
 const SalaryStructure = lazy(() => import("../../pages/Dashboard/salary/salaryStructure/SalaryStructure"))
 const SalarySlip = lazy(() => import("../../pages/Dashboard/salary/salarySlip/SalarySlip"))
 
+// Blogs
+
+const BlogIndex = lazy(() => import("../../pages/Dashboard/Blog/BlogIndex"))
 
 export const DashboardRoutes = [
   {
@@ -423,6 +429,23 @@ export const DashboardRoutes = [
   {
     element : <IndividualProject />,
     path : dashboard.project.individual,
+    privateRoutes : true
+  },
+
+  // Blogs
+  {
+    element : <BlogIndex />,
+    path : dashboard.blog.index,
+    privateRoutes : true
+  },
+  {
+    element : <AddBlogForm />,
+    path : dashboard.blog.create,
+    privateRoutes : true
+  },
+  {
+    element : <EditBlogForm />,
+    path : dashboard.blog.edit,
     privateRoutes : true
   },
 

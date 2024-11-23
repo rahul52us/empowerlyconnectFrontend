@@ -106,6 +106,12 @@ export const dashboard = {
     }
   },
 
+  blog : {
+    index : `/${dashboardName}/blogs`,
+    create : `/${dashboardName}/blogs/create`,
+    edit : `${dashboardName}/blogs/edit/:blogTitle`
+  },
+
 };
 
 export const main = {

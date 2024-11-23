@@ -16,6 +16,8 @@ import { main } from "../../../config/constant/routes";
 import CourseForm from "../courses/CourseForm/CourseForm";
 import { useState } from "react";
 import PaymentPage from "../../../config/component/PaymentGateway/PaymentPage";
+import DynamicGrid from "./DynamicGrid";
+import WhatsAppChat from "./WatsappChat";
 // import PageBuilder from "../../../config/component/LiberaryComponent/PageBuilder";
 // import ProfileCard from "./component/ProfileCard/ProfileCard";
 
@@ -340,7 +342,6 @@ const Home2 = () => {
   return (
     <Box>
       <HeroSection2 />
-
       <Box m={2}>
         <Box
           maxW={"75%"}
@@ -352,6 +353,8 @@ const Home2 = () => {
           display="none"
           // shadow="rgb(0 0 0 / 15%) 0px 0px 12px"
         >
+                <WhatsAppChat />
+
                 <PaymentPage/>
           <CourseForm
             initialValues={initialValues}
@@ -359,6 +362,8 @@ const Home2 = () => {
             setShowError={setShowError} // Ensure this is a function
             handleSubmit={handleSubmit}
           />
+                <DynamicGrid />
+
         </Box>
 
         {/* <ProfileCard /> */}

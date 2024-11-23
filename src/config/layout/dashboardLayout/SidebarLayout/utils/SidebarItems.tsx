@@ -25,6 +25,7 @@ const sidebarDatas: SidebarItem[] = [
     url: "/dashboard",
     role: ["user"],
   },
+  // My Profile
   {
     id: 2,
     name: "My Profile",
@@ -90,6 +91,38 @@ const sidebarDatas: SidebarItem[] = [
       },
     ],
   },
+  //  Blogs
+  {
+    id: 501,
+    name: "Blogs",
+    icon: <FaChartPie />,
+    url: dashboard.blog.index,
+    role: ["user","superadmin","manager","admin"],
+    children: [
+      {
+        id: 502,
+        name: "index",
+        icon: <CalendarIcon />,
+        url: `${dashboard.blog.index}`,
+        role: ["user","superadmin","manager","admin"],
+      },
+      {
+        id: 503,
+        name: "Create",
+        icon: <FaBuilding />,
+        url: `${dashboard.blog.create}`,
+        role: ["superadmin","manager","admin"],
+      },
+    ]
+  },
+  {
+    id: 502,
+    name: "createBlog",
+    icon: <FaChartPie />,
+    url: dashboard.blog.create,
+    role: ["superadmin","manager","admin"],
+  },
+  // Salary Structure
   {
     id: 301,
     name: "Links",
@@ -113,6 +146,7 @@ const sidebarDatas: SidebarItem[] = [
       },
     ],
   },
+  // Request
   {
     id: 11,
     name: "Request",
@@ -157,6 +191,7 @@ const sidebarDatas: SidebarItem[] = [
       },
     ],
   },
+  //  My Attendence
   {
     id: 17,
     name: "My Attendance",
@@ -194,6 +229,7 @@ const sidebarDatas: SidebarItem[] = [
       },
     ],
   },
+  //  Team Request
   {
     id: 22,
     name: "Team Request",
@@ -210,6 +246,7 @@ const sidebarDatas: SidebarItem[] = [
       },
     ],
   },
+  //  Team Attendence
   {
     id: 27,
     name: "Team Attendance",
@@ -226,6 +263,7 @@ const sidebarDatas: SidebarItem[] = [
       },
     ],
   },
+  // Corp. Informations
   {
     id: 28,
     name: "Corp. Info.",
@@ -256,6 +294,7 @@ const sidebarDatas: SidebarItem[] = [
       },
     ],
   },
+  // Corp. Users Directory
   {
     id: 32,
     name: "Corp. Users Directory",
@@ -272,6 +311,7 @@ const sidebarDatas: SidebarItem[] = [
       },
     ],
   },
+  // Projects
   {
     id: 50,
     name: "Project",
@@ -375,6 +415,7 @@ const sidebarDatas: SidebarItem[] = [
       },
     ],
   },
+
 ];
 
 export const sidebarFooterData: SidebarItem[] = [

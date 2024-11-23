@@ -1,24 +1,22 @@
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { Box, Button } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
+import './style.css'
 
-const RichTextEditor = ({editorHtml, setEditorHtml} : any) => {
-
+const RichTextEditor = ({ editorHtml, setEditorHtml, height = "350px" }: any) => {
   return (
     <Box>
-          <ReactQuill
-            theme="snow"
-            value={editorHtml}
-            onChange={setEditorHtml}
-            modules={modules}
-            formats={formats}
-          />
-      <Button mt="2" colorScheme="blue" size="xs" display="none">
-      </Button>
+      <ReactQuill
+        theme="snow"
+        value={editorHtml}
+        onChange={setEditorHtml}
+        modules={modules}
+        formats={formats}
+        style={{ height: height, overflowY :'auto'}}
+      />
     </Box>
   );
 };
-
 
 const modules = {
   syntax: false, // Disable the default syntax module
@@ -30,8 +28,6 @@ const modules = {
     [{ align: [] }],
     ["link", "image"],
     ["clean"],
-    [{ code_block: "" }],
-
   ],
 };
 
@@ -48,7 +44,6 @@ const formats = [
   "align",
   "link",
   "image",
-
 ];
 
 export default RichTextEditor;

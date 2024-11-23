@@ -2,151 +2,117 @@ import {
   Box,
   Button,
   Flex,
-  Grid,
   Heading,
-  Input,
-  Text,
+  Icon,
+  IconButton,
+  SimpleGrid,
+  useBreakpointValue,
 } from "@chakra-ui/react";
-import RichTextEditor from "../../../config/component/Editor/RichQuillEditor";
 import { observer } from "mobx-react-lite";
-import { useState } from "react";
-import store from "../../../store/store";
+import DashPageHeader from "../../../config/component/common/DashPageHeader/DashPageHeader";
+import { tripBreadCrumb } from "../utils/breadcrumb.constant";
+import {
+  FaHome,
+  FaPlus,
+  FaProjectDiagram,
+  FaTasks,
+  FaUsers,
+} from "react-icons/fa";
+import SummaryWidget from "../../../config/component/WigdetCard/SummaryWidget";
+import { useNavigate } from "react-router-dom";
+import { dashboard } from "../../../config/constant/routes";
+import BlogsLayout from "./BlogsLayout";
 
 const BlogIndex = observer(() => {
-  const [createLoading, setCreateLoading] = useState(false);
-  const {
-    BlogStore: { createBlog },
-    auth: { openNotification },
-  } = store;
-  const [preViewContent, setpreViewContent] = useState(false);
-  const [title, setTitle] = useState("");
-  const [editorHtml, setEditorHtml] = useState("");
+  const navigate = useNavigate();
+  const showIcon = useBreakpointValue({ base: true, md: false });
 
-  const handlePreviewContent = () => {
-    setpreViewContent(true);
-  };
-
-  const sendDataToBackend = () => {
-    setCreateLoading(true);
-    createBlog({ title: title, content: editorHtml })
-      .then((data) => {
-        openNotification({
-          title: "CREATED SUCCESSFULLY",
-          message: data.message,
-        });
-      })
-      .catch((err: any) => {
-        openNotification({
-          title: "CREATE FAILED",
-          message: err.message,
-          type: "error",
-        });
-      })
-      .finally(() => {
-        setCreateLoading(false);
-      });
-  };
+  const summaryData = [
+    {
+      label: "Total Projects",
+      value: 10,
+      icon: FaProjectDiagram,
+      colorScheme: "teal",
+      description: "Total number of projects.",
+      loading: false,
+    },
+    {
+      label: "Total Tasks",
+      value: 128,
+      icon: FaTasks,
+      colorScheme: "blue",
+      description: "Total number of tasks across all projects.",
+      loading: false,
+    },
+    {
+      label: "Team Members",
+      value: 10,
+      icon: FaUsers,
+      colorScheme: "purple",
+      description: "The number of active team members.",
+      loading: false,
+    },
+  ];
 
   return (
-    <Box
-      justifyContent="center"
-      display="flex"
-      bgColor="rgb(245, 245, 245)"
-      height="100%"
-      flex={1}
-    >
-      <Box width={{ base: "100%", lg: "80%" }} height="100%" m={3}>
-        <Grid gridTemplateColumns={{ lg: "3fr 1fr" }} gap={10}>
-          {/* Left Column */}
-          <Box>
-            <Flex justify="end" gap={5} mb={3}>
-              <Button
-                size="xs"
-                bgColor="purple.300"
-                onClick={handlePreviewContent}
-              >
-                Preview
-              </Button>
-              <Button size="xs" onClick={() => setpreViewContent(false)}>
-                Edit
-              </Button>
-            </Flex>
-            {preViewContent ? (
-              <Box
-                h="100%"
-                bgColor="white"
-                borderRadius={6}
-                overflowY="auto"
-                height="84vh"
-                borderWidth={1}
-                borderColor="gray.200"
-                p={5}
-              >
-                <Text mb={4} fontSize="4xl" color="gray.600">
-                  {title}
-                </Text>
-                <div className="preview_blog_container">
-                  <div dangerouslySetInnerHTML={{ __html: editorHtml }} />
-                </div>
-              </Box>
-            ) : (
-              <Box
-                h="100%"
-                bgColor="white"
-                borderRadius={6}
-                overflowY="auto"
-                height="84vh"
-                borderWidth={1}
-                borderColor="gray.200"
-              >
-                <Button variant="outline" m={5}>
-                  Add Cover Photo
-                </Button>
-                <Input
-                  border="none"
-                  boxShadow="none"
-                  placeholder="Write Title here"
-                  value={title}
-                  _focus={{
-                    boxShadow: "none",
-                    borderColor: "transparent",
-                  }}
-                  _placeholder={{ fontSize: "4xl" }}
-                  fontWeight="500"
-                  mb={4}
-                  fontSize="4xl"
-                  color="gray.600"
-                  onChange={(e) => {
-                    setTitle(e.target.value);
-                  }}
-                />
-                <RichTextEditor
-                  setEditorHtml={setEditorHtml}
-                  editorHtml={editorHtml}
-                />
-              </Box>
-            )}
-            <Flex gap={5} mt={2}>
-              <Button onClick={sendDataToBackend} isLoading={createLoading}>
-                Publish
-              </Button>
-              <Button bgColor={"blue.400"}>Save as Draft</Button>
-            </Flex>
-          </Box>
+    <Box p={2} borderRadius="lg" boxShadow="lg">
+      <DashPageHeader
+        breadcrumb={tripBreadCrumb.index}
+        btnAction={(type: any) => {
+          alert(type);
+        }}
+      />
 
-          {/* Right Column */}
-          <Box mt={20}>
-            <Heading fontSize="2xl" mb={5} mt={20}>
-              Writing a Great Post Title
-            </Heading>
-            <Text>
-              Think of your post title as a super short (but compelling!)
-              description — like an overview of the actual post in one short
-              sentence. Use keywords where appropriate to help ensure people can
-              find your post by search.
-            </Text>
-          </Box>
-        </Grid>
+      <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6} mb={6}>
+        {summaryData.map((data, index) => (
+          <SummaryWidget
+            key={index}
+            label={data.label}
+            value={data.value}
+            icon={data.icon}
+            colorScheme={data.colorScheme}
+            description={data.description}
+            loading={data.loading}
+          />
+        ))}
+      </SimpleGrid>
+
+      <Flex justifyContent="space-between" alignItems="center" mb={2}>
+        <Heading
+          display="flex"
+          alignItems="center"
+          fontSize={{ base: "xl", md: "2xl" }}
+          color="teal.600"
+        >
+          <Icon as={FaHome} boxSize={6} mr={2} />
+          Blogs
+        </Heading>
+        {showIcon ? (
+          <IconButton
+            title="Create Blog"
+            aria-label="Create Blog"
+            icon={<FaPlus />}
+            colorScheme="teal"
+          />
+        ) : (
+          <Flex columnGap={4}>
+            <Button
+              leftIcon={<FaPlus />}
+              colorScheme="teal"
+              variant="solid"
+              size="lg"
+              _hover={{ bg: "teal.600" }}
+              _active={{ bg: "teal.700" }}
+              _focus={{ boxShadow: "outline" }}
+              onClick={() => navigate(dashboard.blog.create)}
+            >
+              CREATE BLOG
+            </Button>
+          </Flex>
+        )}
+      </Flex>
+      <Box mt={2}>
+        <BlogsLayout />
       </Box>
     </Box>
   );

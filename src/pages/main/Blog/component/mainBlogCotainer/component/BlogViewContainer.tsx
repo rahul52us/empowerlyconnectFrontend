@@ -1,4 +1,4 @@
-import { Box, Card, Heading, Image } from "@chakra-ui/react";
+import { Box, Card, Heading } from "@chakra-ui/react";
 import BlogViewDetail from "./BlogViewDetail";
 import BlogTags from "./BlogTags";
 import BlogReaction from "./BlogReaction";
@@ -10,11 +10,6 @@ const BlogViewContainer = ({ item, multi }: any) => {
 
   return (
     <Card mb={5} p={0} width="100%">
-      {item?.coverImage ? (
-        <Box>
-          <Image width="100%" src={item.coverImage} />
-        </Box>
-      ) : null}
       <Box p={2}>
         <BlogViewDetail item={item} />
         <Heading

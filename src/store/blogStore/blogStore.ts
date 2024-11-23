@@ -31,6 +31,7 @@ class BlogStore {
       getSingleBlogs: action,
       getComments: action,
       createComment: action,
+      updateBlog:action
     });
   }
 
@@ -38,6 +39,15 @@ class BlogStore {
   createBlog = async (sendData: any) => {
     try {
       const { data } = await axios.post("/blog", {...sendData,company : store.auth.getCurrentCompany()});
+      return data;
+    } catch (err: any) {
+      return Promise.reject(err?.response?.data || err);
+    }
+  };
+
+  updateBlog = async (sendData: any) => {
+    try {
+      const { data } = await axios.put("/blog", {...sendData,company : store.auth.getCurrentCompany()});
       return data;
     } catch (err: any) {
       return Promise.reject(err?.response?.data || err);

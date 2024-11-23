@@ -33,9 +33,6 @@ const BlogsMenus = observer(() => {
 
   const blogCategories = [
     {
-      title: "Featured Blogs",
-    },
-    {
       title: "Latest Posts",
     },
   ];
@@ -47,7 +44,7 @@ const BlogsMenus = observer(() => {
           <Text fontWeight="bold"  mt={2}>
             {category.title}
           </Text>
-          {blogs.data.map((blog: any, index: number) => (
+          {blogs.data?.slice(0,3).map((blog: any, index: number) => (
             <Text
               cursor="pointer"
               transition="0.3s"
