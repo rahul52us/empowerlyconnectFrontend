@@ -27,7 +27,7 @@ return (
 		<Box w="100%" mt={{ base: 0, md: 2 }}>
 		<MainBlogContainer />
 		</Box>
-		<Box position="sticky" top={5} right={0} alignSelf="flex-start">
+		<Box position="sticky" top={5} right={0} alignSelf="flex-start" display="none">
 		<BlogRightContainer />
 		</Box>
 	</Grid>

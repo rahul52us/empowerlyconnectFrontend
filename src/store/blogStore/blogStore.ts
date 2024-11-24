@@ -31,7 +31,8 @@ class BlogStore {
       getSingleBlogs: action,
       getComments: action,
       createComment: action,
-      updateBlog:action
+      updateBlog:action,
+      getStatusCount:action
     });
   }
 
@@ -44,6 +45,16 @@ class BlogStore {
       return Promise.reject(err?.response?.data || err);
     }
   };
+
+  getStatusCount = async (sendData: any) => {
+    try {
+      const { data } = await axios.post("/blog/status/counts", {...sendData,company : store.auth.getCurrentCompany()});
+      return data;
+    } catch (err: any) {
+      return Promise.reject(err?.response?.data || err);
+    }
+  };
+
 
   updateBlog = async (sendData: any) => {
     try {

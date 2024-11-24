@@ -7,14 +7,13 @@ import { useLocation, useParams } from "react-router-dom";
 import BlogViewContainer from "./component/mainBlogCotainer/component/BlogViewContainer";
 import store from "../../../store/store";
 import BlogSingleRight from "./component/mainBlogCotainer/component/BlogSingleRight";
+import PageLoader from "../../../config/component/Loader/PageLoader";
 
 const SingleBlogIndex = observer(() => {
   const [blogData, setBlogData] = useState<any>(null);
+  const [loader, setLoader] = useState(false);
   const {
-    BlogStore: {
-      getSingleBlogs,
-      getComments
-    },
+    BlogStore: { getSingleBlogs, getComments },
     auth: { openNotification },
   } = store;
   const { state } = useLocation();
@@ -27,36 +26,34 @@ const SingleBlogIndex = observer(() => {
     } else {
       key["title"] = param.blogTitle?.split("-").join(" ");
     }
-
+    setLoader(true);
     getSingleBlogs(key)
       .then((data) => {
         setBlogData(data);
       })
-      .catch((err: any) => {
-        openNotification({
-          title: "GET Blogs Failed",
-          message: err.message,
-          type: "error",
-        });
+      .catch(() => {
+      })
+      .finally(() => {
+        setLoader(false);
       });
   }, [openNotification, getSingleBlogs, state, param.blogTitle]);
 
   useEffect(() => {
-    if(blogData){
-    getComments(blogData?._id, 1)
-      .then(() => {})
-      .catch((err: any) => {
-        openNotification({
-          title: "GET Comments Failed",
-          message: err.message,
-          type: "error",
+    if (blogData) {
+      getComments(blogData?._id, 1)
+        .then(() => {})
+        .catch((err: any) => {
+          openNotification({
+            title: "GET Comments Failed",
+            message: err.message,
+            type: "error",
+          });
         });
-      })
     }
   }, [openNotification, getComments, blogData]);
 
   return (
-    <Box display="flex" justifyContent="center">
+    <Box display="flex" justifyContent="center" mb={10}>
       <Grid
         gridTemplateColumns={{ lg: "0.6fr 1.9fr 0.9fr" }}
         position="relative"
@@ -74,9 +71,11 @@ const SingleBlogIndex = observer(() => {
           <BlogLikeContainer />
         </Box>
         <Box w="100%" mt={{ base: 0, md: 5 }}>
-          <BlogViewContainer item={blogData} />
+          <PageLoader noRecordFoundText={!blogData} loading={loader} height={'0vh'}>
+            {!loader && <BlogViewContainer item={blogData} />}
+          </PageLoader>
         </Box>
-        <Box position="sticky" top={5} right={0} alignSelf="flex-start">
+        <Box position="sticky" top={5} right={0} alignSelf="flex-start" display="none">
           <BlogSingleRight item={blogData} />
         </Box>
       </Grid>

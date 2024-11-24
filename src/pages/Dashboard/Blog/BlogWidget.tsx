@@ -111,12 +111,23 @@ const BlogWidget: React.FC<{ blog: BlogData }> = ({ blog }) => {
           </Text>
         </Flex>
 
-        <Text mb={4} color={subtitleColor} fontSize="sm" lineHeight="1.6">
-          <Box
-            as="span"
-            dangerouslySetInnerHTML={{ __html: blog.subTitle }}
-          ></Box>
-        </Text>
+        <Text
+  mb={4}
+  color={subtitleColor}
+  fontSize="sm"
+  lineHeight="1.6"
+  noOfLines={2} // Chakra's built-in property for limiting lines
+  sx={{
+    display: "-webkit-box",
+    WebkitLineClamp: "2", // Limit to 2 lines
+    WebkitBoxOrient: "vertical",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+  }}
+>
+  <Box as="span" dangerouslySetInnerHTML={{ __html: blog.subTitle }} />
+</Text>
+
 
         <HStack spacing={3} wrap="wrap" mb={4}>
           <Icon as={FaTags} color="blue.500" />

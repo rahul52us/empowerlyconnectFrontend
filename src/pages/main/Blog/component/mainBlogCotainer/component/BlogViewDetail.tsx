@@ -3,7 +3,7 @@ import { getCustomTextDate } from "../../../../../../config/constant/dateUtils";
 
 const BlogViewDetail = ({item} : any) => {
   return (
-    <Flex gap={3} mb={6}>
+    <Flex gap={3}>
       <Box>
         <Avatar
           src={item?.createdBy?.pic?.url || undefined}

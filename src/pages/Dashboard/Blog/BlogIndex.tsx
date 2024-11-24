@@ -22,35 +22,59 @@ import SummaryWidget from "../../../config/component/WigdetCard/SummaryWidget";
 import { useNavigate } from "react-router-dom";
 import { dashboard } from "../../../config/constant/routes";
 import BlogsLayout from "./BlogsLayout";
+import { useEffect, useState } from "react";
+import store from "../../../store/store";
 
 const BlogIndex = observer(() => {
+  const [loading, setLoading] = useState(false);
+  const [countData, setCountData] = useState({
+    privateBlogs: 0,
+    publicBlogs: 0,
+    deletedBlogs: 0,
+  });
+  const {
+    BlogStore: { getStatusCount },
+  } = store;
   const navigate = useNavigate();
   const showIcon = useBreakpointValue({ base: true, md: false });
 
+  useEffect(() => {
+    setLoading(true);
+    getStatusCount({})
+      .then((data: any) => {
+        setCountData(data?.data);
+        console.log("the data are", data);
+      })
+      .catch(() => {})
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [getStatusCount]);
+
   const summaryData = [
     {
-      label: "Total Projects",
-      value: 10,
+      label: "Public Blogs",
+      value: countData?.publicBlogs,
       icon: FaProjectDiagram,
       colorScheme: "teal",
-      description: "Total number of projects.",
-      loading: false,
+      description: "Total number of Public Blogs.",
+      loading: loading,
     },
     {
-      label: "Total Tasks",
-      value: 128,
+      label: "Private Blogs",
+      value: countData?.privateBlogs,
       icon: FaTasks,
       colorScheme: "blue",
-      description: "Total number of tasks across all projects.",
-      loading: false,
+      description: "Total number of Private Blogs",
+      loading: loading,
     },
     {
-      label: "Team Members",
-      value: 10,
+      label: "InActive Blogs",
+      value: countData?.deletedBlogs,
       icon: FaUsers,
       colorScheme: "purple",
-      description: "The number of active team members.",
-      loading: false,
+      description: "The number of Deleted Blogs",
+      loading: loading,
     },
   ];
 
