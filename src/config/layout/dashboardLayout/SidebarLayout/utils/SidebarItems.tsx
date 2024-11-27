@@ -115,13 +115,6 @@ const sidebarDatas: SidebarItem[] = [
       },
     ]
   },
-  {
-    id: 502,
-    name: "createBlog",
-    icon: <FaChartPie />,
-    url: dashboard.blog.create,
-    role: ["superadmin","manager","admin"],
-  },
   // Salary Structure
   {
     id: 301,

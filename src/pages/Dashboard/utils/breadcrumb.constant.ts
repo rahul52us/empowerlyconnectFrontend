@@ -82,6 +82,13 @@ const tripBreadCrumb = {
     { label: "Users" }]
 }
 
+const blogBreadCrumb = {
+  index : [
+  { label: "Home", link: "/" },
+  { label: "Dashboard", link: dashboard.home },
+  { label: "Blog" }]
+}
+
 const departmentsBreadCrumb = [
   { label: "Home", link: "/" },
   { label: "Company", link: dashboard.company.index },
@@ -173,5 +180,6 @@ export {
   projectBreadCrumb,
   liberaryBreadCrumb,
   dashProfileBreadCrumb,
-  booksBreadCrumb
+  booksBreadCrumb,
+  blogBreadCrumb
 };

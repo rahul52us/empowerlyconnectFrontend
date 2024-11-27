@@ -47,9 +47,9 @@ const BlogsLayout = observer(() => {
           <Spinner size="lg" />
         </Flex>
       ) : blogs.data?.length ? (
-        <Grid gridTemplateColumns={{ base: '1fr', sm: '1fr', md: '1fr 1fr', xl: '1fr 1fr 1fr' }} gap={5}>
+        <Grid gridTemplateColumns={{ base: '1fr', sm: '1fr', md: '1fr 1fr', xl: '1fr 1fr 1fr 1fr' }} gap={5}>
           {blogs.data.map((item: any, index: number) => (
-            <BlogWidget blog={item} key={index} />
+            <BlogWidget blog={item} key={index} fetchBlogsDetails={fetchBlogsDetails}/>
           ))}
         </Grid>
       ) : (

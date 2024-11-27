@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Avatar,
   Box,
@@ -11,11 +11,15 @@ import {
   Text,
   useColorModeValue,
   Tooltip,
+  Button,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { FaTags } from "react-icons/fa";
-import { BsFillPersonFill } from "react-icons/bs";
+import { BsFillPersonFill, BsFillTrashFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { dashboard } from "../../../config/constant/routes";
+import FormModel from "../../../config/component/common/FormModel/FormModel";
+import store from "../../../store/store";
 
 interface BlogData {
   _id: string;
@@ -43,24 +47,49 @@ interface BlogData {
   reactions: any[];
 }
 
-const BlogWidget: React.FC<{ blog: BlogData }> = ({ blog }) => {
-  const navigate = useNavigate()
+const BlogWidget: React.FC<{ blog: BlogData, fetchBlogsDetails : any }> = ({ blog , fetchBlogsDetails}) => {
+  const {BlogStore : {deleteBlog}, auth : {openNotification}} = store
+  const navigate = useNavigate();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [isPermanentDelete, setIsPermanentDelete] = useState(false);
   const cardBg = useColorModeValue("white", "gray.800");
   const tagBg = useColorModeValue("blue.100", "blue.700");
   const textColor = useColorModeValue("gray.700", "gray.300");
   const subtitleColor = useColorModeValue("gray.600", "gray.400");
   const coverFallback = useColorModeValue("gray.200", "gray.700");
 
+  const handleDelete = (status : boolean) => {
+    setDeleteLoading(true)
+    deleteBlog({id : blog._id, deleted : status}).then((data : any) => {
+      openNotification({
+        title: "Deleted SUCCESSFULLY",
+        message: data.message,
+      });
+      fetchBlogsDetails()
+      onClose();
+    }).catch((err:any) => {
+      openNotification({
+        title: "Delete FAILED",
+        message: err.message,
+        type: "error",
+      });
+    }).finally(() => {
+      setDeleteLoading(false)
+    })
+
+  };
+
   return (
     <Box
       bg={cardBg}
-      borderRadius="xl"
-      boxShadow="lg"
+      borderRadius="lg"
+      boxShadow="xl"
       overflow="hidden"
-      transition="transform 0.2s ease-in-out, box-shadow 0.2s ease"
+      transition="transform 0.3s ease-in-out, box-shadow 0.3s ease"
       _hover={{
-        transform: "scale(1.01)",
-        boxShadow: "sm",
+        transform: "scale(1.03)",
+        boxShadow: "lg",
       }}
       cursor="pointer"
       maxW="lg"
@@ -76,7 +105,7 @@ const BlogWidget: React.FC<{ blog: BlogData }> = ({ blog }) => {
             width="100%"
             height="100%"
             transition="opacity 0.3s ease"
-            _hover={{ opacity: 0.8 }}
+            _hover={{ opacity: 0.7 }}
           />
         ) : (
           <Flex
@@ -95,10 +124,18 @@ const BlogWidget: React.FC<{ blog: BlogData }> = ({ blog }) => {
         <Flex justify="space-between" align="center" mb={4}>
           <Heading
             as="h2"
-            size="md"
+            size="sm"
             textTransform="capitalize"
             fontWeight="semibold"
-            onClick={() => navigate(`${dashboard.blog.index}/edit/${blog.title?.split(' ').join('-')}`)}
+            _hover={{ color: "blue.500" }}
+            cursor="pointer"
+            onClick={() =>
+              navigate(
+                `${dashboard.blog.index}/edit/${blog.title
+                  ?.split(" ")
+                  .join("-")}`
+              )
+            }
           >
             {blog?.title}
           </Heading>
@@ -112,22 +149,21 @@ const BlogWidget: React.FC<{ blog: BlogData }> = ({ blog }) => {
         </Flex>
 
         <Text
-  mb={4}
-  color={subtitleColor}
-  fontSize="sm"
-  lineHeight="1.6"
-  noOfLines={2} // Chakra's built-in property for limiting lines
-  sx={{
-    display: "-webkit-box",
-    WebkitLineClamp: "2", // Limit to 2 lines
-    WebkitBoxOrient: "vertical",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-  }}
->
-  <Box as="span" dangerouslySetInnerHTML={{ __html: blog.subTitle }} />
-</Text>
-
+          mb={4}
+          color={subtitleColor}
+          fontSize="sm"
+          lineHeight="1.6"
+          noOfLines={2}
+          sx={{
+            display: "-webkit-box",
+            WebkitLineClamp: "2",
+            WebkitBoxOrient: "vertical",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+          }}
+        >
+          <Box as="span" dangerouslySetInnerHTML={{ __html: blog.subTitle }} />
+        </Text>
 
         <HStack spacing={3} wrap="wrap" mb={4}>
           <Icon as={FaTags} color="blue.500" />
@@ -178,8 +214,80 @@ const BlogWidget: React.FC<{ blog: BlogData }> = ({ blog }) => {
               })}
             </Text>
           </HStack>
+          <Icon
+            as={BsFillTrashFill}
+            color="red.500"
+            cursor="pointer"
+            onClick={onOpen}
+            _hover={{ color: "red.600" }}
+          />
         </Flex>
       </Box>
+
+      <FormModel
+        isCentered
+        open={isOpen}
+        close={onClose}
+        title="Confirm Delete"
+        size="lg"
+      >
+        <Box p={6} borderRadius="md" textAlign="center">
+          <Text mb={4} fontSize="lg" fontWeight="medium" color="gray.700">
+            Are you sure you want to{" "}
+            <strong>
+              {isPermanentDelete
+                ? "permanently delete"
+                : "make this blog inactive"}
+            </strong>
+            ? <br />
+            <Text as="span" color="gray.500">
+              This action cannot be undone.
+            </Text>
+          </Text>
+        </Box>
+
+        <Flex justify="space-between" align="center" p={4}>
+          <HStack spacing={4}>
+            <Button
+              colorScheme="red"
+              onClick={() => {
+                setIsPermanentDelete(true);
+                handleDelete(true);
+              }}
+              borderRadius="md"
+              fontWeight="semibold"
+              _hover={{ bg: "red.600" }}
+              isLoading={deleteLoading}
+            >
+              Permanently Delete
+            </Button>
+
+            <Button
+              colorScheme="yellow"
+              onClick={() => {
+                setIsPermanentDelete(false);
+                handleDelete(false);
+              }}
+              borderRadius="md"
+              fontWeight="semibold"
+              _hover={{ bg: "yellow.600" }}
+              isLoading={deleteLoading}
+            >
+              Make Inactive
+            </Button>
+          </HStack>
+          <Button
+            variant="outline"
+            onClick={onClose}
+            colorScheme="red"
+            borderRadius="md"
+            fontWeight="semibold"
+            _hover={{ bg: "gray.100" }}
+          >
+            Cancel
+          </Button>
+        </Flex>
+      </FormModel>
     </Box>
   );
 };

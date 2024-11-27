@@ -32,14 +32,23 @@ class BlogStore {
       getComments: action,
       createComment: action,
       updateBlog:action,
-      getStatusCount:action
+      getStatusCount:action,
+      deleteBlog:action
     });
   }
-
 
   createBlog = async (sendData: any) => {
     try {
       const { data } = await axios.post("/blog", {...sendData,company : store.auth.getCurrentCompany()});
+      return data;
+    } catch (err: any) {
+      return Promise.reject(err?.response?.data || err);
+    }
+  };
+
+  deleteBlog = async (sendData: any) => {
+    try {
+      const { data } = await axios.post(`/blog/${sendData.id}`, {...sendData,company : store.auth.getCurrentCompany()});
       return data;
     } catch (err: any) {
       return Promise.reject(err?.response?.data || err);

@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import DashPageHeader from "../../../config/component/common/DashPageHeader/DashPageHeader";
-import { tripBreadCrumb } from "../utils/breadcrumb.constant";
+import { blogBreadCrumb } from "../utils/breadcrumb.constant";
 import {
   FaHome,
   FaPlus,
@@ -43,7 +43,6 @@ const BlogIndex = observer(() => {
     getStatusCount({})
       .then((data: any) => {
         setCountData(data?.data);
-        console.log("the data are", data);
       })
       .catch(() => {})
       .finally(() => {
@@ -81,10 +80,7 @@ const BlogIndex = observer(() => {
   return (
     <Box p={2} borderRadius="lg" boxShadow="lg">
       <DashPageHeader
-        breadcrumb={tripBreadCrumb.index}
-        btnAction={(type: any) => {
-          alert(type);
-        }}
+        breadcrumb={blogBreadCrumb.index}
       />
 
       <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6} mb={6}>

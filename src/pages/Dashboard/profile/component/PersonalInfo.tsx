@@ -158,7 +158,7 @@ const PersonalInfo = observer(
               )}
               <Grid templateColumns={{ base: "1fr", md: "repeat(3, 1fr)" }} gap={6}>
                 {Object.keys(detail).map((key) => {
-                  if (['familyDetails', '_id', 'createdAt', 'companyOrg', 'permissions', 'bankDetails', 'profileDetails', 'workExperience', 'is_active', 'user', '__v', 'pic', 'designation', 'password', 'companyDetail', 'profile_details', 'documents'].includes(key))
+                  if (['familyDetails', '_id', 'createdAt', 'companyOrg','qualifications', 'permissions', 'bankDetails', 'profileDetails', 'workExperience', 'is_active', 'user', '__v', 'pic', 'designation', 'password', 'companyDetail', 'profile_details', 'documents'].includes(key))
                     return null;
 
                   const value: any = detail[key as keyof PersonalDetail];

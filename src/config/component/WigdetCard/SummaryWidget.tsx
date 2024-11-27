@@ -103,7 +103,7 @@ const SummaryWidget: React.FC<SummaryWidgetProps> = ({
               {label}
             </StatLabel>
             <StatNumber fontSize="3xl" fontWeight="bold" color={textColor}>
-              {value}
+              {value || 0}
             </StatNumber>
           </Stat>
           <Text fontSize={"xs"} color={"gray"} fontWeight={500} mt={1} display='none'>
