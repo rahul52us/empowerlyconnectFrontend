@@ -37,7 +37,7 @@ const PersonalQualifications = ({
             <Box p={4} borderRadius="lg" boxShadow="md">
               <Grid>
                 <Heading color="#002058" fontSize="xl" mb={4}>
-                  Documents:-
+                  Qualifications :-
                 </Heading>
                 <Divider />
                 <Grid columnGap={5} rowGap={3} mb={5}>
@@ -129,7 +129,7 @@ const PersonalQualifications = ({
                                     remove(index);
                                   }}
                                 >
-                                  Remove Document
+                                  Remove Qualification
                                 </Button>
                               )}
                             </Box>
@@ -151,7 +151,7 @@ const PersonalQualifications = ({
                             })
                           }
                         >
-                          Add Document
+                          Add Qualification
                         </Button>
                       </Box>
                     )}
