@@ -9,9 +9,11 @@ import {
 import { observer } from "mobx-react-lite";
 import CustomButton from "../../../../config/component/Button/CustomButton";
 
-const CompanyDetails = observer(({ setSelectedTab, isEditable }: any) => {
+const CompanyDetails = observer(({ setSelectedTab, isEditable, userDetails }: any) => {
   const cardBg = useColorModeValue("white", "gray.800");
   const cardBorder = useColorModeValue("gray.200", "gray.700");
+
+  console.log('the user details are', userDetails)
 
   return (
     <Box
