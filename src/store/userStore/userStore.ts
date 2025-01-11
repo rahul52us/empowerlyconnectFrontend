@@ -79,6 +79,7 @@ class Userstore {
       getStudentById: action,
       getAllUsers: action,
       getUsersDetailsById: action,
+      getUsersCompanyDetailsById:action,
       updateUserProfile: action,
       getDesignationCount: action,
       getUsersCount: action,
@@ -247,6 +248,15 @@ class Userstore {
   getUsersDetailsById = async (id: any) => {
     try {
       const { data } = await axios.get(`/User/${id}`);
+      return data.data;
+    } catch (err: any) {
+      return Promise.reject(err?.response?.data || err);
+    }
+  };
+
+  getUsersCompanyDetailsById = async (id: any) => {
+    try {
+      const { data } = await axios.get(`/User/companydetails/${id}`);
       return data.data;
     } catch (err: any) {
       return Promise.reject(err?.response?.data || err);
