@@ -39,7 +39,7 @@ const CompanyDetails = observer(({ setSelectedTab, isEditable, userDetails }: an
           setLoading(false);
         });
     }
-  }, [userDetails]);
+  }, [userDetails?._id,getUsersCompanyDetailsById]);
 
   const renderDetails = () => {
     if (companyDetails.length === 0) {
